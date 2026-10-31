@@ -21,6 +21,14 @@ namespace EarlyRush
         [Serializable] public class StageEvidence
         {
             public int stage, collisions, offscreenCrowdSamples;
+            public int crowdPopulation, activePeak, visiblePeak, progressedSlots;
+            public int arrivals, goalCrossings, recycles, visibleRecycles, qaVisibleRecycleEvents;
+            public int maxNearCoincidentCount, pileSamples;
+            public float activeSamples, visibleSamples, meanActiveCrowd, meanVisibleCrowd;
+            public float crowdForwardDistance, crowdBackwardDistance;
+            public float traversalFrameSeconds, meanTraversalFrameMilliseconds, worstTraversalFrameMilliseconds;
+            public float sampledStumbleSeconds, longestSampledStumbleSeconds;
+            public int sampledStumbleEntries;
             public float maxCrowdSpeed;
             public bool crowdFiniteAndInBounds = true;
             public float mapWidth, mapDepth, plannedRouteLength;
@@ -37,7 +45,8 @@ namespace EarlyRush
         {
             public string name, route;
             public bool includesDeliberateDoorProbe;
-            public float totalSeconds;
+            public float totalSeconds, totalStumbleSeconds, longestStumbleSeconds;
+            public int stumbleTriggers;
             public int collisions, transitions;
             public bool reachedResults;
             public float[] splits;
@@ -47,6 +56,8 @@ namespace EarlyRush
         [Serializable] public class Report
         {
             public string utc, engine, device, graphicsApi;
+            public string schemaVersion = "v2-goal-flow-1";
+            public string performanceScope = "Overall frame statistics include the late wait; per-stage traversal timing excludes deliberate pauses.";
             public string driver =
                 "Windows Player QAMove/QADash/QABrace input driver. " +
                 "Menu/pause/restart use public UI actions. No teleport, time override, " +
@@ -73,7 +84,10 @@ namespace EarlyRush
         int frames, currentWaypoint;
         bool finished;
         Vector2[] previousCrowd;
-        float previousCrowdAt;
+        float previousCrowdAt, lastPileSampleAt;
+        int[] previousGenerations;
+        bool[] previousActive, previousVisible;
+        float[] previousProgress, observedForwardBySlot;
         const float Margin = .46f;
         const float Timeout = 650f;
 
@@ -237,6 +251,10 @@ namespace EarlyRush
 
             game.Restart(); Neutral();
             yield return Wait(.2f);
+            yield return Traverse("charge", false);
+            yield return Shot("charge-results");
+            game.Restart(); Neutral();
+            yield return Wait(.2f);
             currentRun = "late-wait";
             while (!finished && game.TotalTime <= game.TimeLimit + .3f) yield return null;
             CheckThat("Deadline does not stop play",
@@ -272,12 +290,18 @@ namespace EarlyRush
             float total = game.TotalTime, split = game.StageTime;
             Vector2 position = game.Position;
             Vector3 camera = game.GameCamera.transform.position;
-            Vector2[] crowd = game.CrowdSnapshot();
+            var crowd = game.CrowdProbeSnapshot();
+            int arrivals = game.CrowdArrivals, recycles = game.CrowdRecycles;
+            float forward = game.CrowdForwardDistance;
             yield return Wait(.4f);
-            Vector2[] after = game.CrowdSnapshot();
-            bool crowdFrozen = crowd.Length == after.Length;
+            var after = game.CrowdProbeSnapshot();
+            bool crowdFrozen = crowd.Length == after.Length &&
+                arrivals == game.CrowdArrivals && recycles == game.CrowdRecycles &&
+                Mathf.Abs(forward - game.CrowdForwardDistance) < .001f;
             for (int i = 0; i < Mathf.Min(crowd.Length, after.Length); i++)
-                crowdFrozen &= Vector2.Distance(crowd[i], after[i]) < .001f;
+                crowdFrozen &= Vector2.Distance(crowd[i].position, after[i].position) < .001f &&
+                    crowd[i].generation == after[i].generation && crowd[i].active == after[i].active &&
+                    Mathf.Abs(crowd[i].progress - after[i].progress) < .001f;
             CheckThat(label + ": pause freezes simulation and camera",
                 game.State == RushState.Paused &&
                 Mathf.Abs(total - game.TotalTime) < .001f &&
@@ -308,7 +332,12 @@ namespace EarlyRush
             Vector2 previousPosition = game.Position, progressPoint = game.Position;
             Vector3 cameraMin = Vector3.zero, cameraMax = Vector3.zero;
             float started = Time.realtimeSinceStartup;
-            float lastProgress = started, lastDash = -10, hazardSince = -1;
+            float lastProgress = started, lastDash = -10;
+            bool skilled = name != "charge";
+            float stumbleSeen = -1, recoverUntil = -1, passingUntil = -1, nextPassingChoice = -1;
+            float retreatUntil = -1, nextRetreat = -1, sampledStumble = 0;
+            bool previouslyStumbling = false, approachShot = false, entryShot = false;
+            Vector2 passingTarget = Vector2.zero, retreatDirection = Vector2.zero;
             bool midShot = false, doorAttempted = false, doorContact = false;
             bool doorRetreated = false, doorCrossed = false;
             int doorPhase = 0, doorHitBaseline = 0;
@@ -361,12 +390,20 @@ namespace EarlyRush
                     }
                     CheckThat(name + ": stage " + game.Stage + " waypoint segments clear static walls",
                         segmentsClear, "margin=" + Margin + " blocked segments=" + blockedSegments);
+                    CheckNpcRoutes(name);
+                    CheckThat(name + ": destination has a usable arrival pad",
+                        game.World.goalHalfSize.x >= 2.5f,
+                        "goal half width=" + game.World.goalHalfSize.x);
                     run.stages.Add(metric);
                     CheckThat(name + ": stage " + game.Stage + " is a large map",
                         metric.mapDepth >= 75f && metric.mapWidth >= 30f,
                         metric.mapWidth + " x " + metric.mapDepth + " metres");
-                    index = 0; midShot = false; hazardSince = -1;
+                    index = 0; midShot = false; approachShot = false; entryShot = false;
+                    stumbleSeen = -1; recoverUntil = -1; passingUntil = -1;
+                    nextPassingChoice = -1; retreatUntil = -1; nextRetreat = -1;
+                    sampledStumble = 0; previouslyStumbling = false;
                     previousCrowd = null;
+                    lastPileSampleAt = -100f;
                     previousPosition = progressPoint = game.Position;
                     lastProgress = Time.realtimeSinceStartup;
                     cameraMin = cameraMax = game.GameCamera.transform.position;
@@ -382,6 +419,9 @@ namespace EarlyRush
                 Vector2 p = game.Position;
                 float dt = Time.unscaledDeltaTime;
                 metric.samples++;
+                metric.traversalFrameSeconds += dt;
+                metric.worstTraversalFrameMilliseconds =
+                    Mathf.Max(metric.worstTraversalFrameMilliseconds, dt * 1000f);
                 metric.actualDistance += Vector2.Distance(previousPosition, p);
                 previousPosition = p;
                 metric.maxSpeed = Mathf.Max(metric.maxSpeed, game.Velocity.magnitude);
@@ -389,6 +429,16 @@ namespace EarlyRush
                 if (game.QAMove.sqrMagnitude < .01f) metric.commandedWaitSeconds += dt;
                 if (game.IsBracing) metric.bracedSeconds += dt;
                 if (game.IsDashing) metric.dashedSeconds += dt;
+                if (game.IsStumbling)
+                {
+                    metric.sampledStumbleSeconds += dt;
+                    sampledStumble += dt;
+                    if (!previouslyStumbling) metric.sampledStumbleEntries++;
+                    metric.longestSampledStumbleSeconds =
+                        Mathf.Max(metric.longestSampledStumbleSeconds, sampledStumble);
+                }
+                else sampledStumble = 0;
+                previouslyStumbling = game.IsStumbling;
                 SampleGeometry(metric, p);
                 Vector3 cam = game.GameCamera.transform.position;
                 cameraMin = Vector3.Min(cameraMin, cam);
@@ -410,6 +460,16 @@ namespace EarlyRush
                 {
                     midShot = true;
                     yield return Shot(name + "-stage-" + (game.Stage + 1) + "-middle");
+                }
+                if (!approachShot && p.y >= 82f)
+                {
+                    approachShot = true;
+                    yield return Shot(name + "-stage-" + (game.Stage + 1) + "-approach-z82");
+                }
+                if (!entryShot && p.y >= 90f)
+                {
+                    entryShot = true;
+                    yield return Shot(name + "-stage-" + (game.Stage + 1) + "-entry-z90");
                 }
                 if (name == "late" && game.Stage == 1 && !doorAttempted &&
                     p.y >= 85.5f && p.y < 87f && Mathf.Abs(p.x) < 1.4f)
@@ -437,10 +497,10 @@ namespace EarlyRush
                         }
                     }
                     game.QAMove = (jamb - p).normalized;
-                    game.QABrace = false;
-                    game.QADash = game.DashCooldown01 > .99f &&
-                        Time.realtimeSinceStartup - doorPhaseBegan < .4f;
-                    if (Time.realtimeSinceStartup - doorPhaseBegan >= 1.25f)
+                    bool nearJamb = Vector2.Distance(jamb, p) < 1.25f;
+                    game.QABrace = !nearJamb;
+                    game.QADash = nearJamb && game.DashCooldown01 > .99f;
+                    if (doorContact || Time.realtimeSinceStartup - doorPhaseBegan >= 3f)
                     {
                         CheckThat("Narrow-door probe makes static contact", doorContact,
                             "closest clearance=" + closestJamb +
@@ -483,28 +543,47 @@ namespace EarlyRush
                 float throttle = Mathf.Clamp(delta.magnitude / 1.6f, .3f, 1f);
                 game.QAMove = desired * throttle;
                 game.QABrace = false; game.QADash = false;
+                float now = Time.realtimeSinceStartup;
                 float ahead = NearestCrowdAhead(p, direction);
-                if (safe && ahead < 1.7f)
+                if (skilled)
                 {
-                    if (hazardSince < 0) hazardSince = Time.realtimeSinceStartup;
-                    if (Time.realtimeSinceStartup - hazardSince < .65f)
-                        game.QAMove = Vector2.zero;
-                    else
-                        game.QABrace = true;
-                }
-                else
-                {
-                    hazardSince = -1;
-                    if (stalled > 1.3f) game.QABrace = true;
-                    bool clearDash = delta.magnitude > 5f &&
-                        LineClear(p, p + direction * 3.2f, game.World);
-                    if (!game.QABrace && clearDash && (!safe || ahead > 3.5f) &&
-                        game.DashCooldown01 > .99f && Time.realtimeSinceStartup - lastDash > 1.3f)
+                    if (game.IsStumbling)
                     {
-                        game.QADash = true;
-                        lastDash = Time.realtimeSinceStartup;
+                        if (stumbleSeen < 0) stumbleSeen = now;
+                        if (now - stumbleSeen >= .12f)
+                            recoverUntil = Mathf.Max(recoverUntil, now + .2f);
                     }
+                    else stumbleSeen = -1;
+                    Vector2 segmentStart = index > 0 ? route[index - 1] :
+                        new Vector2(game.World.spawn.x, game.World.spawn.z);
+                    if (now >= nextPassingChoice && ahead < 3.5f && delta.magnitude > 3f)
+                    {
+                        nextPassingChoice = now + .3f;
+                        if (TryLocalPass(p, route[index], segmentStart, game.World, out Vector2 choice))
+                        { passingTarget = choice; passingUntil = now + .3f; }
+                        else passingUntil = -1;
+                    }
+                    if (now < passingUntil && Vector2.Distance(p, passingTarget) > .4f &&
+                        LineClear(p, passingTarget, game.World))
+                    {
+                        direction = (passingTarget - p).normalized;
+                        game.QAMove = direction * throttle;
+                        ahead = NearestCrowdAhead(p, direction);
+                    }
+                    // Both routes use the same local controls; the safe route is a real detour.
+                    // No fixed .65s stop on every encounter with a forward-moving commuter.
+                    game.QABrace = !game.IsStumbling && ahead < 1.25f;
                 }
+                if (stalled > 1.3f) game.QABrace = true;
+                bool clearDash = delta.magnitude > 5f &&
+                    LineClear(p, p + direction * 3.2f, game.World);
+                bool readyDecision = !skilled ||
+                    (!game.IsStumbling && now >= recoverUntil && ahead > 3.2f);
+                if (!game.QABrace && clearDash && readyDecision &&
+                    game.DashCooldown01 > .99f && now - lastDash > 1.3f)
+                { game.QADash = true; lastDash = now; }
+
+                // Charge retains the old risk driver's exact stalled-side-step fallback.
                 if (stalled > 2f)
                 {
                     Vector2 side = new Vector2(-direction.y, direction.x);
@@ -513,11 +592,34 @@ namespace EarlyRush
                     if (LineClear(p, p + escape * .8f, game.World)) game.QAMove = escape;
                     game.QABrace = true; game.QADash = false;
                 }
+                if (skilled)
+                {
+                    if (stalled > 1.5f && now >= nextRetreat && now >= passingUntil &&
+                        ahead < 1.5f && LineClear(p, p - direction * .65f, game.World))
+                    {
+                        retreatDirection = -direction;
+                        retreatUntil = now + .3f;
+                        nextRetreat = now + 2f;
+                    }
+                    if (now < retreatUntil)
+                    { game.QAMove = retreatDirection; game.QABrace = true; game.QADash = false; }
+                    if (now < recoverUntil)
+                    { game.QABrace = true; game.QADash = false; }
+                    else if (game.IsStumbling && stumbleSeen >= 0 && now - stumbleSeen < .12f)
+                    { game.QABrace = false; game.QADash = false; }
+                }
                 yield return null;
             }
             Neutral();
             if (metric != null) FinalizeStage(metric, cameraMin, cameraMax, name);
             run.totalSeconds = game.TotalTime;
+            run.totalStumbleSeconds = game.TotalStumbleTime;
+            run.longestStumbleSeconds = game.LongestStumbleTime;
+            run.stumbleTriggers = game.StumbleTriggers;
+            CheckThat(name + ": individual stumble duration stays bounded",
+                game.LongestStumbleTime <= .47f,
+                "total seconds=" + game.TotalStumbleTime + " longest=" + game.LongestStumbleTime +
+                " triggers=" + game.StumbleTriggers);
             run.collisions = game.Collisions;
             run.transitions = game.TransitionCount;
             run.reachedResults = game.State == RushState.Results;
@@ -553,25 +655,99 @@ namespace EarlyRush
                     Mathf.Clamp(p.y, obstacle.yMin, obstacle.yMax));
                 metric.clearOfWalls &= Vector2.Distance(p, closest) >= .39f;
             }
-            Vector2[] crowd = game.CrowdSnapshot();
-            float crowdDelta = Time.realtimeSinceStartup - previousCrowdAt;
-            for (int i = 0; i < crowd.Length; i++)
+            var probes = game.CrowdProbeSnapshot();
+            bool fresh = previousCrowd == null || previousCrowd.Length != probes.Length;
+            if (fresh)
             {
-                Vector2 c = crowd[i];
+                previousCrowd = new Vector2[probes.Length];
+                previousGenerations = new int[probes.Length];
+                previousActive = new bool[probes.Length];
+                previousVisible = new bool[probes.Length];
+                previousProgress = new float[probes.Length];
+                observedForwardBySlot = new float[probes.Length];
+            }
+            float crowdDelta = Time.realtimeSinceStartup - previousCrowdAt;
+            int active = 0, visible = 0, progressed = 0;
+            for (int i = 0; i < probes.Length; i++)
+            {
+                var probe = probes[i];
+                Vector2 c = probe.position;
                 bool finite = !float.IsNaN(c.x) && !float.IsNaN(c.y) &&
                     !float.IsInfinity(c.x) && !float.IsInfinity(c.y);
                 metric.crowdFiniteAndInBounds &= finite &&
                     c.x >= w.boundsMin.x + .38f && c.x <= w.boundsMax.x - .38f &&
                     c.y >= w.boundsMin.y + .38f && c.y <= w.boundsMax.y - .38f;
-                if (previousCrowd != null && previousCrowd.Length == crowd.Length && crowdDelta > .0001f)
-                    metric.maxCrowdSpeed = Mathf.Max(metric.maxCrowdSpeed,
-                        Vector2.Distance(c, previousCrowd[i]) / crowdDelta);
                 Vector3 view = game.GameCamera.WorldToViewportPoint(new Vector3(c.x, 1f, c.y));
-                if (view.x < 0 || view.x > 1 || view.y < 0 || view.y > 1 || view.z <= 0)
-                    metric.offscreenCrowdSamples++;
+                bool inView = probe.active && view.z > 0 && view.x >= 0 &&
+                    view.x <= 1 && view.y >= 0 && view.y <= 1;
+                if (probe.active)
+                {
+                    active++;
+                    if (inView) visible++; else metric.offscreenCrowdSamples++;
+                }
+                if (!fresh)
+                {
+                    bool recycled = probe.generation != previousGenerations[i];
+                    bool visibleActivation = probe.generation > 0 && !previousActive[i] &&
+                        probe.active && inView;
+                    Rect cover = w.crowdExitCover;
+                    Vector2 old = previousCrowd[i];
+                    Vector2 nearestCover = new Vector2(Mathf.Clamp(old.x, cover.xMin, cover.xMax),
+                        Mathf.Clamp(old.y, cover.yMin, cover.yMax));
+                    // A visible old sample may legitimately walk under the canopy and
+                    // complete between rendered frames. New births still require margin.
+                    bool couldEnterCover = Vector2.Distance(old, nearestCover) <=
+                        15f * Mathf.Max(0, crowdDelta) + .5f;
+                    bool expandedView = probe.active && view.z > 0 &&
+                        view.x >= -.18f && view.x <= 1.18f && view.y >= -.18f && view.y <= 1.18f;
+                    visibleActivation = probe.generation > 0 && !previousActive[i] &&
+                        probe.active && expandedView;
+                    if ((recycled && ((previousVisible[i] && !couldEnterCover) || expandedView)) ||
+                        visibleActivation)
+                        metric.qaVisibleRecycleEvents++;
+                    if (!recycled && probe.active && previousActive[i] && crowdDelta > .0001f)
+                    {
+                        metric.maxCrowdSpeed = Mathf.Max(metric.maxCrowdSpeed,
+                            Vector2.Distance(c, previousCrowd[i]) / crowdDelta);
+                        observedForwardBySlot[i] += Mathf.Max(0, probe.progress - previousProgress[i]);
+                    }
+                }
+                if (observedForwardBySlot[i] > 1f) progressed++;
+                previousCrowd[i] = c;
+                previousGenerations[i] = probe.generation;
+                previousActive[i] = probe.active;
+                previousVisible[i] = inView;
+                previousProgress[i] = probe.progress;
             }
-            previousCrowd = crowd;
             previousCrowdAt = Time.realtimeSinceStartup;
+            metric.crowdPopulation = probes.Length;
+            metric.activeSamples += active;
+            metric.visibleSamples += visible;
+            metric.activePeak = Mathf.Max(metric.activePeak, active);
+            metric.visiblePeak = Mathf.Max(metric.visiblePeak, visible);
+            metric.progressedSlots = progressed;
+            metric.arrivals = game.CrowdArrivals;
+            metric.goalCrossings = game.CrowdGoalCrossings;
+            metric.recycles = game.CrowdRecycles;
+            metric.visibleRecycles = game.CrowdVisibleRecycles;
+            metric.crowdForwardDistance = game.CrowdForwardDistance;
+            metric.crowdBackwardDistance = game.CrowdBackwardDistance;
+            // Sample tight stacks twice per second, avoiding a per-frame all-pairs cost.
+            if (Time.realtimeSinceStartup - lastPileSampleAt >= .5f)
+            {
+                lastPileSampleAt = Time.realtimeSinceStartup;
+                metric.pileSamples++;
+                for (int i = 0; i < probes.Length; i++)
+                {
+                    if (!probes[i].active) continue;
+                    int neighbors = 1;
+                    for (int j = 0; j < probes.Length; j++)
+                        if (i != j && probes[j].active &&
+                            (probes[i].position - probes[j].position).sqrMagnitude < .25f * .25f)
+                            neighbors++;
+                    metric.maxNearCoincidentCount = Mathf.Max(metric.maxNearCoincidentCount, neighbors);
+                }
+            }
             Vector3 viewport = game.GameCamera.WorldToViewportPoint(new Vector3(p.x, 1f, p.y));
             metric.minViewportX = Mathf.Min(metric.minViewportX, viewport.x);
             metric.maxViewportX = Mathf.Max(metric.maxViewportX, viewport.x);
@@ -587,7 +763,34 @@ namespace EarlyRush
             metric.collisions = game.SplitCollisions[metric.stage];
             metric.cameraSpanX = cameraMax.x - cameraMin.x;
             metric.cameraSpanZ = cameraMax.z - cameraMin.z;
+            metric.meanActiveCrowd = metric.activeSamples / Mathf.Max(1, metric.samples);
+            metric.meanVisibleCrowd = metric.visibleSamples / Mathf.Max(1, metric.samples);
+            metric.meanTraversalFrameMilliseconds =
+                metric.traversalFrameSeconds * 1000f / Mathf.Max(1, metric.samples);
             string label = name + " stage " + (metric.stage + 1);
+            bool preWaitStage = name == "late" && metric.stage == 0;
+            CheckThat(label + ": dense population is present",
+                metric.crowdPopulation >= 120 && (preWaitStage || metric.visiblePeak >= 10),
+                "population=" + metric.crowdPopulation + " visible mean/peak=" +
+                metric.meanVisibleCrowd + "/" + metric.visiblePeak +
+                " active mean/peak=" + metric.meanActiveCrowd + "/" + metric.activePeak);
+            CheckThat(label + ": crowd makes forward progress",
+                (preWaitStage || metric.progressedSlots >= Mathf.CeilToInt(metric.crowdPopulation * .75f)) &&
+                metric.crowdForwardDistance > metric.crowdBackwardDistance * 2f + metric.crowdPopulation,
+                "pre-wait stage=" + preWaitStage + " progressing slots=" + metric.progressedSlots + "/" + metric.crowdPopulation +
+                " forward/backward=" + metric.crowdForwardDistance + "/" + metric.crowdBackwardDistance);
+            CheckThat(label + ": commuters reach destinations and recycle",
+                metric.arrivals > 0 && metric.goalCrossings > 0 && metric.recycles > 0,
+                "goal crossings=" + metric.goalCrossings + " arrivals=" + metric.arrivals +
+                " recycles=" + metric.recycles);
+            CheckThat(label + ": recycling stays invisible",
+                metric.visibleRecycles == 0 && metric.qaVisibleRecycleEvents == 0,
+                "guard violations=" + metric.visibleRecycles +
+                " independently observed visible recycling=" + metric.qaVisibleRecycleEvents);
+            CheckThat(label + ": no sampled near-coincident crowd pile",
+                metric.pileSamples > 0 && metric.maxNearCoincidentCount <= 3,
+                "samples=" + metric.pileSamples +
+                " max NPC centers within 0.25m=" + metric.maxNearCoincidentCount);
             CheckThat(label + ": follows across several screens",
                 metric.actualDistance > 70f && metric.cameraSpanZ > 45f,
                 "distance=" + metric.actualDistance + " camera z span=" + metric.cameraSpanZ);
@@ -607,9 +810,12 @@ namespace EarlyRush
         float NearestCrowdAhead(Vector2 p, Vector2 direction)
         {
             float nearest = 100f;
-            foreach (Vector2 crowd in game.CrowdSnapshot())
+            if (previousCrowd == null || previousActive == null) return nearest;
+            for (int i = 0; i < previousCrowd.Length; i++)
             {
-                Vector2 delta = crowd - p;
+                if (!previousActive[i]) continue;
+                Vector2 delta = previousCrowd[i] - p;
+                if (delta.sqrMagnitude > 25f) continue;
                 float along = Vector2.Dot(delta, direction);
                 float side = Mathf.Abs(delta.x * direction.y - delta.y * direction.x);
                 if (along > 0 && side < 1f) nearest = Mathf.Min(nearest, delta.magnitude);
@@ -617,25 +823,91 @@ namespace EarlyRush
             return nearest;
         }
 
-        bool Free(Vector2 point, WorldData world)
+        bool TryLocalPass(Vector2 p, Vector2 waypoint, Vector2 segmentStart,
+            WorldData world, out Vector2 choice)
         {
-            if (point.x < world.boundsMin.x + Margin || point.x > world.boundsMax.x - Margin ||
-                point.y < world.boundsMin.y + Margin || point.y > world.boundsMax.y - Margin) return false;
+            choice = p;
+            Vector2 forward = (waypoint - p).normalized;
+            Vector2 side = new Vector2(-forward.y, forward.x);
+            Vector2 rejoin = p + forward * Mathf.Min(4f, Vector2.Distance(p, waypoint));
+            float best = float.NegativeInfinity;
+            foreach (float offset in new float[] { -.8f, .8f, -1.5f, 1.5f })
+            {
+                Vector2 candidate = p + forward * 2.3f + side * offset;
+                Vector2 segment = waypoint - segmentStart;
+                float t = segment.sqrMagnitude > .001f ?
+                    Mathf.Clamp01(Vector2.Dot(candidate - segmentStart, segment) / segment.sqrMagnitude) : 1;
+                if (Vector2.Distance(candidate, segmentStart + segment * t) > 1.6f) continue;
+                if (!LineClear(p, candidate, world) || !LineClear(candidate, rejoin, world)) continue;
+                Vector2 move = (candidate - p).normalized;
+                float nearest = 3f;
+                for (int i = 0; previousCrowd != null && i < previousCrowd.Length; i++)
+                {
+                    if (!previousActive[i]) continue;
+                    Vector2 delta = previousCrowd[i] - p;
+                    if (delta.sqrMagnitude > 25f) continue;
+                    // Already touching: an outward move may separate through the usual solver.
+                    if (delta.magnitude < .9f && Vector2.Dot(move, delta.normalized) <= 0) continue;
+                    Vector2 leg = candidate - p;
+                    float along = Mathf.Clamp01(Vector2.Dot(delta, leg) / leg.sqrMagnitude);
+                    nearest = Mathf.Min(nearest, Vector2.Distance(previousCrowd[i], p + leg * along));
+                }
+                if (nearest < .88f) continue;
+                float score = Mathf.Min(nearest, 2f) - Mathf.Abs(offset) * .1f;
+                if (score > best) { best = score; choice = candidate; }
+            }
+            return !float.IsNegativeInfinity(best);
+        }
+
+        bool Free(Vector2 point, WorldData world, float clearance = Margin)
+        {
+            if (point.x < world.boundsMin.x + clearance || point.x > world.boundsMax.x - clearance ||
+                point.y < world.boundsMin.y + clearance || point.y > world.boundsMax.y - clearance) return false;
             foreach (Rect obstacle in world.obstacles)
             {
                 Vector2 closest = new Vector2(Mathf.Clamp(point.x, obstacle.xMin, obstacle.xMax),
                     Mathf.Clamp(point.y, obstacle.yMin, obstacle.yMax));
-                if (Vector2.Distance(point, closest) < Margin) return false;
+                if (Vector2.Distance(point, closest) < clearance) return false;
             }
             return true;
         }
 
-        bool LineClear(Vector2 a, Vector2 b, WorldData world)
+        bool LineClear(Vector2 a, Vector2 b, WorldData world, float clearance = Margin)
         {
             int samples = Mathf.Max(1, Mathf.CeilToInt(Vector2.Distance(a, b) / .16f));
             for (int i = 1; i <= samples; i++)
-                if (!Free(Vector2.Lerp(a, b, (float)i / samples), world)) return false;
+                if (!Free(Vector2.Lerp(a, b, (float)i / samples), world, clearance)) return false;
             return true;
+        }
+
+        void CheckNpcRoutes(string name)
+        {
+            bool clear = true;
+            int segments = 0, invalidRoutes = 0;
+            string blocked = "";
+            foreach (CrowdSpawn spawn in game.World.crowd)
+            {
+                if (spawn.route == null || spawn.route.Length < 2)
+                { invalidRoutes++; clear = false; continue; }
+                for (int j = 1; j < spawn.route.Length; j++)
+                {
+                    if (!LineClear(spawn.route[j - 1], spawn.route[j], game.World, .43f))
+                    {
+                        clear = false;
+                        if (blocked.Length < 500) blocked += segments + " ";
+                    }
+                    segments++;
+                }
+                if (spawn.routeIndex >= 0 && spawn.routeIndex < spawn.route.Length &&
+                    !LineClear(spawn.position, spawn.route[spawn.routeIndex], game.World, .43f))
+                {
+                    clear = false;
+                    if (blocked.Length < 500) blocked += "spawn ";
+                }
+            }
+            CheckThat(name + ": stage " + game.Stage + " NPC routes have 0.43m clearance",
+                clear && segments > 0, "segments=" + segments + " invalid routes=" +
+                invalidRoutes + " blocked=" + blocked);
         }
 
         void CompareRoutes()
