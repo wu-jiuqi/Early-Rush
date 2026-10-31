@@ -128,8 +128,8 @@ namespace EarlyRush
             Text(R(0, 64, 1280, 28), "你的通勤生存手册", 18, Teal, true, TextAnchor.MiddleCenter);
             Text(R(0, 104, 1280, 64), "三个动作，准点到达", 44, Cream, true, TextAnchor.MiddleCenter);
             TutorialCard(100, 0, "移动与转向", "W A S D", "或方向键  ↑ ↓ ← →", "骑车有惯性。\n提前转弯，松手减速。", Orange);
-            TutorialCard(466, 1, "短促冲刺", "SPACE", "冲一下，歇一下", "突破拥挤的人群。\n冷却结束后才能再冲。", Teal);
-            TutorialCard(832, 2, "稳住重心", "SHIFT", "按住抗推，移动变慢", "靠近门口时稳住。\n稳住时不会同时冲刺。", Orange);
+            TutorialCard(466, 1, "短促冲刺", "SPACE", "看准空档再冲", "撞到人会短暂失衡。\n冷却结束后才能再冲。", Teal);
+            TutorialCard(832, 2, "稳住重心", "SHIFT", "恢复步伐，移动变慢", "被挤住时稳住再后退。\n松开稳住后才能冲刺。", Orange);
             if (Button(R(435, 566, 410, 64), "出发！    ENTER  →", Orange, Ink, 25)) active.BeginPlay();
             Text(R(140, 653, 1000, 26), "寻找青色目标  ·  三段共用一个计时器  ·  超时也能继续完成打卡  ·  ESC 暂停", 15, Cream, false, TextAnchor.MiddleCenter);
         }
@@ -177,10 +177,10 @@ namespace EarlyRush
             Text(new Rect(24, height - 118, 360, 24), "碰撞  " + active.Collisions + "     本段  " + TimeText(active.StageTime), 14, Ink, true);
 
             Panel(new Rect(width - 356, height - 103, 332, 79), Cream);
-            string dash = active.IsBracing ? "SPACE  松开稳住后冲刺" : active.IsDashing ? "SPACE  冲刺中！" : active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺就绪";
+            string dash = active.IsBracing ? "SPACE  松开稳住后冲刺" : active.IsStumbling ? "SPACE  被挤住 · SHIFT 稳住" : active.IsDashing ? "SPACE  冲刺中！" : active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺就绪";
             Text(new Rect(width - 338, height - 93, 296, 26), dash, 16, Ink, true);
             Bar(new Rect(width - 338, height - 60, 295, 6), Mathf.Clamp01(active.DashCooldown01), Orange, new Color32(221, 226, 214, 255));
-            Text(new Rect(width - 338, height - 47, 296, 17), active.IsBracing ? "SHIFT  正在稳住 · 减速 / 抗推" : "SHIFT  按住稳住 · 抵抗推挤", 12, active.IsBracing ? Teal : Muted, active.IsBracing);
+            Text(new Rect(width - 338, height - 47, 296, 17), active.IsBracing ? "SHIFT  正在稳住 · 减速 / 抗推" : "SHIFT  按住稳住 · 恢复步伐 / 抗推", 12, active.IsBracing ? Teal : Muted, active.IsBracing);
             Text(new Rect(width * .5f - 230, height - 55, 460, 26), "WASD / 方向键  移动    ·    ESC  暂停", 14, Ink, true, TextAnchor.MiddleCenter);
         }
 

@@ -9,6 +9,8 @@ namespace EarlyRush
         public Vector3 spawn, goal;
         public Vector2 goalHalfSize;
         public string title, routeHint;
+        public Vector2 crowdExit;
+        public Rect crowdExitCover;
         public List<Vector2> riskRoute = new List<Vector2>(), safeRoute = new List<Vector2>();
         public List<CrowdSpawn> crowd = new List<CrowdSpawn>();
         public List<Rect> obstacles = new List<Rect>();
@@ -18,12 +20,22 @@ namespace EarlyRush
     {
         public Vector2 position, axis;
         public float range, speed, phase;
+        public Vector2[] route;
+        public int routeIndex;
+        public float desiredSpeed, delay;
         public Color color;
         public bool cyclist;
         public CrowdSpawn(float x, float z, float ax, float az, float range, float speed, Color color, bool cyclist = false, float phase = -1)
         {
             position = new Vector2(x,z); axis = new Vector2(ax,az);
             this.range=range; this.speed=speed; this.color=color; this.cyclist=cyclist; this.phase=phase;
+            route=null; routeIndex=0; desiredSpeed=0; delay=0;
+        }
+        public CrowdSpawn(Vector2 position,Vector2[] route,int routeIndex,float desiredSpeed,float delay,Color color,bool cyclist)
+        {
+            this.position=position; this.route=route; this.routeIndex=routeIndex;
+            this.desiredSpeed=desiredSpeed; this.delay=delay; this.color=color; this.cyclist=cyclist;
+            axis=Vector2.zero; range=0; speed=0; phase=-1;
         }
     }
     public static class RushWorld
@@ -51,17 +63,11 @@ namespace EarlyRush
             Label(w,"QUICK",new Vector3(0,.16f,z-4.5f),.7f,Gold,true);
             Label(w,"BYPASS",new Vector3(sideX,.16f,z-4.5f),.7f,Teal,true);
         }
-        static void Wave(WorldData w,float z,int rows,float speed,float phase)
+        static void Junction(WorldData w,float z,float depth)
         {
-            // Paint covers every row and the NPC body at each edge.
-            const float rowSpacing=1.12f, bodyRadius=.43f;
-            float centerZ=z+(rows-1)*rowSpacing*.5f;
-            float crossingDepth=(rows-1)*rowSpacing+bodyRadius*2+.4f;
-            P(w,"Crossing warning band",new Vector3(0,.09f,centerZ),new Vector3(20.8f,.025f,crossingDepth),Gold,.01f);
-            for(int i=-4;i<=4;i++) P(w,"Crosswalk paint",new Vector3(i*2.2f,.115f,centerZ),new Vector3(.9f,.02f,crossingDepth-.16f),Cream,.01f);
-            for(int row=0;row<rows;row++)
-                for(int i=0;i<7;i++)
-                    w.crowd.Add(new CrowdSpawn((i-3)*1.12f,z+row*1.12f,1,0,6.5f,speed,coats[(i+row)%coats.Length],false,phase+row*.45f));
+            // Paint marks a shared junction; all commuters now travel toward the destination.
+            P(w,"Busy junction warning band",new Vector3(0,.09f,z),new Vector3(20.8f,.025f,depth),Gold,.01f);
+            for(int i=-4;i<=4;i++)P(w,"Crosswalk paint",new Vector3(i*2.2f,.115f,z),new Vector3(.9f,.02f,depth-.16f),Cream,.01f);
         }
         static void Route(WorldData w,bool safe,params Vector2[] points)
         {
@@ -77,20 +83,123 @@ namespace EarlyRush
                 }
             }
         }
+        static float RouteLength(Vector2[] route)
+        {
+            float length=0;
+            for(int i=1;i<route.Length;i++)length+=Vector2.Distance(route[i-1],route[i]);
+            return length;
+        }
+        static Vector2[] CommuterRoute(List<Vector2> route,float lane,WorldData w,int stage)
+        {
+            var points=new List<Vector2>();
+            foreach(Vector2 point in route)points.Add(point+Vector2.right*lane);
+            if(stage==2)points.Add(new Vector2(2,95.5f));
+            points.Add(w.crowdExit);
+            return points.ToArray();
+        }
+        static void SpawnAlong(WorldData w,Vector2[] route,float distance,float speed,float delay,int color,bool cyclist)
+        {
+            int next=1;
+            while(next<route.Length-1)
+            {
+                float segment=Vector2.Distance(route[next-1],route[next]);
+                if(distance<segment)break;
+                distance-=segment;
+                next++;
+            }
+            Vector2 from=route[next-1],to=route[next];
+            float length=Vector2.Distance(from,to);
+            Vector2 position=Vector2.Lerp(from,to,length>.001f?Mathf.Clamp01(distance/length):0);
+            w.crowd.Add(new CrowdSpawn(position,route,next,speed,delay,coats[color%coats.Length],cyclist));
+        }
+        static void ExitCanopy(WorldData w,int stage)
+        {
+            float x=stage==2?2:0;
+            w.crowdExit=new Vector2(x,98.6f);
+            w.crowdExitCover=new Rect(x-3,95.5f,6,4);
+            // Any player entering this five-metre gap crosses the wide goal pad first.
+            // NPCs can continue beneath the canopy after the player has finished.
+            Solid(w,"Arrival safety rail left",-11.25f,95.5f,17.5f,.4f,.8f,Teal);
+            Solid(w,"Arrival safety rail right",11.25f,95.5f,17.5f,.4f,.8f,Teal);
+            // The roof bottom is 3.05m. Its front projects over an arrival's feet at z98.6,
+            // while the player's goal pad at z94 remains unobstructed.
+            P(w,"Commuter exit canopy",new Vector3(x,3.225f,97.5f),new Vector3(6,.35f,4),Ink,.12f);
+            for(int side=-1;side<=1;side+=2)
+                Solid(w,"Exit canopy support",x+side*2.9f,96.7f,.3f,.35f,3.05f,Teal);
+            if(stage!=1)Solid(w,"Destination rear screen",x,99.55f,6,.3f,3,Teal);
+            Label(w,stage==0?"METRO ENTRY":stage==1?"ON BOARD":"CLOCKED IN",new Vector3(x,3.32f,96.46f),.3f,Cream,false);
+        }
+        static void PopulateCommuters(WorldData w,int stage)
+        {
+            // Commuters share the player's destination, with three main lanes and two
+            // quieter bypass lanes. Initial positions sample route distance, never random walls.
+            for(int i=0;i<84;i++)
+            {
+                float lane=(i%3-1)*.9f;
+                Vector2[] route=CommuterRoute(w.riskRoute,lane,w,stage);
+                float distance=(i/3+.35f)/28f*(RouteLength(route)-5);
+                bool cyclist=stage==0&&i%3!=1;
+                float speed=stage==0?(cyclist?4.4f+(i%7)*.19f:3.1f+(i%5)*.15f):2.6f+(i%7)*.2f;
+                SpawnAlong(w,route,distance,speed,(i%5)*.08f,i,cyclist);
+            }
+            for(int i=0;i<24;i++)
+            {
+                Vector2[] route=CommuterRoute(w.safeRoute,i%2==0?-.35f:.35f,w,stage);
+                float distance=(i/2+.4f)/12f*(RouteLength(route)-6);
+                bool cyclist=stage==0&&i%2==0;
+                SpawnAlong(w,route,distance,stage==0?(cyclist?4.5f:3.4f):2.9f+(i%4)*.18f,(i%4)*.12f,i+2,cyclist);
+            }
+            int merging=stage==0?12:stage==1?20:16;
+            for(int i=0;i<merging;i++)
+            {
+                int side=i%2==0?-1:1;
+                var route=new List<Vector2>();
+                if(stage==0)
+                {
+                    if(side<0)
+                    {
+                        route.AddRange(new[]{new Vector2(-13,34),new Vector2(-8,42),new Vector2(0,44)});
+                        for(int n=4;n<w.riskRoute.Count;n++)route.Add(w.riskRoute[n]);
+                    }
+                    else
+                    {
+                        route.AddRange(new[]{new Vector2(13,60),new Vector2(8,70),new Vector2(0,71)});
+                        for(int n=9;n<w.riskRoute.Count;n++)route.Add(w.riskRoute[n]);
+                    }
+                }
+                else if(stage==1)
+                {
+                    route.AddRange(new[]{new Vector2(side*13,80),new Vector2(side*5,83),new Vector2(side*2,86),new Vector2(side*.7f,88),new Vector2(side*.7f,94)});
+                }
+                else
+                {
+                    route.AddRange(new[]{new Vector2(side*13,7),new Vector2(side*3,10),new Vector2(side,18),new Vector2(side,24)});
+                    for(int n=1;n<w.riskRoute.Count;n++)route.Add(w.riskRoute[n]);
+                }
+                if(stage==2)route.Add(new Vector2(2,95.5f));
+                route.Add(w.crowdExit);
+                float distance=(i/2+.4f)/(merging/2f)*18f;
+                bool cyclist=stage==0;
+                SpawnAlong(w,route.ToArray(),distance,stage==0?4.8f:2.8f+(i%5)*.18f,(i%6)*.1f,i+1,cyclist);
+            }
+        }
+
         public static WorldData Build(int stage)
         {
-            var w=new WorldData{root=new GameObject("Early Rush v2 district "+(stage+1)).transform,spawn=new Vector3(0,0,4),goal=new Vector3(0,0,94),goalHalfSize=new Vector2(1.3f,1.1f)};
+            var w=new WorldData{root=new GameObject("Early Rush v2 district "+(stage+1)).transform,spawn=new Vector3(0,0,4),goal=new Vector3(0,0,94),goalHalfSize=new Vector2(2.6f,1.1f)};
             P(w,"District base",new Vector3(0,-.5f,50),new Vector3(41,.9f,101),Ink,.3f);
             P(w,"District ground",new Vector3(0,-.06f,50),new Vector3(40,.2f,100),stage==0?new Color(.80f,.84f,.70f):Cream,.03f);
-            for(int side=-1;side<=1;side+=2) P(w,"Map edge curb",new Vector3(side*19.9f,.20f,50),new Vector3(.2f,.4f,100),Teal,.03f);
+            for(int side=-1;side<=1;side+=2)Solid(w,"Map edge curb",side*19.9f,50,.2f,100,.4f,Teal);
             if(stage==0)Street(w);else if(stage==1)Station(w);else Office(w);
             Goal(w,stage);
+            ExitCanopy(w,stage);
+            PopulateCommuters(w,stage);
             return w;
         }
         static void Street(WorldData w)
         {
             w.title="骑车赶地铁 · 街区";
-            w.routeHint="橙色直路穿过横向人流；青色绕行更长。提前看间隙，冲刺穿过，撞上可稳住后退。";
+            w.routeHint="大家都在赶地铁！黄线主路人多，青线绕行更稳。\n看准并道空隙；按 SHIFT 稳住后再冲刺。";
             P(w,"Long morning boulevard",new Vector3(0,.025f,50),new Vector3(21,.045f,99),new Color(.37f,.48f,.51f),.02f);
             for(int s=-1;s<=1;s+=2)
             {
@@ -110,8 +219,8 @@ namespace EarlyRush
             Barrier(w,0,30.5f,5.5f);Barrier(w,0,39.5f,5.5f);Cone(w,3.2f,32);Cone(w,-3.2f,38);
             Solid(w,"Delivery crates",.7f,64,6,9,1.1f,Gold);
             P(w,"Parcel straps",new Vector3(.7f,1.12f,64),new Vector3(.18f,.04f,9),Coral,.01f);
-            Wave(w,18,2,.62f,.4f);Wave(w,47,2,.78f,1.8f);Wave(w,73,2,.68f,.2f);Wave(w,85.5f,2,.8f,3.0f);
-            Person(w,-8.7f,34,0,1,5,.9f,1,true);Person(w,8.7f,62,0,1,4,1.05f,2,true);
+            Junction(w,18,3.2f);Junction(w,47,3.2f);Junction(w,73,3.2f);Junction(w,85.5f,3.2f);
+            
             P(w,"Metro entry court",new Vector3(0,.055f,94),new Vector3(12,.06f,9),new Color(.22f,.43f,.47f),.03f);
             for(int s=-1;s<=1;s+=2)
             {
@@ -127,7 +236,7 @@ namespace EarlyRush
         static void Station(WorldData w)
         {
             w.title="地铁早高峰 · 长站台";
-            w.routeHint="中央换乘口拥挤，侧边通道更稳。站台分三段，最后车门可先退后再冲入。";
+            w.routeHint="通勤者正汇入车门，前方随时有人抢位。\n黄线穿换乘口，青线走侧道；挤住时稳住后退。";
             P(w,"Station tiled floor",new Vector3(0,.025f,50),new Vector3(39,.045f,99),new Color(.79f,.84f,.81f),.02f);
             for(int z=0;z<100;z+=4)P(w,"Tile seam",new Vector3(0,.055f,z),new Vector3(39,.015f,.035f),new Color(.64f,.72f,.71f),.005f);
             for(int x=-16;x<=16;x+=8)P(w,"Long tile seam",new Vector3(x,.055f,50),new Vector3(.035f,.015f,99),new Color(.64f,.72f,.71f),.005f);
@@ -150,7 +259,7 @@ namespace EarlyRush
                 Solid(w,"Platform seating island",s*6.5f,37,5.5f,6,.85f,Coral);
                 Solid(w,"Transfer column island",s*7.0f,63,6,5,1.1f,Cream);
             }
-            Wave(w,18,3,.52f,.6f);Wave(w,46,3,.58f,2.4f);Wave(w,71,3,.65f,4.2f);
+            Junction(w,18,4.3f);Junction(w,46,4.3f);Junction(w,71,4.3f);
             P(w,"Boarding warning stripe",new Vector3(0,.1f,86.2f),new Vector3(39,.08f,.55f),Gold,.02f);
             for(int s=-1;s<=1;s+=2)
             {
@@ -163,14 +272,14 @@ namespace EarlyRush
             Solid(w,"Train rear wall",0,99.7f,40,.3f,1.6f,Cream);
             P(w,"Open door header",new Vector3(0,2.4f,89),new Vector3(3.2f,.2f,.45f),Teal,.05f);
             Label(w,"08  CITY LINE",new Vector3(0,2.9f,96),.5f,Ink,false);
-            Person(w,-.6f,87.7f,1,0,.7f,.8f,0);Person(w,.6f,90,1,0,.65f,.65f,2);Person(w,-.5f,91.5f,1,0,.8f,.8f,4);
+            
             Route(w,false,new Vector2(0,4),new Vector2(0,28),new Vector2(0,54),new Vector2(0,80),new Vector2(0,85),new Vector2(0,94));
             Route(w,true,new Vector2(0,4),new Vector2(-13,8),new Vector2(-13,28),new Vector2(-13,42),new Vector2(13,42),new Vector2(13,54),new Vector2(13,67.5f),new Vector2(-13,67.5f),new Vector2(-13,82),new Vector2(0,85),new Vector2(0,94));
         }
         static void Office(WorldData w)
         {
             w.title="公司抢打卡 · 大厅与走廊";
-            w.routeHint="大厅、办公区、打卡区各有换向人流。沿青色绕行或抓住中央空档，SHIFT 可取消冲刺。";
+            w.routeHint="同事们正抢着进门打卡，注意入口和走廊的汇流。\n黄线穿大厅，青线绕办公区；SHIFT 稳住再穿插。";
             P(w,"Office wood floor",new Vector3(0,.025f,50),new Vector3(39,.05f,99),new Color(.86f,.75f,.56f),.03f);
             for(int x=-18;x<=18;x+=3)P(w,"Wood plank seam",new Vector3(x,.06f,50),new Vector3(.025f,.015f,99),new Color(.73f,.62f,.45f),.005f);
             P(w,"Entrance lobby rug",new Vector3(0,.085f,9),new Vector3(24,.035f,16),new Color(.34f,.59f,.62f),.02f);
@@ -194,7 +303,7 @@ namespace EarlyRush
             P(w,"Meeting table",new Vector3(1,1.1f,35),new Vector3(4,.15f,6),Blue,.1f);
             Solid(w,"Printer delivery island",-1,63,6,10,1.0f,Blue);
             P(w,"Printer paper stack",new Vector3(-1,1.08f,63),new Vector3(4,.15f,6),Cream,.04f);
-            Wave(w,19,2,.7f,1.2f);Wave(w,46,3,.65f,3.4f);Wave(w,72,2,.78f,.2f);Wave(w,83,2,.68f,2.0f);
+            Junction(w,19,3.2f);Junction(w,46,4.3f);Junction(w,72,3.2f);Junction(w,83,3.2f);
             // The final turnstile has a readable 3.6m central opening.
             Solid(w,"Clock hall divider left",-10.9f,90,18.2f,.6f,.9f,Ink);
             Solid(w,"Clock hall divider right",10.9f,90,18.2f,.6f,.9f,Ink);
@@ -204,7 +313,7 @@ namespace EarlyRush
             P(w,"Tablet display",new Vector3(0,1.7f,96.78f),new Vector3(1.5f,.8f,.04f),Cream,.03f);
             Label(w,"08:00",new Vector3(0,1.7f,96.73f),.28f,Ink,false);
             Label(w,"MORNING CLUB",new Vector3(0,2.8f,98.5f),.6f,Ink,false);
-            Person(w,-.5f,89,1,0,.7f,.8f,1);Person(w,.5f,91.5f,1,0,.6f,.7f,2);
+            
             Route(w,false,new Vector2(0,4),new Vector2(0,27),new Vector2(-5,29),new Vector2(-5,42),new Vector2(0,43),new Vector2(0,54),new Vector2(5,56),new Vector2(5,70),new Vector2(0,70),new Vector2(0,94));
             Route(w,true,new Vector2(0,4),new Vector2(13,9),new Vector2(13,42),new Vector2(-13,42),new Vector2(-13,69.5f),new Vector2(13,69.5f),new Vector2(13,82),new Vector2(12,88),new Vector2(0,88),new Vector2(0,94));
         }
@@ -245,7 +354,7 @@ namespace EarlyRush
         }
         static void Cone(WorldData w,float x,float z)
         {
-            P(w,"Cone foot",new Vector3(x,.10f,z),new Vector3(.52f,.14f,.52f),Ink,.07f);
+            P(w,"Cone foot",new Vector3(x,.10f,z),new Vector3(.52f,.14f,.52f),Ink,.07f);Obstacle(w,x,z,.52f,.52f);
             RushVisuals.Primitive(w.root,"Traffic cone",PrimitiveType.Capsule,new Vector3(x,.36f,z),new Vector3(.28f,.28f,.28f),Coral);
             RushVisuals.Primitive(w.root,"Cone reflective band",PrimitiveType.Cylinder,new Vector3(x,.39f,z),new Vector3(.30f,.055f,.30f),Cream);
         }
@@ -254,6 +363,7 @@ namespace EarlyRush
             P(w,"Road barrier",new Vector3(x,.65f,z),new Vector3(width,.46f,.16f),Gold,.07f);
             for(int i=0;i<5;i++){var t=P(w,"Barrier stripe",new Vector3(x-width*.4f+i*width*.2f,.65f,z-.09f),new Vector3(.16f,.46f,.025f),Ink,.01f);t.localRotation=Quaternion.Euler(0,0,-22);}
             for(int s=-1;s<=1;s+=2)P(w,"Barrier foot",new Vector3(x+s*width*.38f,.32f,z),new Vector3(.15f,.65f,.55f),Ink,.05f);
+            Obstacle(w,x,z,width,.55f);
         }
         static void Pillar(WorldData w,float x,float z)
         {P(w,"Station column",new Vector3(x,1.45f,z),new Vector3(1.0f,2.9f,1.0f),Cream,.17f);P(w,"Column band",new Vector3(x,1.7f,z),new Vector3(1.04f,.34f,1.04f),Teal,.15f);}

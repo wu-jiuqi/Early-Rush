@@ -15,6 +15,11 @@ namespace EarlyRush
         public float[] SplitTimes = new float[3];
         public int[] SplitCollisions = new int[3];
         public bool Muted, IsBracing, IsDashing;
+        public bool IsStumbling => stumbleLeft > 0;
+        public float TotalStumbleTime { get; private set; }
+        public float LongestStumbleTime { get; private set; }
+        public int StumbleTriggers { get; private set; }
+        public float StumbleProtectionRemaining => stumbleProtectionLeft;
         public string[] StageNames = { "骑车赶地铁", "挤上早高峰", "抢最后的打卡" };
         public float DashCooldown01 => Mathf.Clamp01(1f - cooldown / 1.15f);
         public float StageProgress01 => world == null ? 0 : Mathf.Clamp01((position.y-world.spawn.z)/(world.goal.z-world.spawn.z));
@@ -40,7 +45,7 @@ namespace EarlyRush
         Vector2 position, velocity, facing = Vector2.up;
         Vector2 moveInput;
         bool braceInput, dashPressed, actionLocked = true;
-        float cooldown, dashLeft, impact, shake, collisionSoundCooldown;
+        float cooldown, dashLeft, stumbleLeft, stumbleProtectionLeft, continuousStumbleTime, impact, shake, collisionSoundCooldown;
         float transitionBeginTime;
         int stageStartCollisions;
         List<Crowd> crowds = new List<Crowd>();
@@ -56,9 +61,45 @@ namespace EarlyRush
         const float Radius = .42f;
         class Crowd
         {
-            public Transform visual;
-            public Vector2 origin, position, offset, axis, pushVelocity;
-            public float range, speed, phase;
+            public Transform root, visual;
+            public RushPersonParts parts;
+            public Vector2 origin, position, previous, offset, pushVelocity, heading;
+            public Vector2[] route;
+            public int waypoint, originWaypoint, generation;
+            public float speed, startAt, recycleAt, progress, stuckTime;
+            public bool active = true, crossedGoal, touchingPlayer;
+        }
+        public struct CrowdProbe
+        {
+            public Vector2 position;
+            public float progress;
+            public int generation;
+            public bool active, visible;
+        }
+        public int CrowdArrivals { get; private set; }
+        public int CrowdGoalCrossings { get; private set; }
+        public int CrowdRecycles { get; private set; }
+        public int CrowdVisibleRecycles { get; private set; }
+        public float CrowdForwardDistance { get; private set; }
+        public float CrowdBackwardDistance { get; private set; }
+        public int CrowdPopulation => crowds.Count;
+        public int CrowdActiveCount
+        {
+            get { int count=0; foreach(var c in crowds)if(c.active)count++; return count; }
+        }
+        public int CrowdVisibleCount
+        {
+            get { int count=0; foreach(var c in crowds)if(c.active&&CrowdInView(c.position,0))count++; return count; }
+        }
+        public CrowdProbe[] CrowdProbeSnapshot()
+        {
+            var result=new CrowdProbe[crowds.Count];
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var c=crowds[i];
+                result[i]=new CrowdProbe{position=c.position,progress=c.progress,generation=c.generation,active=c.active,visible=c.active&&CrowdInView(c.position,0)};
+            }
+            return result;
         }
         void Awake()
         {
@@ -122,6 +163,7 @@ namespace EarlyRush
         void ResetRun()
         {
             TotalTime=0; StageTime=0; Collisions=0; stageStartCollisions=0;TransitionCount=0;
+            TotalStumbleTime=0;LongestStumbleTime=0;StumbleTriggers=0;
             SplitTimes=new float[3];SplitCollisions=new int[3]; BuildStage(0);
         }
         void LockActions(){actionLocked=true;dashPressed=false;braceInput=false;QADash=false;QABrace=false;moveInput=Vector2.zero;}
@@ -129,7 +171,8 @@ namespace EarlyRush
         {
             if(world!=null && world.root!=null)Destroy(world.root.gameObject);
             if(player!=null)Destroy(player.gameObject);
-            Stage=index;StageTime=0;cooldown=0;dashLeft=0;IsDashing=false;IsBracing=false;
+            Stage=index;StageTime=0;cooldown=0;dashLeft=0;stumbleLeft=0;stumbleProtectionLeft=0;continuousStumbleTime=0;IsDashing=false;IsBracing=false;
+            CrowdArrivals=0;CrowdGoalCrossings=0;CrowdRecycles=0;CrowdVisibleRecycles=0;CrowdForwardDistance=0;CrowdBackwardDistance=0;
             velocity=Vector2.zero;facing=Vector2.up;impact=0;shake=0;collisionTimes.Clear();crowds.Clear();
             world=RushWorld.Build(index);position=new Vector2(world.spawn.x,world.spawn.z);
             player=new GameObject("Player collision root").transform;
@@ -141,13 +184,20 @@ namespace EarlyRush
             trail=new GameObject("Dash ribbon").AddComponent<LineRenderer>();trail.transform.SetParent(player,false);
             trail.material=new Material(Shader.Find("Sprites/Default"));trail.startColor=new Color(1f,.76f,.3f,.8f);trail.endColor=new Color(1f,.85f,.5f,0);trail.startWidth=.34f;trail.endWidth=.04f;trail.positionCount=10;trail.enabled=false;
             for(int i=0;i<10;i++)trailPoints[i]=player.position+Vector3.up*.3f;
-            int n=0;
             foreach(var spawn in world.crowd)
             {
-                var c=new Crowd();c.origin=spawn.position;c.axis=spawn.axis.sqrMagnitude>.01f?spawn.axis.normalized:Vector2.right;c.range=spawn.range;c.speed=spawn.speed;c.phase=spawn.phase>=0?spawn.phase:n*1.71f;n++;
-                c.position=Resolve(c.origin+c.axis*(Mathf.Sin(c.phase)*c.range),.40f,false);
-                var root=new GameObject("Commuter").transform;root.SetParent(world.root,false);
-                c.visual=RushVisuals.CreatePerson(root,spawn.color,false,spawn.cyclist);root.position=new Vector3(c.position.x,0,c.position.y);crowds.Add(c);
+                var c=new Crowd();
+                c.route=spawn.route!=null&&spawn.route.Length>1?spawn.route:new[]{spawn.position,world.crowdExit};
+                c.originWaypoint=Mathf.Clamp(spawn.routeIndex,1,c.route.Length-1);c.waypoint=c.originWaypoint;
+                c.origin=Resolve(spawn.position,.40f,false);c.position=c.origin;c.previous=c.position;
+                c.speed=spawn.desiredSpeed>0?spawn.desiredSpeed:3.1f;c.startAt=spawn.delay;
+                c.heading=(c.route[c.waypoint]-c.position).normalized;
+                c.root=new GameObject("Commuter "+crowds.Count).transform;c.root.SetParent(world.root,false);
+                c.visual=RushVisuals.CreatePerson(c.root,spawn.color,false,spawn.cyclist);
+                c.parts=c.visual.GetComponent<RushPersonParts>();
+                c.root.position=new Vector3(c.position.x,0,c.position.y);
+                if(c.heading.sqrMagnitude>.01f)c.visual.rotation=Quaternion.LookRotation(new Vector3(c.heading.x,0,c.heading.y));
+                crowds.Add(c);
             }
             ResetCamera();LockActions();Log("stage_loaded");
         }
@@ -224,11 +274,22 @@ namespace EarlyRush
             float dt=Time.fixedDeltaTime;
             cooldown=Mathf.Max(0,cooldown-dt);dashLeft=Mathf.Max(0,dashLeft-dt);
             IsBracing=braceInput;
+            // A global recovery window prevents a stream of new bodies from extending
+            // one stumble indefinitely. Bracing cancels the stumble but keeps protection.
+            stumbleProtectionLeft=Mathf.Max(0,stumbleProtectionLeft-dt);
+            float impaired=IsBracing?0:Mathf.Min(stumbleLeft,dt);
+            if(impaired>0)
+            {
+                TotalStumbleTime+=impaired;continuousStumbleTime+=impaired;
+                LongestStumbleTime=Mathf.Max(LongestStumbleTime,continuousStumbleTime);
+            }
+            stumbleLeft=IsBracing?0:Mathf.Max(0,stumbleLeft-dt);
+            if(stumbleLeft<=0)continuousStumbleTime=0;
             if(IsBracing)dashLeft=0;
-            if(dashPressed && !IsBracing && cooldown<=0)
+            if(dashPressed && !IsBracing && !IsStumbling && cooldown<=0)
             {dashLeft=.20f;cooldown=1.15f;if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;Sound(dashClip);Log("dash");}
             dashPressed=false;IsDashing=dashLeft>0;
-            float speed=(Stage==0?6.1f:4.9f)*(IsBracing?.48f:1f);
+            float speed=(Stage==0?6.1f:4.9f)*(IsBracing?.48f:IsStumbling?.60f:1f);
             if(IsDashing)velocity=facing*(Stage==0?13f:11.3f);
             else
             {
@@ -239,38 +300,168 @@ namespace EarlyRush
                 if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;
             }
             MovePlayer(velocity*dt);
+            UpdateCrowds(dt);
+            position=Resolve(position,Radius,false);
+            Vector2 goal=new Vector2(world.goal.x,world.goal.z);
+            if(Mathf.Abs(position.x-goal.x)<world.goalHalfSize.x && Mathf.Abs(position.y-goal.y)<world.goalHalfSize.y)CompleteStage();
+        }
+        bool CrowdInView(Vector2 point,float margin)
+        {
+            Vector3 v=cameraRig.WorldToViewportPoint(new Vector3(point.x,1f,point.y));
+            return v.z>0&&v.x>=-margin&&v.x<=1+margin&&v.y>=-margin&&v.y<=1+margin;
+        }
+        Vector2 MoveCrowd(Vector2 from,Vector2 displacement)
+        {
+            // Swept circle movement preserves thin barriers even during a dash shove.
+            int steps=Mathf.Max(1,Mathf.CeilToInt(displacement.magnitude/.14f));
+            for(int s=0;s<steps;s++)from=Resolve(from+displacement/steps,.40f,false);
+            return from;
+        }
+        void PushCrowd(Crowd c,Vector2 displacement)
+        {
+            // This budget bounds accumulated local displacement; it never snaps a commuter
+            // back to a scripted origin, so yielding and going round another person persists.
+            Vector2 next=Vector2.ClampMagnitude(c.offset+displacement,2.2f);
+            Vector2 before=c.position;
+            c.position=MoveCrowd(c.position,next-c.offset);
+            c.offset=Vector2.ClampMagnitude(c.offset+c.position-before,2.2f);
+        }
+        bool TryRecycle(Crowd c,int id)
+        {
+            if(StageTime<c.recycleAt)return false;
+            c.recycleAt=StageTime+.3f;
+            Vector2 entry=Resolve(c.origin,.40f,false);
+            // Test the actual resolved position, not an unchecked authored spawn point.
+            if(CrowdInView(entry,.18f)||Vector2.Distance(entry,position)<12f)return false;
+            for(int i=0;i<crowds.Count;i++)
+                if(crowds[i].active&&(crowds[i].position-entry).sqrMagnitude<1.05f*1.05f)return false;
+            c.position=entry;c.previous=entry;c.waypoint=c.originWaypoint;
+            c.pushVelocity=Vector2.zero;c.offset=Vector2.zero;c.progress=0;c.stuckTime=0;
+            c.startAt=StageTime+.1f+(id%5)*.07f;c.crossedGoal=false;c.touchingPlayer=false;
+            c.heading=(c.route[c.waypoint]-entry).normalized;
+            c.generation++;c.active=true;CrowdRecycles++;
+            if(CrowdInView(entry,.18f))CrowdVisibleRecycles++;
+            c.root.position=new Vector3(entry.x,0,entry.y);c.root.gameObject.SetActive(true);
+            return true;
+        }
+        void UpdateCrowds(float dt)
+        {
+            // All agents simulate outside the camera; only their limb animation is culled.
             for(int i=0;i<crowds.Count;i++)
             {
-                Crowd c=crowds[i];Vector2 old=c.position;
-                c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15);c.offset+=c.pushVelocity*dt;c.offset=Vector2.ClampMagnitude(Vector2.MoveTowards(c.offset,Vector2.zero,dt*.65f),2.2f);
-                c.position=c.origin+c.axis*(Mathf.Sin(StageTime*c.speed+c.phase)*c.range)+c.offset;
-                c.position=Resolve(c.position,.40f,false);
+                Crowd c=crowds[i];
+                if(!c.active&&!TryRecycle(c,i))continue;
+                c.previous=c.position;
+                c.offset=Vector2.MoveTowards(c.offset,Vector2.zero,dt*1.2f);
+                c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15f);
+                while(c.waypoint<c.route.Length-1&&Vector2.Distance(c.position,c.route[c.waypoint])<.35f)c.waypoint++;
+                Vector2 to=c.route[c.waypoint]-c.position;
+                c.heading=to.sqrMagnitude>.0001f?to.normalized:Vector2.up;
+                if(StageTime<c.startAt)continue;
+                Vector2 side=new Vector2(c.heading.y,-c.heading.x);
+                Vector2 avoidance=Vector2.zero;float pace=1;
+                for(int j=0;j<crowds.Count;j++)
+                {
+                    if(i==j||!crowds[j].active)continue;
+                    Vector2 away=c.position-crowds[j].position;
+                    float sq=away.sqrMagnitude;
+                    if(sq>3.24f||sq<.00001f)continue;
+                    float distance=Mathf.Sqrt(sq);
+                    float ahead=-Vector2.Dot(away,c.heading);
+                    float lateral=Vector2.Dot(away,side);
+                    if(ahead>0&&Mathf.Abs(lateral)<.72f)
+                    {
+                        pace=Mathf.Min(pace,Mathf.Clamp((ahead-.55f)/1.0f,.32f,1));
+                        float laneSide=Mathf.Abs(lateral)>.08f?Mathf.Sign(lateral):(i%2==0?1:-1);
+                        avoidance+=side*laneSide*(1-distance/1.8f)*.85f;
+                    }
+                    if(distance<.95f)avoidance+=away/distance*(.95f-distance)*1.5f;
+                }
+                // Keep urgency and forward intent even inside a queue. Local body separation
+                // below prevents overlap, and different speeds leave opportunities to pass.
+                Vector2 desired=c.heading*(c.speed*pace)+Vector2.ClampMagnitude(avoidance,1.35f);
+                float forward=Vector2.Dot(desired,c.heading);
+                if(forward<c.speed*.2f)desired+=c.heading*(c.speed*.2f-forward);
+                if(c.stuckTime>.45f)
+                {
+                    float choice=((i+(int)(c.stuckTime/1.1f))%2==0)?1:-1;
+                    desired+=side*choice*1.8f;
+                }
+                Vector2 travel=desired*dt;
+                if(to.magnitude<.5f)travel=Vector2.ClampMagnitude(travel,to.magnitude);
+                c.position=MoveCrowd(c.position,travel);
+                PushCrowd(c,c.pushVelocity*dt);
+            }
+            // Gentle symmetric separation uses real static collision for both bodies.
+            // No elastic velocity is fed back, so dense groups cannot gain unlimited momentum.
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var a=crowds[i];if(!a.active)continue;
+                for(int j=i+1;j<crowds.Count;j++)
+                {
+                    var b=crowds[j];if(!b.active)continue;
+                    Vector2 delta=a.position-b.position;float sq=delta.sqrMagnitude;
+                    if(sq>=.78f*.78f)continue;
+                    float distance=Mathf.Sqrt(sq);
+                    Vector2 normal=distance>.001f?delta/distance:(i%2==0?Vector2.right:Vector2.left);
+                    Vector2 correction=normal*Mathf.Min(.055f,(.78f-distance)*.5f);
+                    PushCrowd(a,correction);PushCrowd(b,-correction);
+                }
+            }
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var c=crowds[i];if(!c.active)continue;
                 Vector2 delta=position-c.position;float distance=delta.magnitude;
+                bool newContact=distance<Radius+.43f&&!c.touchingPlayer;
+                if(distance<Radius+.43f)c.touchingPlayer=true;
+                else if(distance>Radius+.52f)c.touchingPlayer=false;
                 if(distance<Radius+.43f)
                 {
                     Vector2 normal=distance>.001f?delta/distance:Vector2.right;
                     float overlap=Radius+.43f-distance;
-                    float crowdShare=IsDashing?.70f:IsBracing?.86f:.45f;
-                    c.offset-=normal*overlap*crowdShare;c.position-=normal*overlap*crowdShare;
-                    position+=normal*overlap*(1-crowdShare);
-                    c.pushVelocity-=normal*(IsDashing?5f:IsBracing?1.7f:1.2f);
-                    c.pushVelocity=Vector2.ClampMagnitude(c.pushVelocity,7);
+                    bool dashing=IsDashing;
+                    float crowdShare=dashing?.70f:IsBracing?.86f:.45f;
+                    Vector2 before=c.position;
+                    PushCrowd(c,-normal*overlap*crowdShare);
+                    float displaced=Mathf.Max(0,Vector2.Dot(before-c.position,normal));
+                    // If a commuter is against a wall, the player takes the remaining
+                    // separation and can immediately reverse or brace to escape.
+                    position=Resolve(position+normal*Mathf.Max(0,overlap-displaced),Radius,false);
+                    c.pushVelocity=Vector2.ClampMagnitude(c.pushVelocity-normal*(dashing?5f:IsBracing?1.7f:1.2f),7f);
                     float into=Vector2.Dot(velocity,normal);
-                    if(into<0 && !IsDashing)velocity-=normal*into*(IsBracing?.1f:.55f);
-                    RegisterHit(1000+i,IsDashing?1f:.55f);
-                    // Save bursts for visible gaps; contact costs momentum.
-                    if(IsDashing){dashLeft=0;IsDashing=false;velocity*=.5f;}
+                    if(into<0&&!dashing)velocity-=normal*into*(IsBracing?.1f:.55f);
+                    bool fresh=RegisterHit(1000+i,dashing?1f:.55f);
+                    if(fresh&&newContact&&!IsBracing&&stumbleProtectionLeft<=0)
+                    {
+                        stumbleLeft=.45f;stumbleProtectionLeft=1.15f;StumbleTriggers++;
+                        continuousStumbleTime=0;dashLeft=0;IsDashing=false;velocity*=.6f;
+                    }
+                    else if(dashing){dashLeft=0;IsDashing=false;velocity*=.5f;}
                 }
-                c.offset=Vector2.ClampMagnitude(c.offset,2.2f);
-                c.position=Resolve(c.origin+c.axis*(Mathf.Sin(StageTime*c.speed+c.phase)*c.range)+c.offset,.40f,false);
-                c.visual.parent.position=new Vector3(c.position.x,0,c.position.y);
-                Vector2 cv=(c.position-old)/dt;
-                if(cv.sqrMagnitude>.02f)c.visual.rotation=Quaternion.Slerp(c.visual.rotation,Quaternion.LookRotation(new Vector3(cv.x,0,cv.y)),dt*7);
-                RushVisuals.AnimatePerson(c.visual,cv,Time.time+i,false,false);
+                float signed=Vector2.Dot(c.position-c.previous,c.heading);
+                if(StageTime>=c.startAt)c.stuckTime=signed<dt*.18f?c.stuckTime+dt:Mathf.Max(0,c.stuckTime-dt*2);
+                c.progress+=signed;
+                if(signed>=0)CrowdForwardDistance+=signed;else CrowdBackwardDistance-=signed;
+                if(!c.crossedGoal&&Mathf.Abs(c.position.x-world.goal.x)<world.goalHalfSize.x+1f&&c.position.y>=world.goal.z-.5f)
+                {c.crossedGoal=true;CrowdGoalCrossings++;}
+                // A covered exit line accepts side-by-side arrivals. A tiny shared point
+                // would let two separated bodies hold each other outside it indefinitely.
+                Rect cover=world.crowdExitCover;
+                bool covered=c.position.x>cover.xMin+.5f&&c.position.x<cover.xMax-.5f&&c.position.y>cover.yMin+.5f&&c.position.y<cover.yMax-.5f;
+                if(c.waypoint==c.route.Length-1&&c.position.y>=world.crowdExit.y-.18f&&Mathf.Abs(c.position.x-world.crowdExit.x)<=1.6f&&covered)
+                {
+                    c.active=false;c.recycleAt=StageTime+.6f+(i%7)*.08f;
+                    c.root.position=new Vector3(c.position.x,0,c.position.y);
+                    c.root.gameObject.SetActive(false);CrowdArrivals++;continue;
+                }
+                c.root.position=new Vector3(c.position.x,0,c.position.y);
+                if(CrowdInView(c.position,.18f))
+                {
+                    Vector2 cv=(c.position-c.previous)/dt;
+                    if(cv.sqrMagnitude>.02f)c.visual.rotation=Quaternion.Slerp(c.visual.rotation,Quaternion.LookRotation(new Vector3(cv.x,0,cv.y)),dt*7);
+                    RushVisuals.AnimatePerson(c.parts,cv,StageTime+i,false,false);
+                }
             }
-            position=Resolve(position,Radius,false);
-            Vector2 goal=new Vector2(world.goal.x,world.goal.z);
-            if(Mathf.Abs(position.x-goal.x)<world.goalHalfSize.x && Mathf.Abs(position.y-goal.y)<world.goalHalfSize.y)CompleteStage();
         }
         void MovePlayer(Vector2 delta)
         {
@@ -315,17 +506,18 @@ namespace EarlyRush
             }
             return p;
         }
-        void RegisterHit(int id,float strength)
+        bool RegisterHit(int id,float strength)
         {
-            if(collisionTimes.TryGetValue(id,out float time)&&StageTime-time<.65f)return;
+            if(collisionTimes.TryGetValue(id,out float time)&&StageTime-time<.65f)return false;
             collisionTimes[id]=StageTime;Collisions++;impact=Mathf.Max(impact,strength);shake=Mathf.Max(shake,strength);
             if(collisionSoundCooldown<=0){Sound(bumpClip,.45f+strength*.4f);collisionSoundCooldown=.1f;}
+            return true;
         }
         void CompleteStage()
         {
             if(State!=RushState.Playing)return;
             SplitTimes[Stage]=StageTime;SplitCollisions[Stage]=Collisions-stageStartCollisions;stageStartCollisions=Collisions;
-            velocity=Vector2.zero;dashLeft=0;IsDashing=false;IsBracing=false;LockActions();TransitionCount++;
+            velocity=Vector2.zero;dashLeft=0;stumbleLeft=0;stumbleProtectionLeft=0;continuousStumbleTime=0;IsDashing=false;IsBracing=false;LockActions();TransitionCount++;
             Sound(goalClip);Log("stage_complete");
             if(Stage==2){State=RushState.Results;Log(TotalTime<=TimeLimit?"result_on_time":"result_late");}
             else{State=RushState.Transition;transitionBeginTime=Time.unscaledTime;TransitionLeft=1.55f;}

@@ -18,7 +18,8 @@ namespace EarlyRush
             Matrix4x4 before=GUI.matrix;
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*scale);
             float width=Screen.width/scale,height=Screen.height/scale;
-            Panel(new Rect(width*.5f-265,105,530,54),game.World.routeHint);
+            string hint=game.IsStumbling?"被挤住了：按 SHIFT 稳住，恢复步伐。\n松开稳住后，再冲刺穿过空档。":game.World.routeHint;
+            Panel(new Rect(width*.5f-265,105,530,54),hint);
             Vector2 v=game.GoalViewport;
             if(v.x<.06f||v.x>.94f||v.y<.16f||v.y>.76f)
             {

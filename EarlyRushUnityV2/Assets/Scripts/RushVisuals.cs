@@ -18,7 +18,7 @@ namespace EarlyRush
         {
             if (materials.TryGetValue(color, out var m)) return m;
             m = new Material(Shader.Find("Standard")); m.color = color;
-            m.SetFloat("_Glossiness", .2f); m.SetFloat("_Metallic", 0);
+            m.SetFloat("_Glossiness", .2f); m.SetFloat("_Metallic", 0); m.enableInstancing=true;
             materials[color] = m; return m;
         }
 
@@ -150,7 +150,11 @@ namespace EarlyRush
 
         public static void AnimatePerson(Transform visual, Vector2 velocity,float time,bool dash,bool brace)
         {
-            if(!visual)return;var p=visual.GetComponent<RushPersonParts>();if(!p)return;
+            if(visual)AnimatePerson(visual.GetComponent<RushPersonParts>(),velocity,time,dash,brace);
+        }
+        public static void AnimatePerson(RushPersonParts p,Vector2 velocity,float time,bool dash,bool brace)
+        {
+            if(!p)return;
             float speed=Mathf.Clamp01(velocity.magnitude/5f);float stride=Mathf.Sin(time*(p.bike?15:12));
             float bob=p.bike?0:Mathf.Abs(stride)*.055f*speed;
             p.rig.localPosition=new Vector3(0,bob,0);
