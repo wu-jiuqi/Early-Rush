@@ -10,7 +10,7 @@ namespace EarlyRush
     {
         public RushState State = RushState.Menu;
         public int Stage;
-        public float TotalTime, TimeLimit = 95f, StageTime, TransitionLeft;
+        public float TotalTime, TimeLimit = 110f, StageTime, TransitionLeft;
         public int Collisions;
         public float[] SplitTimes = new float[3];
         public int[] SplitCollisions = new int[3];
