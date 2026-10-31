@@ -10,7 +10,7 @@ namespace EarlyRush
     {
         public RushState State = RushState.Menu;
         public int Stage;
-        public float TotalTime, TimeLimit = 45f, StageTime, TransitionLeft;
+        public float TotalTime, TimeLimit = 95f, StageTime, TransitionLeft;
         public int Collisions;
         public float[] SplitTimes = new float[3];
         public int[] SplitCollisions = new int[3];
@@ -26,7 +26,17 @@ namespace EarlyRush
         WorldData world;
         Transform player, visual, ring;
         Camera cameraRig;
-        Vector3 cameraHome;
+        Vector3 cameraHome, cameraFocus, cameraVelocity;
+        Vector2 cameraLook;
+        public Camera GameCamera => cameraRig;
+        public Vector2[] CrowdSnapshot()
+        {
+            var result=new Vector2[crowds.Count];
+            for(int i=0;i<crowds.Count;i++)result[i]=crowds[i].position;
+            return result;
+        }
+        public Vector2 GoalViewport => cameraRig.WorldToViewportPoint(world.goal+Vector3.up*.2f);
+        public float GoalDistance => Vector2.Distance(position,new Vector2(world.goal.x,world.goal.z));
         Vector2 position, velocity, facing = Vector2.up;
         Vector2 moveInput;
         bool braceInput, dashPressed, actionLocked = true;
@@ -65,7 +75,7 @@ namespace EarlyRush
             light.color = new Color(1f,.92f,.81f); light.shadows = LightShadows.Soft;
             light.shadowBias = .025f; light.transform.rotation = Quaternion.Euler(50,-35,0);
             cameraRig = new GameObject("Overview camera").AddComponent<Camera>();
-            cameraRig.orthographic = true; cameraRig.orthographicSize = 13.5f;
+            cameraRig.orthographic = true; cameraRig.orthographicSize = 9.5f;
             cameraHome = new Vector3(0,28,-17);
             cameraRig.transform.position = cameraHome;
             cameraRig.transform.LookAt(new Vector3(0,0,0));
@@ -78,6 +88,7 @@ namespace EarlyRush
             bumpClip = MakeSound("soft bump", 130, .12f, 1);
             goalClip = MakeSound("arrival", 660, .34f, 2);
             tickClip = MakeSound("ready", 880, .07f, 2);
+            gameObject.AddComponent<RushRouteHUD>();
             BuildStage(0);
             if (Array.Exists(Environment.GetCommandLineArgs(), a=>a=="--qa"))
                 qa = gameObject.AddComponent<RushQA>();
@@ -133,11 +144,12 @@ namespace EarlyRush
             int n=0;
             foreach(var spawn in world.crowd)
             {
-                var c=new Crowd();c.origin=spawn.position;c.position=c.origin;c.axis=spawn.axis.sqrMagnitude>.01f?spawn.axis.normalized:Vector2.right;c.range=spawn.range;c.speed=spawn.speed;c.phase=n++*1.71f;
+                var c=new Crowd();c.origin=spawn.position;c.axis=spawn.axis.sqrMagnitude>.01f?spawn.axis.normalized:Vector2.right;c.range=spawn.range;c.speed=spawn.speed;c.phase=spawn.phase>=0?spawn.phase:n*1.71f;n++;
+                c.position=Resolve(c.origin+c.axis*(Mathf.Sin(c.phase)*c.range),.40f,false);
                 var root=new GameObject("Commuter").transform;root.SetParent(world.root,false);
                 c.visual=RushVisuals.CreatePerson(root,spawn.color,false,spawn.cyclist);root.position=new Vector3(c.position.x,0,c.position.y);crowds.Add(c);
             }
-            LockActions();Log("stage_loaded");
+            ResetCamera();LockActions();Log("stage_loaded");
         }
         void Update()
         {
@@ -171,9 +183,8 @@ namespace EarlyRush
             impact=Mathf.MoveTowards(impact,0,Time.deltaTime*4);
             shake=Mathf.MoveTowards(shake,0,Time.deltaTime*1.5f);
             collisionSoundCooldown-=Time.deltaTime;
-            cameraRig.orthographicSize=Mathf.Max(13.5f,10.6f/Mathf.Max(.4f,cameraRig.aspect));
-            cameraRig.transform.position=cameraHome+new Vector3(Mathf.Sin(Time.unscaledTime*73),0,Mathf.Cos(Time.unscaledTime*81))*shake*.10f;
-            if(player!=null)
+            // Camera follows in LateUpdate. Pause freezes the visual player as well.
+            if(player!=null&&State==RushState.Playing)
             {
                 player.position=Vector3.Lerp(player.position,new Vector3(position.x,0,position.y),1-Mathf.Exp(-Time.deltaTime*40));
                 if(facing.sqrMagnitude>.01f)visual.rotation=Quaternion.Slerp(visual.rotation,Quaternion.LookRotation(new Vector3(facing.x,0,facing.y)),1-Mathf.Exp(-Time.deltaTime*18));
@@ -182,6 +193,30 @@ namespace EarlyRush
                 ring.localScale=Vector3.one*(IsBracing?1.45f:1.2f);ring.localScale=new Vector3(ring.localScale.x,.018f,ring.localScale.z);
                 for(int i=9;i>0;i--)trailPoints[i]=trailPoints[i-1];trailPoints[0]=player.position+Vector3.up*.3f;trail.SetPositions(trailPoints);trail.enabled=IsDashing;
             }
+        }
+        Vector3 CameraTarget()
+        {
+            var target=new Vector3(position.x+cameraLook.x,0,position.y+cameraLook.y);
+            float hx=Mathf.Min(cameraRig.orthographicSize*cameraRig.aspect,(world.boundsMax.x-world.boundsMin.x)*.5f);
+            float hz=Mathf.Min(cameraRig.orthographicSize/(28f/Mathf.Sqrt(28f*28f+17f*17f)),(world.boundsMax.y-world.boundsMin.y)*.5f);
+            target.x=Mathf.Clamp(target.x,world.boundsMin.x+hx,world.boundsMax.x-hx);
+            target.z=Mathf.Clamp(target.z,world.boundsMin.y+hz,world.boundsMax.y-hz);
+            return target;
+        }
+        void ResetCamera()
+        {
+            cameraLook=Vector2.zero;cameraVelocity=Vector3.zero;
+            cameraRig.orthographicSize=Mathf.Max(9.5f,6f/Mathf.Max(.5f,cameraRig.aspect));
+            cameraFocus=CameraTarget();cameraRig.transform.position=cameraFocus+cameraHome;
+        }
+        void LateUpdate()
+        {
+            if(world==null||State!=RushState.Playing)return;
+            cameraRig.orthographicSize=Mathf.Max(9.5f,6f/Mathf.Max(.5f,cameraRig.aspect));
+            Vector2 ahead=Vector2.ClampMagnitude(velocity*.38f,3.2f);
+            cameraLook=Vector2.Lerp(cameraLook,ahead,1-Mathf.Exp(-Time.deltaTime*5));
+            cameraFocus=Vector3.SmoothDamp(cameraFocus,CameraTarget(),ref cameraVelocity,.14f,80f,Time.deltaTime);
+            cameraRig.transform.position=cameraFocus+cameraHome;
         }
         void FixedUpdate()
         {
@@ -207,7 +242,7 @@ namespace EarlyRush
             for(int i=0;i<crowds.Count;i++)
             {
                 Crowd c=crowds[i];Vector2 old=c.position;
-                c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15);c.offset+=c.pushVelocity*dt;c.offset=Vector2.MoveTowards(c.offset,Vector2.zero,dt*.65f);
+                c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15);c.offset+=c.pushVelocity*dt;c.offset=Vector2.ClampMagnitude(Vector2.MoveTowards(c.offset,Vector2.zero,dt*.65f),2.2f);
                 c.position=c.origin+c.axis*(Mathf.Sin(StageTime*c.speed+c.phase)*c.range)+c.offset;
                 c.position=Resolve(c.position,.40f,false);
                 Vector2 delta=position-c.position;float distance=delta.magnitude;
@@ -215,7 +250,7 @@ namespace EarlyRush
                 {
                     Vector2 normal=distance>.001f?delta/distance:Vector2.right;
                     float overlap=Radius+.43f-distance;
-                    float crowdShare=IsDashing?.92f:IsBracing?.78f:.50f;
+                    float crowdShare=IsDashing?.70f:IsBracing?.86f:.45f;
                     c.offset-=normal*overlap*crowdShare;c.position-=normal*overlap*crowdShare;
                     position+=normal*overlap*(1-crowdShare);
                     c.pushVelocity-=normal*(IsDashing?5f:IsBracing?1.7f:1.2f);
@@ -223,7 +258,11 @@ namespace EarlyRush
                     float into=Vector2.Dot(velocity,normal);
                     if(into<0 && !IsDashing)velocity-=normal*into*(IsBracing?.1f:.55f);
                     RegisterHit(1000+i,IsDashing?1f:.55f);
+                    // Save bursts for visible gaps; contact costs momentum.
+                    if(IsDashing){dashLeft=0;IsDashing=false;velocity*=.5f;}
                 }
+                c.offset=Vector2.ClampMagnitude(c.offset,2.2f);
+                c.position=Resolve(c.origin+c.axis*(Mathf.Sin(StageTime*c.speed+c.phase)*c.range)+c.offset,.40f,false);
                 c.visual.parent.position=new Vector3(c.position.x,0,c.position.y);
                 Vector2 cv=(c.position-old)/dt;
                 if(cv.sqrMagnitude>.02f)c.visual.rotation=Quaternion.Slerp(c.visual.rotation,Quaternion.LookRotation(new Vector3(cv.x,0,cv.y)),dt*7);

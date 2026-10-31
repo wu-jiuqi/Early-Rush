@@ -91,7 +91,7 @@ namespace EarlyRush
         {
             Box(new Rect(0, 0, width, height), new Color(Ink.r, Ink.g, Ink.b, .26f), false);
             Panel(R(62, 67, 518, 588), Cream);
-            Pill(R(94, 97, 156, 28), "通勤大作战  /  MVP", Ink, Cream, 12);
+            Pill(R(94, 97, 156, 28), "大地图通勤  /  v2", Ink, Cream, 12);
             Text(R(90, 139, 440, 74), "早八冲刺", 62, Ink, true);
             Text(R(96, 217, 410, 28), "E A R L Y   R U S H", 22, Teal, true);
             Text(R(96, 268, 410, 44), "早餐可以等，打卡不能晚。", 24, Ink, true);

@@ -17,8 +17,8 @@ public static class BuildEarlyRush
         }
         AssetDatabase.SaveAssets();
         PlayerSettings.companyName = "Morning Club";
-        PlayerSettings.productName = "Early Rush";
-        PlayerSettings.bundleVersion = "0.1.0";
+        PlayerSettings.productName = "Early Rush v2";
+        PlayerSettings.bundleVersion = "0.2.0";
         PlayerSettings.defaultScreenWidth = 1280;
         PlayerSettings.defaultScreenHeight = 720;
         PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
@@ -37,7 +37,7 @@ public static class BuildEarlyRush
         Directory.CreateDirectory("Assets/Scenes");
         EditorSceneManager.SaveScene(scene, "Assets/Scenes/EarlyRush.unity");
         EditorBuildSettings.scenes = new []{new EditorBuildSettingsScene("Assets/Scenes/EarlyRush.unity", true)};
-        string output = Path.GetFullPath("../artifacts/EarlyRush-Windows/EarlyRush.exe");
+        string output = Path.GetFullPath("../artifacts/EarlyRush-V2-Windows/EarlyRush.exe");
         Directory.CreateDirectory(Path.GetDirectoryName(output));
         var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new []{"Assets/Scenes/EarlyRush.unity"}, locationPathName=output, target=BuildTarget.StandaloneWindows64, options=BuildOptions.None });
         Debug.Log("EARLY_RUSH_BUILD: " + report.summary.result + " bytes=" + report.summary.totalSize);
