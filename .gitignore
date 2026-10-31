@@ -1,0 +1,48 @@
+# Unity generated state
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/[Bb]uild/
+**/[Bb]uilds/
+**/MemoryCaptures/
+**/Recordings/
+**/.vs/
+**/.idea/
+**/.vscode/
+
+# Generated IDE/build files
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.log
+*.tmp
+
+# Local delivery and test artifacts
+/artifacts/
+/qa-output/
+*.exe
+*.dll
+*.zip
+*.7z
+*.unitypackage
+
+# Credentials and machine-local state
+.env
+.env.*
+*.pem
+*.key
+.aws/
+.codex/
+.DS_Store
+Thumbs.db
