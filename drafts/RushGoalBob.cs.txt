@@ -1,0 +1,17 @@
+public class RushGoalBob : MonoBehaviour
+{
+    Vector3 origin;
+    RushGame game;
+    float elapsed;
+    void Start()
+    {
+        origin = transform.localPosition;
+        game = Object.FindFirstObjectByType<RushGame>();
+    }
+    void Update()
+    {
+        if (game == null || game.State != RushState.Playing) return;
+        elapsed += Time.deltaTime;
+        transform.localPosition = origin + Vector3.up * Mathf.Sin(elapsed * 3) * .12f;
+    }
+}
