@@ -1,0 +1,1292 @@
+{
+    "utc": "2026-11-01T08:38:19.2491975Z",
+    "engine": "6000.0.26f1",
+    "device": "Intel(R) Iris(R) Xe Graphics",
+    "graphicsApi": "Direct3D11",
+    "schema": "v3-impact-fixtures-1",
+    "driver": "Actual Windows Player QAMove/QADash/QABrace input. --impact-qa alone enables fixture initialization. No runtime position/time overrides after setup. Not OS keyboard automation or a human playtest. Normal three-stage route validation is reported separately.",
+    "sampling": "Impact telemetry is sampled after rendered frames. Screenshot cases are separate from the front displacement comparison. Hitstop wall-clock duration includes real frame delays; the remaining budget and repeated refresh are checked independently.",
+    "passed": false,
+    "failureCount": 3,
+    "elapsedRealSeconds": 35.67150115966797,
+    "checks": [
+        {
+            "name": "front-idle: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=front",
+            "passed": true
+        },
+        {
+            "name": "front-idle: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "front-idle: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=4.510133 samples=270",
+            "passed": true
+        },
+        {
+            "name": "front-idle: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "front-idle: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front-idle: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "front-idle: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=3.100033 differential=3.104108; differential allows up to 2m/s collision-separation correction",
+            "passed": true
+        },
+        {
+            "name": "front-idle: all bodies land and finish recovery",
+            "evidence": "primary lands=0 final height=0",
+            "passed": true
+        },
+        {
+            "name": "front-idle: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front-idle: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0 episodes=0 longest wall=0 max sample gap=0.0216527",
+            "passed": true
+        },
+        {
+            "name": "front-idle: hitstop holds physical motion",
+            "evidence": "samples=0 max physical delta=0 countdown advances=0",
+            "passed": true
+        },
+        {
+            "name": "front-normal: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=front",
+            "passed": true
+        },
+        {
+            "name": "front-normal: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "front-normal: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=4.501508 samples=270",
+            "passed": true
+        },
+        {
+            "name": "front-normal: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "front-normal: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front-normal: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "front-normal: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=5.049991 differential=5.049978; differential allows up to 2m/s collision-separation correction",
+            "passed": true
+        },
+        {
+            "name": "front-normal: all bodies land and finish recovery",
+            "evidence": "primary lands=0 final height=0",
+            "passed": true
+        },
+        {
+            "name": "front-normal: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front-normal: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0 episodes=0 longest wall=0 max sample gap=0.01921558",
+            "passed": true
+        },
+        {
+            "name": "front-normal: hitstop holds physical motion",
+            "evidence": "samples=0 max physical delta=0 countdown advances=0",
+            "passed": true
+        },
+        {
+            "name": "front-dash: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=front",
+            "passed": true
+        },
+        {
+            "name": "front-dash: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "front-dash: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=4.501333 samples=270",
+            "passed": true
+        },
+        {
+            "name": "front-dash: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "front-dash: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front-dash: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "front-dash: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=24.11276 differential=24.07473; differential allows up to 2m/s collision-separation correction",
+            "passed": false
+        },
+        {
+            "name": "front-dash: all bodies land and finish recovery",
+            "evidence": "primary lands=1 final height=0",
+            "passed": true
+        },
+        {
+            "name": "front-dash: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front-dash: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0.0433341 episodes=1 longest wall=0.04722118 max sample gap=0.02400589",
+            "passed": true
+        },
+        {
+            "name": "front-dash: hitstop holds physical motion",
+            "evidence": "samples=2 max physical delta=0 countdown advances=0.03333269",
+            "passed": true
+        },
+        {
+            "name": "front-dash: primary visibly launches, rotates and lands",
+            "evidence": "height=1.242501 spin=301 lands=1",
+            "passed": true
+        },
+        {
+            "name": "front-dash: landing restores forward navigation",
+            "evidence": "route progress=3.933391 displacement=3.933391",
+            "passed": true
+        },
+        {
+            "name": "front-dash: one dash has unique targets and bounded chain depth",
+            "evidence": "independent unique=1 public launches=1 max targets=1 depth=0 repeats=0",
+            "passed": true
+        },
+        {
+            "name": "front-dash: own dash causes no player stumble",
+            "evidence": "total stumble=0",
+            "passed": true
+        },
+        {
+            "name": "front-dash: player keeps moving through its impact",
+            "evidence": "forward=True advance in .45s=4.519997",
+            "passed": true
+        },
+        {
+            "name": "Ordinary contact remains a grounded light push",
+            "evidence": "contacts=1 launches=0 height=0",
+            "passed": true
+        },
+        {
+            "name": "Dash displacement clearly exceeds ordinary push",
+            "evidence": "at ~0.9s idle/normal/dash=1.188335/1.448672/5.694441 sample times=0.9090627/0.9002465/0.9003097",
+            "passed": true
+        },
+        {
+            "name": "Front impact travels mainly forward",
+            "evidence": "actual delta=(0.00, 5.69) launch direction=(0.00, 1.00)",
+            "passed": true
+        },
+        {
+            "name": "side-dash: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=side",
+            "passed": true
+        },
+        {
+            "name": "side-dash: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "side-dash: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=4.501845 samples=270",
+            "passed": true
+        },
+        {
+            "name": "side-dash: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "side-dash: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "side-dash: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "side-dash: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=9.8 differential=9.798993; differential allows up to 2m/s collision-separation correction",
+            "passed": true
+        },
+        {
+            "name": "side-dash: all bodies land and finish recovery",
+            "evidence": "primary lands=1 final height=0",
+            "passed": true
+        },
+        {
+            "name": "side-dash: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "side-dash: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0.0433366 episodes=1 longest wall=0.04971886 max sample gap=0.018507",
+            "passed": true
+        },
+        {
+            "name": "side-dash: hitstop holds physical motion",
+            "evidence": "samples=2 max physical delta=0 countdown advances=0.03334227",
+            "passed": true
+        },
+        {
+            "name": "side-dash: primary visibly launches, rotates and lands",
+            "evidence": "height=1.242501 spin=301 lands=1",
+            "passed": true
+        },
+        {
+            "name": "side-dash: landing restores forward navigation",
+            "evidence": "route progress=9.299989 displacement=9.299962",
+            "passed": true
+        },
+        {
+            "name": "side-dash: one dash has unique targets and bounded chain depth",
+            "evidence": "independent unique=1 public launches=1 max targets=1 depth=0 repeats=0",
+            "passed": true
+        },
+        {
+            "name": "side-dash: own dash causes no player stumble",
+            "evidence": "total stumble=0",
+            "passed": true
+        },
+        {
+            "name": "side-dash: player keeps moving through its impact",
+            "evidence": "forward=True advance in .45s=4.439997",
+            "passed": true
+        },
+        {
+            "name": "Side impact sends the target outward and forward",
+            "evidence": "actual delta=(2.11, 5.17) launch direction=(0.38, 0.93)",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=chain",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=4.503617 samples=258",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=22.27064 differential=22.27321; differential allows up to 2m/s collision-separation correction",
+            "passed": false
+        },
+        {
+            "name": "chain-dash: all bodies land and finish recovery",
+            "evidence": "primary lands=1 final height=0",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0.04333279 episodes=1 longest wall=0.06046486 max sample gap=0.06605911",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: hitstop holds physical motion",
+            "evidence": "samples=0 max physical delta=0 countdown advances=0",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: primary visibly launches, rotates and lands",
+            "evidence": "height=1.242501 spin=301 lands=1",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: landing restores forward navigation",
+            "evidence": "route progress=7.248762 displacement=7.264833",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: one dash has unique targets and bounded chain depth",
+            "evidence": "independent unique=6 public launches=6 max targets=6 depth=2 repeats=0",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: own dash causes no player stumble",
+            "evidence": "total stumble=0",
+            "passed": true
+        },
+        {
+            "name": "chain-dash: player keeps moving through its impact",
+            "evidence": "forward=True advance in .45s=4.402747",
+            "passed": true
+        },
+        {
+            "name": "Crowd fixture exercises a real secondary chain",
+            "evidence": "unique=6 secondary=5 depth=2",
+            "passed": true
+        },
+        {
+            "name": "Nine-target fixture reaches the six-target pressure limit",
+            "evidence": "available=9 launched=6; fewer than six means the saturation limit was not exercised",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=boundary",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=4.501993 samples=270",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=27.03506 differential=27.02021; differential allows up to 2m/s collision-separation correction",
+            "passed": false
+        },
+        {
+            "name": "boundary-dash: all bodies land and finish recovery",
+            "evidence": "primary lands=1 final height=0",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0.0433378 episodes=1 longest wall=0.04973793 max sample gap=0.01991653",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: hitstop holds physical motion",
+            "evidence": "samples=2 max physical delta=0 countdown advances=0.0333377",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: primary visibly launches, rotates and lands",
+            "evidence": "height=1.242501 spin=301 lands=1",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: landing restores forward navigation",
+            "evidence": "route progress=9.154362 displacement=9.15385",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: one dash has unique targets and bounded chain depth",
+            "evidence": "independent unique=1 public launches=1 max targets=1 depth=0 repeats=0",
+            "passed": true
+        },
+        {
+            "name": "boundary-dash: own dash causes no player stumble",
+            "evidence": "total stumble=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: fixture initializes only through the gated hook",
+            "evidence": "ready=True kind=front",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: fixture has a primary active target",
+            "evidence": "slots=120",
+            "passed": true
+        },
+        {
+            "name": "visual-pause hitstop: pause clears short effects but preserves flight",
+            "evidence": "neutral=True preserves flight=True freeze=0 fx=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause hitstop: paused flight, FX, camera and timers remain frozen",
+            "evidence": "timer delta=0 fx delta=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause hitstop: resume does not replay old hitstop",
+            "evidence": "remaining=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause airborne: pause clears short effects but preserves flight",
+            "evidence": "neutral=True preserves flight=True freeze=0 fx=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause airborne: paused flight, FX, camera and timers remain frozen",
+            "evidence": "timer delta=0 fx delta=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause airborne: resume does not replay old hitstop",
+            "evidence": "remaining=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause landing: pause clears short effects but preserves flight",
+            "evidence": "neutral=True preserves flight=True freeze=0 fx=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause landing: paused flight, FX, camera and timers remain frozen",
+            "evidence": "timer delta=0 fx delta=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause landing: resume does not replay old hitstop",
+            "evidence": "remaining=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: fixture completes without an endless freeze",
+            "evidence": "simulation seconds=5.503847 samples=324",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: bodies remain finite and contained",
+            "evidence": "NPC clearance=0.395 player radius=0.42",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: physical roots and collision radius stay unchanged",
+            "evidence": "max root scale error=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: airborne bodies never disappear or recycle",
+            "evidence": "sampled slots=120",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: planar impulse and actual displacement stay bounded",
+            "evidence": "velocity=9.8 differential=9.652657; differential allows up to 2m/s collision-separation correction",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: all bodies land and finish recovery",
+            "evidence": "primary lands=1 final height=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: jelly returns to neutral",
+            "evidence": "max scale error=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: hitstop budget is bounded and not repeatedly refreshed",
+            "evidence": "remaining max=0.0433327 episodes=1 longest wall=0 max sample gap=0.01848602",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: hitstop holds physical motion",
+            "evidence": "samples=0 max physical delta=0 countdown advances=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: primary visibly launches, rotates and lands",
+            "evidence": "height=1.242501 spin=301 lands=1",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: landing restores forward navigation",
+            "evidence": "route progress=12.5549 displacement=12.5549",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: one dash has unique targets and bounded chain depth",
+            "evidence": "independent unique=1 public launches=1 max targets=1 depth=0 repeats=0",
+            "passed": true
+        },
+        {
+            "name": "visual-pause: own dash causes no player stumble",
+            "evidence": "total stumble=0",
+            "passed": true
+        },
+        {
+            "name": "Impact visual phases were actually sampled",
+            "evidence": "compression=True airborne=True rebound=True",
+            "passed": true
+        },
+        {
+            "name": "Pause was exercised during hitstop, flight and landing rebound",
+            "evidence": "hitstop=True airborne=True landing=True",
+            "passed": true
+        },
+        {
+            "name": "Restart fixture initializes",
+            "evidence": "front",
+            "passed": true
+        },
+        {
+            "name": "Restart actually interrupts airborne impact",
+            "evidence": "launches=1",
+            "passed": true
+        },
+        {
+            "name": "Restart clears every impact and visual state",
+            "evidence": "slots=120 launches=0 FX=0 freeze=0",
+            "passed": true
+        }
+    ],
+    "cases": [
+        {
+            "name": "front-idle",
+            "fixture": "front",
+            "dash": false,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": false,
+            "sawRecovery": false,
+            "sawCompression": false,
+            "sawLandingRebound": false,
+            "recoveredNavigation": false,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": false,
+            "pauseAirborne": false,
+            "pauseLanding": false,
+            "samples": 270,
+            "initialActive": 1,
+            "uniqueTargets": 0,
+            "duplicateLaunches": 0,
+            "launches": 0,
+            "chainLaunches": 0,
+            "maxDepth": 0,
+            "maxTargets": 0,
+            "normalContacts": 0,
+            "primaryLandCount": 0,
+            "freezeEpisodes": 0,
+            "frozenPhysicsSamples": 0,
+            "duration": 4.510132789611816,
+            "comparisonTime": 0.9090627431869507,
+            "earlyDisplacement": 1.1883349418640137,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxVelocity": 3.1000325679779054,
+            "maxDifferentialSpeed": 3.1041080951690676,
+            "maxFrameGap": 0.021652698516845704,
+            "maxFreezeRemaining": 0.0,
+            "longestFreezeWallSeconds": 0.0,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.0,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": -1.0,
+            "navigationProgress": 0.0,
+            "navigationDistance": 0.0,
+            "playerAdvance": 0.0,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.0,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 0.0,
+                "y": 18.348255157470704
+            },
+            "earlyDelta": {
+                "x": 0.0,
+                "y": 1.1883349418640137
+            },
+            "launchDirection": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "launchedSlots": []
+        },
+        {
+            "name": "front-normal",
+            "fixture": "front",
+            "dash": false,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": false,
+            "sawRecovery": false,
+            "sawCompression": false,
+            "sawLandingRebound": false,
+            "recoveredNavigation": false,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": false,
+            "pauseAirborne": false,
+            "pauseLanding": false,
+            "samples": 270,
+            "initialActive": 1,
+            "uniqueTargets": 0,
+            "duplicateLaunches": 0,
+            "launches": 0,
+            "chainLaunches": 0,
+            "maxDepth": 0,
+            "maxTargets": 0,
+            "normalContacts": 1,
+            "primaryLandCount": 0,
+            "freezeEpisodes": 0,
+            "frozenPhysicsSamples": 0,
+            "duration": 4.5015082359313969,
+            "comparisonTime": 0.9002465009689331,
+            "earlyDisplacement": 1.4486722946166993,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxVelocity": 5.049991130828857,
+            "maxDifferentialSpeed": 5.049978256225586,
+            "maxFrameGap": 0.01921558380126953,
+            "maxFreezeRemaining": 0.0,
+            "longestFreezeWallSeconds": 0.0,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.0,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": -1.0,
+            "navigationProgress": 0.0,
+            "navigationDistance": 0.0,
+            "playerAdvance": 0.0,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.06720000505447388,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 0.0,
+                "y": 18.611923217773439
+            },
+            "earlyDelta": {
+                "x": 0.0,
+                "y": 1.4486722946166993
+            },
+            "launchDirection": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "launchedSlots": []
+        },
+        {
+            "name": "front-dash",
+            "fixture": "front",
+            "dash": true,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": true,
+            "sawRecovery": true,
+            "sawCompression": true,
+            "sawLandingRebound": true,
+            "recoveredNavigation": true,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": false,
+            "pauseAirborne": false,
+            "pauseLanding": false,
+            "samples": 270,
+            "initialActive": 1,
+            "uniqueTargets": 1,
+            "duplicateLaunches": 0,
+            "launches": 1,
+            "chainLaunches": 0,
+            "maxDepth": 0,
+            "maxTargets": 1,
+            "normalContacts": 1,
+            "primaryLandCount": 1,
+            "freezeEpisodes": 1,
+            "frozenPhysicsSamples": 2,
+            "duration": 4.501333236694336,
+            "comparisonTime": 0.9003097414970398,
+            "earlyDisplacement": 5.694440841674805,
+            "peakHeight": 1.2425005435943604,
+            "peakSpin": 301.0000305175781,
+            "maxVelocity": 24.112756729125978,
+            "maxDifferentialSpeed": 24.074726104736329,
+            "maxFrameGap": 0.024005889892578126,
+            "maxFreezeRemaining": 0.043334104120731357,
+            "longestFreezeWallSeconds": 0.04722118377685547,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.033332690596580508,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": 0.16666799783706666,
+            "navigationProgress": 3.9333906173706056,
+            "navigationDistance": 3.9333906173706056,
+            "playerAdvance": 4.519996643066406,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.22080004215240479,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 0.0,
+                "y": 15.451173782348633
+            },
+            "earlyDelta": {
+                "x": 0.0,
+                "y": 5.694440841674805
+            },
+            "launchDirection": {
+                "x": 0.0,
+                "y": 1.0
+            },
+            "launchedSlots": [
+                0
+            ]
+        },
+        {
+            "name": "side-dash",
+            "fixture": "side",
+            "dash": true,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": true,
+            "sawRecovery": true,
+            "sawCompression": true,
+            "sawLandingRebound": true,
+            "recoveredNavigation": true,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": false,
+            "pauseAirborne": false,
+            "pauseLanding": false,
+            "samples": 270,
+            "initialActive": 1,
+            "uniqueTargets": 1,
+            "duplicateLaunches": 0,
+            "launches": 1,
+            "chainLaunches": 0,
+            "maxDepth": 0,
+            "maxTargets": 1,
+            "normalContacts": 0,
+            "primaryLandCount": 1,
+            "freezeEpisodes": 1,
+            "frozenPhysicsSamples": 2,
+            "duration": 4.501844882965088,
+            "comparisonTime": 0.9002565145492554,
+            "earlyDisplacement": 5.5799994468688969,
+            "peakHeight": 1.2425005435943604,
+            "peakSpin": 301.0000305175781,
+            "maxVelocity": 9.800000190734864,
+            "maxDifferentialSpeed": 9.798993110656739,
+            "maxFrameGap": 0.018507003784179689,
+            "maxFreezeRemaining": 0.04333660006523132,
+            "longestFreezeWallSeconds": 0.04971885681152344,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.03334227204322815,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": 0.18347971141338349,
+            "navigationProgress": 9.299988746643067,
+            "navigationDistance": 9.299962043762207,
+            "playerAdvance": 4.439996719360352,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.22080004215240479,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 0.5799999833106995,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 0.8822208642959595,
+                "y": 20.578031539916993
+            },
+            "earlyDelta": {
+                "x": 2.107375383377075,
+                "y": 5.166755676269531
+            },
+            "launchDirection": {
+                "x": 0.377665638923645,
+                "y": 0.925942063331604
+            },
+            "launchedSlots": [
+                0
+            ]
+        },
+        {
+            "name": "chain-dash",
+            "fixture": "chain",
+            "dash": true,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": true,
+            "sawRecovery": true,
+            "sawCompression": true,
+            "sawLandingRebound": true,
+            "recoveredNavigation": true,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": false,
+            "pauseAirborne": false,
+            "pauseLanding": false,
+            "samples": 258,
+            "initialActive": 9,
+            "uniqueTargets": 6,
+            "duplicateLaunches": 0,
+            "launches": 6,
+            "chainLaunches": 5,
+            "maxDepth": 2,
+            "maxTargets": 6,
+            "normalContacts": 5,
+            "primaryLandCount": 1,
+            "freezeEpisodes": 1,
+            "frozenPhysicsSamples": 0,
+            "duration": 4.503616809844971,
+            "comparisonTime": 0.903797447681427,
+            "earlyDisplacement": 4.762750625610352,
+            "peakHeight": 1.2425005435943604,
+            "peakSpin": 301.0000305175781,
+            "maxVelocity": 22.270639419555665,
+            "maxDifferentialSpeed": 22.273210525512697,
+            "maxFrameGap": 0.06605911254882813,
+            "maxFreezeRemaining": 0.043332792818546298,
+            "longestFreezeWallSeconds": 0.06046485900878906,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.0,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": 0.19572243094444276,
+            "navigationProgress": 7.248762130737305,
+            "navigationDistance": 7.264832973480225,
+            "playerAdvance": 4.402746677398682,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.22080004215240479,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 0.2725181579589844,
+                "y": 18.611299514770509
+            },
+            "earlyDelta": {
+                "x": 0.0,
+                "y": 4.762750625610352
+            },
+            "launchDirection": {
+                "x": 0.0,
+                "y": 1.0
+            },
+            "launchedSlots": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                7
+            ]
+        },
+        {
+            "name": "boundary-dash",
+            "fixture": "boundary",
+            "dash": true,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": true,
+            "sawRecovery": true,
+            "sawCompression": true,
+            "sawLandingRebound": true,
+            "recoveredNavigation": true,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": false,
+            "pauseAirborne": false,
+            "pauseLanding": false,
+            "samples": 270,
+            "initialActive": 1,
+            "uniqueTargets": 1,
+            "duplicateLaunches": 0,
+            "launches": 1,
+            "chainLaunches": 0,
+            "maxDepth": 0,
+            "maxTargets": 1,
+            "normalContacts": 1,
+            "primaryLandCount": 1,
+            "freezeEpisodes": 1,
+            "frozenPhysicsSamples": 2,
+            "duration": 4.501993179321289,
+            "comparisonTime": 0.9000633358955383,
+            "earlyDisplacement": 0.17319107055664063,
+            "peakHeight": 1.2425005435943604,
+            "peakSpin": 301.0000305175781,
+            "maxVelocity": 27.035062789916993,
+            "maxDifferentialSpeed": 27.02020835876465,
+            "maxFrameGap": 0.019916534423828126,
+            "maxFreezeRemaining": 0.04333779588341713,
+            "longestFreezeWallSeconds": 0.04973793029785156,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.03333769738674164,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": 0.10000640153884888,
+            "navigationProgress": 9.154361724853516,
+            "navigationDistance": 9.153849601745606,
+            "playerAdvance": 1.1194992065429688,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.22080004215240479,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 19.0,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 18.93236541748047,
+                "y": 15.151446342468262
+            },
+            "earlyDelta": {
+                "x": 0.17319107055664063,
+                "y": 0.0
+            },
+            "launchDirection": {
+                "x": 1.0,
+                "y": 0.0
+            },
+            "launchedSlots": [
+                0
+            ]
+        },
+        {
+            "name": "visual-pause",
+            "fixture": "front",
+            "dash": true,
+            "finiteAndContained": true,
+            "physicalRootsStable": true,
+            "sawAir": true,
+            "sawRecovery": true,
+            "sawCompression": true,
+            "sawLandingRebound": true,
+            "recoveredNavigation": true,
+            "noPlayerStumble": true,
+            "playerForward": true,
+            "noAirborneRecycle": true,
+            "pauseHitstop": true,
+            "pauseAirborne": true,
+            "pauseLanding": true,
+            "samples": 324,
+            "initialActive": 1,
+            "uniqueTargets": 1,
+            "duplicateLaunches": 0,
+            "launches": 1,
+            "chainLaunches": 0,
+            "maxDepth": 0,
+            "maxTargets": 1,
+            "normalContacts": 0,
+            "primaryLandCount": 1,
+            "freezeEpisodes": 1,
+            "frozenPhysicsSamples": 0,
+            "duration": 5.503847122192383,
+            "comparisonTime": 0.902485728263855,
+            "earlyDisplacement": 5.9196624755859379,
+            "peakHeight": 1.2425005435943604,
+            "peakSpin": 301.0000305175781,
+            "maxVelocity": 9.800000190734864,
+            "maxDifferentialSpeed": 9.652656555175782,
+            "maxFrameGap": 0.01848602294921875,
+            "maxFreezeRemaining": 0.04333270341157913,
+            "longestFreezeWallSeconds": 0.0,
+            "maxFrozenPhysicsDelta": 0.0,
+            "frozenTimerAdvance": 0.0,
+            "maxRootScaleError": 0.0,
+            "primaryLaunchTime": 0.1856595277786255,
+            "navigationProgress": 12.554901123046875,
+            "navigationDistance": 12.554901123046875,
+            "playerAdvance": 1.0399999618530274,
+            "finalScaleError": 0.0,
+            "peakPlayerScaleError": 0.22080004215240479,
+            "initialCollisionRadius": 0.41999998688697817,
+            "primaryStart": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "primaryEnd": {
+                "x": 0.0,
+                "y": 24.474563598632814
+            },
+            "earlyDelta": {
+                "x": 0.0,
+                "y": 5.9196624755859379
+            },
+            "launchDirection": {
+                "x": 0.0,
+                "y": 1.0
+            },
+            "launchedSlots": [
+                0
+            ]
+        }
+    ],
+    "screenshots": [
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\chain-dash-before.png",
+            "scenario": "chain-dash",
+            "phase": "before",
+            "time": 0.09231949597597122,
+            "height": 0.0,
+            "spinDegrees": 0.0,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "visualScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "landCount": 0
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\chain-dash-compression.png",
+            "scenario": "chain-dash",
+            "phase": "compression",
+            "time": 0.2880419194698334,
+            "height": 0.0,
+            "spinDegrees": 0.0,
+            "freezeRemaining": 0.043332792818546298,
+            "position": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "visualScale": {
+                "x": 1.1299999952316285,
+                "y": 1.2799999713897706,
+                "z": 0.5199999809265137
+            },
+            "landCount": 0
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\chain-dash-airborne.png",
+            "scenario": "chain-dash",
+            "phase": "airborne",
+            "time": 0.4501778483390808,
+            "height": 0.598750114440918,
+            "spinDegrees": 42.000003814697269,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 6.92363977432251
+            },
+            "visualScale": {
+                "x": 0.9728075861930847,
+                "y": 0.9656151533126831,
+                "z": 1.1412843465805054
+            },
+            "landCount": 0
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\chain-dash-landing-rebound.png",
+            "scenario": "chain-dash",
+            "phase": "landing-rebound",
+            "time": 1.0627840757369996,
+            "height": 0.0,
+            "spinDegrees": 301.0000305175781,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 11.093876838684082
+            },
+            "visualScale": {
+                "x": 1.1612186431884766,
+                "y": 0.7581719756126404,
+                "z": 1.1289749145507813
+            },
+            "landCount": 1
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\chain-dash-settled.png",
+            "scenario": "chain-dash",
+            "phase": "settled",
+            "time": 4.595936298370361,
+            "height": 0.0,
+            "spinDegrees": 301.0000305175781,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.2725181579589844,
+                "y": 18.611299514770509
+            },
+            "visualScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "landCount": 1
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\visual-pause-before.png",
+            "scenario": "visual-pause",
+            "phase": "before",
+            "time": 0.08475670218467713,
+            "height": 0.0,
+            "spinDegrees": 0.0,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "visualScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "landCount": 0
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\visual-pause-compression.png",
+            "scenario": "visual-pause",
+            "phase": "compression",
+            "time": 0.2704162299633026,
+            "height": 0.0,
+            "spinDegrees": 0.0,
+            "freezeRemaining": 0.04333270341157913,
+            "position": {
+                "x": 0.0,
+                "y": 6.0
+            },
+            "visualScale": {
+                "x": 1.1299999952316285,
+                "y": 1.2799999713897706,
+                "z": 0.5199999809265137
+            },
+            "landCount": 0
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\visual-pause-airborne.png",
+            "scenario": "visual-pause",
+            "phase": "airborne",
+            "time": 0.33708423376083376,
+            "height": 0.42083340883255007,
+            "spinDegrees": 28.000001907348634,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 6.645999908447266
+            },
+            "visualScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "landCount": 0
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\visual-pause-landing-rebound.png",
+            "scenario": "visual-pause",
+            "phase": "landing-rebound",
+            "time": 0.9872424602508545,
+            "height": 0.0,
+            "spinDegrees": 301.0000305175781,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 11.919662475585938
+            },
+            "visualScale": {
+                "x": 1.1612119674682618,
+                "y": 0.7581820487976074,
+                "z": 1.1289695501327515
+            },
+            "landCount": 1
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-impact1\\visual-pause-settled.png",
+            "scenario": "visual-pause",
+            "phase": "settled",
+            "time": 5.588603973388672,
+            "height": 0.0,
+            "spinDegrees": 301.0000305175781,
+            "freezeRemaining": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 24.474563598632814
+            },
+            "visualScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "landCount": 1
+        }
+    ]
+}

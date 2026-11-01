@@ -1,0 +1,98 @@
+{
+  "routeReport": {
+    "path": "qa-v3-route4\\qa-report.json",
+    "bytes": 95984,
+    "sha256": "8F1AEB9096AE4E5FD468A623560F4983D31ED49586C04B8934B9786D54461502"
+  },
+  "impactReport": {
+    "path": "qa-v3-impact6\\impact-report.json",
+    "bytes": 88764,
+    "sha256": "6FE506B81FCD0B0CA2047B2900F51597A1C3E6A437A2A3809B168544E712A8A9"
+  },
+  "buildLog": {
+    "path": "artifacts\\unity-v3-build-6.log",
+    "bytes": 145341,
+    "sha256": "E89A42577D6BFDC807CB5B937CF7BC607C6B4127E9A78F0AFC09F0A77DD51FBF"
+  },
+  "preservedBaselines": {
+    "repo-setup-v1-baseline.json": 51,
+    "v3-v2-preservation-baseline.json": 54
+  },
+  "zipCrcPassed": true,
+  "nonOverlappingEntries": true,
+  "mergedOriginalFilesVerified": 142,
+  "manifestFilesVerified": 141,
+  "outputs": [
+    {
+      "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\artifacts\\EarlyRush-V3-Windows-x64.zip",
+      "bytes": 32366320,
+      "sha256": "54FBBB85559788EEF900503021F2F4877A42E6E3744A307E3AEAAB0B320992E7"
+    },
+    {
+      "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\artifacts\\EarlyRush-V3-Unity-Source.zip",
+      "bytes": 139047,
+      "sha256": "02F348C86BFBFCA79621487CB1F4B443550A3DC101606E5C89617290FDBE905C"
+    },
+    {
+      "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\artifacts\\EarlyRush-V3-1-of-2-Engine.zip",
+      "bytes": 14736216,
+      "sha256": "2CC076182C2A5C793A9BE118D7324209371273F85D1056B086ACB5D38197F4BA"
+    },
+    {
+      "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\artifacts\\EarlyRush-V3-2-of-2-Game.zip",
+      "bytes": 17630945,
+      "sha256": "426857C5F6A570117EC1E29A47E3B41BD301D5B8D45FB2419335655A828DCAC4"
+    }
+  ],
+  "sourceCommit": "f5f8157e2fb39fa138c11f850dbfadfde8c33f9a",
+  "mergedStartupSmoke": {
+    "player": "D:\\CodexWorkspace\\2026-10-31\\task-4\\artifacts\\v3-two-part-verified\\EarlyRush-V3-Windows\\EarlyRush.exe",
+    "menuScreenshot": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v3-merged-smoke3\\01-menu.png",
+    "menuScreenshotSha256": "F7DCE598B8A6B8732CEE15ECCD34D162FFEC48CD8DF7B363FFD9D88A57E2B499",
+    "menuScreenshotVisuallyReviewed": true,
+    "basicInputChecksPassed": 24,
+    "basicInputChecksFailed": 0,
+    "normalCloseExitCode": 0,
+    "normalCloseAccepted": true,
+    "filesRecheckedAfterStartup": 141,
+    "originalFilesRecheckedAfterStartup": 142,
+    "allFourZipHashesUnchanged": true,
+    "isFullSuite": false,
+    "scope": "Final merged-package startup and basic input smoke only; full 189 impact and 260 route checks are separate build6 runs.",
+    "playerLog": {
+      "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\artifacts\\player-v3-merged-smoke3.log",
+      "sha256": "3430E7E121ACC8B9D2CD65B169AAB2220F184FF8AE6EA314CFFB3FA526129385"
+    },
+    "checks": [
+      "Opens to menu | Menu",
+      "Start opens tutorial | Tutorial",
+      "Diagonal movement is normalized | cardinal=6.1 diagonal=6.1",
+      "Brace wins simultaneous dash | brace=True dash=False",
+      "Dash accelerates and consumes cooldown | speed=13 ready=0.04347822",
+      "Brace cancels dash | brace=True dash=False",
+      "controls: pause freezes simulation and camera | timer delta=0 camera delta=0 crowd frozen=True",
+      "controls: resume suppresses held actions | locked=True",
+      "controls: releasing rearms actions | locked=False",
+      "Restart clears state 1 | stage=0 time=0.2101763 position=(0.00, 4.00)",
+      "Restart 1: impact state clears on reset | freeze=0 FX=0 NPC slots=120",
+      "Restart clears state 2 | stage=0 time=0.209424 position=(0.00, 4.00)",
+      "Restart 2: impact state clears on reset | freeze=0 FX=0 NPC slots=120",
+      "Restart clears state 3 | stage=0 time=0.2118043 position=(0.00, 4.00)",
+      "Restart 3: impact state clears on reset | freeze=0 FX=0 NPC slots=120",
+      "risk: stage 0 resets momentum | speed=0 ready=1",
+      "risk: stage 0: impact state clears on reset | freeze=0 FX=0 NPC slots=120",
+      "risk: stage 0 waypoint segments clear static walls | margin=0.46 blocked segments=",
+      "risk: stage 0 NPC routes have 0.43m clearance | segments=1158 invalid routes=0 blocked=",
+      "risk: destination has a usable arrival pad | goal half width=2.6",
+      "risk: stage 0 is a large map | 40 x 100 metres",
+      "risk stage 1: pause freezes simulation and camera | timer delta=0 camera delta=0 crowd frozen=True",
+      "risk stage 1: resume suppresses held actions | locked=True",
+      "risk stage 1: releasing rearms actions | locked=False"
+    ],
+    "diagnostics": [
+      "First smoke3 creation failed due exec-server transport disconnect; after environment recovery, read confirmed log/exit/screenshot did not exist before one retry.",
+      "Launcher polling initially saw an empty log; a non-terminating regex null-input diagnostic occurred. Final populated Player log has 24 PASS and 0 FAIL; normal window close and exit 0 recorded.",
+      "Earlier smoke2 reached menu and initial routes; its process exit code was not retained. It is not used for final startup acceptance."
+    ]
+  }
+}
