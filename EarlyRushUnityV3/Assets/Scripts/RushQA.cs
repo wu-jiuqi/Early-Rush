@@ -24,6 +24,11 @@ namespace EarlyRush
             public int crowdPopulation, activePeak, visiblePeak, progressedSlots;
             public int arrivals, goalCrossings, recycles, visibleRecycles, qaVisibleRecycleEvents;
             public int maxNearCoincidentCount, pileSamples;
+            public int maxGroundNearCoincidentCount, maxNearbyAirborneCount, maxNearbyRecoveringCount;
+            public int allPilePeakGround, allPilePeakAirborne, allPilePeakRecovering;
+            public int allActivePileSamples, groundPileSamples, nonGroundInPileSamples;
+            public float longestAllPileSampleSpan, longestGroundPileSampleSpan, longestNonGroundPileSampleSpan;
+            public bool pileProbeAlignment = true;
             public float activeSamples, visibleSamples, meanActiveCrowd, meanVisibleCrowd;
             public float crowdForwardDistance, crowdBackwardDistance;
             public float traversalFrameSeconds, meanTraversalFrameMilliseconds, worstTraversalFrameMilliseconds;
@@ -57,7 +62,8 @@ namespace EarlyRush
         [Serializable] public class Report
         {
             public string utc, engine, device, graphicsApi;
-            public string schemaVersion = "v3-impact-routes-1";
+            public string schemaVersion = "v3-impact-routes-2-ground-piles";
+            public string pileSamplingScope = "All-active 2D clusters remain diagnostics. The unchanged <=3 pile limit applies to active non-airborne, non-recovering colliders. Counts are sampled twice per second; persistence is the span of consecutive positive samples for a stable slot/generation, not continuous observation.";
             public string performanceScope = "Overall frame statistics include the late wait; per-stage traversal timing excludes deliberate pauses.";
             public string driver =
                 "Windows Player QAMove/QADash/QABrace input driver. " +
@@ -86,6 +92,8 @@ namespace EarlyRush
         bool finished;
         Vector2[] previousCrowd;
         float previousCrowdAt, lastPileSampleAt;
+        float[] allPileBeganAt, groundPileBeganAt, transientPileBeganAt;
+        int[] pileGenerations;
         int[] previousGenerations;
         bool[] previousActive, previousVisible;
         float[] previousProgress, observedForwardBySlot;
@@ -674,6 +682,13 @@ namespace EarlyRush
                     " crossed=" + doorCrossed);
         }
 
+        static float TrackPileSpan(bool present, float now, ref float began)
+        {
+            if (!present) { began = -1; return 0; }
+            if (began < 0) began = now;
+            return now - began;
+        }
+
         void SampleGeometry(StageEvidence metric, Vector2 p)
         {
             WorldData w = game.World;
@@ -695,6 +710,15 @@ namespace EarlyRush
                 previousVisible = new bool[probes.Length];
                 previousProgress = new float[probes.Length];
                 observedForwardBySlot = new float[probes.Length];
+                allPileBeganAt = new float[probes.Length];
+                groundPileBeganAt = new float[probes.Length];
+                transientPileBeganAt = new float[probes.Length];
+                pileGenerations = new int[probes.Length];
+                for (int i = 0; i < probes.Length; i++)
+                {
+                    allPileBeganAt[i] = groundPileBeganAt[i] = transientPileBeganAt[i] = -1;
+                    pileGenerations[i] = -1;
+                }
             }
             float crowdDelta = Time.realtimeSinceStartup - previousCrowdAt;
             int active = 0, visible = 0, progressed = 0;
@@ -762,21 +786,70 @@ namespace EarlyRush
             metric.visibleRecycles = game.CrowdVisibleRecycles;
             metric.crowdForwardDistance = game.CrowdForwardDistance;
             metric.crowdBackwardDistance = game.CrowdBackwardDistance;
-            // Sample tight stacks twice per second, avoiding a per-frame all-pairs cost.
+            // Preserve the old all-active 2D statistic. Only bodies which currently
+            // participate in ground collision are subject to the existing pile limit.
             if (Time.realtimeSinceStartup - lastPileSampleAt >= .5f)
             {
-                lastPileSampleAt = Time.realtimeSinceStartup;
+                float sampleAt = Time.realtimeSinceStartup;
+                lastPileSampleAt = sampleAt;
                 metric.pileSamples++;
+                var impacts = game.ImpactProbeSnapshot();
+                bool aligned = impacts.Length == probes.Length;
+                if (aligned)
+                    for (int i = 0; i < probes.Length; i++)
+                        aligned &= impacts[i].generation == probes[i].generation &&
+                            impacts[i].active == probes[i].active &&
+                            Vector2.Distance(impacts[i].position, probes[i].position) < .001f;
+                metric.pileProbeAlignment &= aligned;
+                bool anyAll = false, anyGround = false, anyTransient = false;
                 for (int i = 0; i < probes.Length; i++)
                 {
+                    if (pileGenerations[i] != probes[i].generation || !probes[i].active)
+                    {
+                        allPileBeganAt[i] = groundPileBeganAt[i] = transientPileBeganAt[i] = -1;
+                        pileGenerations[i] = probes[i].generation;
+                    }
                     if (!probes[i].active) continue;
-                    int neighbors = 1;
+                    int neighbors = 0, ground = 0, air = 0, recovering = 0;
                     for (int j = 0; j < probes.Length; j++)
-                        if (i != j && probes[j].active &&
-                            (probes[i].position - probes[j].position).sqrMagnitude < .25f * .25f)
-                            neighbors++;
-                    metric.maxNearCoincidentCount = Mathf.Max(metric.maxNearCoincidentCount, neighbors);
+                    {
+                        if (!probes[j].active ||
+                            (probes[i].position - probes[j].position).sqrMagnitude >= .25f * .25f) continue;
+                        neighbors++;
+                        if (aligned)
+                        {
+                            if (impacts[j].airborne) air++;
+                            else if (impacts[j].recovering) recovering++;
+                            else ground++;
+                        }
+                    }
+                    if (neighbors > metric.maxNearCoincidentCount)
+                    {
+                        metric.maxNearCoincidentCount = neighbors;
+                        metric.allPilePeakGround = ground;
+                        metric.allPilePeakAirborne = air;
+                        metric.allPilePeakRecovering = recovering;
+                    }
+                    // Keep every active body as a geometric sample center; only
+                    // exclude non-blocking bodies from the neighborhood count.
+                    if (aligned)
+                        metric.maxGroundNearCoincidentCount = Mathf.Max(metric.maxGroundNearCoincidentCount, ground);
+                    metric.maxNearbyAirborneCount = Mathf.Max(metric.maxNearbyAirborneCount, air);
+                    metric.maxNearbyRecoveringCount = Mathf.Max(metric.maxNearbyRecoveringCount, recovering);
+                    bool allPile = neighbors > 3;
+                    bool groundPile = aligned && ground > 3;
+                    bool transientPile = allPile && aligned && air + recovering > 0;
+                    anyAll |= allPile; anyGround |= groundPile; anyTransient |= transientPile;
+                    metric.longestAllPileSampleSpan = Mathf.Max(metric.longestAllPileSampleSpan,
+                        TrackPileSpan(allPile, sampleAt, ref allPileBeganAt[i]));
+                    metric.longestGroundPileSampleSpan = Mathf.Max(metric.longestGroundPileSampleSpan,
+                        TrackPileSpan(groundPile, sampleAt, ref groundPileBeganAt[i]));
+                    metric.longestNonGroundPileSampleSpan = Mathf.Max(metric.longestNonGroundPileSampleSpan,
+                        TrackPileSpan(transientPile, sampleAt, ref transientPileBeganAt[i]));
                 }
+                if (anyAll) metric.allActivePileSamples++;
+                if (anyGround) metric.groundPileSamples++;
+                if (anyTransient) metric.nonGroundInPileSamples++;
             }
             Vector3 viewport = game.GameCamera.WorldToViewportPoint(new Vector3(p.x, 1f, p.y));
             metric.minViewportX = Mathf.Min(metric.minViewportX, viewport.x);
@@ -817,10 +890,17 @@ namespace EarlyRush
                 metric.visibleRecycles == 0 && metric.qaVisibleRecycleEvents == 0,
                 "guard violations=" + metric.visibleRecycles +
                 " independently observed visible recycling=" + metric.qaVisibleRecycleEvents);
-            CheckThat(label + ": no sampled near-coincident crowd pile",
-                metric.pileSamples > 0 && metric.maxNearCoincidentCount <= 3,
-                "samples=" + metric.pileSamples +
-                " max NPC centers within 0.25m=" + metric.maxNearCoincidentCount);
+            CheckThat(label + ": no sampled ground-collider pile",
+                metric.pileSamples > 0 && metric.pileProbeAlignment && metric.maxGroundNearCoincidentCount <= 3,
+                "samples=" + metric.pileSamples + " aligned=" + metric.pileProbeAlignment +
+                " ground max=" + metric.maxGroundNearCoincidentCount +
+                " all-active max=" + metric.maxNearCoincidentCount +
+                " first all-active peak ground/air/recovering=" + metric.allPilePeakGround + "/" +
+                metric.allPilePeakAirborne + "/" + metric.allPilePeakRecovering +
+                " over-limit samples all/ground/transient=" + metric.allActivePileSamples + "/" +
+                metric.groundPileSamples + "/" + metric.nonGroundInPileSamples +
+                " consecutive sample spans all/ground/transient=" + metric.longestAllPileSampleSpan + "/" +
+                metric.longestGroundPileSampleSpan + "/" + metric.longestNonGroundPileSampleSpan);
             CheckThat(label + ": follows across several screens",
                 metric.actualDistance > 70f && metric.cameraSpanZ > 45f,
                 "distance=" + metric.actualDistance + " camera z span=" + metric.cameraSpanZ);
