@@ -7,7 +7,7 @@ using System.IO;
 namespace EarlyRush
 {
     /// <summary>
-    /// UNCOMPILED v2 acceptance draft. Opt-in Windows Player input driver.
+    /// V3 normal-route acceptance. Impact fixtures are run separately with --impact-qa.
     /// Movement uses the ordinary game input channel, never position/time overrides.
     /// UI actions use existing methods; this is not OS keyboard automation.
     /// </summary>
@@ -47,6 +47,7 @@ namespace EarlyRush
             public bool includesDeliberateDoorProbe;
             public float totalSeconds, totalStumbleSeconds, longestStumbleSeconds;
             public int stumbleTriggers;
+            public int impactLaunches, chainLaunches, maxDashTargets, maxChainDepth;
             public int collisions, transitions;
             public bool reachedResults;
             public float[] splits;
@@ -56,7 +57,7 @@ namespace EarlyRush
         [Serializable] public class Report
         {
             public string utc, engine, device, graphicsApi;
-            public string schemaVersion = "v2-goal-flow-1";
+            public string schemaVersion = "v3-impact-routes-1";
             public string performanceScope = "Overall frame statistics include the late wait; per-stage traversal timing excludes deliberate pauses.";
             public string driver =
                 "Windows Player QAMove/QADash/QABrace input driver. " +
@@ -233,6 +234,7 @@ namespace EarlyRush
                     clean &= game.SplitTimes[j] == 0 && game.SplitCollisions[j] == 0;
                 CheckThat("Restart clears state " + (i + 1), clean,
                     "stage=" + game.Stage + " time=" + game.TotalTime + " position=" + game.Position);
+                CheckImpactReset("Restart " + (i + 1));
             }
 
             game.Restart(); Neutral();
@@ -280,6 +282,22 @@ namespace EarlyRush
             CheckThat("Sound toggle restores state", game.Muted == originalMute, "muted=" + game.Muted);
             yield return Wait(.3f);
             Finish();
+        }
+
+        void CheckImpactReset(string label)
+        {
+            bool clean = game.ImpactFreezeRemaining < .00001f && game.ActiveImpactFxCount == 0 &&
+                Vector3.Distance(game.PlayerVisualScale, Vector3.one) < .001f &&
+                Vector3.Distance(game.PlayerRootScale, Vector3.one) < .001f;
+            var impacts = game.ImpactProbeSnapshot();
+            foreach (var p in impacts)
+                clean &= !p.airborne && !p.recovering && Mathf.Abs(p.height) < .001f &&
+                    p.launchCount == 0 && p.landCount == 0 && Mathf.Abs(p.spinDegrees) < .001f &&
+                    Vector3.Distance(p.visualScale, Vector3.one) < .001f &&
+                    Vector3.Distance(p.rootScale, Vector3.one) < .001f;
+            CheckThat(label + ": impact state clears on reset", clean,
+                "freeze=" + game.ImpactFreezeRemaining + " FX=" + game.ActiveImpactFxCount +
+                " NPC slots=" + impacts.Length);
         }
 
         IEnumerator PauseCheck(string label)
@@ -361,6 +379,7 @@ namespace EarlyRush
                     CheckThat(name + ": stage " + game.Stage + " resets momentum",
                         game.Velocity.sqrMagnitude < .001f && game.DashCooldown01 > .99f,
                         "speed=" + game.Velocity.magnitude + " ready=" + game.DashCooldown01);
+                    CheckImpactReset(name + ": stage " + game.Stage);
                     route = new List<Vector2>(safe ? game.World.safeRoute : game.World.riskRoute);
                     if (route.Count == 0)
                     {
@@ -616,6 +635,17 @@ namespace EarlyRush
             run.totalStumbleSeconds = game.TotalStumbleTime;
             run.longestStumbleSeconds = game.LongestStumbleTime;
             run.stumbleTriggers = game.StumbleTriggers;
+            run.impactLaunches = game.TotalLaunches;
+            run.chainLaunches = game.ChainLaunches;
+            run.maxDashTargets = game.MaxObservedDashTargets;
+            run.maxChainDepth = game.MaxObservedChainDepth;
+            CheckThat(name + ": ordinary-route impact chains stay bounded",
+                run.maxDashTargets <= 6 && run.maxChainDepth <= 2,
+                "launches=" + run.impactLaunches + " secondary=" + run.chainLaunches +
+                " max targets=" + run.maxDashTargets + " depth=" + run.maxChainDepth);
+            if (name == "charge")
+                CheckThat("Charge route exercises real dash launches", run.impactLaunches > 0,
+                    "launches=" + run.impactLaunches + " secondary=" + run.chainLaunches);
             CheckThat(name + ": individual stumble duration stays bounded",
                 game.LongestStumbleTime <= .47f,
                 "total seconds=" + game.TotalStumbleTime + " longest=" + game.LongestStumbleTime +

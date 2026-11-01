@@ -148,6 +148,30 @@ namespace EarlyRush
             Primitive(root,"Headlight",PrimitiveType.Sphere,new Vector3(0,.93f,.66f),new Vector3(.16f,.15f,.13f),Cream);
         }
 
+        public static Vector3 ImpactScale(float hitAge,float landingAge,float strength)
+        {
+            Vector3 result=Vector3.one;
+            if(hitAge>=0&&hitAge<.65f)
+            {
+                Vector3 compressed=new Vector3(1.13f,1.28f,.52f);
+                Vector3 stretched=new Vector3(.92f,.86f,1.35f);
+                Vector3 shape;
+                if(hitAge<.065f)shape=compressed;
+                else if(hitAge<.145f)shape=Vector3.Lerp(compressed,stretched,Mathf.SmoothStep(0,1,(hitAge-.065f)/.08f));
+                else
+                {
+                    float t=hitAge-.145f;
+                    shape=Vector3.one+(stretched-Vector3.one)*(Mathf.Exp(-t*8)*Mathf.Cos(t*26));
+                }
+                result=Vector3.LerpUnclamped(Vector3.one,shape,strength);
+            }
+            if(landingAge>=0&&landingAge<.7f)
+            {
+                float pulse=Mathf.Exp(-landingAge*8)*Mathf.Cos(landingAge*24);
+                result=Vector3.Scale(result,new Vector3(1+.20f*pulse,1-.30f*pulse,1+.16f*pulse));
+            }
+            return new Vector3(Mathf.Clamp(result.x,.45f,1.6f),Mathf.Clamp(result.y,.45f,1.6f),Mathf.Clamp(result.z,.45f,1.6f));
+        }
         public static void AnimatePerson(Transform visual, Vector2 velocity,float time,bool dash,bool brace)
         {
             if(visual)AnimatePerson(visual.GetComponent<RushPersonParts>(),velocity,time,dash,brace);

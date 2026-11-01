@@ -15,6 +15,8 @@ namespace EarlyRush
         public float[] SplitTimes = new float[3];
         public int[] SplitCollisions = new int[3];
         public bool Muted, IsBracing, IsDashing;
+        public bool ScreenShakeEnabled = true;
+        public void ToggleScreenShake(){ScreenShakeEnabled=!ScreenShakeEnabled;if(!ScreenShakeEnabled)cameraRig.transform.position=cameraFocus+cameraHome;}
         public bool IsStumbling => stumbleLeft > 0;
         public float TotalStumbleTime { get; private set; }
         public float LongestStumbleTime { get; private set; }
@@ -51,7 +53,7 @@ namespace EarlyRush
         List<Crowd> crowds = new List<Crowd>();
         Dictionary<int,float> collisionTimes = new Dictionary<int,float>();
         AudioSource audioSource;
-        AudioClip dashClip, bumpClip, goalClip, tickClip;
+        AudioClip dashClip, bumpClip, goalClip, tickClip, launchClip;
         LineRenderer trail;
         Vector3[] trailPoints = new Vector3[10];
         RushQA qa;
@@ -66,8 +68,61 @@ namespace EarlyRush
             public Vector2 origin, position, previous, offset, pushVelocity, heading;
             public Vector2[] route;
             public int waypoint, originWaypoint, generation;
-            public float speed, startAt, recycleAt, progress, stuckTime;
-            public bool active = true, crossedGoal, touchingPlayer;
+            public float speed, startAt, recycleAt, progress, stuckTime, correctionDistanceLeft;
+            public bool active = true, crossedGoal, touchingPlayer, fixtureDisabled, airborne;
+            public Vector2 flightVelocity, launchDirection, lastVelocity;
+            public float height, verticalVelocity, recoveryLeft, spinDegrees, airTime, landedAt=-1, hitAge=-1, landingAge=-1, jellyStrength, landingSpin;
+            public int hitDashId=-1, chainDepth, launchCount, landCount;
+        }
+        // Physical roots remain unit scale; all squash, tumble and bounce lives below them.
+        public struct ImpactProbe
+        {
+            public Vector2 position, velocity, launchDirection;
+            public bool active, airborne, recovering;
+            public float height, recoveryLeft, spinDegrees, landedAt;
+            public int dashId, chainDepth, launchCount, landCount, generation;
+            public Vector3 visualScale, rootScale;
+            public Quaternion visualRotation;
+        }
+        class ImpactBurst
+        {
+            public HashSet<int> targets=new HashSet<int>();
+            public bool stopped;
+        }
+        readonly Dictionary<int,ImpactBurst> impactBursts=new Dictionary<int,ImpactBurst>();
+        RushImpactFx impactFx;
+        bool impactQaMode;
+        float impactFreezeLeft, nextImpactStopAt, playerHitAge=-1, playerJellyStrength;
+        Vector2 playerTickStart;
+        float playerSeparationLeft;
+        public int CurrentDashId { get; private set; }
+        public int DashImpactCount => impactBursts.TryGetValue(CurrentDashId,out var burst)?burst.targets.Count:0;
+        public int TotalLaunches { get; private set; }
+        public int ChainLaunches { get; private set; }
+        public int MaxObservedChainDepth { get; private set; }
+        public int MaxObservedDashTargets { get; private set; }
+        public int NormalContactCount { get; private set; }
+        public float ImpactFreezeRemaining => impactFreezeLeft;
+        public float ImpactFxClock => impactFx==null?0:impactFx.Clock;
+        public int ActiveImpactFxCount => impactFx==null?0:impactFx.ActiveCount;
+        public Vector3 PlayerVisualScale => visual?visual.localScale:Vector3.one;
+        public Vector3 PlayerRootScale => player?player.localScale:Vector3.one;
+        public float PlayerCollisionRadius => Radius;
+        public bool ImpactFixtureReady { get; private set; }
+        public string ImpactFixtureKind { get; private set; } = "";
+        public ImpactProbe[] ImpactProbeSnapshot()
+        {
+            var result=new ImpactProbe[crowds.Count];
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var c=crowds[i];
+                result[i]=new ImpactProbe{position=c.position,velocity=c.airborne?c.flightVelocity:c.lastVelocity,launchDirection=c.launchDirection,
+                    active=c.active,airborne=c.airborne,recovering=c.recoveryLeft>0,height=c.height,recoveryLeft=c.recoveryLeft,
+                    spinDegrees=c.spinDegrees,landedAt=c.landedAt,dashId=c.hitDashId,chainDepth=c.chainDepth,
+                    launchCount=c.launchCount,landCount=c.landCount,generation=c.generation,
+                    visualScale=c.visual.localScale,rootScale=c.root.localScale,visualRotation=c.visual.rotation};
+            }
+            return result;
         }
         public struct CrowdProbe
         {
@@ -129,10 +184,12 @@ namespace EarlyRush
             bumpClip = MakeSound("soft bump", 130, .12f, 1);
             goalClip = MakeSound("arrival", 660, .34f, 2);
             tickClip = MakeSound("ready", 880, .07f, 2);
+            launchClip = MakeSound("rubbery thwump", 185, .22f, 3);
             gameObject.AddComponent<RushRouteHUD>();
             BuildStage(0);
-            if (Array.Exists(Environment.GetCommandLineArgs(), a=>a=="--qa"))
-                qa = gameObject.AddComponent<RushQA>();
+            impactQaMode=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--impact-qa");
+            if(impactQaMode)gameObject.AddComponent<RushImpactQA>();
+            else if(Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--qa"))qa=gameObject.AddComponent<RushQA>();
             Debug.Log("EARLY_RUSH_READY " + SystemInfo.graphicsDeviceName + " " + SystemInfo.graphicsDeviceType);
         }
         AudioClip MakeSound(string name, float freq,float duration,int kind)
@@ -143,7 +200,9 @@ namespace EarlyRush
             {
                 float t=(float)i/samples; float envelope=Mathf.Sin(t*Mathf.PI)*Mathf.Pow(1-t,1.6f);
                 float frequency=freq*(kind==0? 1.6f-t : kind==2? 1+Mathf.Floor(t*3)*.25f : 1-t*.6f);
-                data[i]=(Mathf.Sin(i/22050f*frequency*Mathf.PI*2)*.7f+(kind==0?(float)(random.NextDouble()*2-1)*.3f:0))*envelope*.22f;
+                float tone=Mathf.Sin(i/22050f*frequency*Mathf.PI*2)*.7f;
+                if(kind==3)tone=Mathf.Sin(i/22050f*(260f-185f*t)*Mathf.PI*2)*.7f+(float)(random.NextDouble()*2-1)*.23f*Mathf.Exp(-t*9);
+                data[i]=(tone+(kind==0?(float)(random.NextDouble()*2-1)*.3f:0))*envelope*(kind==3?.36f:.22f);
             }
             var clip=AudioClip.Create(name,samples,1,22050,false);clip.SetData(data,0);return clip;
         }
@@ -156,7 +215,7 @@ namespace EarlyRush
         public void Quit(){Application.Quit();}
         public void TogglePause()
         {
-            if(State==RushState.Playing){State=RushState.Paused;velocity=Vector2.zero;dashLeft=0;IsDashing=false;IsBracing=false;}
+            if(State==RushState.Playing){ClearImpactTransients();State=RushState.Paused;velocity=Vector2.zero;dashLeft=0;IsDashing=false;IsBracing=false;}
             else if(State==RushState.Paused)State=RushState.Playing;
             LockActions();Log("pause_toggle");
         }
@@ -164,17 +223,20 @@ namespace EarlyRush
         {
             TotalTime=0; StageTime=0; Collisions=0; stageStartCollisions=0;TransitionCount=0;
             TotalStumbleTime=0;LongestStumbleTime=0;StumbleTriggers=0;
+            CurrentDashId=0;TotalLaunches=0;ChainLaunches=0;MaxObservedChainDepth=0;MaxObservedDashTargets=0;NormalContactCount=0;
             SplitTimes=new float[3];SplitCollisions=new int[3]; BuildStage(0);
         }
         void LockActions(){actionLocked=true;dashPressed=false;braceInput=false;QADash=false;QABrace=false;moveInput=Vector2.zero;}
         void BuildStage(int index)
         {
+            ClearImpactScene();ImpactFixtureReady=false;ImpactFixtureKind="";impactBursts.Clear();
             if(world!=null && world.root!=null)Destroy(world.root.gameObject);
             if(player!=null)Destroy(player.gameObject);
             Stage=index;StageTime=0;cooldown=0;dashLeft=0;stumbleLeft=0;stumbleProtectionLeft=0;continuousStumbleTime=0;IsDashing=false;IsBracing=false;
             CrowdArrivals=0;CrowdGoalCrossings=0;CrowdRecycles=0;CrowdVisibleRecycles=0;CrowdForwardDistance=0;CrowdBackwardDistance=0;
             velocity=Vector2.zero;facing=Vector2.up;impact=0;shake=0;collisionTimes.Clear();crowds.Clear();
             world=RushWorld.Build(index);position=new Vector2(world.spawn.x,world.spawn.z);
+            impactFx=new RushImpactFx(world.root);
             player=new GameObject("Player collision root").transform;
             visual=RushVisuals.CreatePerson(player,new Color(1f,.38f,.1f),true,index==0);
             player.position=new Vector3(position.x,0,position.y);
@@ -214,6 +276,8 @@ namespace EarlyRush
             if(State==RushState.Playing)
             {
                 TotalTime+=Time.deltaTime;StageTime+=Time.deltaTime;
+                float frozen=impactFreezeLeft;impactFreezeLeft=Mathf.Max(0,impactFreezeLeft-Time.deltaTime);
+                TickImpactPresentation(Mathf.Max(0,Time.deltaTime-frozen));
                 if(QAInput){moveInput=Vector2.ClampMagnitude(QAMove,1);braceInput=!actionLocked&&QABrace;if(!actionLocked&&QADash)dashPressed=true;QADash=false;}
                 else
                 {
@@ -230,18 +294,25 @@ namespace EarlyRush
                 if(TransitionLeft<=0){BuildStage(Stage+1);State=RushState.Playing;Sound(tickClip);}
             }
             else{moveInput=Vector2.zero;braceInput=false;dashPressed=false;}
-            impact=Mathf.MoveTowards(impact,0,Time.deltaTime*4);
-            shake=Mathf.MoveTowards(shake,0,Time.deltaTime*1.5f);
-            collisionSoundCooldown-=Time.deltaTime;
+            if(State==RushState.Playing)
+            {
+                impact=Mathf.MoveTowards(impact,0,Time.deltaTime*4);
+                if(impactFreezeLeft<=0)shake=Mathf.MoveTowards(shake,0,Time.deltaTime*2.6f);
+                collisionSoundCooldown-=Time.deltaTime;
+            }
             // Camera follows in LateUpdate. Pause freezes the visual player as well.
             if(player!=null&&State==RushState.Playing)
             {
-                player.position=Vector3.Lerp(player.position,new Vector3(position.x,0,position.y),1-Mathf.Exp(-Time.deltaTime*40));
-                if(facing.sqrMagnitude>.01f)visual.rotation=Quaternion.Slerp(visual.rotation,Quaternion.LookRotation(new Vector3(facing.x,0,facing.y)),1-Mathf.Exp(-Time.deltaTime*18));
-                RushVisuals.AnimatePerson(visual,State==RushState.Playing?velocity:Vector2.zero,Time.time,IsDashing,IsBracing);
-                visual.localScale=new Vector3(1+impact*.14f,1-impact*.18f,1+impact*.14f);
+                if(impactFreezeLeft<=0)
+                {
+                    player.position=Vector3.Lerp(player.position,new Vector3(position.x,0,position.y),1-Mathf.Exp(-Time.deltaTime*40));
+                    if(facing.sqrMagnitude>.01f)visual.rotation=Quaternion.Slerp(visual.rotation,Quaternion.LookRotation(new Vector3(facing.x,0,facing.y)),1-Mathf.Exp(-Time.deltaTime*18));
+                    RushVisuals.AnimatePerson(visual,velocity,ImpactFxClock,IsDashing,IsBracing);
+                    for(int i=9;i>0;i--)trailPoints[i]=trailPoints[i-1];
+                    trailPoints[0]=player.position+Vector3.up*.3f;trail.SetPositions(trailPoints);trail.enabled=IsDashing;
+                }
+                visual.localScale=RushVisuals.ImpactScale(playerHitAge,-1,playerJellyStrength);
                 ring.localScale=Vector3.one*(IsBracing?1.45f:1.2f);ring.localScale=new Vector3(ring.localScale.x,.018f,ring.localScale.z);
-                for(int i=9;i>0;i--)trailPoints[i]=trailPoints[i-1];trailPoints[0]=player.position+Vector3.up*.3f;trail.SetPositions(trailPoints);trail.enabled=IsDashing;
             }
         }
         Vector3 CameraTarget()
@@ -263,14 +334,18 @@ namespace EarlyRush
         {
             if(world==null||State!=RushState.Playing)return;
             cameraRig.orthographicSize=Mathf.Max(9.5f,6f/Mathf.Max(.5f,cameraRig.aspect));
-            Vector2 ahead=Vector2.ClampMagnitude(velocity*.38f,3.2f);
-            cameraLook=Vector2.Lerp(cameraLook,ahead,1-Mathf.Exp(-Time.deltaTime*5));
-            cameraFocus=Vector3.SmoothDamp(cameraFocus,CameraTarget(),ref cameraVelocity,.14f,80f,Time.deltaTime);
-            cameraRig.transform.position=cameraFocus+cameraHome;
+            if(impactFreezeLeft<=0)
+            {
+                Vector2 ahead=Vector2.ClampMagnitude(velocity*.38f,3.2f);
+                cameraLook=Vector2.Lerp(cameraLook,ahead,1-Mathf.Exp(-Time.deltaTime*5));
+                cameraFocus=Vector3.SmoothDamp(cameraFocus,CameraTarget(),ref cameraVelocity,.14f,80f,Time.deltaTime);
+            }
+            Vector3 kick=ScreenShakeEnabled?new Vector3(Mathf.Sin(ImpactFxClock*93),Mathf.Sin(ImpactFxClock*77)*.35f,0)*shake*.065f:Vector3.zero;
+            cameraRig.transform.position=cameraFocus+cameraHome+kick;
         }
         void FixedUpdate()
         {
-            if(State!=RushState.Playing)return;
+            if(State!=RushState.Playing||impactFreezeLeft>0)return;
             float dt=Time.fixedDeltaTime;
             cooldown=Mathf.Max(0,cooldown-dt);dashLeft=Mathf.Max(0,dashLeft-dt);
             IsBracing=braceInput;
@@ -287,7 +362,10 @@ namespace EarlyRush
             if(stumbleLeft<=0)continuousStumbleTime=0;
             if(IsBracing)dashLeft=0;
             if(dashPressed && !IsBracing && !IsStumbling && cooldown<=0)
-            {dashLeft=.20f;cooldown=1.15f;if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;Sound(dashClip);Log("dash");}
+            {dashLeft=.20f;cooldown=1.15f;if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;
+                CurrentDashId++;impactBursts[CurrentDashId]=new ImpactBurst();
+                if(CurrentDashId>4)impactBursts.Remove(CurrentDashId-4);
+                Sound(dashClip);Log("dash");}
             dashPressed=false;IsDashing=dashLeft>0;
             float speed=(Stage==0?6.1f:4.9f)*(IsBracing?.48f:IsStumbling?.60f:1f);
             if(IsDashing)velocity=facing*(Stage==0?13f:11.3f);
@@ -299,7 +377,8 @@ namespace EarlyRush
                 velocity=Vector2.MoveTowards(velocity,moveInput*speed,acceleration*dt);
                 if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;
             }
-            MovePlayer(velocity*dt);
+            playerTickStart=position;MovePlayer(velocity*dt);
+            playerSeparationLeft=dt*3.6f;
             UpdateCrowds(dt);
             position=Resolve(position,Radius,false);
             Vector2 goal=new Vector2(world.goal.x,world.goal.z);
@@ -321,14 +400,18 @@ namespace EarlyRush
         {
             // This budget bounds accumulated local displacement; it never snaps a commuter
             // back to a scripted origin, so yielding and going round another person persists.
+            // Share one real-distance budget across every correction in this physics tick.
+            // Deep overlap after recovery must be resolved gradually, not as a one-frame jump.
+            if(c.correctionDistanceLeft<=.00001f)return;
             Vector2 next=Vector2.ClampMagnitude(c.offset+displacement,2.2f);
             Vector2 before=c.position;
-            c.position=MoveCrowd(c.position,next-c.offset);
+            c.position=MoveCrowd(c.position,Vector2.ClampMagnitude(next-c.offset,c.correctionDistanceLeft));
+            c.correctionDistanceLeft=Mathf.Max(0,c.correctionDistanceLeft-Vector2.Distance(c.position,before));
             c.offset=Vector2.ClampMagnitude(c.offset+c.position-before,2.2f);
         }
         bool TryRecycle(Crowd c,int id)
         {
-            if(StageTime<c.recycleAt)return false;
+            if(c.fixtureDisabled||StageTime<c.recycleAt)return false;
             c.recycleAt=StageTime+.3f;
             Vector2 entry=Resolve(c.origin,.40f,false);
             // Test the actual resolved position, not an unchecked authored spawn point.
@@ -336,6 +419,7 @@ namespace EarlyRush
             for(int i=0;i<crowds.Count;i++)
                 if(crowds[i].active&&(crowds[i].position-entry).sqrMagnitude<1.05f*1.05f)return false;
             c.position=entry;c.previous=entry;c.waypoint=c.originWaypoint;
+            ResetCrowdImpact(c);
             c.pushVelocity=Vector2.zero;c.offset=Vector2.zero;c.progress=0;c.stuckTime=0;
             c.startAt=StageTime+.1f+(id%5)*.07f;c.crossedGoal=false;c.touchingPlayer=false;
             c.heading=(c.route[c.waypoint]-entry).normalized;
@@ -352,6 +436,14 @@ namespace EarlyRush
                 Crowd c=crowds[i];
                 if(!c.active&&!TryRecycle(c,i))continue;
                 c.previous=c.position;
+                c.correctionDistanceLeft=dt*3f;
+                if(c.airborne){SimulateFlight(c,dt);continue;}
+                if(c.recoveryLeft>0)
+                {
+                    c.recoveryLeft=Mathf.Max(0,c.recoveryLeft-dt);
+                    if(c.recoveryLeft<=0)RejoinForwardRoute(c);
+                    continue;
+                }
                 c.offset=Vector2.MoveTowards(c.offset,Vector2.zero,dt*1.2f);
                 c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15f);
                 while(c.waypoint<c.route.Length-1&&Vector2.Distance(c.position,c.route[c.waypoint])<.35f)c.waypoint++;
@@ -362,7 +454,7 @@ namespace EarlyRush
                 Vector2 avoidance=Vector2.zero;float pace=1;
                 for(int j=0;j<crowds.Count;j++)
                 {
-                    if(i==j||!crowds[j].active)continue;
+                    if(i==j||!crowds[j].active||crowds[j].airborne||crowds[j].recoveryLeft>0)continue;
                     Vector2 away=c.position-crowds[j].position;
                     float sq=away.sqrMagnitude;
                     if(sq>3.24f||sq<.00001f)continue;
@@ -392,14 +484,15 @@ namespace EarlyRush
                 c.position=MoveCrowd(c.position,travel);
                 PushCrowd(c,c.pushVelocity*dt);
             }
+            PropagateImpacts();
             // Gentle symmetric separation uses real static collision for both bodies.
             // No elastic velocity is fed back, so dense groups cannot gain unlimited momentum.
             for(int i=0;i<crowds.Count;i++)
             {
-                var a=crowds[i];if(!a.active)continue;
+                var a=crowds[i];if(!a.active||a.airborne||a.recoveryLeft>0)continue;
                 for(int j=i+1;j<crowds.Count;j++)
                 {
-                    var b=crowds[j];if(!b.active)continue;
+                    var b=crowds[j];if(!b.active||b.airborne||b.recoveryLeft>0)continue;
                     Vector2 delta=a.position-b.position;float sq=delta.sqrMagnitude;
                     if(sq>=.78f*.78f)continue;
                     float distance=Mathf.Sqrt(sq);
@@ -412,34 +505,47 @@ namespace EarlyRush
             {
                 var c=crowds[i];if(!c.active)continue;
                 Vector2 delta=position-c.position;float distance=delta.magnitude;
-                bool newContact=distance<Radius+.43f&&!c.touchingPlayer;
-                if(distance<Radius+.43f)c.touchingPlayer=true;
-                else if(distance>Radius+.52f)c.touchingPlayer=false;
-                if(distance<Radius+.43f)
+                if(!c.airborne&&c.recoveryLeft<=0)
                 {
-                    Vector2 normal=distance>.001f?delta/distance:Vector2.right;
-                    float overlap=Radius+.43f-distance;
-                    bool dashing=IsDashing;
-                    float crowdShare=dashing?.70f:IsBracing?.86f:.45f;
-                    Vector2 before=c.position;
-                    PushCrowd(c,-normal*overlap*crowdShare);
-                    float displaced=Mathf.Max(0,Vector2.Dot(before-c.position,normal));
-                    // If a commuter is against a wall, the player takes the remaining
-                    // separation and can immediately reverse or brace to escape.
-                    position=Resolve(position+normal*Mathf.Max(0,overlap-displaced),Radius,false);
-                    c.pushVelocity=Vector2.ClampMagnitude(c.pushVelocity-normal*(dashing?5f:IsBracing?1.7f:1.2f),7f);
-                    float into=Vector2.Dot(velocity,normal);
-                    if(into<0&&!dashing)velocity-=normal*into*(IsBracing?.1f:.55f);
-                    bool fresh=RegisterHit(1000+i,dashing?1f:.55f);
-                    if(fresh&&newContact&&!IsBracing&&stumbleProtectionLeft<=0)
+                    bool newContact=distance<Radius+.43f&&!c.touchingPlayer;
+                    if(distance<Radius+.43f)c.touchingPlayer=true;
+                    else if(distance>Radius+.52f)c.touchingPlayer=false;
+                    bool dashTouch=IsDashing&&SegmentDistance(c.position,playerTickStart,position)<Radius+.43f;
+                    bool launched=false;
+                    if(dashTouch)
                     {
-                        stumbleLeft=.45f;stumbleProtectionLeft=1.15f;StumbleTriggers++;
-                        continuousStumbleTime=0;dashLeft=0;IsDashing=false;velocity*=.6f;
+                        Vector2 forward=velocity.sqrMagnitude>.1f?velocity.normalized:facing;
+                        Vector2 outward=c.position-position;
+                        if(outward.sqrMagnitude<.001f)outward=forward;else outward.Normalize();
+                        Vector2 direction=(forward*.85f+outward*.65f).normalized;
+                        launched=LaunchCrowd(i,direction,CurrentDashId,0);
                     }
-                    else if(dashing){dashLeft=0;IsDashing=false;velocity*=.5f;}
+                    if(!launched&&distance<Radius+.43f)
+                    {
+                        Vector2 normal=distance>.001f?delta/distance:Vector2.right;
+                        float overlap=Radius+.43f-distance;
+                        float crowdShare=IsDashing?.94f:IsBracing?.88f:.70f;
+                        Vector2 before=c.position;PushCrowd(c,-normal*overlap*crowdShare);
+                        float displaced=Mathf.Max(0,Vector2.Dot(before-c.position,normal));
+                        Vector2 playerBefore=position;
+                        MovePlayer(normal*Mathf.Min(Mathf.Max(0,overlap-displaced),playerSeparationLeft));
+                        playerSeparationLeft=Mathf.Max(0,playerSeparationLeft-Vector2.Distance(position,playerBefore));
+                        c.pushVelocity=Vector2.ClampMagnitude(c.pushVelocity-normal*(IsBracing?.35f:.5f),2.2f);
+                        float into=Vector2.Dot(velocity,normal);
+                        if(into<0&&!IsDashing)velocity-=normal*into*(IsBracing?.06f:.12f);
+                        bool fresh=RegisterHit(1000+i,IsDashing?.45f:.2f);
+                        if(fresh&&newContact&&!IsDashing)
+                        {
+                            NormalContactCount++;c.hitAge=0;c.jellyStrength=.18f;
+                            playerHitAge=0;playerJellyStrength=.14f;
+                        }
+                        // Ordinary contact is a light shove. Strong hits preserve the
+                        // player's burst; neither path applies the old self-stumble.
+                    }
                 }
+                c.lastVelocity=(c.position-c.previous)/dt;
                 float signed=Vector2.Dot(c.position-c.previous,c.heading);
-                if(StageTime>=c.startAt)c.stuckTime=signed<dt*.18f?c.stuckTime+dt:Mathf.Max(0,c.stuckTime-dt*2);
+                if(!c.airborne&&c.recoveryLeft<=0&&StageTime>=c.startAt)c.stuckTime=signed<dt*.18f?c.stuckTime+dt:Mathf.Max(0,c.stuckTime-dt*2);
                 c.progress+=signed;
                 if(signed>=0)CrowdForwardDistance+=signed;else CrowdBackwardDistance-=signed;
                 if(!c.crossedGoal&&Mathf.Abs(c.position.x-world.goal.x)<world.goalHalfSize.x+1f&&c.position.y>=world.goal.z-.5f)
@@ -448,20 +554,189 @@ namespace EarlyRush
                 // would let two separated bodies hold each other outside it indefinitely.
                 Rect cover=world.crowdExitCover;
                 bool covered=c.position.x>cover.xMin+.5f&&c.position.x<cover.xMax-.5f&&c.position.y>cover.yMin+.5f&&c.position.y<cover.yMax-.5f;
-                if(c.waypoint==c.route.Length-1&&c.position.y>=world.crowdExit.y-.18f&&Mathf.Abs(c.position.x-world.crowdExit.x)<=1.6f&&covered)
+                if(!c.airborne&&c.recoveryLeft<=0&&c.waypoint==c.route.Length-1&&c.position.y>=world.crowdExit.y-.18f&&Mathf.Abs(c.position.x-world.crowdExit.x)<=1.6f&&covered)
                 {
                     c.active=false;c.recycleAt=StageTime+.6f+(i%7)*.08f;
                     c.root.position=new Vector3(c.position.x,0,c.position.y);
                     c.root.gameObject.SetActive(false);CrowdArrivals++;continue;
                 }
                 c.root.position=new Vector3(c.position.x,0,c.position.y);
-                if(CrowdInView(c.position,.18f))
+                if(!c.airborne&&c.recoveryLeft<=0&&CrowdInView(c.position,.18f))
                 {
                     Vector2 cv=(c.position-c.previous)/dt;
                     if(cv.sqrMagnitude>.02f)c.visual.rotation=Quaternion.Slerp(c.visual.rotation,Quaternion.LookRotation(new Vector3(cv.x,0,cv.y)),dt*7);
-                    RushVisuals.AnimatePerson(c.parts,cv,StageTime+i,false,false);
+                    RushVisuals.AnimatePerson(c.parts,cv,ImpactFxClock+i,false,false);
+                }
+                ApplyCrowdPresentation(c);
+            }
+        }
+        static float SegmentDistance(Vector2 point,Vector2 a,Vector2 b)
+        {
+            Vector2 ab=b-a;float t=ab.sqrMagnitude>.00001f?Mathf.Clamp01(Vector2.Dot(point-a,ab)/ab.sqrMagnitude):0;
+            return Vector2.Distance(point,a+ab*t);
+        }
+        void ResetCrowdImpact(Crowd c)
+        {
+            c.airborne=false;c.height=0;c.verticalVelocity=0;c.flightVelocity=Vector2.zero;
+            c.recoveryLeft=0;c.airTime=0;c.hitAge=-1;c.landingAge=-1;c.jellyStrength=0;
+            c.lastVelocity=Vector2.zero;c.spinDegrees=0;c.landingSpin=0;c.touchingPlayer=false;
+            c.visual.localPosition=Vector3.zero;c.visual.localScale=Vector3.one;
+            if(c.heading.sqrMagnitude>.01f)c.visual.rotation=Quaternion.LookRotation(new Vector3(c.heading.x,0,c.heading.y));
+        }
+        void ClearImpactTransients()
+        {
+            impactFreezeLeft=0;shake=0;impact=0;playerHitAge=-1;playerJellyStrength=0;
+            if(impactFx!=null)impactFx.Clear();
+            if(trail)trail.enabled=false;
+            if(visual)visual.localScale=Vector3.one;
+            foreach(var c in crowds){c.hitAge=-1;c.landingAge=-1;c.jellyStrength=0;ApplyCrowdPresentation(c);}
+            if(cameraRig)cameraRig.transform.position=cameraFocus+cameraHome;
+        }
+        void ClearImpactScene()
+        {
+            ClearImpactTransients();nextImpactStopAt=0;
+            foreach(var c in crowds)ResetCrowdImpact(c);
+        }
+        void TickImpactPresentation(float dt)
+        {
+            if(dt<=0)return;
+            if(impactFx!=null)impactFx.Tick(dt);
+            if(playerHitAge>=0)playerHitAge+=dt;
+            foreach(var c in crowds)
+            {
+                if(!c.active)continue;
+                if(c.hitAge>=0)c.hitAge+=dt;
+                if(c.landingAge>=0)c.landingAge+=dt;
+                ApplyCrowdPresentation(c);
+            }
+        }
+        void ApplyCrowdPresentation(Crowd c)
+        {
+            if(!c.visual)return;
+            Vector3 scale=RushVisuals.ImpactScale(c.hitAge,c.landingAge,c.jellyStrength);
+            c.visual.localScale=scale;
+            if(c.airborne||c.recoveryLeft>0)
+            {
+                float angle=c.airborne?c.spinDegrees:Mathf.Lerp(c.landingSpin,0,Mathf.SmoothStep(0,1,1-c.recoveryLeft/.55f));
+                Vector2 direction=c.launchDirection.sqrMagnitude>.01f?c.launchDirection:Vector2.up;
+                Quaternion yaw=Quaternion.LookRotation(new Vector3(direction.x,0,direction.y));
+                float wobble=c.airborne?Mathf.Sin(c.airTime*16)*10:c.landingAge>=0?Mathf.Sin((.55f-c.recoveryLeft)*25)*c.recoveryLeft*24:0;
+                c.visual.rotation=yaw*Quaternion.Euler(-angle,0,wobble);
+                float pivot=.85f*scale.y;
+                float settle=c.airborne?0:.35f*Mathf.Abs(Mathf.Sin(angle*Mathf.Deg2Rad));
+                float bounce=c.landingAge>=0?Mathf.Abs(Mathf.Sin(c.landingAge*20))*Mathf.Exp(-c.landingAge*8)*.18f:0;
+                c.visual.localPosition=Vector3.up*(c.height+pivot-settle+bounce)-c.visual.localRotation*(Vector3.up*pivot);
+            }
+            else c.visual.localPosition=Vector3.zero;
+        }
+        bool LaunchCrowd(int index,Vector2 direction,int dashId,int depth)
+        {
+            var c=crowds[index];
+            if(!c.active||c.airborne||c.recoveryLeft>0||depth>2||!impactBursts.TryGetValue(dashId,out var burst))return false;
+            if(burst.targets.Count>=6||!burst.targets.Add(index))return false;
+            direction=direction.sqrMagnitude>.01f?direction.normalized:Vector2.up;
+            c.airborne=true;c.airTime=0;c.height=0;c.verticalVelocity=8.2f*Mathf.Pow(.88f,depth);
+            c.flightVelocity=direction*(13.8f*Mathf.Pow(.80f,depth));c.launchDirection=direction;
+            c.hitDashId=dashId;c.chainDepth=depth;c.launchCount++;c.spinDegrees=0;c.recoveryLeft=0;
+            c.hitAge=0;c.landingAge=-1;c.jellyStrength=depth==0?1f:.82f;c.touchingPlayer=false;
+            c.pushVelocity=Vector2.zero;c.offset=Vector2.zero;
+            TotalLaunches++;if(depth>0)ChainLaunches++;
+            MaxObservedChainDepth=Mathf.Max(MaxObservedChainDepth,depth);
+            MaxObservedDashTargets=Mathf.Max(MaxObservedDashTargets,burst.targets.Count);
+            if(depth==0)
+            {
+                RegisterHit(1000+index,.85f);playerHitAge=0;playerJellyStrength=.46f;
+                // Commit the compressed model BEFORE starting hit-stop.
+                if(visual)visual.localScale=RushVisuals.ImpactScale(0,-1,playerJellyStrength);
+            }
+            ApplyCrowdPresentation(c);
+            if(impactFx!=null)impactFx.Emit(new Vector3(c.position.x,.12f,c.position.y),direction,depth==0);
+            if(!burst.stopped)
+            {
+                burst.stopped=true;
+                if(StageTime>=nextImpactStopAt){impactFreezeLeft=.06f;nextImpactStopAt=StageTime+.18f;}
+                shake=Mathf.Max(shake,.9f);Sound(launchClip,.8f);
+            }
+            return true;
+        }
+        void SimulateFlight(Crowd c,float dt)
+        {
+            c.airTime+=dt;
+            Vector2 desired=c.flightVelocity*dt;
+            Vector2 before=c.position;c.position=MoveCrowd(c.position,desired);
+            Vector2 blocked=desired-(c.position-before);
+            if(blocked.sqrMagnitude>.00001f)
+            {
+                Vector2 normal=blocked.normalized;float into=Vector2.Dot(c.flightVelocity,normal);
+                if(into>0)c.flightVelocity-=normal*into*1.15f;
+            }
+            c.flightVelocity=Vector2.ClampMagnitude(Vector2.MoveTowards(c.flightVelocity,Vector2.zero,dt*4.4f),13.8f);
+            c.height+=c.verticalVelocity*dt;c.verticalVelocity-=19.5f*dt;
+            c.spinDegrees+=420f*dt;
+            if(c.height<=0&&c.verticalVelocity<0 || c.airTime>1.1f)
+            {
+                c.height=0;c.verticalVelocity=0;c.flightVelocity=Vector2.zero;c.airborne=false;
+                c.position=Resolve(c.position,.40f,false);c.recoveryLeft=.55f;
+                c.landingSpin=Mathf.DeltaAngle(0,c.spinDegrees);c.landingAge=0;c.landedAt=StageTime;c.landCount++;
+                RejoinForwardRoute(c);
+                if(impactFx!=null)impactFx.Emit(new Vector3(c.position.x,.1f,c.position.y),c.launchDirection,false);
+            }
+        }
+        void PropagateImpacts()
+        {
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var source=crowds[i];
+                if(!source.active||!source.airborne||source.airTime<.025f||source.chainDepth>=2||source.flightVelocity.sqrMagnitude<9f)continue;
+                if(!impactBursts.TryGetValue(source.hitDashId,out var burst)||burst.targets.Count>=6)continue;
+                for(int j=0;j<crowds.Count&&burst.targets.Count<6;j++)
+                {
+                    var target=crowds[j];
+                    if(i==j||!target.active||target.airborne||target.recoveryLeft>0||burst.targets.Contains(j))continue;
+                    if(SegmentDistance(target.position,source.previous,source.position)>.83f)continue;
+                    Vector2 forward=source.flightVelocity.normalized;
+                    Vector2 outward=target.position-source.position;
+                    if(outward.sqrMagnitude>.001f)outward.Normalize();else outward=forward;
+                    if(LaunchCrowd(j,(forward*.85f+outward*.35f).normalized,source.hitDashId,source.chainDepth+1))
+                        source.flightVelocity*=.88f;
                 }
             }
+        }
+        void RejoinForwardRoute(Crowd c)
+        {
+            float best=float.MaxValue;int next=c.waypoint;
+            for(int i=Mathf.Max(1,c.waypoint);i<c.route.Length;i++)
+            {
+                Vector2 a=c.route[i-1],ab=c.route[i]-a;
+                float t=ab.sqrMagnitude>.001f?Mathf.Clamp01(Vector2.Dot(c.position-a,ab)/ab.sqrMagnitude):1;
+                float distance=(c.position-a-ab*t).sqrMagnitude;
+                if(distance<best){best=distance;next=t>.96f&&i<c.route.Length-1?i+1:i;}
+            }
+            c.waypoint=Mathf.Max(c.waypoint,next);c.stuckTime=0;c.offset=Vector2.zero;c.pushVelocity=Vector2.zero;
+            c.heading=(c.route[c.waypoint]-c.position).normalized;
+        }
+        // Explicit fixture initialization is unavailable in ordinary builds/runs. It does
+        // not apply impacts: the dedicated harness still has to drive movement and Space.
+        public bool SetupImpactFixture(string kind)
+        {
+            if(!impactQaMode||(kind!="front"&&kind!="side"&&kind!="chain"&&kind!="boundary"))return false;
+            ResetRun();State=RushState.Playing;QAInput=true;QAMove=Vector2.zero;QABrace=false;QADash=false;actionLocked=false;
+            position=kind=="boundary"?new Vector2(17.8f,6):new Vector2(0,4);
+            facing=kind=="boundary"?Vector2.right:Vector2.up;velocity=Vector2.zero;
+            player.position=new Vector3(position.x,0,position.y);visual.rotation=Quaternion.LookRotation(new Vector3(facing.x,0,facing.y));
+            Vector2[] points=kind=="chain"?new[]{new Vector2(0,6),new Vector2(0,7.4f),new Vector2(.60f,8.05f),new Vector2(-.60f,8.05f),new Vector2(0,9.0f),new Vector2(.70f,9.7f),new Vector2(-.70f,9.7f),new Vector2(0,10.7f),new Vector2(0,12.0f)}
+                :new[]{kind=="boundary"?new Vector2(19,6):new Vector2(kind=="side"?.58f:0,6)};
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var c=crowds[i];ResetCrowdImpact(c);c.fixtureDisabled=true;c.active=i<points.Length;c.root.gameObject.SetActive(c.active);
+                if(!c.active)continue;
+                c.position=Resolve(points[i],.40f,false);c.previous=c.position;c.origin=c.position;
+                c.route=new[]{c.position,new Vector2(c.position.x,22),new Vector2(0,24),world.crowdExit};
+                c.waypoint=1;c.originWaypoint=1;c.speed=3.1f;c.startAt=.85f;c.generation=0;c.progress=0;
+                c.hitDashId=-1;c.launchCount=0;c.landCount=0;c.heading=Vector2.up;
+                c.root.position=new Vector3(c.position.x,0,c.position.y);c.visual.rotation=Quaternion.identity;
+            }
+            ResetCamera();ImpactFixtureKind=kind;ImpactFixtureReady=true;return true;
         }
         void MovePlayer(Vector2 delta)
         {
@@ -516,13 +791,14 @@ namespace EarlyRush
         void CompleteStage()
         {
             if(State!=RushState.Playing)return;
+            ClearImpactScene();
             SplitTimes[Stage]=StageTime;SplitCollisions[Stage]=Collisions-stageStartCollisions;stageStartCollisions=Collisions;
             velocity=Vector2.zero;dashLeft=0;stumbleLeft=0;stumbleProtectionLeft=0;continuousStumbleTime=0;IsDashing=false;IsBracing=false;LockActions();TransitionCount++;
             Sound(goalClip);Log("stage_complete");
             if(Stage==2){State=RushState.Results;Log(TotalTime<=TimeLimit?"result_on_time":"result_late");}
             else{State=RushState.Transition;transitionBeginTime=Time.unscaledTime;TransitionLeft=1.55f;}
         }
-        void OnApplicationFocus(bool focus){if(!focus&&qa==null&&State==RushState.Playing)TogglePause();}
+        void OnApplicationFocus(bool focus){if(!focus&&qa==null&&!impactQaMode&&State==RushState.Playing)TogglePause();}
         void OnGUI(){RushUI.Draw(this);}
         public void Log(string evt){Debug.Log("RUSH_EVENT "+evt+" stage="+Stage+" time="+TotalTime.ToString("F3")+" pos="+position+" collisions="+Collisions+" transitions="+TransitionCount);}
     }
