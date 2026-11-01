@@ -446,6 +446,66 @@ namespace EarlyRush
             c.root.position=new Vector3(entry.x,0,entry.y);c.root.gameObject.SetActive(true);
             return true;
         }
+        const float OrdinaryBodyFloor=.60f;
+        Vector2 ConstrainOrdinaryStep(Crowd actor,Vector2 start,Vector2 step)
+        {
+            // The .78m soft separator still does the spreading. This smaller floor only
+            // stops intentional walking from continuously deepening a crowded queue.
+            float reach=OrdinaryBodyFloor+step.magnitude;
+            for(int pass=0;pass<2;pass++)
+                for(int j=0;j<crowds.Count;j++)
+                {
+                    var other=crowds[j];if(other==actor||!other.active||other.airborne)continue;
+                    Vector2 delta=start-other.position;float sq=delta.sqrMagnitude;
+                    if(sq<.00000001f||sq>reach*reach)continue;
+                    float distance=Mathf.Sqrt(sq);Vector2 normal=delta/distance;
+                    float allowed=Mathf.Max(0,distance-OrdinaryBodyFloor);
+                    float inward=-Vector2.Dot(step,normal);
+                    if(inward>allowed)step+=normal*(inward-allowed);
+                }
+            // A later projection can slightly violate an earlier plane. Scale the
+            // remaining step to their tightest common limit without allocating lists.
+            float fraction=1f;
+            for(int j=0;j<crowds.Count;j++)
+            {
+                var other=crowds[j];if(other==actor||!other.active||other.airborne)continue;
+                Vector2 delta=start-other.position;float sq=delta.sqrMagnitude;
+                if(sq<.00000001f||sq>reach*reach)continue;
+                float distance=Mathf.Sqrt(sq),inward=-Vector2.Dot(step,delta/distance);
+                float allowed=Mathf.Max(0,distance-OrdinaryBodyFloor);
+                if(inward>allowed+.000001f)fraction=Mathf.Min(fraction,allowed/inward);
+            }
+            return step*fraction;
+        }
+        bool OrdinaryStepRespectsBodies(Crowd actor,Vector2 start,Vector2 actualStep)
+        {
+            float reach=OrdinaryBodyFloor+actualStep.magnitude;
+            for(int j=0;j<crowds.Count;j++)
+            {
+                var other=crowds[j];if(other==actor||!other.active||other.airborne)continue;
+                Vector2 delta=start-other.position;float sq=delta.sqrMagnitude;
+                if(sq<.00000001f||sq>reach*reach)continue;
+                float distance=Mathf.Sqrt(sq);
+                if(-Vector2.Dot(actualStep,delta/distance)>Mathf.Max(0,distance-OrdinaryBodyFloor)+.00001f)return false;
+            }
+            return true;
+        }
+        Vector2 MoveOrdinaryCrowd(Crowd actor,Vector2 desiredStep)
+        {
+            Vector2 start=actor.position,attempt=desiredStep;
+            for(int retry=0;retry<4;retry++)
+            {
+                Vector2 step=ConstrainOrdinaryStep(actor,start,attempt);
+                if(step.sqrMagnitude<.0000000001f)return start;
+                Vector2 resolved=MoveCrowd(start,step);
+                Vector2 actual=resolved-start;
+                if(OrdinaryStepRespectsBodies(actor,start,actual))return resolved;
+                // Static corner resolution can redirect a step. Re-project the real
+                // displacement and shorten it; if no safe step exists, wait this tick.
+                attempt=actual*.5f;
+            }
+            return start;
+        }
         void SeparateCommittedCrowds()
         {
             // Keep the telegraphed origin fixed while yielding real space around it.
@@ -522,7 +582,7 @@ namespace EarlyRush
                 }
                 Vector2 travel=desired*dt;
                 if(to.magnitude<.5f)travel=Vector2.ClampMagnitude(travel,to.magnitude);
-                c.position=MoveCrowd(c.position,travel);
+                c.position=MoveOrdinaryCrowd(c,travel);
                 PushCrowd(c,c.pushVelocity*dt);
             }
             ResolveNpcRushHits();
