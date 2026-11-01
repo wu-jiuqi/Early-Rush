@@ -122,7 +122,7 @@ run2 的唯一失败是直冲 115.598 秒超过当时 95 秒；run3 保守短路
 
 截图目录：D:/CodexWorkspace/2026-10-31/task-4/qa-v2-run4/
 
-本报告与规范化 JSON 的拟定本地目标为 D:/CodexWorkspace/2026-10-31/task-4/docs/v2-validation.md 和 docs/qa-final.json；当前尚未本地落盘。远端是否保存以 GitHub 提交回执为准。
+本报告与规范化 JSON 在工作区中保存为 D:/CodexWorkspace/2026-10-31/task-4/docs/v2-validation.md 和 docs/qa-final.json，并作为发行说明归档；原始 Player JSON 仍保留在 qa-v2-run4/qa-report.json。
 
 本地 Unity 原始 QA JSON SHA-256（不等于远端规范化副本的文件校验）：19BE9BB891FF19F1C835B21ED041759658DC40E3253F55E66F894F4D7A684308
 
@@ -130,7 +130,7 @@ run2 的唯一失败是直冲 115.598 秒超过当时 95 秒；run3 保守短路
 
 加密旧惩罚 run2 报告 SHA-256：89032B50B1E6C524D702EEB15D67C8F5829A8510AEE7A2BB75019C9E1515839E
 
-包装状态：build5 的 EXE／Data／DLL 等可玩目录已生成并通过上述 Windows Player 测试；最终 ZIP、ZIP 完整性／CRC 和发行 SHA 校验文件尚未生成，原因是执行环境再次断连：exec-server transport disconnected。没有因此重试不确定的本地写入。待环境恢复后完成打包，校验将写入 artifacts/EarlyRush-V2-SHA256.txt；该文件当前不能声称已经存在。本报告不写 ZIP 自身哈希，避免自循环。
+发行核验：build5 的 EXE／Data／DLL 等完整目录用于本次 Windows Player 验收。Windows 发行文件为 artifacts/EarlyRush-V2-Windows-x64.zip，源码发行文件为 artifacts/EarlyRush-V2-Unity-Source.zip。ZIP 的字节数、SHA-256、完整性／CRC、解压后 FILES.sha256 核对和解压 EXE 启动结果独立记录于交付清单及 artifacts/EarlyRush-V2-SHA256.txt，不与本报告的游戏功能验收混为同一项。本报告不写 ZIP 自身哈希，避免自循环。
 
 远端规范化 qa-final.json SHA-256：0fc2ba69bc977d5ff3001739a3528e3206794ea9c3709f8799eed6ecf8df25f2；UTF-8 字节数：68839。这是规范化副本的校验，不替代本地原始文件校验。
 

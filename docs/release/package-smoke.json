@@ -1,0 +1,19 @@
+{
+  "scope": "Unpacked ZIP startup and input smoke; closed intentionally, not a second full acceptance suite",
+  "processExitCode": 0,
+  "closedNormally": true,
+  "menuScreenshotViewed": true,
+  "partialChecksPassed": 75,
+  "partialChecksFailed": 0,
+  "stageCompletionEvents": [
+    "RUSH_EVENT stage_complete stage=0 time=31.365 pos=(0.08, 92.91) collisions=43 transitions=1",
+    "RUSH_EVENT stage_complete stage=1 time=60.997 pos=(0.01, 92.90) collisions=73 transitions=2",
+    "RUSH_EVENT stage_complete stage=2 time=95.002 pos=(0.02, 92.91) collisions=138 transitions=3"
+  ],
+  "resultEvents": [
+    "RUSH_EVENT result_on_time stage=2 time=95.002 pos=(0.02, 92.91) collisions=138 transitions=3",
+    "RUSH_QA_CHECK PASS Risk run finishes on time | time=95.00186 limit=110"
+  ],
+  "log": "artifacts/player-v2-unpacked-smoke.log",
+  "menuScreenshot": "qa-v2-unpacked-smoke/01-menu.png"
+}

@@ -4,7 +4,7 @@ Unity 6000.0.26f1 制作的 Windows x64 通勤游戏：骑车赶地铁 → 穿�
 
 本次 v2 将三段扩展为多屏俯视地图，加入平滑跟随镜头、密集的目的地人流、路线选择和可恢复的冲撞失衡。最终候选 build5 已成功构建；该构建目录中的实际 Windows Player 验收 run4 已完成，**240 项通过、0 项失败**（`passed=true`、`failureCount=0`）。详细指标、测试口径与限制见 [v2 验收报告](docs/v2-validation.md) 和 [仓库中的规范化 JSON 副本](docs/qa-final.json)。本地原始 JSON 与该副本的字节格式可能不同，SHA-256 分别记录于报告，不能混用。
 
-## 本地运行与封包状态
+## 运行与发行文件
 
 已生成的本地 Player 位于：
 
@@ -23,7 +23,7 @@ D:\CodexWorkspace\2026-10-31\task-4\artifacts\EarlyRush-V2-Windows\EarlyRush.exe
 | Enter | 开始、确认教学或结算后再次出发 |
 | R | 暂停或结算时从头重开 |
 
-**尚未生成并核验可分发 v2 ZIP。** 在最终封包阶段，Windows 执行环境返回 `exec-server transport disconnected`，随后状态为 `unavailable`，因此 ZIP 创建、CRC 检查和最终交付 SHA-256 清单仍被阻断；不能把已有 EXE 目录称为已封包交付。恢复环境后应将完整目录封包并校验，再补充 `artifacts/EarlyRush-V2-SHA256.txt`。如果收到后续 ZIP，应完整解压再运行，不能只取 EXE。
+Windows 发行文件为 `EarlyRush-V2-Windows-x64.zip`，源码发行文件为 `EarlyRush-V2-Unity-Source.zip`。请将 Windows ZIP 完整解压后运行，不能只取 EXE。包的字节数、SHA-256 及解压完整性核验记录独立保存于工作区 `artifacts/EarlyRush-V2-SHA256.txt` 和交付清单；本说明不嵌入 ZIP 自身哈希。
 
 三段共享 **110 秒**时限；暂停和阶段转换不消耗通勤计时。超时后仍可继续完成流程并得到迟到结算。青色提示指向目标，头顶“你”标识辅助寻找玩家。详细说明见 [运行与操作说明](docs/操作说明-v2.md)。
 
@@ -61,6 +61,6 @@ Windows 输出目录为工程上一级的 `artifacts/EarlyRush-V2-Windows/`。�
 - `RushUI.cs` / `RushRouteHUD.cs`：中文界面和目标、玩家状态提示。
 - `RushQA.cs`：Player 输入验收；`Assets/Editor/BuildEarlyRush.cs`：构建入口。
 
-圆润卡通灰盒美术与短音效由项目代码生成，没有购买付费资产。原始 v1 工程和旧 ZIP 保留在本地。待封包恢复后，最终包路径、字节数与 SHA-256 应写入工作区 `artifacts/EarlyRush-V2-SHA256.txt` 和交付记录；该清单当前尚未完成，不将包自身哈希写回包内文件。
+圆润卡通灰盒美术与短音效由项目代码生成，没有购买付费资产。原始 v1 工程和旧 ZIP 保留在本地。发行包路径、字节数与 SHA-256 以工作区 `artifacts/EarlyRush-V2-SHA256.txt` 和交付清单为准。包内文件校验使用 `FILES.sha256`；ZIP 自身校验保留在包外，避免自循环。
 
 仓库按功能保存中文提交，排除 Library、缓存、构建二进制和凭据。所有分支更新不强制推送，保留开发历史。
