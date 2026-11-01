@@ -20,9 +20,9 @@ namespace EarlyRush
         }
         [Serializable] public class GroundPileMemberEvidence
         {
-            public int slot, generation, combatPhase, attackId;
-            public Vector2 position, separationOffset;
-            public float separationOffsetLength, correctionBudgetLeft;
+            public int slot, generation, combatPhase, attackId, waypoint;
+            public Vector2 position, separationOffset, routeTarget, heading;
+            public float separationOffsetLength, correctionBudgetLeft, stuckTime;
             public bool active, ground, airborne, recovering;
         }
         [Serializable] public class GroundPileSnapshot
@@ -785,6 +785,8 @@ namespace EarlyRush
                     separationOffset = impacts[j].separationOffset,
                     separationOffsetLength = impacts[j].separationOffset.magnitude,
                     correctionBudgetLeft = impacts[j].correctionBudgetLeft,
+                    waypoint = impacts[j].waypoint, routeTarget = impacts[j].routeTarget,
+                    heading = impacts[j].heading, stuckTime = impacts[j].stuckTime,
                     active = probes[j].active, airborne = impacts[j].airborne, recovering = impacts[j].recovering,
                     ground = !impacts[j].airborne && !impacts[j].recovering,
                     combatPhase = combatAligned ? combat[j].phase : -1,

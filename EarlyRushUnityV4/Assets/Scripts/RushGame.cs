@@ -81,6 +81,9 @@ namespace EarlyRush
         public struct ImpactProbe
         {
             public Vector2 position, velocity, launchDirection, separationOffset;
+            public Vector2 routeTarget, heading;
+            public int waypoint;
+            public float stuckTime;
             public bool active, airborne, recovering;
             public float height, recoveryLeft, spinDegrees, landedAt, correctionBudgetLeft;
             public int dashId, chainDepth, launchCount, landCount, generation;
@@ -125,7 +128,8 @@ namespace EarlyRush
                     spinDegrees=c.spinDegrees,landedAt=c.landedAt,dashId=c.hitDashId,chainDepth=c.chainDepth,
                     launchCount=c.launchCount,landCount=c.landCount,generation=c.generation,
                     visualScale=c.visual.localScale,rootScale=c.root.localScale,visualRotation=c.visual.rotation,
-                    separationOffset=c.offset,correctionBudgetLeft=c.correctionDistanceLeft};
+                    separationOffset=c.offset,correctionBudgetLeft=c.correctionDistanceLeft,
+                    waypoint=c.waypoint,routeTarget=c.route[c.waypoint],heading=c.heading,stuckTime=c.stuckTime};
             }
             return result;
         }
@@ -528,6 +532,59 @@ namespace EarlyRush
                 }
             }
         }
+        static bool RouteSlab(float origin,float direction,float minimum,float maximum,ref float enter,ref float leave)
+        {
+            if(Mathf.Abs(direction)<.000001f)return origin>=minimum&&origin<=maximum;
+            float a=(minimum-origin)/direction,b=(maximum-origin)/direction;
+            if(a>b){float swap=a;a=b;b=swap;}
+            enter=Mathf.Max(enter,a);leave=Mathf.Min(leave,b);
+            return enter<=leave;
+        }
+        static bool RouteSegmentIntersectsRect(Vector2 from,Vector2 to,Rect rect)
+        {
+            Vector2 delta=to-from;float enter=0,leave=1;
+            return RouteSlab(from.x,delta.x,rect.xMin,rect.xMax,ref enter,ref leave)
+                &&RouteSlab(from.y,delta.y,rect.yMin,rect.yMax,ref enter,ref leave);
+        }
+        bool StaticCircleRouteClear(Vector2 from,Vector2 to,float radius)
+        {
+            if(from.x<world.boundsMin.x+radius||from.x>world.boundsMax.x-radius
+                ||from.y<world.boundsMin.y+radius||from.y>world.boundsMax.y-radius
+                ||to.x<world.boundsMin.x+radius||to.x>world.boundsMax.x-radius
+                ||to.y<world.boundsMin.y+radius||to.y>world.boundsMax.y-radius)return false;
+            float clearance=radius-.00001f;
+            for(int i=0;i<world.obstacles.Count;i++)
+            {
+                Rect rect=world.obstacles[i];
+                if(RouteSegmentIntersectsRect(from,to,rect))return false;
+                Vector2 nearFrom=new Vector2(Mathf.Clamp(from.x,rect.xMin,rect.xMax),Mathf.Clamp(from.y,rect.yMin,rect.yMax));
+                Vector2 nearTo=new Vector2(Mathf.Clamp(to.x,rect.xMin,rect.xMax),Mathf.Clamp(to.y,rect.yMin,rect.yMax));
+                if((from-nearFrom).sqrMagnitude<clearance*clearance||(to-nearTo).sqrMagnitude<clearance*clearance)return false;
+                // Exact rounded-corner clearance, rather than a square-expanded AABB.
+                // For disjoint segments, the nearest pair contains an endpoint of an edge.
+                if(SegmentDistance(new Vector2(rect.xMin,rect.yMin),from,to)<clearance
+                    ||SegmentDistance(new Vector2(rect.xMin,rect.yMax),from,to)<clearance
+                    ||SegmentDistance(new Vector2(rect.xMax,rect.yMin),from,to)<clearance
+                    ||SegmentDistance(new Vector2(rect.xMax,rect.yMax),from,to)<clearance)return false;
+            }
+            return true;
+        }
+        void AdvanceCrowdWaypoint(Crowd c)
+        {
+            while(c.waypoint<c.route.Length-1)
+            {
+                Vector2 target=c.route[c.waypoint];
+                if(Vector2.Distance(c.position,target)>=.35f)
+                {
+                    Vector2 incoming=target-c.route[c.waypoint-1];
+                    if(incoming.sqrMagnitude<.00001f||Vector2.Dot(c.position-target,incoming)<0
+                        ||!StaticCircleRouteClear(c.position,c.route[c.waypoint+1],.40f))break;
+                }
+                // This only changes the next steering target; positions still move through
+                // the ordinary body floor and static sweep on subsequent movement.
+                c.waypoint++;
+            }
+        }
         void UpdateCrowds(float dt)
         {
             // All agents simulate outside the camera; only their limb animation is culled.
@@ -547,7 +604,7 @@ namespace EarlyRush
                 if(AdvanceNpcCombat(c,i,dt))continue;
                 c.offset=Vector2.MoveTowards(c.offset,Vector2.zero,dt*1.2f);
                 c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15f);
-                while(c.waypoint<c.route.Length-1&&Vector2.Distance(c.position,c.route[c.waypoint])<.35f)c.waypoint++;
+                AdvanceCrowdWaypoint(c);
                 Vector2 to=c.route[c.waypoint]-c.position;
                 c.heading=to.sqrMagnitude>.0001f?to.normalized:Vector2.up;
                 if(StageTime<c.startAt)continue;
