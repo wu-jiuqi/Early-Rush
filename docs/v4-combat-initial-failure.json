@@ -1,0 +1,1309 @@
+{
+    "utc": "2026-11-01T11:37:04.5157108Z",
+    "engine": "6000.0.26f1",
+    "device": "Intel(R) Iris(R) Xe Graphics",
+    "schema": "v4-combat-1",
+    "scope": "Actual Windows Player input-driven fixtures. Setup only seeds actors and schedules warnings. No forced hits, teleport or time override; not a human or OS-keyboard playtest. Full routes are separate.",
+    "passed": false,
+    "failureCount": 2,
+    "elapsedRealSeconds": 62.46846008300781,
+    "checks": [
+        {
+            "name": "front: initial fixture ready",
+            "evidence": "kind=front",
+            "passed": true
+        },
+        {
+            "name": "front: capture warning",
+            "evidence": "frame=5 height=0 scale=(1.00, 1.00, 1.00)",
+            "passed": true
+        },
+        {
+            "name": "front: contact follows actual warned sweep",
+            "evidence": "launch=True brace=False protected=False source=0",
+            "passed": true
+        },
+        {
+            "name": "front: capture compression",
+            "evidence": "frame=67 height=0 scale=(1.13, 1.28, 0.52)",
+            "passed": true
+        },
+        {
+            "name": "front: capture air",
+            "evidence": "frame=74 height=0.6387501 scale=(0.92, 0.87, 1.33)",
+            "passed": true
+        },
+        {
+            "name": "front: fixture completes",
+            "evidence": "simulation seconds=5.504694",
+            "passed": true
+        },
+        {
+            "name": "front: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=9.4/9.399957 NPC actual=11.50006 contained=True",
+            "passed": true
+        },
+        {
+            "name": "front: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=1",
+            "passed": true
+        },
+        {
+            "name": "front: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "front: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9080975 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "front: player lands and recovers",
+            "evidence": "height=0 longest air=0.8213365 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "front: unbraced player really launches and rotates",
+            "evidence": "launches=1 height=1.389584 spin=322 lands=1",
+            "passed": true
+        },
+        {
+            "name": "front: controls restore after landing",
+            "evidence": "actual input displacement=3.419444",
+            "passed": true
+        },
+        {
+            "name": "brace: initial fixture ready",
+            "evidence": "kind=brace",
+            "passed": true
+        },
+        {
+            "name": "brace: capture warning",
+            "evidence": "frame=339 height=0 scale=(1.00, 1.00, 1.00)",
+            "passed": true
+        },
+        {
+            "name": "brace: contact follows actual warned sweep",
+            "evidence": "launch=False brace=True protected=False source=0",
+            "passed": true
+        },
+        {
+            "name": "brace: capture brace",
+            "evidence": "frame=403 height=0 scale=(1.02, 1.04, 0.93)",
+            "passed": true
+        },
+        {
+            "name": "brace: fixture completes",
+            "evidence": "simulation seconds=5.515197",
+            "passed": true
+        },
+        {
+            "name": "brace: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=0/6.500057 NPC actual=11.50017 contained=True",
+            "passed": true
+        },
+        {
+            "name": "brace: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=1",
+            "passed": true
+        },
+        {
+            "name": "brace: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "brace: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9162967 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "brace: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "Brace blocks a real contact",
+            "evidence": "blocks=1 launch=0 height=0",
+            "passed": true
+        },
+        {
+            "name": "dodge: initial fixture ready",
+            "evidence": "kind=dodge",
+            "passed": true
+        },
+        {
+            "name": "dodge: capture warning",
+            "evidence": "frame=664 height=0 scale=(1.00, 1.00, 1.00)",
+            "passed": true
+        },
+        {
+            "name": "dodge: fixture completes",
+            "evidence": "simulation seconds=5.512681",
+            "passed": true
+        },
+        {
+            "name": "dodge: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=6.1/6.100094 NPC actual=11.50023 contained=True",
+            "passed": true
+        },
+        {
+            "name": "dodge: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=1",
+            "passed": true
+        },
+        {
+            "name": "dodge: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "dodge: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9280263 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "dodge: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "Input dodge leaves the locked danger area before a real rush",
+            "evidence": "rush samples=19 outside margin=3.557778 launches=0",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: initial fixture ready",
+            "evidence": "kind=npc-chain",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: capture warning",
+            "evidence": "frame=996 height=0 scale=(1.00, 1.00, 1.00)",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: fixture completes",
+            "evidence": "simulation seconds=5.509523",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=0/0 NPC actual=13.80021 contained=True",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=1",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9090117 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "npc-chain: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "Warned NPC rush launches other NPCs with finite chain",
+            "evidence": "NPC launches=6 max targets=6 depth=2",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: initial fixture ready",
+            "evidence": "kind=front",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: capture warning",
+            "evidence": "frame=1324 height=0 scale=(1.00, 1.00, 1.00)",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: fixture completes",
+            "evidence": "simulation seconds=5.511853",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=13/13.00017 NPC actual=13.80018 contained=True",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "interrupt-warning: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "Player dash interrupts windup without a residual rush",
+            "evidence": "NPC launched=1 player launched=0 rushes=0",
+            "passed": true
+        },
+        {
+            "name": "protection: initial fixture ready",
+            "evidence": "kind=protection",
+            "passed": true
+        },
+        {
+            "name": "protection: contact follows actual warned sweep",
+            "evidence": "launch=True brace=False protected=False source=0",
+            "passed": true
+        },
+        {
+            "name": "protection: contact follows actual warned sweep",
+            "evidence": "launch=False brace=False protected=True source=1",
+            "passed": true
+        },
+        {
+            "name": "protection: fixture completes",
+            "evidence": "simulation seconds=5.500658",
+            "passed": true
+        },
+        {
+            "name": "protection: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=9.4/9.400091 NPC actual=13.80018 contained=True",
+            "passed": true
+        },
+        {
+            "name": "protection: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=2",
+            "passed": true
+        },
+        {
+            "name": "protection: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "protection: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.916719 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "protection: warning locks geometry 1/-1002",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "protection: sampled warning precedes rush 1/-1002",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9166968 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "protection: player lands and recovers",
+            "evidence": "height=0 longest air=0.8000257 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "Second real ground contact is blocked by landing protection",
+            "evidence": "ground protected contacts=1 all protected=1 launches=1",
+            "passed": true
+        },
+        {
+            "name": "boundary: initial fixture ready",
+            "evidence": "kind=boundary",
+            "passed": true
+        },
+        {
+            "name": "boundary: fixture completes",
+            "evidence": "simulation seconds=5.501623",
+            "passed": true
+        },
+        {
+            "name": "boundary: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=0/0 NPC actual=0 contained=True",
+            "passed": true
+        },
+        {
+            "name": "boundary: threats and attack history remain bounded",
+            "evidence": "observed=0 game=0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "boundary: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "boundary: unbraced player really launches and rotates",
+            "evidence": "launches=0 height=0 spin=0 lands=0",
+            "passed": false
+        },
+        {
+            "name": "boundary: controls restore after landing",
+            "evidence": "actual input displacement=0",
+            "passed": false
+        },
+        {
+            "name": "pause-warning: initial fixture ready",
+            "evidence": "kind=front",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: pause cancels warnings/rushes and preserves existing flight",
+            "evidence": "warning/rush=0/0 height=0",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: pause freezes actors, timers, protection, FX and camera",
+            "evidence": "timer delta=0",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: no unannounced attack immediately resumes",
+            "evidence": "rushes=0",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: fixture completes",
+            "evidence": "simulation seconds=6.502612",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=0/0 NPC actual=0 contained=True",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: requested pause phase was exercised",
+            "evidence": "warning",
+            "passed": true
+        },
+        {
+            "name": "pause-warning: cancelled attack cannot resume-hit",
+            "evidence": "launches=0",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: initial fixture ready",
+            "evidence": "kind=front",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: pause cancels warnings/rushes and preserves existing flight",
+            "evidence": "warning/rush=0/0 height=0",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: pause freezes actors, timers, protection, FX and camera",
+            "evidence": "timer delta=0",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: no unannounced attack immediately resumes",
+            "evidence": "rushes=0",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: fixture completes",
+            "evidence": "simulation seconds=6.502003",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=0/0 NPC actual=0 contained=True",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=1",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9169996 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: player lands and recovers",
+            "evidence": "height=0 longest air=0 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: requested pause phase was exercised",
+            "evidence": "rush",
+            "passed": true
+        },
+        {
+            "name": "pause-rush: cancelled attack cannot resume-hit",
+            "evidence": "launches=0",
+            "passed": true
+        },
+        {
+            "name": "pause-air: initial fixture ready",
+            "evidence": "kind=front",
+            "passed": true
+        },
+        {
+            "name": "pause-air: contact follows actual warned sweep",
+            "evidence": "launch=True brace=False protected=False source=0",
+            "passed": true
+        },
+        {
+            "name": "pause-air: pause cancels warnings/rushes and preserves existing flight",
+            "evidence": "warning/rush=0/0 height=0.34375",
+            "passed": true
+        },
+        {
+            "name": "pause-air: pause freezes actors, timers, protection, FX and camera",
+            "evidence": "timer delta=0",
+            "passed": true
+        },
+        {
+            "name": "pause-air: no unannounced attack immediately resumes",
+            "evidence": "rushes=0",
+            "passed": true
+        },
+        {
+            "name": "pause-air: fixture completes",
+            "evidence": "simulation seconds=6.501974",
+            "passed": true
+        },
+        {
+            "name": "pause-air: finite swept movement and unchanged physical root",
+            "evidence": "player speed/actual=9.4/9.400091 NPC actual=11.50017 contained=True",
+            "passed": true
+        },
+        {
+            "name": "pause-air: threats and attack history remain bounded",
+            "evidence": "observed=1 game=1 burst history=1",
+            "passed": true
+        },
+        {
+            "name": "pause-air: warning locks geometry 0/-1001",
+            "evidence": "length/radius=3.599999/0.82 angle/origin/path=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "pause-air: sampled warning precedes rush 0/-1001",
+            "evidence": "first sampled remaining=0.9 observed lead=0.9167522 required=0.9 tolerance=.06s; viewport sampling does not prove an unoccluded outline",
+            "passed": true
+        },
+        {
+            "name": "pause-air: player lands and recovers",
+            "evidence": "height=0 longest air=0.8005071 scale error=0",
+            "passed": true
+        },
+        {
+            "name": "pause-air: requested pause phase was exercised",
+            "evidence": "air",
+            "passed": true
+        },
+        {
+            "name": "Restart interrupts actual player flight",
+            "evidence": "launches=1",
+            "passed": true
+        },
+        {
+            "name": "Restart clears combat and presentation",
+            "evidence": "launches=0 threats=0/0 protection=0",
+            "passed": true
+        }
+    ],
+    "cases": [
+        {
+            "name": "front",
+            "fixture": "front",
+            "strategy": "Remain stationary until a hit; front then moves right after recovery.",
+            "samples": 321,
+            "playerLaunches": 1,
+            "lands": 1,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 1,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 1,
+            "outsideRushSamples": 0,
+            "peakHeight": 1.3895838260650635,
+            "peakSpin": 322.0000305175781,
+            "maxPlayerSpeed": 9.399999618530274,
+            "maxPositionSpeed": 9.399956703186036,
+            "maxNpcSpeed": 11.500064849853516,
+            "maxWarningFrameGap": 0.08308792114257813,
+            "firstWarningAt": 0.0228520929813385,
+            "firstLaunchAt": 1.1144429445266724,
+            "movedAfterRecovery": 3.4194443225860597,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.8213365077972412,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.908097505569458,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": true,
+            "shotCompression": true,
+            "shotAir": true,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.3561854362487793,
+                    "rushAt": 1.2642829418182374,
+                    "observedLead": 0.908097505569458,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        },
+        {
+            "name": "brace",
+            "fixture": "brace",
+            "strategy": "Hold Shift after observing warning; no movement.",
+            "samples": 325,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 1,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 1,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 1,
+            "outsideRushSamples": 0,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 0.0,
+            "maxPositionSpeed": 6.500057220458984,
+            "maxNpcSpeed": 11.500171661376954,
+            "maxWarningFrameGap": 0.08304882049560547,
+            "firstWarningAt": 0.20002710819244386,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.9162967205047607,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": true,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": true,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.2801204025745392,
+                    "rushAt": 1.1964170932769776,
+                    "observedLead": 0.9162967205047607,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        },
+        {
+            "name": "dodge",
+            "fixture": "dodge",
+            "strategy": "Move right only after warning is observed; never brace.",
+            "samples": 328,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 1,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 0,
+            "outsideRushSamples": 19,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 6.099999904632568,
+            "maxPositionSpeed": 6.100094318389893,
+            "maxNpcSpeed": 11.500228881835938,
+            "maxWarningFrameGap": 0.07393169403076172,
+            "firstWarningAt": 0.16668260097503663,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 3.5577781200408937,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.9280262589454651,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": true,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.26838749647140505,
+                    "rushAt": 1.1964137554168702,
+                    "observedLead": 0.9280262589454651,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        },
+        {
+            "name": "npc-chain",
+            "fixture": "npc-chain",
+            "strategy": "Remain stationary until a hit; front then moves right after recovery.",
+            "samples": 327,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 6,
+            "maxThreats": 1,
+            "maxBurstHistory": 1,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 0,
+            "outsideRushSamples": 0,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 0.0,
+            "maxPositionSpeed": 0.0,
+            "maxNpcSpeed": 13.800211906433106,
+            "maxWarningFrameGap": 0.08887863159179688,
+            "firstWarningAt": 0.20010079443454743,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.909011721611023,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": true,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.27477169036865237,
+                    "rushAt": 1.1837834119796754,
+                    "observedLead": 0.909011721611023,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        },
+        {
+            "name": "interrupt-warning",
+            "fixture": "front",
+            "strategy": "Remain stationary until a hit; front then moves right after recovery.",
+            "samples": 327,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 0,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 0,
+            "outsideRushSamples": 0,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 13.0,
+            "maxPositionSpeed": 13.000171661376954,
+            "maxNpcSpeed": 13.800183296203614,
+            "maxWarningFrameGap": 0.09183120727539063,
+            "firstWarningAt": 0.18334238231182099,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 999.0,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": true,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.2687282860279083,
+                    "rushAt": -1.0,
+                    "observedLead": 0.0,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": true
+                }
+            ]
+        },
+        {
+            "name": "protection",
+            "fixture": "protection",
+            "strategy": "Remain stationary for both independently scheduled attacks.",
+            "samples": 330,
+            "playerLaunches": 1,
+            "lands": 1,
+            "braceBlocks": 0,
+            "protectedHits": 1,
+            "npcLaunches": 1,
+            "maxThreats": 1,
+            "maxBurstHistory": 2,
+            "groundedProtectedContacts": 1,
+            "verifiedHitSweeps": 2,
+            "outsideRushSamples": 0,
+            "peakHeight": 1.3895838260650635,
+            "peakSpin": 322.0000305175781,
+            "maxPlayerSpeed": 9.399999618530274,
+            "maxPositionSpeed": 9.400091171264649,
+            "maxNpcSpeed": 13.800183296203614,
+            "maxWarningFrameGap": 0.019041061401367189,
+            "firstWarningAt": 0.1833404004573822,
+            "firstLaunchAt": 1.2835663557052613,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.8000257015228272,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.9166967868804932,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": false,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.26942920684814455,
+                    "rushAt": 1.1861481666564942,
+                    "observedLead": 0.9167189598083496,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                },
+                {
+                    "slot": 1,
+                    "id": -1002,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 12.0
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 1.7696704864501954,
+                    "rushAt": 2.6863672733306886,
+                    "observedLead": 0.9166967868804932,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        },
+        {
+            "name": "boundary",
+            "fixture": "boundary",
+            "strategy": "After landing and recovery, use real left movement to leave the wall.",
+            "samples": 330,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 0,
+            "maxBurstHistory": 0,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 0,
+            "outsideRushSamples": 0,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 0.0,
+            "maxPositionSpeed": 0.0,
+            "maxNpcSpeed": 0.0,
+            "maxWarningFrameGap": 0.018646240234375,
+            "firstWarningAt": -1.0,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 999.0,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": false,
+            "shotWarning": false,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": []
+        },
+        {
+            "name": "pause-warning",
+            "fixture": "front",
+            "strategy": "Remain stationary until a hit; front then moves right after recovery.",
+            "samples": 389,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 0,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 0,
+            "outsideRushSamples": 0,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 0.0,
+            "maxPositionSpeed": 0.0,
+            "maxNpcSpeed": 0.0,
+            "maxWarningFrameGap": 0.01903533935546875,
+            "firstWarningAt": 0.16680261492729188,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 999.0,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": true,
+            "shotWarning": false,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.266797810792923,
+                    "rushAt": -1.0,
+                    "observedLead": 0.0,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": true
+                }
+            ]
+        },
+        {
+            "name": "pause-rush",
+            "fixture": "front",
+            "strategy": "Remain stationary until a hit; front then moves right after recovery.",
+            "samples": 389,
+            "playerLaunches": 0,
+            "lands": 0,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 1,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 0,
+            "outsideRushSamples": 0,
+            "peakHeight": 0.0,
+            "peakSpin": 0.0,
+            "maxPlayerSpeed": 0.0,
+            "maxPositionSpeed": 0.0,
+            "maxNpcSpeed": 0.0,
+            "maxWarningFrameGap": 0.01862335205078125,
+            "firstWarningAt": 0.1833626925945282,
+            "firstLaunchAt": -1.0,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.0,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.9169995784759522,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": true,
+            "shotWarning": false,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.2675046920776367,
+                    "rushAt": 1.1845042705535889,
+                    "observedLead": 0.9169995784759522,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        },
+        {
+            "name": "pause-air",
+            "fixture": "front",
+            "strategy": "Remain stationary until a hit; front then moves right after recovery.",
+            "samples": 389,
+            "playerLaunches": 1,
+            "lands": 1,
+            "braceBlocks": 0,
+            "protectedHits": 0,
+            "npcLaunches": 0,
+            "maxThreats": 1,
+            "maxBurstHistory": 1,
+            "groundedProtectedContacts": 0,
+            "verifiedHitSweeps": 1,
+            "outsideRushSamples": 0,
+            "peakHeight": 1.3895838260650635,
+            "peakSpin": 322.0000305175781,
+            "maxPlayerSpeed": 9.399999618530274,
+            "maxPositionSpeed": 9.400091171264649,
+            "maxNpcSpeed": 11.500171661376954,
+            "maxWarningFrameGap": 0.018951416015625,
+            "firstWarningAt": 0.20000579953193665,
+            "firstLaunchAt": 1.3002015352249146,
+            "movedAfterRecovery": 0.0,
+            "minimumOutsideMargin": 999.0,
+            "longestAirSeconds": 0.8005070686340332,
+            "finalScaleError": 0.0,
+            "minimumWarningLead": 0.9167521595954895,
+            "finiteAndContained": true,
+            "rootStable": true,
+            "pauseExercised": true,
+            "shotWarning": false,
+            "shotCompression": false,
+            "shotAir": false,
+            "shotBrace": false,
+            "attacks": [
+                {
+                    "slot": 0,
+                    "id": -1001,
+                    "origin": {
+                        "x": 0.0,
+                        "y": 5.199999809265137
+                    },
+                    "direction": {
+                        "x": 0.0,
+                        "y": 1.0
+                    },
+                    "length": 3.599998712539673,
+                    "radius": 0.8199999928474426,
+                    "duration": 0.8999999761581421,
+                    "warningAt": 0.27553790807724,
+                    "rushAt": 1.1922900676727296,
+                    "observedLead": 0.9167521595954895,
+                    "firstObservedWarningLeft": 0.8999999761581421,
+                    "maxAngleError": 0.0,
+                    "maxOriginError": 0.0,
+                    "maxPathError": 0.0,
+                    "warningInViewport": true,
+                    "cancelled": false
+                }
+            ]
+        }
+    ],
+    "screenshots": [
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\front-warning.png",
+            "phase": "warning",
+            "scenario": "front",
+            "frame": 5,
+            "gameTime": 0.3728574514389038,
+            "realBefore": 3.685913562774658,
+            "realAfter": 3.7568674087524416,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.8833333253860474,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\front-compression.png",
+            "phase": "compression",
+            "scenario": "front",
+            "frame": 67,
+            "gameTime": 1.4702531099319459,
+            "realBefore": 4.781116485595703,
+            "realAfter": 4.838985443115234,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.0,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 1.1299999952316285,
+                "y": 1.2799999713897706,
+                "z": 0.5199999809265137
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\front-air.png",
+            "phase": "air",
+            "scenario": "front",
+            "frame": 74,
+            "gameTime": 1.6292062997817994,
+            "realBefore": 4.940127372741699,
+            "realAfter": 4.995370864868164,
+            "height": 0.6387500762939453,
+            "spin": 42.000003814697269,
+            "warningLeft": 0.0,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 0.924358606338501,
+                "y": 0.8687171936035156,
+                "z": 1.332773208618164
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\brace-warning.png",
+            "phase": "warning",
+            "scenario": "brace",
+            "frame": 339,
+            "gameTime": 0.29677459597587588,
+            "realBefore": 9.447663307189942,
+            "realAfter": 9.494179725646973,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.8833333253860474,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\brace-brace.png",
+            "phase": "brace",
+            "scenario": "brace",
+            "frame": 403,
+            "gameTime": 1.396429419517517,
+            "realBefore": 10.545409202575684,
+            "realAfter": 10.62584114074707,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.0,
+            "protection": 0.23333333432674409,
+            "playerScale": {
+                "x": 1.0182000398635865,
+                "y": 1.039199948310852,
+                "z": 0.9327999949455261
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\dodge-warning.png",
+            "phase": "warning",
+            "scenario": "dodge",
+            "frame": 664,
+            "gameTime": 0.28506460785865786,
+            "realBefore": 15.0306978225708,
+            "realAfter": 15.08909797668457,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.8833333253860474,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\npc-chain-warning.png",
+            "phase": "warning",
+            "scenario": "npc-chain",
+            "frame": 996,
+            "gameTime": 0.29148590564727785,
+            "realBefore": 20.65165901184082,
+            "realAfter": 20.7244930267334,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.8833333253860474,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        },
+        {
+            "path": "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-combat1\\interrupt-warning-warning.png",
+            "phase": "warning",
+            "scenario": "interrupt-warning",
+            "frame": 1324,
+            "gameTime": 0.28539928793907168,
+            "realBefore": 26.22837257385254,
+            "realAfter": 26.303749084472658,
+            "height": 0.0,
+            "spin": 0.0,
+            "warningLeft": 0.8833333253860474,
+            "protection": 0.0,
+            "playerScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            }
+        }
+    ]
+}
