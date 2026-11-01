@@ -18,6 +18,23 @@ namespace EarlyRush
             public string name, evidence;
             public bool passed;
         }
+        [Serializable] public class GroundPileMemberEvidence
+        {
+            public int slot, generation, combatPhase, attackId;
+            public Vector2 position, separationOffset;
+            public float separationOffsetLength, correctionBudgetLeft;
+            public bool active, ground, airborne, recovering;
+        }
+        [Serializable] public class GroundPileSnapshot
+        {
+            public string run;
+            public int stage, frame, centerSlot, centerGeneration;
+            public int allCount, groundCount, airborneCount, recoveringCount;
+            public float realSinceStartup, totalSeconds, stageSeconds;
+            public Vector2 centerPosition, playerPosition;
+            public bool combatProbeAligned;
+            public List<GroundPileMemberEvidence> members = new List<GroundPileMemberEvidence>();
+        }
         [Serializable] public class StageEvidence
         {
             public int stage, collisions, offscreenCrowdSamples;
@@ -29,6 +46,8 @@ namespace EarlyRush
             public int allActivePileSamples, groundPileSamples, nonGroundInPileSamples;
             public float longestAllPileSampleSpan, longestGroundPileSampleSpan, longestNonGroundPileSampleSpan;
             public bool pileProbeAlignment = true;
+            // Diagnostic snapshots only; these fields never determine a check result.
+            public GroundPileSnapshot firstGroundPile, peakGroundPile;
             public float activeSamples, visibleSamples, meanActiveCrowd, meanVisibleCrowd;
             public float crowdForwardDistance, crowdBackwardDistance;
             public float traversalFrameSeconds, meanTraversalFrameMilliseconds, worstTraversalFrameMilliseconds;
@@ -270,9 +289,18 @@ namespace EarlyRush
             yield return Traverse("charge", false);
             yield return Shot("charge-results");
             game.Restart(); Neutral();
+            CheckImpactReset("late: fresh restart before deadline wait");
+            bool lateWaitStayedInFirstStage = game.Stage == 0 && game.TransitionCount == 0;
             yield return Wait(.2f);
             currentRun = "late-wait";
-            while (!finished && game.TotalTime <= game.TimeLimit + .3f) yield return null;
+            while (!finished && game.TotalTime <= game.TimeLimit + .3f)
+            {
+                lateWaitStayedInFirstStage &= game.Stage == 0 && game.TransitionCount == 0;
+                yield return null;
+            }
+            CheckThat("Deadline wait stays in first stage without transitions",
+                lateWaitStayedInFirstStage && game.Stage == 0 && game.TransitionCount == 0,
+                "stage=" + game.Stage + " transitions=" + game.TransitionCount + " time=" + game.TotalTime);
             CheckThat("Deadline does not stop play",
                 game.State == RushState.Playing && game.TotalTime > game.TimeLimit,
                 "state=" + game.State + " time=" + game.TotalTime);
@@ -392,15 +420,22 @@ namespace EarlyRush
                 }
                 if (game.Stage != previousStage)
                 {
+                    bool existingLateStage = name == "late" && previousStage < 0;
                     if (metric != null) FinalizeStage(metric, cameraMin, cameraMax, name);
                     previousStage = game.Stage;
                     Debug.Log("RUSH_QA_STAGE_OBSERVED stage=" + game.Stage + " realtime=" + Time.realtimeSinceStartup + " frame=" + Time.frameCount);
                     Neutral();
                     yield return Wait(.15f);
-                    CheckThat(name + ": stage " + game.Stage + " resets momentum",
-                        game.Velocity.sqrMagnitude < .001f && game.DashCooldown01 > .99f,
-                        "speed=" + game.Velocity.magnitude + " ready=" + game.DashCooldown01);
-                    CheckImpactReset(name + ": stage " + game.Stage);
+                    if (!existingLateStage)
+                    {
+                        CheckThat(name + ": stage " + game.Stage + " resets momentum",
+                            game.Velocity.sqrMagnitude < .001f && game.DashCooldown01 > .99f,
+                            "speed=" + game.Velocity.magnitude + " ready=" + game.DashCooldown01);
+                        CheckImpactReset(name + ": stage " + game.Stage);
+                    }
+                    else
+                        Debug.Log("RUSH_QA_EXISTING_STAGE_AFTER_WAIT stage=" + game.Stage + " time=" + game.TotalTime +
+                            " threats=" + game.CombatWarningCount + "/" + game.CombatRushCount + " burstHistory=" + game.NpcBurstCount);
                     route = new List<Vector2>(safe ? game.World.safeRoute : game.World.riskRoute);
                     if (route.Count == 0)
                     {
@@ -660,8 +695,19 @@ namespace EarlyRush
             run.playerCombatLaunches = game.NpcToPlayerLaunches;
             run.braceBlocks = game.BraceBlocks;
             if (name == "charge")
-                CheckThat("Charge route encounters actual NPC attacks", run.playerCombatLaunches + run.braceBlocks > 0,
-                    "player launches=" + run.playerCombatLaunches + " brace blocks=" + run.braceBlocks);
+            {
+                int visibleWarningSamples = 0, visibleRushSamples = 0;
+                foreach (var stage in run.stages)
+                {
+                    visibleWarningSamples += stage.warningSamples;
+                    visibleRushSamples += stage.rushSamples;
+                }
+                CheckThat("Charge route observes visible NPC warnings, rushes and NPC-to-NPC impacts",
+                    visibleWarningSamples > 0 && visibleRushSamples > 0 && run.npcCombatLaunches > 0,
+                    "visible warning/rush samples=" + visibleWarningSamples + "/" + visibleRushSamples +
+                    " NPC-owned launches=" + run.npcCombatLaunches + " player launches=" + run.playerCombatLaunches +
+                    " brace blocks=" + run.braceBlocks + " (player contact is diagnostic, not required)");
+            }
             run.impactLaunches = game.TotalLaunches;
             run.chainLaunches = game.ChainLaunches;
             run.maxDashTargets = game.MaxObservedDashTargets;
@@ -706,6 +752,46 @@ namespace EarlyRush
             if (!present) { began = -1; return 0; }
             if (began < 0) began = now;
             return now - began;
+        }
+
+        GroundPileSnapshot CaptureGroundPile(StageEvidence metric, int center, float sampleAt,
+            Vector2 playerPosition, RushGame.CrowdProbe[] probes, RushGame.ImpactProbe[] impacts,
+            RushGame.CombatProbe[] combat, int allCount, int groundCount, int airborneCount, int recoveringCount)
+        {
+            // Combat probes share stable slots but have no generation field. Validate
+            // this synchronous snapshot before attaching phases; unknown is diagnostic only.
+            bool combatAligned = combat.Length == probes.Length;
+            if (combatAligned)
+                for (int i = 0; i < probes.Length; i++)
+                    combatAligned &= combat[i].active == probes[i].active &&
+                        Vector2.Distance(combat[i].position, probes[i].position) < .001f;
+            var snapshot = new GroundPileSnapshot
+            {
+                run = currentRun, stage = metric.stage, frame = Time.frameCount,
+                realSinceStartup = sampleAt, totalSeconds = game.TotalTime, stageSeconds = game.StageTime,
+                centerSlot = center, centerGeneration = probes[center].generation,
+                centerPosition = probes[center].position, playerPosition = playerPosition,
+                allCount = allCount, groundCount = groundCount,
+                airborneCount = airborneCount, recoveringCount = recoveringCount,
+                combatProbeAligned = combatAligned
+            };
+            for (int j = 0; j < probes.Length; j++)
+            {
+                if (!probes[j].active ||
+                    (probes[center].position - probes[j].position).sqrMagnitude >= .25f * .25f) continue;
+                snapshot.members.Add(new GroundPileMemberEvidence
+                {
+                    slot = j, generation = probes[j].generation, position = probes[j].position,
+                    separationOffset = impacts[j].separationOffset,
+                    separationOffsetLength = impacts[j].separationOffset.magnitude,
+                    correctionBudgetLeft = impacts[j].correctionBudgetLeft,
+                    active = probes[j].active, airborne = impacts[j].airborne, recovering = impacts[j].recovering,
+                    ground = !impacts[j].airborne && !impacts[j].recovering,
+                    combatPhase = combatAligned ? combat[j].phase : -1,
+                    attackId = combatAligned ? combat[j].attackId : -1
+                });
+            }
+            return snapshot;
         }
 
         void SampleGeometry(StageEvidence metric, Vector2 p)
@@ -876,6 +962,14 @@ namespace EarlyRush
                     bool allPile = neighbors > 3;
                     bool groundPile = aligned && ground > 3;
                     bool transientPile = allPile && aligned && air + recovering > 0;
+                    if (groundPile && (metric.peakGroundPile == null || ground > metric.peakGroundPile.groundCount))
+                    {
+                        var snapshot = CaptureGroundPile(metric, i, sampleAt, p, probes, impacts, combat,
+                            neighbors, ground, air, recovering);
+                        if (metric.firstGroundPile == null) metric.firstGroundPile = snapshot;
+                        metric.peakGroundPile = snapshot;
+                        Debug.Log("RUSH_QA_PILE_SNAPSHOT " + JsonUtility.ToJson(snapshot));
+                    }
                     anyAll |= allPile; anyGround |= groundPile; anyTransient |= transientPile;
                     metric.longestAllPileSampleSpan = Mathf.Max(metric.longestAllPileSampleSpan,
                         TrackPileSpan(allPile, sampleAt, ref allPileBeganAt[i]));
