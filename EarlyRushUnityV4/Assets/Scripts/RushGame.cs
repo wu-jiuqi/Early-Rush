@@ -6,7 +6,7 @@ using System.IO;
 namespace EarlyRush
 {
     public enum RushState { Menu, Tutorial, Playing, Paused, Transition, Results }
-    public class RushGame : MonoBehaviour
+    public partial class RushGame : MonoBehaviour
     {
         public RushState State = RushState.Menu;
         public int Stage;
@@ -55,6 +55,7 @@ namespace EarlyRush
         AudioSource audioSource;
         AudioClip dashClip, bumpClip, goalClip, tickClip, launchClip;
         LineRenderer trail;
+        Material locatorMaterial,trailMaterial;
         Vector3[] trailPoints = new Vector3[10];
         RushQA qa;
         public bool QAInput;
@@ -73,6 +74,8 @@ namespace EarlyRush
             public Vector2 flightVelocity, launchDirection, lastVelocity;
             public float height, verticalVelocity, recoveryLeft, spinDegrees, airTime, landedAt=-1, hitAge=-1, landingAge=-1, jellyStrength, landingSpin;
             public int hitDashId=-1, chainDepth, launchCount, landCount;
+            public float windup01;
+            public Vector2 windupDirection;
         }
         // Physical roots remain unit scale; all squash, tumble and bounce lives below them.
         public struct ImpactProbe
@@ -88,6 +91,7 @@ namespace EarlyRush
         {
             public HashSet<int> targets=new HashSet<int>();
             public bool stopped;
+            public int owner=-1;
         }
         readonly Dictionary<int,ImpactBurst> impactBursts=new Dictionary<int,ImpactBurst>();
         RushImpactFx impactFx;
@@ -188,7 +192,9 @@ namespace EarlyRush
             gameObject.AddComponent<RushRouteHUD>();
             BuildStage(0);
             impactQaMode=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--impact-qa");
-            if(impactQaMode)gameObject.AddComponent<RushImpactQA>();
+            combatQaMode=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--combat-qa");
+            if(combatQaMode)gameObject.AddComponent<RushCombatQA>();
+            else if(impactQaMode)gameObject.AddComponent<RushImpactQA>();
             else if(Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--qa"))qa=gameObject.AddComponent<RushQA>();
             Debug.Log("EARLY_RUSH_READY " + SystemInfo.graphicsDeviceName + " " + SystemInfo.graphicsDeviceType);
         }
@@ -223,12 +229,14 @@ namespace EarlyRush
         {
             TotalTime=0; StageTime=0; Collisions=0; stageStartCollisions=0;TransitionCount=0;
             TotalStumbleTime=0;LongestStumbleTime=0;StumbleTriggers=0;
+            ResetCombatRunStats();
             CurrentDashId=0;TotalLaunches=0;ChainLaunches=0;MaxObservedChainDepth=0;MaxObservedDashTargets=0;NormalContactCount=0;
             SplitTimes=new float[3];SplitCollisions=new int[3]; BuildStage(0);
         }
         void LockActions(){actionLocked=true;dashPressed=false;braceInput=false;QADash=false;QABrace=false;moveInput=Vector2.zero;}
         void BuildStage(int index)
         {
+            var buildWatch=System.Diagnostics.Stopwatch.StartNew();
             ClearImpactScene();ImpactFixtureReady=false;ImpactFixtureKind="";impactBursts.Clear();
             if(world!=null && world.root!=null)Destroy(world.root.gameObject);
             if(player!=null)Destroy(player.gameObject);
@@ -242,9 +250,11 @@ namespace EarlyRush
             player.position=new Vector3(position.x,0,position.y);
             var r=GameObject.CreatePrimitive(PrimitiveType.Cylinder);Destroy(r.GetComponent<Collider>());
             r.name="Player orange locator";ring=r.transform;ring.SetParent(player,false);ring.localPosition=new Vector3(0,.14f,0);ring.localScale=new Vector3(1.2f,.018f,1.2f);
-            var rm=new Material(Shader.Find("Standard"));rm.color=new Color(1f,.61f,.18f);r.GetComponent<Renderer>().material=rm;
+            if(!locatorMaterial){locatorMaterial=new Material(Shader.Find("Standard"));locatorMaterial.color=new Color(1f,.61f,.18f);}
+            r.GetComponent<Renderer>().sharedMaterial=locatorMaterial;
             trail=new GameObject("Dash ribbon").AddComponent<LineRenderer>();trail.transform.SetParent(player,false);
-            trail.material=new Material(Shader.Find("Sprites/Default"));trail.startColor=new Color(1f,.76f,.3f,.8f);trail.endColor=new Color(1f,.85f,.5f,0);trail.startWidth=.34f;trail.endWidth=.04f;trail.positionCount=10;trail.enabled=false;
+            if(!trailMaterial)trailMaterial=new Material(Shader.Find("Sprites/Default"));
+            trail.sharedMaterial=trailMaterial;trail.startColor=new Color(1f,.76f,.3f,.8f);trail.endColor=new Color(1f,.85f,.5f,0);trail.startWidth=.34f;trail.endWidth=.04f;trail.positionCount=10;trail.enabled=false;
             for(int i=0;i<10;i++)trailPoints[i]=player.position+Vector3.up*.3f;
             foreach(var spawn in world.crowd)
             {
@@ -261,7 +271,8 @@ namespace EarlyRush
                 if(c.heading.sqrMagnitude>.01f)c.visual.rotation=Quaternion.LookRotation(new Vector3(c.heading.x,0,c.heading.y));
                 crowds.Add(c);
             }
-            ResetCamera();LockActions();Log("stage_loaded");
+            InitializeCombat();ResetCamera();LockActions();Log("stage_loaded");
+            buildWatch.Stop();Debug.Log("RUSH_BUILD_STAGE_MS stage="+Stage+" ms="+buildWatch.Elapsed.TotalMilliseconds.ToString("F2"));
         }
         void Update()
         {
@@ -306,12 +317,12 @@ namespace EarlyRush
                 if(impactFreezeLeft<=0)
                 {
                     player.position=Vector3.Lerp(player.position,new Vector3(position.x,0,position.y),1-Mathf.Exp(-Time.deltaTime*40));
-                    if(facing.sqrMagnitude>.01f)visual.rotation=Quaternion.Slerp(visual.rotation,Quaternion.LookRotation(new Vector3(facing.x,0,facing.y)),1-Mathf.Exp(-Time.deltaTime*18));
-                    RushVisuals.AnimatePerson(visual,velocity,ImpactFxClock,IsDashing,IsBracing);
+                    if(!PlayerAirborne&&!PlayerRecovering&&facing.sqrMagnitude>.01f)visual.rotation=Quaternion.Slerp(visual.rotation,Quaternion.LookRotation(new Vector3(facing.x,0,facing.y)),1-Mathf.Exp(-Time.deltaTime*18));
+                    if(!PlayerAirborne&&!PlayerRecovering)RushVisuals.AnimatePerson(visual,velocity,ImpactFxClock,IsDashing,IsBracing);
                     for(int i=9;i>0;i--)trailPoints[i]=trailPoints[i-1];
                     trailPoints[0]=player.position+Vector3.up*.3f;trail.SetPositions(trailPoints);trail.enabled=IsDashing;
                 }
-                visual.localScale=RushVisuals.ImpactScale(playerHitAge,-1,playerJellyStrength);
+                ApplyPlayerCombatPresentation();
                 ring.localScale=Vector3.one*(IsBracing?1.45f:1.2f);ring.localScale=new Vector3(ring.localScale.x,.018f,ring.localScale.z);
             }
         }
@@ -348,7 +359,9 @@ namespace EarlyRush
             if(State!=RushState.Playing||impactFreezeLeft>0)return;
             float dt=Time.fixedDeltaTime;
             cooldown=Mathf.Max(0,cooldown-dt);dashLeft=Mathf.Max(0,dashLeft-dt);
-            IsBracing=braceInput;
+            playerTickStart=position;
+            TickCombat(dt);
+            IsBracing=braceInput&&!PlayerAirborne&&!PlayerRecovering;
             // A global recovery window prevents a stream of new bodies from extending
             // one stumble indefinitely. Bracing cancels the stumble but keeps protection.
             stumbleProtectionLeft=Mathf.Max(0,stumbleProtectionLeft-dt);
@@ -361,12 +374,15 @@ namespace EarlyRush
             stumbleLeft=IsBracing?0:Mathf.Max(0,stumbleLeft-dt);
             if(stumbleLeft<=0)continuousStumbleTime=0;
             if(IsBracing)dashLeft=0;
-            if(dashPressed && !IsBracing && !IsStumbling && cooldown<=0)
+            if(dashPressed && !IsBracing && !IsStumbling && !PlayerAirborne&&!PlayerRecovering&&cooldown<=0)
             {dashLeft=.20f;cooldown=1.15f;if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;
                 CurrentDashId++;impactBursts[CurrentDashId]=new ImpactBurst();
                 if(CurrentDashId>4)impactBursts.Remove(CurrentDashId-4);
                 Sound(dashClip);Log("dash");}
             dashPressed=false;IsDashing=dashLeft>0;
+            if(PlayerAirborne||PlayerRecovering){dashLeft=0;IsDashing=false;SimulatePlayerImpact(dt);}
+            else
+            {
             float speed=(Stage==0?6.1f:4.9f)*(IsBracing?.48f:IsStumbling?.60f:1f);
             if(IsDashing)velocity=facing*(Stage==0?13f:11.3f);
             else
@@ -377,12 +393,13 @@ namespace EarlyRush
                 velocity=Vector2.MoveTowards(velocity,moveInput*speed,acceleration*dt);
                 if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;
             }
-            playerTickStart=position;MovePlayer(velocity*dt);
+            MovePlayer(velocity*dt);
+            }
             playerSeparationLeft=dt*3.6f;
             UpdateCrowds(dt);
             position=Resolve(position,Radius,false);
             Vector2 goal=new Vector2(world.goal.x,world.goal.z);
-            if(Mathf.Abs(position.x-goal.x)<world.goalHalfSize.x && Mathf.Abs(position.y-goal.y)<world.goalHalfSize.y)CompleteStage();
+            if(!PlayerAirborne&&!PlayerRecovering&&Mathf.Abs(position.x-goal.x)<world.goalHalfSize.x && Mathf.Abs(position.y-goal.y)<world.goalHalfSize.y)CompleteStage();
         }
         bool CrowdInView(Vector2 point,float margin)
         {
@@ -444,6 +461,7 @@ namespace EarlyRush
                     if(c.recoveryLeft<=0)RejoinForwardRoute(c);
                     continue;
                 }
+                if(AdvanceNpcCombat(c,i,dt))continue;
                 c.offset=Vector2.MoveTowards(c.offset,Vector2.zero,dt*1.2f);
                 c.pushVelocity=Vector2.MoveTowards(c.pushVelocity,Vector2.zero,dt*15f);
                 while(c.waypoint<c.route.Length-1&&Vector2.Distance(c.position,c.route[c.waypoint])<.35f)c.waypoint++;
@@ -484,15 +502,16 @@ namespace EarlyRush
                 c.position=MoveCrowd(c.position,travel);
                 PushCrowd(c,c.pushVelocity*dt);
             }
+            ResolveNpcRushHits();
             PropagateImpacts();
             // Gentle symmetric separation uses real static collision for both bodies.
             // No elastic velocity is fed back, so dense groups cannot gain unlimited momentum.
             for(int i=0;i<crowds.Count;i++)
             {
-                var a=crowds[i];if(!a.active||a.airborne)continue;
+                var a=crowds[i];if(!a.active||a.airborne||CombatCommitted(i))continue;
                 for(int j=i+1;j<crowds.Count;j++)
                 {
-                    var b=crowds[j];if(!b.active||b.airborne)continue;
+                    var b=crowds[j];if(!b.active||b.airborne||CombatCommitted(j))continue;
                     Vector2 delta=a.position-b.position;float sq=delta.sqrMagnitude;
                     if(sq>=.78f*.78f)continue;
                     float distance=Mathf.Sqrt(sq);
@@ -505,7 +524,7 @@ namespace EarlyRush
             {
                 var c=crowds[i];if(!c.active)continue;
                 Vector2 delta=position-c.position;float distance=delta.magnitude;
-                if(!c.airborne&&c.recoveryLeft<=0)
+                if(!c.airborne&&c.recoveryLeft<=0&&!PlayerAirborne&&!PlayerRecovering)
                 {
                     bool newContact=distance<Radius+.43f&&!c.touchingPlayer;
                     if(distance<Radius+.43f)c.touchingPlayer=true;
@@ -525,7 +544,7 @@ namespace EarlyRush
                         Vector2 normal=distance>.001f?delta/distance:Vector2.right;
                         float overlap=Radius+.43f-distance;
                         float crowdShare=IsDashing?.94f:IsBracing?.88f:.70f;
-                        Vector2 before=c.position;PushCrowd(c,-normal*overlap*crowdShare);
+                        Vector2 before=c.position;if(!CombatCommitted(i))PushCrowd(c,-normal*overlap*crowdShare);
                         float displaced=Mathf.Max(0,Vector2.Dot(before-c.position,normal));
                         Vector2 playerBefore=position;
                         MovePlayer(normal*Mathf.Min(Mathf.Max(0,overlap-displaced),playerSeparationLeft));
@@ -577,6 +596,7 @@ namespace EarlyRush
         }
         void ResetCrowdImpact(Crowd c)
         {
+            c.windup01=0;
             c.airborne=false;c.height=0;c.verticalVelocity=0;c.flightVelocity=Vector2.zero;
             c.recoveryLeft=0;c.airTime=0;c.hitAge=-1;c.landingAge=-1;c.jellyStrength=0;
             c.lastVelocity=Vector2.zero;c.spinDegrees=0;c.landingSpin=0;c.touchingPlayer=false;
@@ -586,6 +606,7 @@ namespace EarlyRush
         void ClearImpactTransients()
         {
             impactFreezeLeft=0;shake=0;impact=0;playerHitAge=-1;playerJellyStrength=0;
+            ClearCombatTransients();
             if(impactFx!=null)impactFx.Clear();
             if(trail)trail.enabled=false;
             if(visual)visual.localScale=Vector3.one;
@@ -594,7 +615,7 @@ namespace EarlyRush
         }
         void ClearImpactScene()
         {
-            ClearImpactTransients();nextImpactStopAt=0;
+            ClearImpactTransients();nextImpactStopAt=0;ResetCombatScene();
             foreach(var c in crowds)ResetCrowdImpact(c);
         }
         void TickImpactPresentation(float dt)
@@ -602,6 +623,7 @@ namespace EarlyRush
             if(dt<=0)return;
             if(impactFx!=null)impactFx.Tick(dt);
             if(playerHitAge>=0)playerHitAge+=dt;
+            if(playerLandingAge>=0)playerLandingAge+=dt;
             foreach(var c in crowds)
             {
                 if(!c.active)continue;
@@ -613,6 +635,18 @@ namespace EarlyRush
         void ApplyCrowdPresentation(Crowd c)
         {
             if(!c.visual)return;
+            // Telegraph pose is applied last, outside the walking rig. Navigation roots
+            // and collision radii remain unchanged throughout the visible wind-up.
+            if(!c.airborne&&c.recoveryLeft<=0&&c.windup01>0)
+            {
+                float charge=Mathf.Clamp01(c.windup01);
+                Vector2 aim=c.windupDirection.sqrMagnitude>.01f?c.windupDirection:Vector2.up;
+                float wobble=Mathf.Sin(charge*24f)*3.5f*charge;
+                c.visual.rotation=Quaternion.LookRotation(new Vector3(aim.x,0,aim.y))*Quaternion.Euler(10f+charge*10f,0,wobble);
+                c.visual.localScale=new Vector3(1f+charge*.12f,1f-charge*.22f,1f+charge*.10f);
+                c.visual.localPosition=Vector3.zero;
+                return;
+            }
             Vector3 scale=RushVisuals.ImpactScale(c.hitAge,c.landingAge,c.jellyStrength);
             c.visual.localScale=scale;
             if(c.airborne||c.recoveryLeft>0)
@@ -633,7 +667,8 @@ namespace EarlyRush
         {
             var c=crowds[index];
             if(!c.active||c.airborne||c.recoveryLeft>0||depth>2||!impactBursts.TryGetValue(dashId,out var burst))return false;
-            if(burst.targets.Count>=6||!burst.targets.Add(index))return false;
+            if(burst.owner==index||burst.targets.Count>=6||!burst.targets.Add(index))return false;
+            CancelNpcCombat(index,3f);
             direction=direction.sqrMagnitude>.01f?direction.normalized:Vector2.up;
             c.airborne=true;c.airTime=0;c.height=0;c.verticalVelocity=8.2f*Mathf.Pow(.88f,depth);
             c.flightVelocity=direction*(13.8f*Mathf.Pow(.80f,depth));c.launchDirection=direction;
@@ -643,7 +678,8 @@ namespace EarlyRush
             TotalLaunches++;if(depth>0)ChainLaunches++;
             MaxObservedChainDepth=Mathf.Max(MaxObservedChainDepth,depth);
             MaxObservedDashTargets=Mathf.Max(MaxObservedDashTargets,burst.targets.Count);
-            if(depth==0)
+            if(dashId<0)NpcToNpcLaunches++;
+            if(depth==0&&dashId>=0)
             {
                 RegisterHit(1000+index,.85f);playerHitAge=0;playerJellyStrength=.46f;
                 // Commit the compressed model BEFORE starting hit-stop.
@@ -799,7 +835,7 @@ namespace EarlyRush
             if(Stage==2){State=RushState.Results;Log(TotalTime<=TimeLimit?"result_on_time":"result_late");}
             else{State=RushState.Transition;transitionBeginTime=Time.unscaledTime;TransitionLeft=1.55f;}
         }
-        void OnApplicationFocus(bool focus){if(!focus&&qa==null&&!impactQaMode&&State==RushState.Playing)TogglePause();}
+        void OnApplicationFocus(bool focus){if(!focus&&qa==null&&!impactQaMode&&!combatQaMode&&State==RushState.Playing)TogglePause();}
         void OnGUI(){RushUI.Draw(this);}
         public void Log(string evt){Debug.Log("RUSH_EVENT "+evt+" stage="+Stage+" time="+TotalTime.ToString("F3")+" pos="+position+" collisions="+Collisions+" transitions="+TransitionCount);}
     }
