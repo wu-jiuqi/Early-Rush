@@ -80,9 +80,9 @@ namespace EarlyRush
         // Physical roots remain unit scale; all squash, tumble and bounce lives below them.
         public struct ImpactProbe
         {
-            public Vector2 position, velocity, launchDirection;
+            public Vector2 position, velocity, launchDirection, separationOffset;
             public bool active, airborne, recovering;
-            public float height, recoveryLeft, spinDegrees, landedAt;
+            public float height, recoveryLeft, spinDegrees, landedAt, correctionBudgetLeft;
             public int dashId, chainDepth, launchCount, landCount, generation;
             public Vector3 visualScale, rootScale;
             public Quaternion visualRotation;
@@ -124,7 +124,8 @@ namespace EarlyRush
                     active=c.active,airborne=c.airborne,recovering=c.recoveryLeft>0,height=c.height,recoveryLeft=c.recoveryLeft,
                     spinDegrees=c.spinDegrees,landedAt=c.landedAt,dashId=c.hitDashId,chainDepth=c.chainDepth,
                     launchCount=c.launchCount,landCount=c.landCount,generation=c.generation,
-                    visualScale=c.visual.localScale,rootScale=c.root.localScale,visualRotation=c.visual.rotation};
+                    visualScale=c.visual.localScale,rootScale=c.root.localScale,visualRotation=c.visual.rotation,
+                    separationOffset=c.offset,correctionBudgetLeft=c.correctionDistanceLeft};
             }
             return result;
         }
@@ -445,6 +446,28 @@ namespace EarlyRush
             c.root.position=new Vector3(entry.x,0,entry.y);c.root.gameObject.SetActive(true);
             return true;
         }
+        void SeparateCommittedCrowds()
+        {
+            // Keep the telegraphed origin fixed while yielding real space around it.
+            // This pass precedes ordinary pair separation so those pairs cannot consume
+            // the entire remaining correction budget before a fixed body is considered.
+            for(int i=0;i<crowds.Count;i++)
+            {
+                var anchor=crowds[i];
+                if(!anchor.active||anchor.airborne||!CombatCommitted(i))continue;
+                for(int j=0;j<crowds.Count;j++)
+                {
+                    if(i==j)continue;
+                    var other=crowds[j];
+                    if(!other.active||other.airborne||CombatCommitted(j))continue;
+                    Vector2 delta=other.position-anchor.position;float sq=delta.sqrMagnitude;
+                    if(sq>=.78f*.78f)continue;
+                    float distance=Mathf.Sqrt(sq);
+                    Vector2 normal=distance>.001f?delta/distance:(j%2==0?Vector2.right:Vector2.left);
+                    PushCrowd(other,normal*Mathf.Min(.11f,.78f-distance));
+                }
+            }
+        }
         void UpdateCrowds(float dt)
         {
             // All agents simulate outside the camera; only their limb animation is culled.
@@ -472,7 +495,7 @@ namespace EarlyRush
                 Vector2 avoidance=Vector2.zero;float pace=1;
                 for(int j=0;j<crowds.Count;j++)
                 {
-                    if(i==j||!crowds[j].active||crowds[j].airborne||crowds[j].recoveryLeft>0)continue;
+                    if(i==j||!crowds[j].active||crowds[j].airborne)continue;
                     Vector2 away=c.position-crowds[j].position;
                     float sq=away.sqrMagnitude;
                     if(sq>3.24f||sq<.00001f)continue;
@@ -504,6 +527,7 @@ namespace EarlyRush
             }
             ResolveNpcRushHits();
             PropagateImpacts();
+            SeparateCommittedCrowds();
             // Gentle symmetric separation uses real static collision for both bodies.
             // No elastic velocity is fed back, so dense groups cannot gain unlimited momentum.
             for(int i=0;i<crowds.Count;i++)

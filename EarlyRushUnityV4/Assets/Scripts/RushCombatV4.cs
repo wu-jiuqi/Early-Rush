@@ -175,6 +175,8 @@ namespace EarlyRush
         {
             if(i>=combat.Count||CombatWarningCount+CombatRushCount>=2)return false;
             var c=crowds[i];if(!c.active||c.airborne||c.recoveryLeft>0)return false;
+            for(int j=0;j<combat.Count;j++)
+                if(j!=i&&crowds[j].active&&CombatCommitted(j)&&(crowds[j].position-c.position).sqrMagnitude<.78f*.78f)return false;
             var a=combat[i];a.origin=c.position;a.direction=direction.normalized;
             float length=0;
             // Truncate at the first solid obstruction. The rush never slides out of its warning.
