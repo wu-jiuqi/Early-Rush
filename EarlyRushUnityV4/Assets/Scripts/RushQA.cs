@@ -43,6 +43,9 @@ namespace EarlyRush
             public float cameraSpanX, cameraSpanZ;
             public float minViewportX = 1, maxViewportX;
             public float minViewportY = 1, maxViewportY;
+            public int visibleWarningPeak, visibleRushPeak, visibleThreatPeak, warningSamples, rushSamples, playerAirSamples, maxNpcBurstHistory;
+            public float visibleWarningTotal, visibleRushTotal, maxPlayerAirHeight;
+            public int combatNpcLaunchesCumulative, combatPlayerLaunchesCumulative, braceBlocksCumulative;
             public int samples;
             public bool inBounds = true, clearOfWalls = true, playerVisible = true;
         }
@@ -53,6 +56,7 @@ namespace EarlyRush
             public float totalSeconds, totalStumbleSeconds, longestStumbleSeconds;
             public int stumbleTriggers;
             public int impactLaunches, chainLaunches, maxDashTargets, maxChainDepth;
+            public int npcCombatLaunches, playerCombatLaunches, braceBlocks;
             public int collisions, transitions;
             public bool reachedResults;
             public float[] splits;
@@ -62,7 +66,7 @@ namespace EarlyRush
         [Serializable] public class Report
         {
             public string utc, engine, device, graphicsApi;
-            public string schemaVersion = "v3-impact-routes-2-ground-piles";
+            public string schemaVersion = "v4-combat-routes-1";
             public string pileSamplingScope = "All-active 2D clusters remain diagnostics. The unchanged <=3 pile limit applies to active non-airborne, non-recovering colliders. Counts are sampled twice per second; persistence is the span of consecutive positive samples for a stable slot/generation, not continuous observation.";
             public string performanceScope = "Overall frame statistics include the late wait; per-stage traversal timing excludes deliberate pauses.";
             public string driver =
@@ -181,7 +185,9 @@ namespace EarlyRush
         {
             yield return new WaitForEndOfFrame();
             string path = Path.Combine(output, name + ".png");
+            Debug.Log("RUSH_QA_CAPTURE_REQUEST_BEGIN name=" + name + " realtime=" + Time.realtimeSinceStartup + " frame=" + Time.frameCount);
             ScreenCapture.CaptureScreenshot(path);
+            Debug.Log("RUSH_QA_CAPTURE_REQUEST_END name=" + name + " realtime=" + Time.realtimeSinceStartup + " frame=" + Time.frameCount);
             report.screenshots.Add(path);
             yield return null;
         }
@@ -297,6 +303,12 @@ namespace EarlyRush
             bool clean = game.ImpactFreezeRemaining < .00001f && game.ActiveImpactFxCount == 0 &&
                 Vector3.Distance(game.PlayerVisualScale, Vector3.one) < .001f &&
                 Vector3.Distance(game.PlayerRootScale, Vector3.one) < .001f;
+            var playerCombat = game.PlayerCombatProbeSnapshot();
+            CheckThat(label + ": combat state clears on scene/reset",
+                !playerCombat.airborne && !playerCombat.recovering && playerCombat.height == 0 &&
+                playerCombat.protectionLeft == 0 && game.CombatWarningCount == 0 && game.CombatRushCount == 0 && game.NpcBurstCount == 0,
+                "player height/protection=" + playerCombat.height + "/" + playerCombat.protectionLeft +
+                " threats=" + game.CombatWarningCount + "/" + game.CombatRushCount + " burst history=" + game.NpcBurstCount);
             var impacts = game.ImpactProbeSnapshot();
             foreach (var p in impacts)
                 clean &= !p.airborne && !p.recovering && Mathf.Abs(p.height) < .001f &&
@@ -382,6 +394,7 @@ namespace EarlyRush
                 {
                     if (metric != null) FinalizeStage(metric, cameraMin, cameraMax, name);
                     previousStage = game.Stage;
+                    Debug.Log("RUSH_QA_STAGE_OBSERVED stage=" + game.Stage + " realtime=" + Time.realtimeSinceStartup + " frame=" + Time.frameCount);
                     Neutral();
                     yield return Wait(.15f);
                     CheckThat(name + ": stage " + game.Stage + " resets momentum",
@@ -643,6 +656,12 @@ namespace EarlyRush
             run.totalStumbleSeconds = game.TotalStumbleTime;
             run.longestStumbleSeconds = game.LongestStumbleTime;
             run.stumbleTriggers = game.StumbleTriggers;
+            run.npcCombatLaunches = game.NpcToNpcLaunches;
+            run.playerCombatLaunches = game.NpcToPlayerLaunches;
+            run.braceBlocks = game.BraceBlocks;
+            if (name == "charge")
+                CheckThat("Charge route encounters actual NPC attacks", run.playerCombatLaunches + run.braceBlocks > 0,
+                    "player launches=" + run.playerCombatLaunches + " brace blocks=" + run.braceBlocks);
             run.impactLaunches = game.TotalLaunches;
             run.chainLaunches = game.ChainLaunches;
             run.maxDashTargets = game.MaxObservedDashTargets;
@@ -652,8 +671,8 @@ namespace EarlyRush
                 "launches=" + run.impactLaunches + " secondary=" + run.chainLaunches +
                 " max targets=" + run.maxDashTargets + " depth=" + run.maxChainDepth);
             if (name == "charge")
-                CheckThat("Charge route exercises real dash launches", run.impactLaunches > 0,
-                    "launches=" + run.impactLaunches + " secondary=" + run.chainLaunches);
+                CheckThat("Charge route exercises real dash launches", run.impactLaunches - run.npcCombatLaunches > 0,
+                    "all launches=" + run.impactLaunches + " NPC-owned=" + run.npcCombatLaunches + " secondary=" + run.chainLaunches);
             CheckThat(name + ": individual stumble duration stays bounded",
                 game.LongestStumbleTime <= .47f,
                 "total seconds=" + game.TotalStumbleTime + " longest=" + game.LongestStumbleTime +
@@ -691,6 +710,24 @@ namespace EarlyRush
 
         void SampleGeometry(StageEvidence metric, Vector2 p)
         {
+            var combat = game.CombatProbeSnapshot();
+            var playerCombat = game.PlayerCombatProbeSnapshot();
+            int warnings = 0, rushes = 0;
+            foreach (var threat in combat)
+                if (threat.active && threat.visible)
+                { if (threat.phase == 1) warnings++; else if (threat.phase == 2) rushes++; }
+            metric.visibleWarningPeak = Mathf.Max(metric.visibleWarningPeak, warnings);
+            metric.visibleRushPeak = Mathf.Max(metric.visibleRushPeak, rushes);
+            metric.visibleThreatPeak = Mathf.Max(metric.visibleThreatPeak, warnings + rushes);
+            metric.maxNpcBurstHistory = Mathf.Max(metric.maxNpcBurstHistory, game.NpcBurstCount);
+            metric.visibleWarningTotal += warnings; metric.visibleRushTotal += rushes;
+            if (warnings > 0) metric.warningSamples++;
+            if (rushes > 0) metric.rushSamples++;
+            if (playerCombat.airborne) metric.playerAirSamples++;
+            metric.maxPlayerAirHeight = Mathf.Max(metric.maxPlayerAirHeight, playerCombat.height);
+            metric.combatNpcLaunchesCumulative = game.NpcToNpcLaunches;
+            metric.combatPlayerLaunchesCumulative = game.NpcToPlayerLaunches;
+            metric.braceBlocksCumulative = game.BraceBlocks;
             WorldData w = game.World;
             metric.inBounds &= p.x >= w.boundsMin.x + .40f && p.x <= w.boundsMax.x - .40f &&
                 p.y >= w.boundsMin.y + .40f && p.y <= w.boundsMax.y - .40f;
@@ -851,7 +888,7 @@ namespace EarlyRush
                 if (anyGround) metric.groundPileSamples++;
                 if (anyTransient) metric.nonGroundInPileSamples++;
             }
-            Vector3 viewport = game.GameCamera.WorldToViewportPoint(new Vector3(p.x, 1f, p.y));
+            Vector3 viewport = game.GameCamera.WorldToViewportPoint(new Vector3(p.x, 1f + playerCombat.height, p.y));
             metric.minViewportX = Mathf.Min(metric.minViewportX, viewport.x);
             metric.maxViewportX = Mathf.Max(metric.maxViewportX, viewport.x);
             metric.minViewportY = Mathf.Min(metric.minViewportY, viewport.y);
@@ -871,6 +908,10 @@ namespace EarlyRush
             metric.meanTraversalFrameMilliseconds =
                 metric.traversalFrameSeconds * 1000f / Mathf.Max(1, metric.samples);
             string label = name + " stage " + (metric.stage + 1);
+            CheckThat(label + ": visible NPC warnings/rushes stay bounded", metric.visibleThreatPeak <= 2 && metric.maxNpcBurstHistory <= 8,
+                "warning/rush peaks=" + metric.visibleWarningPeak + "/" + metric.visibleRushPeak +
+                " samples=" + metric.warningSamples + "/" + metric.rushSamples +
+                " player air samples/height=" + metric.playerAirSamples + "/" + metric.maxPlayerAirHeight + " burst history=" + metric.maxNpcBurstHistory);
             bool preWaitStage = name == "late" && metric.stage == 0;
             CheckThat(label + ": dense population is present",
                 metric.crowdPopulation >= 120 && (preWaitStage || metric.visiblePeak >= 10),
