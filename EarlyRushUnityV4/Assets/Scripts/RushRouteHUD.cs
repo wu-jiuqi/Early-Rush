@@ -5,9 +5,9 @@ namespace EarlyRush
     {
         RushGame game; GUIStyle label; Font font;
         static readonly string[] Hints={
-            "大家都在赶地铁！冲开人流，沿黄线抢时间。\nSPACE 冲刺撞飞，SHIFT 稳住；青线可以绕行。",
-            "人群正汇入车门，看准方向冲出一条路。\n撞上会压缩回弹；连锁撞翻后继续向前！",
-            "同事们抢着打卡！冲刺撞飞，顺势穿过入口。\n撞开人群，抓住空档继续赶路。"};
+            "大家都在赶地铁！通勤者会沿赶路方向冲撞。\n看地面预警，侧移或 SHIFT 稳住；青线可绕行。",
+            "人群抢着进车门！地面预警指向他们的冲撞方向。\nSHIFT 稳住免击飞，松开后 SPACE 撞飞开路。",
+            "同事们抢着打卡！先避预警，再冲开入口。\n落地有短暂保护；SHIFT 稳住，SPACE 撞飞。"};
         void Awake(){game=GetComponent<RushGame>();}
         void OnGUI()
         {

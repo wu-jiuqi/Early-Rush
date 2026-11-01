@@ -91,11 +91,11 @@ namespace EarlyRush
         {
             Box(new Rect(0, 0, width, height), new Color(Ink.r, Ink.g, Ink.b, .26f), false);
             Panel(R(62, 67, 518, 588), Cream);
-            Pill(R(94, 97, 156, 28), "果冻冲撞  /  v3", Ink, Cream, 12);
+            Pill(R(94, 97, 156, 28), "抢道反击  /  v4", Ink, Cream, 12);
             Text(R(90, 139, 440, 74), "早八冲刺", 62, Ink, true);
             Text(R(96, 217, 410, 28), "E A R L Y   R U S H", 22, Teal, true);
             Text(R(96, 268, 410, 44), "早餐可以等，打卡不能晚。", 24, Ink, true);
-            Text(R(96, 318, 410, 60), "撞开人群，弹着赶去上班。\n一趟通勤，三个混乱现场。", 20, Muted);
+            Text(R(96, 318, 410, 60), "大家抢着上班，也会向前冲撞。\n看准预警，稳住，再撞开人群。", 20, Muted);
             Box(R(96, 397, 410, 1), new Color(Ink.r, Ink.g, Ink.b, .13f), false);
             Text(R(96, 415, 410, 48), "橙色背包是你  ·  青色区域是目标", 17, Ink);
             if (Button(R(96, 482, 410, 64), "开始赶路    →", Orange, Ink, 25)) active.StartRun();
@@ -108,7 +108,7 @@ namespace EarlyRush
             Panel(R(routeX, 126, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
             Icon(0, R(routeX + 17, 145, 48, 44), Orange);
             Text(R(routeX + 80, 139, 204, 30), "01  骑车赶地铁", 20, Ink, true);
-            Text(R(routeX + 80, 172, 210, 23), "选好路线，留点刹车距离", 14, Muted);
+            Text(R(routeX + 80, 172, 210, 23), "看地面预警，留点刹车距离", 14, Muted);
             DashLine(R(routeX + 39, 218, 4, 34), Cream);
             Panel(R(routeX, 262, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
             Icon(1, R(routeX + 17, 281, 48, 44), Teal);
@@ -118,7 +118,7 @@ namespace EarlyRush
             Panel(R(routeX, 398, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
             Icon(2, R(routeX + 17, 417, 48, 44), Orange);
             Text(R(routeX + 80, 411, 204, 30), "03  抢最后的打卡", 20, Ink, true);
-            Text(R(routeX + 80, 444, 210, 23), "稳住重心，到达就能打卡", 14, Muted);
+            Text(R(routeX + 80, 444, 210, 23), "SHIFT 稳住，别被抢道撞飞", 14, Muted);
             Pill(R(914, 532, 270, 38), "迟到了也没关系，继续冲！", Ink, Cream, 16);
             Text(R(924, 578, 250, 22), "单人 · 俯视角 · 三段连续挑战", 13, Cream, false, TextAnchor.MiddleCenter);
         }
@@ -127,12 +127,14 @@ namespace EarlyRush
         {
             Scrim(.76f);
             Text(R(0, 64, 1280, 28), "你的通勤生存手册", 18, Teal, true, TextAnchor.MiddleCenter);
-            Text(R(0, 104, 1280, 64), "撞开人群，准点到达", 44, Cream, true, TextAnchor.MiddleCenter);
+            Text(R(0, 104, 1280, 64), "撞飞赶路，看准预警", 44, Cream, true, TextAnchor.MiddleCenter);
+            Text(R(140, 178, 1000, 26), "NPC 会沿赶路方向冲撞：先看地面预警，再侧移或按住 SHIFT。", 17, Cream, false, TextAnchor.MiddleCenter);
             TutorialCard(100, 0, "移动与转向", "W A S D", "或方向键  ↑ ↓ ← →", "骑车有惯性。\n提前转弯，松手减速。", Orange);
             TutorialCard(466, 1, "冲刺撞飞", "SPACE", "撞上、回弹，再向前！", "冲刺能把通勤者撞飞。\n连锁撞翻，顺势冲过！", Teal);
-            TutorialCard(832, 2, "稳住调整", "SHIFT", "抵抗侧推，移动变慢", "普通接触只会轻轻推挤。\n松开稳住后再冲刺。", Orange);
+            TutorialCard(832, 2, "稳住免击飞", "SHIFT", "地面按住免击飞 · 移动变慢", "看到预警先稳住或侧移。\n松开稳住，SPACE 撞飞！", Orange);
             if (Button(R(435, 566, 410, 64), "出发！    ENTER  →", Orange, Ink, 25)) active.BeginPlay();
-            Text(R(140, 653, 1000, 26), "寻找青色目标  ·  三段共用一个计时器  ·  超时也能继续完成打卡  ·  ESC 暂停", 15, Cream, false, TextAnchor.MiddleCenter);
+            Text(R(140, 639, 1000, 25), "落地后短暂恢复，并有 1.2 秒免再击飞保护；右下角显示状态与倒计时。", 15, Cream, false, TextAnchor.MiddleCenter);
+            Text(R(140, 670, 1000, 24), "寻找青色目标  ·  三段共用计时  ·  超时仍可完成打卡  ·  ESC 暂停", 14, Cream, false, TextAnchor.MiddleCenter);
         }
 
         static void TutorialCard(float x, int type, string title, string key, string caption, string detail, Color accent)
@@ -177,11 +179,26 @@ namespace EarlyRush
             Bar(new Rect(40, height - 48, 314, 6), Mathf.Clamp01(active.StageProgress01), Teal, new Color32(68, 87, 100, 255));
             Text(new Rect(24, height - 118, 360, 24), "碰撞  " + active.Collisions + "     本段  " + TimeText(active.StageTime), 14, Ink, true);
 
-            Panel(new Rect(width - 356, height - 103, 332, 79), Cream);
-            string dash = active.IsBracing ? "SPACE  松开稳住后冲刺" : active.IsDashing ? "SPACE  冲撞中！" : active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺撞飞";
-            Text(new Rect(width - 338, height - 93, 296, 26), dash, 16, Ink, true);
-            Bar(new Rect(width - 338, height - 60, 295, 6), Mathf.Clamp01(active.DashCooldown01), Orange, new Color32(221, 226, 214, 255));
-            Text(new Rect(width - 338, height - 47, 296, 17), active.IsBracing ? "SHIFT  正在稳住 · 减速 / 抗推" : "SHIFT  按住稳住 · 抵抗侧向推挤", 12, active.IsBracing ? Teal : Muted, active.IsBracing);
+            Panel(new Rect(width - 356, height - 136, 332, 112), Cream);
+            string dash = active.PlayerAirborne ? "SPACE  腾空中 · 落地再冲刺" :
+                active.PlayerRecovering ? "SPACE  落地恢复中" :
+                active.IsBracing ? "SPACE  松开稳住后冲刺" :
+                active.IsDashing ? "SPACE  冲撞中！" :
+                active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺撞飞";
+            Text(new Rect(width - 338, height - 127, 296, 26), dash, 16, Ink, true);
+            Bar(new Rect(width - 338, height - 94, 295, 6), Mathf.Clamp01(active.DashCooldown01), Orange, new Color32(221, 226, 214, 255));
+            bool protectedNow = active.PlayerProtectionRemaining > 0f;
+            string protection = (Mathf.Ceil(active.PlayerProtectionRemaining * 10f) / 10f).ToString("F1");
+            string response = active.PlayerAirborne ? "被撞飞了 · 等待落地" :
+                active.PlayerRecovering ? "落地恢复 · 保护 " + protection + " 秒" :
+                active.BraceSuccessRemaining > 0f ? "稳住成功！挡住冲撞  " + active.BraceBlocks + " 次" :
+                protectedNow ? "落地保护  " + protection + " 秒 · 免再击飞" :
+                "地面预警 → 侧移 / SHIFT 稳住";
+            Color responseColor = active.PlayerAirborne ? Red : active.PlayerRecovering || protectedNow || active.BraceSuccessRemaining > 0f ? Teal : Muted;
+            Text(new Rect(width - 338, height - 82, 296, 24), response, 14, responseColor, true);
+            string brace = active.PlayerAirborne || active.PlayerRecovering ? "SHIFT  回到地面后稳住" :
+                active.IsBracing ? "SHIFT  正在稳住 · 免击飞 / 减速" : "SHIFT  地面按住免击飞 · 移动变慢";
+            Text(new Rect(width - 338, height - 51, 296, 21), brace, 12, active.IsBracing ? Teal : Muted, active.IsBracing);
             Text(new Rect(width * .5f - 230, height - 55, 460, 26), "WASD / 方向键  移动    ·    ESC  暂停", 14, Ink, true, TextAnchor.MiddleCenter);
         }
 
@@ -236,7 +253,7 @@ namespace EarlyRush
             }
             if (Button(R(322, 548, 354, 60), "再赶一次    R", Orange, Ink, 23)) active.Restart();
             if (Button(R(694, 548, 264, 60), "返回主菜单", Ink, Cream, 20)) active.ToMenu();
-            Text(R(308, 632, 664, 22), "小提示：弯道提前减速，拥挤时按住 SHIFT 稳住。", 14, Muted, false, TextAnchor.MiddleCenter);
+            Text(R(308, 632, 664, 22), "小提示：看地面预警，SHIFT 稳住免击飞，再松开冲刺。", 14, Muted, false, TextAnchor.MiddleCenter);
         }
 
         static void StatCard(float x, string caption, string value, Color accent)
