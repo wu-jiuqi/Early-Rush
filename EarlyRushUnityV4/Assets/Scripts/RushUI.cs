@@ -167,6 +167,15 @@ namespace EarlyRush
                 Text(new Rect(x, 38, 29, 29), i < Stage ? "✓" : (i + 1).ToString(), 15, i <= Stage ? Ink : Cream, true, TextAnchor.MiddleCenter);
                 if (i < 2) Box(new Rect(x + 34, 51, 54, 3), i < Stage ? Teal : new Color32(73, 94, 105, 255), false);
             }
+            // Fit the goal cue inside the existing stage bar, leaving the playfield clear for warnings.
+            if (active.World != null)
+            {
+                Vector2 direction = active.GoalViewport - new Vector2(.5f, .5f);
+                string arrow = Mathf.Abs(direction.x) > Mathf.Abs(direction.y) ?
+                    (direction.x > 0 ? "→" : "←") : (direction.y > 0 ? "↑" : "↓");
+                Text(new Rect(width * .5f - 139, 68, 278, 20),
+                    arrow + " 目标 " + active.GoalDistance.ToString("F0") + " 米", 14, Cream, false, TextAnchor.MiddleCenter);
+            }
 
             Panel(new Rect(width - 312, 20, 218, 92), late ? Red : Cream);
             Text(new Rect(width - 296, 31, 188, 22), late ? "已迟到 · 继续打卡" : "距离迟到还有", 13, late ? Cream : Muted);
