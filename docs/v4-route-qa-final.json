@@ -1,0 +1,3141 @@
+{
+    "utc": "2026-11-01T13:08:07.8465977Z",
+    "engine": "6000.0.26f1",
+    "device": "Intel(R) Iris(R) Xe Graphics",
+    "graphicsApi": "Direct3D11",
+    "schemaVersion": "v4-combat-routes-1",
+    "pileSamplingScope": "All-active 2D clusters remain diagnostics. The unchanged <=3 pile limit applies to active non-airborne, non-recovering colliders. Counts are sampled twice per second; persistence is the span of consecutive positive samples for a stable slot/generation, not continuous observation.",
+    "performanceScope": "Overall frame statistics include the late wait; per-stage traversal timing excludes deliberate pauses.",
+    "driver": "Windows Player QAMove/QADash/QABrace input driver. Menu/pause/restart use public UI actions. No teleport, time override, scene skip, OS keyboard automation or human playtest.",
+    "passed": true,
+    "failureCount": 0,
+    "sampledFrames": 27091,
+    "elapsedRealSeconds": 479.33709716796877,
+    "meanFrameMilliseconds": 16.856889724731447,
+    "worstFrameMilliseconds": 401.8471984863281,
+    "checks": [
+        {
+            "name": "Opens to menu",
+            "evidence": "Menu",
+            "passed": true
+        },
+        {
+            "name": "Start opens tutorial",
+            "evidence": "Tutorial",
+            "passed": true
+        },
+        {
+            "name": "Diagonal movement is normalized",
+            "evidence": "cardinal=6.1 diagonal=6.1",
+            "passed": true
+        },
+        {
+            "name": "Brace wins simultaneous dash",
+            "evidence": "brace=True dash=False",
+            "passed": true
+        },
+        {
+            "name": "Dash accelerates and consumes cooldown",
+            "evidence": "speed=13 ready=0.04347822",
+            "passed": true
+        },
+        {
+            "name": "Brace cancels dash",
+            "evidence": "brace=True dash=False",
+            "passed": true
+        },
+        {
+            "name": "controls: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "controls: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "controls: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "Restart clears state 1",
+            "evidence": "stage=0 time=0.1963886 position=(0.00, 4.00)",
+            "passed": true
+        },
+        {
+            "name": "Restart 1: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "Restart 1: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "Restart clears state 2",
+            "evidence": "stage=0 time=0.196552 position=(0.00, 4.00)",
+            "passed": true
+        },
+        {
+            "name": "Restart 2: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "Restart 2: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "Restart clears state 3",
+            "evidence": "stage=0 time=0.193731 position=(0.00, 4.00)",
+            "passed": true
+        },
+        {
+            "name": "Restart 3: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "Restart 3: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 0 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 0: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 0: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 0 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 0 NPC routes have 0.43m clearance",
+            "evidence": "segments=1158 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "risk: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 0 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=987/333 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: dense population is present",
+            "evidence": "population=120 visible mean/peak=19.81303/49 active mean/peak=99.86806/120",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=120/120 forward/backward=8901.768/39.22064",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: commuters reach destinations and recycle",
+            "evidence": "goal crossings=148 arrivals=128 recycles=102",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: no sampled ground-collider pile",
+            "evidence": "samples=62 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=0/2/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: follows across several screens",
+            "evidence": "distance=102.7021 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: player remains visible",
+            "evidence": "viewport x=0.4440477..0.5556563 y=0.2072697..0.7065868",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: crowd remains finite and within map",
+            "evidence": "offscreen samples=149863 peak observed crowd speed=16.38401",
+            "passed": true
+        },
+        {
+            "name": "risk stage 1: collision containment",
+            "evidence": "bounds=True walls=True max speed=13",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 1 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 1: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 1: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=128",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 1 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 1 NPC routes have 0.43m clearance",
+            "evidence": "segments=868 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "risk: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 1 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=873/281 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: dense population is present",
+            "evidence": "population=128 visible mean/peak=30.00786/64 active mean/peak=107.7183/128",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=128/128 forward/backward=6601.012/14.72112",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: commuters reach destinations and recycle",
+            "evidence": "goal crossings=119 arrivals=94 recycles=60",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: no sampled ground-collider pile",
+            "evidence": "samples=55 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=1/1/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: follows across several screens",
+            "evidence": "distance=94.7867 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: player remains visible",
+            "evidence": "viewport x=0.4714854..0.5305483 y=0.2072697..0.7069693",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: crowd remains finite and within map",
+            "evidence": "offscreen samples=128533 peak observed crowd speed=17.98118",
+            "passed": true
+        },
+        {
+            "name": "risk stage 2: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 2 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 2: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 2: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=124",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 2 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 2 NPC routes have 0.43m clearance",
+            "evidence": "segments=1412 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "risk: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "risk: stage 2 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=1143/396 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: dense population is present",
+            "evidence": "population=124 visible mean/peak=33.83065/50 active mean/peak=110.201/124",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=124/124 forward/backward=7889.109/118.3431",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: commuters reach destinations and recycle",
+            "evidence": "goal crossings=106 arrivals=81 recycles=52",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: no sampled ground-collider pile",
+            "evidence": "samples=70 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=1/1/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: follows across several screens",
+            "evidence": "distance=104.7753 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: player remains visible",
+            "evidence": "viewport x=0.4407375..0.558026 y=0.2072697..0.7071829",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: crowd remains finite and within map",
+            "evidence": "offscreen samples=161447 peak observed crowd speed=15.84531",
+            "passed": true
+        },
+        {
+            "name": "risk stage 3: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "risk: ordinary-route impact chains stay bounded",
+            "evidence": "launches=132 secondary=84 max targets=6 depth=2",
+            "passed": true
+        },
+        {
+            "name": "risk: individual stumble duration stays bounded",
+            "evidence": "total seconds=0 longest=0 triggers=0",
+            "passed": true
+        },
+        {
+            "name": "risk: three stages completed through input",
+            "evidence": "state=Results transitions=3",
+            "passed": true
+        },
+        {
+            "name": "risk: timer and collision splits reconcile",
+            "evidence": "split time=96.77289 total=96.77309 split hits=140 hits=140",
+            "passed": true
+        },
+        {
+            "name": "Risk run finishes on time",
+            "evidence": "time=96.77309 limit=110",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 0 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 0: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 0: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 0 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 0 NPC routes have 0.43m clearance",
+            "evidence": "segments=1158 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "safe: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 0 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=810/269 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: dense population is present",
+            "evidence": "population=120 visible mean/peak=22.21821/49 active mean/peak=99.93667/120",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=120/120 forward/backward=9540.309/20.07462",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: commuters reach destinations and recycle",
+            "evidence": "goal crossings=162 arrivals=144 recycles=118",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: no sampled ground-collider pile",
+            "evidence": "samples=67 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=0/1/1 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: follows across several screens",
+            "evidence": "distance=176.1137 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: player remains visible",
+            "evidence": "viewport x=0.09978405..0.8285593 y=0.2072697..0.7252531",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: crowd remains finite and within map",
+            "evidence": "offscreen samples=157069 peak observed crowd speed=15.52216",
+            "passed": true
+        },
+        {
+            "name": "safe stage 1: collision containment",
+            "evidence": "bounds=True walls=True max speed=13",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 1 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 1: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 1: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=128",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 1 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 1 NPC routes have 0.43m clearance",
+            "evidence": "segments=868 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "safe: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 1 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=866/284 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: dense population is present",
+            "evidence": "population=128 visible mean/peak=27.19357/66 active mean/peak=105.1869/128",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=128/128 forward/backward=7295.783/32.82672",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: commuters reach destinations and recycle",
+            "evidence": "goal crossings=140 arrivals=112 recycles=75",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: no sampled ground-collider pile",
+            "evidence": "samples=65 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=0/2/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: follows across several screens",
+            "evidence": "distance=164.3651 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: player remains visible",
+            "evidence": "viewport x=0.1379003..0.8207631 y=0.2072697..0.707613",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: crowd remains finite and within map",
+            "evidence": "offscreen samples=152711 peak observed crowd speed=18.48006",
+            "passed": true
+        },
+        {
+            "name": "safe stage 2: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 2 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 2: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 2: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=124",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 2 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 2 NPC routes have 0.43m clearance",
+            "evidence": "segments=1412 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "safe: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "safe: stage 2 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=1140/416 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: dense population is present",
+            "evidence": "population=124 visible mean/peak=35.66476/56 active mean/peak=107.6949/124",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=124/124 forward/backward=9329.801/110.6053",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: commuters reach destinations and recycle",
+            "evidence": "goal crossings=134 arrivals=109 recycles=83",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: no sampled ground-collider pile",
+            "evidence": "samples=87 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=1/1/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: follows across several screens",
+            "evidence": "distance=167.821 camera z span=77.77224",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: player remains visible",
+            "evidence": "viewport x=0.1510176..0.7928727 y=0.2072697..0.7076356",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: crowd remains finite and within map",
+            "evidence": "offscreen samples=188647 peak observed crowd speed=16.75948",
+            "passed": true
+        },
+        {
+            "name": "safe stage 3: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "safe: ordinary-route impact chains stay bounded",
+            "evidence": "launches=116 secondary=77 max targets=6 depth=2",
+            "passed": true
+        },
+        {
+            "name": "safe: individual stumble duration stays bounded",
+            "evidence": "total seconds=0 longest=0 triggers=0",
+            "passed": true
+        },
+        {
+            "name": "safe: three stages completed through input",
+            "evidence": "state=Results transitions=3",
+            "passed": true
+        },
+        {
+            "name": "safe: timer and collision splits reconcile",
+            "evidence": "split time=112.7362 total=112.7364 split hits=89 hits=89",
+            "passed": true
+        },
+        {
+            "name": "Stage 1: safe route is a real detour",
+            "evidence": "risk length/time/hits/wait=102.7021/32.30298/32/0.01666499; safe=176.1137/34.75426/20/0.01665641",
+            "passed": true
+        },
+        {
+            "name": "Stage 2: safe route is a real detour",
+            "evidence": "risk length/time/hits/wait=94.7867/28.42826/37/0.0166657; safe=164.3651/33.4805/18/0.0166718",
+            "passed": true
+        },
+        {
+            "name": "Stage 3: safe route is a real detour",
+            "evidence": "risk length/time/hits/wait=104.7753/36.04165/71/0.0166662; safe=167.821/44.50145/51/0.0166586",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 0 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 0: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 0: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 0 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 0 NPC routes have 0.43m clearance",
+            "evidence": "segments=1158 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "charge: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 0 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=428/130 player air samples/height=0/0 burst history=6",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: dense population is present",
+            "evidence": "population=120 visible mean/peak=33.28263/52 active mean/peak=109.8285/120",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=120/120 forward/backward=5433.455/56.6242",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: commuters reach destinations and recycle",
+            "evidence": "goal crossings=67 arrivals=56 recycles=37",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: no sampled ground-collider pile",
+            "evidence": "samples=31 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=1/1/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: follows across several screens",
+            "evidence": "distance=105.1034 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: player remains visible",
+            "evidence": "viewport x=0.4381215..0.6116672 y=0.2072697..0.7066844",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: crowd remains finite and within map",
+            "evidence": "offscreen samples=70958 peak observed crowd speed=19.2016",
+            "passed": true
+        },
+        {
+            "name": "charge stage 1: collision containment",
+            "evidence": "bounds=True walls=True max speed=13",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 1 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 1: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 1: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=128",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 1 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 1 NPC routes have 0.43m clearance",
+            "evidence": "segments=868 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "charge: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 1 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=451/114 player air samples/height=0/0 burst history=6",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: dense population is present",
+            "evidence": "population=128 visible mean/peak=31.54051/53 active mean/peak=112.4979/128",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=128/128 forward/backward=4330.274/9.311908",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: commuters reach destinations and recycle",
+            "evidence": "goal crossings=63 arrivals=42 recycles=9",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: no sampled ground-collider pile",
+            "evidence": "samples=32 aligned=True ground max=1 all-active max=3 first all-active peak ground/air/recovering=1/2/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: follows across several screens",
+            "evidence": "distance=88.99933 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: player remains visible",
+            "evidence": "viewport x=0.49658..0.5052361 y=0.2072697..0.7068028",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: crowd remains finite and within map",
+            "evidence": "offscreen samples=75938 peak observed crowd speed=16.20792",
+            "passed": true
+        },
+        {
+            "name": "charge stage 2: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 2 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 2: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 2: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=124",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 2 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 2 NPC routes have 0.43m clearance",
+            "evidence": "segments=1412 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "charge: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "charge: stage 2 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=571/188 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: dense population is present",
+            "evidence": "population=124 visible mean/peak=31.18238/47 active mean/peak=116.9974/124",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=124/124 forward/backward=4858.504/126.4903",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: commuters reach destinations and recycle",
+            "evidence": "goal crossings=58 arrivals=37 recycles=21",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: no sampled ground-collider pile",
+            "evidence": "samples=38 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=1/1/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: follows across several screens",
+            "evidence": "distance=101.5031 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: player remains visible",
+            "evidence": "viewport x=0.4458277..0.5535489 y=0.2072697..0.7065434",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: crowd remains finite and within map",
+            "evidence": "offscreen samples=97400 peak observed crowd speed=15.67598",
+            "passed": true
+        },
+        {
+            "name": "charge stage 3: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "Charge route observes visible NPC warnings, rushes and NPC-to-NPC impacts",
+            "evidence": "visible warning/rush samples=1450/432 NPC-owned launches=69 player launches=0 brace blocks=0 (player contact is diagnostic, not required)",
+            "passed": true
+        },
+        {
+            "name": "charge: ordinary-route impact chains stay bounded",
+            "evidence": "launches=182 secondary=120 max targets=6 depth=2",
+            "passed": true
+        },
+        {
+            "name": "Charge route exercises real dash launches",
+            "evidence": "all launches=182 NPC-owned=69 secondary=120",
+            "passed": true
+        },
+        {
+            "name": "charge: individual stumble duration stays bounded",
+            "evidence": "total seconds=0 longest=0 triggers=0",
+            "passed": true
+        },
+        {
+            "name": "charge: three stages completed through input",
+            "evidence": "state=Results transitions=3",
+            "passed": true
+        },
+        {
+            "name": "charge: timer and collision splits reconcile",
+            "evidence": "split time=52.81045 total=52.81042 split hits=104 hits=104",
+            "passed": true
+        },
+        {
+            "name": "late: fresh restart before deadline wait: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "late: fresh restart before deadline wait: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=120",
+            "passed": true
+        },
+        {
+            "name": "Deadline wait stays in first stage without transitions",
+            "evidence": "stage=0 transitions=0 time=110.3147",
+            "passed": true
+        },
+        {
+            "name": "Deadline does not stop play",
+            "evidence": "state=Playing time=110.3147",
+            "passed": true
+        },
+        {
+            "name": "late: stage 0 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "late: stage 0 NPC routes have 0.43m clearance",
+            "evidence": "segments=1158 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "late: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "late: stage 0 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=249/81 player air samples/height=0/0 burst history=5",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: dense population is present",
+            "evidence": "population=120 visible mean/peak=14.74316/48 active mean/peak=96.27473/105",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: crowd makes forward progress",
+            "evidence": "pre-wait stage=True progressing slots=117/120 forward/backward=30843.63/82.72578",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: commuters reach destinations and recycle",
+            "evidence": "goal crossings=620 arrivals=604 recycles=577",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: no sampled ground-collider pile",
+            "evidence": "samples=32 aligned=True ground max=1 all-active max=3 first all-active peak ground/air/recovering=1/2/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: follows across several screens",
+            "evidence": "distance=106.0759 camera z span=77.77225",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: player remains visible",
+            "evidence": "viewport x=0.3962279..0.6106867 y=0.2072697..0.7073436",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: crowd remains finite and within map",
+            "evidence": "offscreen samples=77455 peak observed crowd speed=19.50483",
+            "passed": true
+        },
+        {
+            "name": "late stage 1: collision containment",
+            "evidence": "bounds=True walls=True max speed=13",
+            "passed": true
+        },
+        {
+            "name": "late: stage 1 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "late: stage 1: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "late: stage 1: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=128",
+            "passed": true
+        },
+        {
+            "name": "late: stage 1 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "late: stage 1 NPC routes have 0.43m clearance",
+            "evidence": "segments=868 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "late: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "late: stage 1 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "Narrow-door probe makes static contact",
+            "evidence": "closest clearance=0.4205017 collision increase=4",
+            "passed": true
+        },
+        {
+            "name": "Retreat from contacted door jamb",
+            "evidence": "before z=88.3545 after z=86.86308",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=1073/363 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: dense population is present",
+            "evidence": "population=128 visible mean/peak=29.24773/59 active mean/peak=103.5168/128",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=128/128 forward/backward=7059.457/37.42448",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: commuters reach destinations and recycle",
+            "evidence": "goal crossings=134 arrivals=113 recycles=71",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: no sampled ground-collider pile",
+            "evidence": "samples=62 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=0/2/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: follows across several screens",
+            "evidence": "distance=94.1419 camera z span=77.77203",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: player remains visible",
+            "evidence": "viewport x=0.4812245..0.5260217 y=0.2072697..0.7061517",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: crowd remains finite and within map",
+            "evidence": "offscreen samples=139106 peak observed crowd speed=19.95887",
+            "passed": true
+        },
+        {
+            "name": "late stage 2: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "late: stage 2 resets momentum",
+            "evidence": "speed=0 ready=1",
+            "passed": true
+        },
+        {
+            "name": "late: stage 2: combat state clears on scene/reset",
+            "evidence": "player height/protection=0/0 threats=0/0 burst history=0",
+            "passed": true
+        },
+        {
+            "name": "late: stage 2: impact state clears on reset",
+            "evidence": "freeze=0 FX=0 NPC slots=124",
+            "passed": true
+        },
+        {
+            "name": "late: stage 2 waypoint segments clear static walls",
+            "evidence": "margin=0.46 blocked segments=",
+            "passed": true
+        },
+        {
+            "name": "late: stage 2 NPC routes have 0.43m clearance",
+            "evidence": "segments=1412 invalid routes=0 blocked=",
+            "passed": true
+        },
+        {
+            "name": "late: destination has a usable arrival pad",
+            "evidence": "goal half width=2.6",
+            "passed": true
+        },
+        {
+            "name": "late: stage 2 is a large map",
+            "evidence": "40 x 100 metres",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: pause freezes simulation and camera",
+            "evidence": "timer delta=0 camera delta=0 crowd frozen=True",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: resume suppresses held actions",
+            "evidence": "locked=True",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: releasing rearms actions",
+            "evidence": "locked=False",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: visible NPC warnings/rushes stay bounded",
+            "evidence": "warning/rush peaks=1/1 samples=1029/342 player air samples/height=0/0 burst history=8",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: dense population is present",
+            "evidence": "population=124 visible mean/peak=33.64069/47 active mean/peak=112.5698/124",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: crowd makes forward progress",
+            "evidence": "pre-wait stage=False progressing slots=124/124 forward/backward=7157.779/119.8674",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: commuters reach destinations and recycle",
+            "evidence": "goal crossings=92 arrivals=69 recycles=41",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: recycling stays invisible",
+            "evidence": "guard violations=0 independently observed visible recycling=0",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: no sampled ground-collider pile",
+            "evidence": "samples=61 aligned=True ground max=1 all-active max=2 first all-active peak ground/air/recovering=0/2/0 over-limit samples all/ground/transient=0/0/0 consecutive sample spans all/ground/transient=0/0/0",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: follows across several screens",
+            "evidence": "distance=107.2723 camera z span=77.77223",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: player remains visible",
+            "evidence": "viewport x=0.3961579..0.6076722 y=0.2072697..0.7072325",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: crowd remains finite and within map",
+            "evidence": "offscreen samples=145861 peak observed crowd speed=15.39324",
+            "passed": true
+        },
+        {
+            "name": "late stage 3: collision containment",
+            "evidence": "bounds=True walls=True max speed=11.3",
+            "passed": true
+        },
+        {
+            "name": "late: ordinary-route impact chains stay bounded",
+            "evidence": "launches=114 secondary=76 max targets=6 depth=2",
+            "passed": true
+        },
+        {
+            "name": "late: individual stumble duration stays bounded",
+            "evidence": "total seconds=0 longest=0 triggers=0",
+            "passed": true
+        },
+        {
+            "name": "late: three stages completed through input",
+            "evidence": "state=Results transitions=3",
+            "passed": true
+        },
+        {
+            "name": "late: timer and collision splits reconcile",
+            "evidence": "split time=190.634 total=190.6276 split hits=90 hits=90",
+            "passed": true
+        },
+        {
+            "name": "Narrow door crossed after jamb contact and retreat",
+            "evidence": "contact=True retreated=True crossed=True",
+            "passed": true
+        },
+        {
+            "name": "Late player can still finish all stages",
+            "evidence": "time=190.6276 transitions=3",
+            "passed": true
+        },
+        {
+            "name": "Return to menu clears run",
+            "evidence": "Menu time=0",
+            "passed": true
+        },
+        {
+            "name": "Sound toggle changes state",
+            "evidence": "muted=True",
+            "passed": true
+        },
+        {
+            "name": "Sound toggle restores state",
+            "evidence": "muted=False",
+            "passed": true
+        }
+    ],
+    "runs": [
+        {
+            "name": "risk",
+            "route": "risk",
+            "includesDeliberateDoorProbe": false,
+            "totalSeconds": 96.77308654785156,
+            "totalStumbleSeconds": 0.0,
+            "longestStumbleSeconds": 0.0,
+            "stumbleTriggers": 0,
+            "impactLaunches": 132,
+            "chainLaunches": 84,
+            "maxDashTargets": 6,
+            "maxChainDepth": 2,
+            "npcCombatLaunches": 123,
+            "playerCombatLaunches": 0,
+            "braceBlocks": 2,
+            "collisions": 140,
+            "transitions": 3,
+            "reachedResults": true,
+            "splits": [
+                32.302982330322269,
+                28.428255081176759,
+                36.041648864746097
+            ],
+            "splitCollisions": [
+                32,
+                37,
+                71
+            ],
+            "stages": [
+                {
+                    "stage": 0,
+                    "collisions": 32,
+                    "offscreenCrowdSamples": 149863,
+                    "crowdPopulation": 120,
+                    "activePeak": 120,
+                    "visiblePeak": 49,
+                    "progressedSlots": 120,
+                    "arrivals": 128,
+                    "goalCrossings": 148,
+                    "recycles": 102,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 62,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 0,
+                    "allPilePeakAirborne": 2,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 186953.0,
+                    "visibleSamples": 37090.0,
+                    "meanActiveCrowd": 99.86805725097656,
+                    "meanVisibleCrowd": 19.813034057617189,
+                    "crowdForwardDistance": 8901.767578125,
+                    "crowdBackwardDistance": 39.22064208984375,
+                    "traversalFrameSeconds": 31.22722816467285,
+                    "meanTraversalFrameMilliseconds": 16.681211471557618,
+                    "worstTraversalFrameMilliseconds": 24.836301803588868,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 16.384010314941408,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 103.70030212402344,
+                    "actualDistance": 102.70209503173828,
+                    "splitSeconds": 32.302982330322269,
+                    "stoppedSeconds": 0.033326901495456699,
+                    "commandedWaitSeconds": 0.01666499488055706,
+                    "bracedSeconds": 21.591520309448243,
+                    "dashedSeconds": 0.4833514392375946,
+                    "maxSpeed": 13.0,
+                    "longestStallSeconds": 0.7336845397949219,
+                    "cameraSpanX": 6.31825065612793,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.444047749042511,
+                    "maxViewportX": 0.5556563138961792,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7065868377685547,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 987,
+                    "rushSamples": 333,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 987.0,
+                    "visibleRushTotal": 333.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 23,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 1,
+                    "samples": 1872,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 1,
+                    "collisions": 37,
+                    "offscreenCrowdSamples": 128533,
+                    "crowdPopulation": 128,
+                    "activePeak": 128,
+                    "visiblePeak": 64,
+                    "progressedSlots": 128,
+                    "arrivals": 94,
+                    "goalCrossings": 119,
+                    "recycles": 60,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 55,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 1,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 1,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 178166.0,
+                    "visibleSamples": 49633.0,
+                    "meanActiveCrowd": 107.71826171875,
+                    "meanVisibleCrowd": 30.00786018371582,
+                    "crowdForwardDistance": 6601.01220703125,
+                    "crowdBackwardDistance": 14.721122741699219,
+                    "traversalFrameSeconds": 27.608186721801759,
+                    "meanTraversalFrameMilliseconds": 16.691768646240236,
+                    "worstTraversalFrameMilliseconds": 24.923694610595704,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 17.981178283691408,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 90.0,
+                    "actualDistance": 94.78669738769531,
+                    "splitSeconds": 28.428255081176759,
+                    "stoppedSeconds": 0.03333570063114166,
+                    "commandedWaitSeconds": 0.01666569523513317,
+                    "bracedSeconds": 18.357711791992189,
+                    "dashedSeconds": 1.2833688259124756,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.4354095458984375,
+                    "cameraSpanX": 5.932323455810547,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.471485435962677,
+                    "maxViewportX": 0.5305483341217041,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7069692611694336,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 873,
+                    "rushSamples": 281,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 873.0,
+                    "visibleRushTotal": 281.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 58,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 1,
+                    "samples": 1654,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 2,
+                    "collisions": 71,
+                    "offscreenCrowdSamples": 161447,
+                    "crowdPopulation": 124,
+                    "activePeak": 124,
+                    "visiblePeak": 50,
+                    "progressedSlots": 124,
+                    "arrivals": 81,
+                    "goalCrossings": 106,
+                    "recycles": 52,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 70,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 1,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 232965.0,
+                    "visibleSamples": 71518.0,
+                    "meanActiveCrowd": 110.20104217529297,
+                    "meanVisibleCrowd": 33.83065414428711,
+                    "crowdForwardDistance": 7889.10888671875,
+                    "crowdBackwardDistance": 118.3431167602539,
+                    "traversalFrameSeconds": 35.23591613769531,
+                    "meanTraversalFrameMilliseconds": 16.667888641357423,
+                    "worstTraversalFrameMilliseconds": 17.056299209594728,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 15.845314025878907,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 105.86934661865235,
+                    "actualDistance": 104.77528381347656,
+                    "splitSeconds": 36.041648864746097,
+                    "stoppedSeconds": 0.0333390012383461,
+                    "commandedWaitSeconds": 0.016666198149323465,
+                    "bracedSeconds": 27.868812561035158,
+                    "dashedSeconds": 1.4000626802444459,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.6169052124023438,
+                    "cameraSpanX": 6.318717002868652,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.4407374858856201,
+                    "maxViewportX": 0.5580259561538696,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7071828842163086,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 1143,
+                    "rushSamples": 396,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 1143.0,
+                    "visibleRushTotal": 396.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 123,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 2,
+                    "samples": 2114,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                }
+            ]
+        },
+        {
+            "name": "safe",
+            "route": "safe",
+            "includesDeliberateDoorProbe": false,
+            "totalSeconds": 112.7364273071289,
+            "totalStumbleSeconds": 0.0,
+            "longestStumbleSeconds": 0.0,
+            "stumbleTriggers": 0,
+            "impactLaunches": 116,
+            "chainLaunches": 77,
+            "maxDashTargets": 6,
+            "maxChainDepth": 2,
+            "npcCombatLaunches": 108,
+            "playerCombatLaunches": 0,
+            "braceBlocks": 0,
+            "collisions": 89,
+            "transitions": 3,
+            "reachedResults": true,
+            "splits": [
+                34.75426483154297,
+                33.480499267578128,
+                44.50144958496094
+            ],
+            "splitCollisions": [
+                20,
+                18,
+                51
+            ],
+            "stages": [
+                {
+                    "stage": 0,
+                    "collisions": 20,
+                    "offscreenCrowdSamples": 157069,
+                    "crowdPopulation": 120,
+                    "activePeak": 120,
+                    "visiblePeak": 49,
+                    "progressedSlots": 120,
+                    "arrivals": 144,
+                    "goalCrossings": 162,
+                    "recycles": 118,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 67,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 1,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 0,
+                    "allPilePeakAirborne": 1,
+                    "allPilePeakRecovering": 1,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 201972.0,
+                    "visibleSamples": 44903.0,
+                    "meanActiveCrowd": 99.9366683959961,
+                    "meanVisibleCrowd": 22.21820831298828,
+                    "crowdForwardDistance": 9540.30859375,
+                    "crowdBackwardDistance": 20.07461929321289,
+                    "traversalFrameSeconds": 33.711463928222659,
+                    "meanTraversalFrameMilliseconds": 16.680585861206056,
+                    "worstTraversalFrameMilliseconds": 20.915000915527345,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 15.522164344787598,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 163.3178253173828,
+                    "actualDistance": 176.11370849609376,
+                    "splitSeconds": 34.75426483154297,
+                    "stoppedSeconds": 0.06666100025177002,
+                    "commandedWaitSeconds": 0.016656406223773958,
+                    "bracedSeconds": 12.055379867553711,
+                    "dashedSeconds": 2.5667951107025148,
+                    "maxSpeed": 13.000000953674317,
+                    "longestStallSeconds": 0.800933837890625,
+                    "cameraSpanX": 6.324324131011963,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.09978404641151428,
+                    "maxViewportX": 0.8285592794418335,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7252531051635742,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 810,
+                    "rushSamples": 269,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 810.0,
+                    "visibleRushTotal": 269.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 21,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 2021,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 1,
+                    "collisions": 18,
+                    "offscreenCrowdSamples": 152711,
+                    "crowdPopulation": 128,
+                    "activePeak": 128,
+                    "visiblePeak": 66,
+                    "progressedSlots": 128,
+                    "arrivals": 112,
+                    "goalCrossings": 140,
+                    "recycles": 75,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 65,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 0,
+                    "allPilePeakAirborne": 2,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 205956.0,
+                    "visibleSamples": 53245.0,
+                    "meanActiveCrowd": 105.18692779541016,
+                    "meanVisibleCrowd": 27.193565368652345,
+                    "crowdForwardDistance": 7295.78271484375,
+                    "crowdBackwardDistance": 32.82672119140625,
+                    "traversalFrameSeconds": 32.651817321777347,
+                    "meanTraversalFrameMilliseconds": 16.67610740661621,
+                    "worstTraversalFrameMilliseconds": 20.703197479248048,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 18.480060577392579,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 161.94313049316407,
+                    "actualDistance": 164.36512756347657,
+                    "splitSeconds": 33.480499267578128,
+                    "stoppedSeconds": 0.0500095970928669,
+                    "commandedWaitSeconds": 0.01667179726064205,
+                    "bracedSeconds": 8.193119049072266,
+                    "dashedSeconds": 3.533663272857666,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.761962890625,
+                    "cameraSpanX": 6.326327800750732,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.13790026307106019,
+                    "maxViewportX": 0.820763111114502,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7076129913330078,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 866,
+                    "rushSamples": 284,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 866.0,
+                    "visibleRushTotal": 284.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 51,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 1958,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 2,
+                    "collisions": 51,
+                    "offscreenCrowdSamples": 188647,
+                    "crowdPopulation": 124,
+                    "activePeak": 124,
+                    "visiblePeak": 56,
+                    "progressedSlots": 124,
+                    "arrivals": 109,
+                    "goalCrossings": 134,
+                    "recycles": 83,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 87,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 1,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 282053.0,
+                    "visibleSamples": 93406.0,
+                    "meanActiveCrowd": 107.6949234008789,
+                    "meanVisibleCrowd": 35.664756774902347,
+                    "crowdForwardDistance": 9329.80078125,
+                    "crowdBackwardDistance": 110.60530090332031,
+                    "traversalFrameSeconds": 43.69279479980469,
+                    "meanTraversalFrameMilliseconds": 16.683006286621095,
+                    "worstTraversalFrameMilliseconds": 24.455102920532228,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 16.759475708007814,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 163.0111541748047,
+                    "actualDistance": 167.8209991455078,
+                    "splitSeconds": 44.50144958496094,
+                    "stoppedSeconds": 0.033333197236061099,
+                    "commandedWaitSeconds": 0.0166586022824049,
+                    "bracedSeconds": 23.01376724243164,
+                    "dashedSeconds": 2.619035243988037,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 1.484283447265625,
+                    "cameraSpanX": 6.3333845138549809,
+                    "cameraSpanZ": 77.7722396850586,
+                    "minViewportX": 0.15101760625839234,
+                    "maxViewportX": 0.7928727269172669,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7076356410980225,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 1140,
+                    "rushSamples": 416,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 1140.0,
+                    "visibleRushTotal": 416.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 108,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 2619,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                }
+            ]
+        },
+        {
+            "name": "charge",
+            "route": "risk",
+            "includesDeliberateDoorProbe": false,
+            "totalSeconds": 52.8104248046875,
+            "totalStumbleSeconds": 0.0,
+            "longestStumbleSeconds": 0.0,
+            "stumbleTriggers": 0,
+            "impactLaunches": 182,
+            "chainLaunches": 120,
+            "maxDashTargets": 6,
+            "maxChainDepth": 2,
+            "npcCombatLaunches": 69,
+            "playerCombatLaunches": 0,
+            "braceBlocks": 0,
+            "collisions": 104,
+            "transitions": 3,
+            "reachedResults": true,
+            "splits": [
+                16.588319778442384,
+                16.506799697875978,
+                19.715330123901368
+            ],
+            "splitCollisions": [
+                36,
+                30,
+                38
+            ],
+            "stages": [
+                {
+                    "stage": 0,
+                    "collisions": 36,
+                    "offscreenCrowdSamples": 70958,
+                    "crowdPopulation": 120,
+                    "activePeak": 120,
+                    "visiblePeak": 52,
+                    "progressedSlots": 120,
+                    "arrivals": 56,
+                    "goalCrossings": 67,
+                    "recycles": 37,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 31,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 1,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 101811.0,
+                    "visibleSamples": 30853.0,
+                    "meanActiveCrowd": 109.82847595214844,
+                    "meanVisibleCrowd": 33.282630920410159,
+                    "crowdForwardDistance": 5433.45458984375,
+                    "crowdBackwardDistance": 56.62419509887695,
+                    "traversalFrameSeconds": 15.531672477722168,
+                    "meanTraversalFrameMilliseconds": 16.754770278930665,
+                    "worstTraversalFrameMilliseconds": 24.917800903320314,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 19.201602935791017,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 103.70030212402344,
+                    "actualDistance": 105.10344696044922,
+                    "splitSeconds": 16.588319778442384,
+                    "stoppedSeconds": 0.03333139792084694,
+                    "commandedWaitSeconds": 0.016667693853378297,
+                    "bracedSeconds": 0.0,
+                    "dashedSeconds": 2.521613121032715,
+                    "maxSpeed": 13.000000953674317,
+                    "longestStallSeconds": 0.2982025146484375,
+                    "cameraSpanX": 6.337636947631836,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.4381214678287506,
+                    "maxViewportX": 0.6116672158241272,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7066843509674072,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 428,
+                    "rushSamples": 130,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 6,
+                    "visibleWarningTotal": 428.0,
+                    "visibleRushTotal": 130.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 19,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 927,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 1,
+                    "collisions": 30,
+                    "offscreenCrowdSamples": 75938,
+                    "crowdPopulation": 128,
+                    "activePeak": 128,
+                    "visiblePeak": 53,
+                    "progressedSlots": 128,
+                    "arrivals": 42,
+                    "goalCrossings": 63,
+                    "recycles": 9,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 3,
+                    "pileSamples": 32,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 2,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 105523.0,
+                    "visibleSamples": 29585.0,
+                    "meanActiveCrowd": 112.49787139892578,
+                    "meanVisibleCrowd": 31.540512084960939,
+                    "crowdForwardDistance": 4330.2744140625,
+                    "crowdBackwardDistance": 9.311907768249512,
+                    "traversalFrameSeconds": 15.664904594421387,
+                    "meanTraversalFrameMilliseconds": 16.70032501220703,
+                    "worstTraversalFrameMilliseconds": 24.15799331665039,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 16.20792007446289,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 90.0,
+                    "actualDistance": 88.99932861328125,
+                    "splitSeconds": 16.506799697875978,
+                    "stoppedSeconds": 0.033341702073812488,
+                    "commandedWaitSeconds": 0.01667480170726776,
+                    "bracedSeconds": 0.0,
+                    "dashedSeconds": 2.7670161724090578,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.37689208984375,
+                    "cameraSpanX": 0.38085371255874636,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.49657997488975527,
+                    "maxViewportX": 0.5052360892295837,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7068028450012207,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 451,
+                    "rushSamples": 114,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 6,
+                    "visibleWarningTotal": 451.0,
+                    "visibleRushTotal": 114.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 30,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 938,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 2,
+                    "collisions": 38,
+                    "offscreenCrowdSamples": 97400,
+                    "crowdPopulation": 124,
+                    "activePeak": 124,
+                    "visiblePeak": 47,
+                    "progressedSlots": 124,
+                    "arrivals": 37,
+                    "goalCrossings": 58,
+                    "recycles": 21,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 38,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 1,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 1,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 132792.0,
+                    "visibleSamples": 35392.0,
+                    "meanActiveCrowd": 116.99736022949219,
+                    "meanVisibleCrowd": 31.1823787689209,
+                    "crowdForwardDistance": 4858.50390625,
+                    "crowdBackwardDistance": 126.49028778076172,
+                    "traversalFrameSeconds": 18.9180908203125,
+                    "meanTraversalFrameMilliseconds": 16.66792106628418,
+                    "worstTraversalFrameMilliseconds": 16.80340003967285,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 15.675976753234864,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 105.86934661865235,
+                    "actualDistance": 101.50313568115235,
+                    "splitSeconds": 19.715330123901368,
+                    "stoppedSeconds": 0.03333050012588501,
+                    "commandedWaitSeconds": 0.016670599579811097,
+                    "bracedSeconds": 0.0,
+                    "dashedSeconds": 2.9835355281829836,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.399566650390625,
+                    "cameraSpanX": 6.3199262619018559,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.4458277225494385,
+                    "maxViewportX": 0.5535489320755005,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7065434455871582,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 571,
+                    "rushSamples": 188,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 571.0,
+                    "visibleRushTotal": 188.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 69,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 1135,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                }
+            ]
+        },
+        {
+            "name": "late",
+            "route": "risk",
+            "includesDeliberateDoorProbe": true,
+            "totalSeconds": 190.62759399414063,
+            "totalStumbleSeconds": 0.0,
+            "longestStumbleSeconds": 0.0,
+            "stumbleTriggers": 0,
+            "impactLaunches": 114,
+            "chainLaunches": 76,
+            "maxDashTargets": 6,
+            "maxChainDepth": 2,
+            "npcCombatLaunches": 96,
+            "playerCombatLaunches": 0,
+            "braceBlocks": 1,
+            "collisions": 90,
+            "transitions": 3,
+            "reachedResults": true,
+            "splits": [
+                127.00305938720703,
+                32.05055618286133,
+                31.580360412597658
+            ],
+            "splitCollisions": [
+                16,
+                21,
+                53
+            ],
+            "stages": [
+                {
+                    "stage": 0,
+                    "collisions": 16,
+                    "offscreenCrowdSamples": 77455,
+                    "crowdPopulation": 120,
+                    "activePeak": 105,
+                    "visiblePeak": 48,
+                    "progressedSlots": 117,
+                    "arrivals": 604,
+                    "goalCrossings": 620,
+                    "recycles": 577,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 3,
+                    "pileSamples": 32,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 1,
+                    "allPilePeakAirborne": 2,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 91461.0,
+                    "visibleSamples": 14006.0,
+                    "meanActiveCrowd": 96.27473449707031,
+                    "meanVisibleCrowd": 14.743158340454102,
+                    "crowdForwardDistance": 30843.626953125,
+                    "crowdBackwardDistance": 82.72577667236328,
+                    "traversalFrameSeconds": 15.858899116516114,
+                    "meanTraversalFrameMilliseconds": 16.693578720092775,
+                    "worstTraversalFrameMilliseconds": 22.552501678466798,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 19.504831314086915,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 103.70030212402344,
+                    "actualDistance": 106.07593536376953,
+                    "splitSeconds": 127.00305938720703,
+                    "stoppedSeconds": 0.03333029896020889,
+                    "commandedWaitSeconds": 0.016665801405906678,
+                    "bracedSeconds": 3.172499179840088,
+                    "dashedSeconds": 1.8001079559326172,
+                    "maxSpeed": 13.000000953674317,
+                    "longestStallSeconds": 0.317291259765625,
+                    "cameraSpanX": 6.266612529754639,
+                    "cameraSpanZ": 77.77224731445313,
+                    "minViewportX": 0.3962279260158539,
+                    "maxViewportX": 0.6106866598129273,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.707343578338623,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 249,
+                    "rushSamples": 81,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 5,
+                    "visibleWarningTotal": 249.0,
+                    "visibleRushTotal": 81.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 11,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 950,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 1,
+                    "collisions": 21,
+                    "offscreenCrowdSamples": 139106,
+                    "crowdPopulation": 128,
+                    "activePeak": 128,
+                    "visiblePeak": 59,
+                    "progressedSlots": 128,
+                    "arrivals": 113,
+                    "goalCrossings": 134,
+                    "recycles": 71,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 62,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 2,
+                    "allPilePeakGround": 0,
+                    "allPilePeakAirborne": 2,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 193887.0,
+                    "visibleSamples": 54781.0,
+                    "meanActiveCrowd": 103.51681518554688,
+                    "meanVisibleCrowd": 29.247730255126954,
+                    "crowdForwardDistance": 7059.45703125,
+                    "crowdBackwardDistance": 37.42448425292969,
+                    "traversalFrameSeconds": 31.246980667114259,
+                    "meanTraversalFrameMilliseconds": 16.682851791381837,
+                    "worstTraversalFrameMilliseconds": 24.682504653930665,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 19.958871841430665,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 90.0,
+                    "actualDistance": 94.14189910888672,
+                    "splitSeconds": 32.05055618286133,
+                    "stoppedSeconds": 0.03333429992198944,
+                    "commandedWaitSeconds": 0.01666799932718277,
+                    "bracedSeconds": 21.94658088684082,
+                    "dashedSeconds": 0.5277642011642456,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.46588134765625,
+                    "cameraSpanX": 5.566181182861328,
+                    "cameraSpanZ": 77.77203369140625,
+                    "minViewportX": 0.4812244772911072,
+                    "maxViewportX": 0.5260216593742371,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7061517238616943,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 1073,
+                    "rushSamples": 363,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 1073.0,
+                    "visibleRushTotal": 363.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 45,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 0,
+                    "samples": 1873,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                },
+                {
+                    "stage": 2,
+                    "collisions": 53,
+                    "offscreenCrowdSamples": 145861,
+                    "crowdPopulation": 124,
+                    "activePeak": 124,
+                    "visiblePeak": 47,
+                    "progressedSlots": 124,
+                    "arrivals": 69,
+                    "goalCrossings": 92,
+                    "recycles": 41,
+                    "visibleRecycles": 0,
+                    "qaVisibleRecycleEvents": 0,
+                    "maxNearCoincidentCount": 2,
+                    "pileSamples": 61,
+                    "maxGroundNearCoincidentCount": 1,
+                    "maxNearbyAirborneCount": 2,
+                    "maxNearbyRecoveringCount": 1,
+                    "allPilePeakGround": 0,
+                    "allPilePeakAirborne": 2,
+                    "allPilePeakRecovering": 0,
+                    "allActivePileSamples": 0,
+                    "groundPileSamples": 0,
+                    "nonGroundInPileSamples": 0,
+                    "longestAllPileSampleSpan": 0.0,
+                    "longestGroundPileSampleSpan": 0.0,
+                    "longestNonGroundPileSampleSpan": 0.0,
+                    "pileProbeAlignment": true,
+                    "firstGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "peakGroundPile": {
+                        "run": "",
+                        "stage": 0,
+                        "frame": 0,
+                        "centerSlot": 0,
+                        "centerGeneration": 0,
+                        "allCount": 0,
+                        "groundCount": 0,
+                        "airborneCount": 0,
+                        "recoveringCount": 0,
+                        "realSinceStartup": 0.0,
+                        "totalSeconds": 0.0,
+                        "stageSeconds": 0.0,
+                        "centerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "playerPosition": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "combatProbeAligned": false,
+                        "members": []
+                    },
+                    "activeSamples": 208029.0,
+                    "visibleSamples": 62168.0,
+                    "meanActiveCrowd": 112.56980895996094,
+                    "meanVisibleCrowd": 33.64069366455078,
+                    "crowdForwardDistance": 7157.77880859375,
+                    "crowdBackwardDistance": 119.8674087524414,
+                    "traversalFrameSeconds": 30.802738189697267,
+                    "meanTraversalFrameMilliseconds": 16.668148040771486,
+                    "worstTraversalFrameMilliseconds": 16.84120750427246,
+                    "sampledStumbleSeconds": 0.0,
+                    "longestSampledStumbleSeconds": 0.0,
+                    "sampledStumbleEntries": 0,
+                    "maxCrowdSpeed": 15.393240928649903,
+                    "crowdFiniteAndInBounds": true,
+                    "mapWidth": 40.0,
+                    "mapDepth": 100.0,
+                    "plannedRouteLength": 105.86934661865235,
+                    "actualDistance": 107.27233123779297,
+                    "splitSeconds": 31.580360412597658,
+                    "stoppedSeconds": 0.033338598906993869,
+                    "commandedWaitSeconds": 0.016668502241373063,
+                    "bracedSeconds": 20.36840057373047,
+                    "dashedSeconds": 1.783415675163269,
+                    "maxSpeed": 11.30000114440918,
+                    "longestStallSeconds": 0.500457763671875,
+                    "cameraSpanX": 6.2864179611206059,
+                    "cameraSpanZ": 77.77223205566406,
+                    "minViewportX": 0.3961578905582428,
+                    "maxViewportX": 0.6076721549034119,
+                    "minViewportY": 0.20726972818374635,
+                    "maxViewportY": 0.7072324752807617,
+                    "visibleWarningPeak": 1,
+                    "visibleRushPeak": 1,
+                    "visibleThreatPeak": 1,
+                    "warningSamples": 1029,
+                    "rushSamples": 342,
+                    "playerAirSamples": 0,
+                    "maxNpcBurstHistory": 8,
+                    "visibleWarningTotal": 1029.0,
+                    "visibleRushTotal": 342.0,
+                    "maxPlayerAirHeight": 0.0,
+                    "combatNpcLaunchesCumulative": 96,
+                    "combatPlayerLaunchesCumulative": 0,
+                    "braceBlocksCumulative": 1,
+                    "samples": 1848,
+                    "inBounds": true,
+                    "clearOfWalls": true,
+                    "playerVisible": true
+                }
+            ]
+        }
+    ],
+    "screenshots": [
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\01-menu.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\02-tutorial.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-1-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-1-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-1-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-1-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-2-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-2-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-2-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-2-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-3-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-3-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-3-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-stage-3-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\risk-results.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-1-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-1-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-1-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-1-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-2-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-2-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-2-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-2-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-3-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-3-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-3-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-stage-3-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\safe-results.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-1-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-1-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-1-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-1-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-2-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-2-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-2-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-2-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-3-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-3-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-3-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-stage-3-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\charge-results.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-still-playing.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-1-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-1-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-1-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-1-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-2-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-2-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-2-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-2-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-3-start.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-3-middle.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-3-approach-z82.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-stage-3-entry-z90.png",
+        "D:\\CodexWorkspace\\2026-10-31\\task-4\\qa-v4-route6\\late-results.png"
+    ]
+}
