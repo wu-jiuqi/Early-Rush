@@ -4,6 +4,10 @@ namespace EarlyRush
     public class RushRouteHUD : MonoBehaviour
     {
         RushGame game; GUIStyle label; Font font;
+        static readonly string[] Hints={
+            "大家都在赶地铁！冲开人流，沿黄线抢时间。\nSPACE 冲刺撞飞，SHIFT 稳住；青线可以绕行。",
+            "人群正汇入车门，看准方向冲出一条路。\n撞上会压缩回弹；连锁撞翻后继续向前！",
+            "同事们抢着打卡！冲刺撞飞，顺势穿过入口。\n撞开人群，抓住空档继续赶路。"};
         void Awake(){game=GetComponent<RushGame>();}
         void OnGUI()
         {
@@ -18,11 +22,11 @@ namespace EarlyRush
             Matrix4x4 before=GUI.matrix;
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*scale);
             float width=Screen.width/scale,height=Screen.height/scale;
-            // Keep the player identifiable when bodies overlap in a busy entrance.
-            Vector3 player=game.GameCamera.WorldToViewportPoint(new Vector3(game.Position.x,2.6f,game.Position.y));
+            // Keep the badge below the feet so it cannot cover a launched body ahead.
+            Vector3 player=game.GameCamera.WorldToViewportPoint(new Vector3(game.Position.x,.12f,game.Position.y));
             if(player.z>0&&player.x>0&&player.x<1&&player.y>0&&player.y<1)
             {
-                Rect badge=new Rect(player.x*width-12,(1-player.y)*height-12,24,24);
+                Rect badge=new Rect(player.x*width-12,Mathf.Min((1-player.y)*height+18,height-120),24,24);
                 Color old=GUI.color;
                 GUI.color=new Color(.07f,.19f,.24f,1);
                 GUI.DrawTexture(new Rect(badge.x-2,badge.y-2,28,28),Texture2D.whiteTexture);
@@ -32,7 +36,7 @@ namespace EarlyRush
                 GUI.Label(badge,"你",label);
                 GUI.color=old;
             }
-            string hint=game.IsStumbling?"被挤住了：按 SHIFT 稳住，恢复步伐。\n松开稳住后，再冲刺穿过空档。":game.World.routeHint;
+            string hint=Hints[Mathf.Clamp(game.Stage,0,2)];
             Panel(new Rect(width*.5f-265,105,530,54),hint);
             Vector2 v=game.GoalViewport;
             if(v.x<.06f||v.x>.94f||v.y<.16f||v.y>.76f)

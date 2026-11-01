@@ -91,16 +91,17 @@ namespace EarlyRush
         {
             Box(new Rect(0, 0, width, height), new Color(Ink.r, Ink.g, Ink.b, .26f), false);
             Panel(R(62, 67, 518, 588), Cream);
-            Pill(R(94, 97, 156, 28), "大地图通勤  /  v2", Ink, Cream, 12);
+            Pill(R(94, 97, 156, 28), "果冻冲撞  /  v3", Ink, Cream, 12);
             Text(R(90, 139, 440, 74), "早八冲刺", 62, Ink, true);
             Text(R(96, 217, 410, 28), "E A R L Y   R U S H", 22, Teal, true);
             Text(R(96, 268, 410, 44), "早餐可以等，打卡不能晚。", 24, Ink, true);
-            Text(R(96, 318, 410, 60), "骑车、挤地铁、冲进办公室。\n一趟通勤，三个混乱现场。", 20, Muted);
+            Text(R(96, 318, 410, 60), "撞开人群，弹着赶去上班。\n一趟通勤，三个混乱现场。", 20, Muted);
             Box(R(96, 397, 410, 1), new Color(Ink.r, Ink.g, Ink.b, .13f), false);
             Text(R(96, 415, 410, 48), "橙色背包是你  ·  青色区域是目标", 17, Ink);
             if (Button(R(96, 482, 410, 64), "开始赶路    →", Orange, Ink, 25)) active.StartRun();
-            if (Button(R(96, 562, 196, 44), active.Muted ? "声音：关  [M]" : "声音：开  [M]", new Color32(233, 236, 222, 255), Ink, 16)) active.ToggleSound();
-            if (Button(R(308, 562, 198, 44), "退出游戏", new Color32(233, 236, 222, 255), Ink, 16)) active.Quit();
+            if (Button(R(96, 562, 126, 44), active.Muted ? "声音：关 [M]" : "声音：开 [M]", new Color32(233, 236, 222, 255), Ink, 13)) active.ToggleSound();
+            if (Button(R(232, 562, 138, 44), active.ScreenShakeEnabled ? "震屏：开" : "震屏：关", new Color32(233, 236, 222, 255), Ink, 14)) active.ToggleScreenShake();
+            if (Button(R(380, 562, 126, 44), "退出游戏", new Color32(233, 236, 222, 255), Ink, 15)) active.Quit();
             Text(R(96, 617, 410, 18), "ENTER 开始    ·    WASD / 方向键操作", 12, Muted);
 
             float routeX = 892;
@@ -112,7 +113,7 @@ namespace EarlyRush
             Panel(R(routeX, 262, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
             Icon(1, R(routeX + 17, 281, 48, 44), Teal);
             Text(R(routeX + 80, 275, 204, 30), "02  挤上早高峰", 20, Ink, true);
-            Text(R(routeX + 80, 308, 210, 23), "找准空隙，冲刺穿过人群", 14, Muted);
+            Text(R(routeX + 80, 308, 210, 23), "冲刺撞飞，连锁冲开人群", 14, Muted);
             DashLine(R(routeX + 39, 354, 4, 34), Cream);
             Panel(R(routeX, 398, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
             Icon(2, R(routeX + 17, 417, 48, 44), Orange);
@@ -126,10 +127,10 @@ namespace EarlyRush
         {
             Scrim(.76f);
             Text(R(0, 64, 1280, 28), "你的通勤生存手册", 18, Teal, true, TextAnchor.MiddleCenter);
-            Text(R(0, 104, 1280, 64), "三个动作，准点到达", 44, Cream, true, TextAnchor.MiddleCenter);
+            Text(R(0, 104, 1280, 64), "撞开人群，准点到达", 44, Cream, true, TextAnchor.MiddleCenter);
             TutorialCard(100, 0, "移动与转向", "W A S D", "或方向键  ↑ ↓ ← →", "骑车有惯性。\n提前转弯，松手减速。", Orange);
-            TutorialCard(466, 1, "短促冲刺", "SPACE", "看准空档再冲", "撞到人会短暂失衡。\n冷却结束后才能再冲。", Teal);
-            TutorialCard(832, 2, "稳住重心", "SHIFT", "恢复步伐，移动变慢", "被挤住时稳住再后退。\n松开稳住后才能冲刺。", Orange);
+            TutorialCard(466, 1, "冲刺撞飞", "SPACE", "撞上、回弹，再向前！", "冲刺能把通勤者撞飞。\n连锁撞翻，顺势冲过！", Teal);
+            TutorialCard(832, 2, "稳住调整", "SHIFT", "抵抗侧推，移动变慢", "普通接触只会轻轻推挤。\n松开稳住后再冲刺。", Orange);
             if (Button(R(435, 566, 410, 64), "出发！    ENTER  →", Orange, Ink, 25)) active.BeginPlay();
             Text(R(140, 653, 1000, 26), "寻找青色目标  ·  三段共用一个计时器  ·  超时也能继续完成打卡  ·  ESC 暂停", 15, Cream, false, TextAnchor.MiddleCenter);
         }
@@ -177,10 +178,10 @@ namespace EarlyRush
             Text(new Rect(24, height - 118, 360, 24), "碰撞  " + active.Collisions + "     本段  " + TimeText(active.StageTime), 14, Ink, true);
 
             Panel(new Rect(width - 356, height - 103, 332, 79), Cream);
-            string dash = active.IsBracing ? "SPACE  松开稳住后冲刺" : active.IsStumbling ? "SPACE  被挤住 · SHIFT 稳住" : active.IsDashing ? "SPACE  冲刺中！" : active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺就绪";
+            string dash = active.IsBracing ? "SPACE  松开稳住后冲刺" : active.IsDashing ? "SPACE  冲撞中！" : active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺撞飞";
             Text(new Rect(width - 338, height - 93, 296, 26), dash, 16, Ink, true);
             Bar(new Rect(width - 338, height - 60, 295, 6), Mathf.Clamp01(active.DashCooldown01), Orange, new Color32(221, 226, 214, 255));
-            Text(new Rect(width - 338, height - 47, 296, 17), active.IsBracing ? "SHIFT  正在稳住 · 减速 / 抗推" : "SHIFT  按住稳住 · 恢复步伐 / 抗推", 12, active.IsBracing ? Teal : Muted, active.IsBracing);
+            Text(new Rect(width - 338, height - 47, 296, 17), active.IsBracing ? "SHIFT  正在稳住 · 减速 / 抗推" : "SHIFT  按住稳住 · 抵抗侧向推挤", 12, active.IsBracing ? Teal : Muted, active.IsBracing);
             Text(new Rect(width * .5f - 230, height - 55, 460, 26), "WASD / 方向键  移动    ·    ESC  暂停", 14, Ink, true, TextAnchor.MiddleCenter);
         }
 
@@ -194,8 +195,9 @@ namespace EarlyRush
             if (Button(R(440, 308, 400, 58), "继续赶路    ESC", Orange, Ink, 23)) active.TogglePause();
             if (Button(R(440, 380, 192, 48), "重新出发  R", Ink, Cream, 17)) active.Restart();
             if (Button(R(648, 380, 192, 48), active.Muted ? "声音：关  M" : "声音：开  M", Ink, Cream, 17)) active.ToggleSound();
-            if (Button(R(440, 442, 400, 48), "返回主菜单", new Color32(228, 234, 220, 255), Ink, 17)) active.ToMenu();
-            Text(R(428, 534, 424, 24), "WASD 移动   ·   SPACE 冲刺   ·   SHIFT 稳住", 13, Muted, false, TextAnchor.MiddleCenter);
+            if (Button(R(440, 442, 400, 48), active.ScreenShakeEnabled ? "轻微震屏：开" : "轻微震屏：关", new Color32(228, 234, 220, 255), Ink, 17)) active.ToggleScreenShake();
+            if (Button(R(440, 500, 400, 48), "返回主菜单", new Color32(228, 234, 220, 255), Ink, 17)) active.ToMenu();
+            Text(R(428, 570, 424, 24), "WASD 移动   ·   SPACE 冲刺   ·   SHIFT 稳住", 13, Muted, false, TextAnchor.MiddleCenter);
         }
 
         static void Transition()
@@ -215,7 +217,7 @@ namespace EarlyRush
             Panel(R(278, 45, 724, 632), Cream);
             Pill(R(531, 69, 218, 29), ontime ? "通勤完成  /  ON TIME" : "通勤完成  /  MADE IT", ontime ? Teal : Orange, Ink, 13);
             Text(R(308, 115, 664, 59), ontime ? "打卡成功，刚刚好！" : "迟到了，但没有放弃！", 38, Ink, true, TextAnchor.MiddleCenter);
-            Text(R(308, 178, 664, 27), ontime ? "今天的早八，被你拿捏了。" : "下一趟少撞一点，再快一点。", 18, Muted, false, TextAnchor.MiddleCenter);
+            Text(R(308, 178, 664, 27), ontime ? "今天的早八，被你拿捏了。" : "撞开人群，下一趟早一点到。", 18, Muted, false, TextAnchor.MiddleCenter);
             StatCard(322, "总通勤时间", TimeText(active.TotalTime), ontime ? Teal : Orange);
             StatCard(546, "全程碰撞", active.Collisions + " 次", Orange);
             StatCard(770, ontime ? "提前到达" : "迟到时间", TimeText(Mathf.Abs(active.TimeLimit - active.TotalTime)), ontime ? Teal : Red);
