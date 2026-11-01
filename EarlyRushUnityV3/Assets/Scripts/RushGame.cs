@@ -489,10 +489,10 @@ namespace EarlyRush
             // No elastic velocity is fed back, so dense groups cannot gain unlimited momentum.
             for(int i=0;i<crowds.Count;i++)
             {
-                var a=crowds[i];if(!a.active||a.airborne||a.recoveryLeft>0)continue;
+                var a=crowds[i];if(!a.active||a.airborne)continue;
                 for(int j=i+1;j<crowds.Count;j++)
                 {
-                    var b=crowds[j];if(!b.active||b.airborne||b.recoveryLeft>0)continue;
+                    var b=crowds[j];if(!b.active||b.airborne)continue;
                     Vector2 delta=a.position-b.position;float sq=delta.sqrMagnitude;
                     if(sq>=.78f*.78f)continue;
                     float distance=Mathf.Sqrt(sq);
@@ -719,12 +719,13 @@ namespace EarlyRush
         // not apply impacts: the dedicated harness still has to drive movement and Space.
         public bool SetupImpactFixture(string kind)
         {
-            if(!impactQaMode||(kind!="front"&&kind!="side"&&kind!="chain"&&kind!="boundary"))return false;
+            if(!impactQaMode||(kind!="front"&&kind!="side"&&kind!="chain"&&kind!="boundary"&&kind!="wall-chain"))return false;
             ResetRun();State=RushState.Playing;QAInput=true;QAMove=Vector2.zero;QABrace=false;QADash=false;actionLocked=false;
-            position=kind=="boundary"?new Vector2(17.8f,6):new Vector2(0,4);
-            facing=kind=="boundary"?Vector2.right:Vector2.up;velocity=Vector2.zero;
+            position=kind=="wall-chain"?new Vector2(14.2f,6):kind=="boundary"?new Vector2(17.8f,6):new Vector2(0,4);
+            facing=kind=="boundary"||kind=="wall-chain"?Vector2.right:Vector2.up;velocity=Vector2.zero;
             player.position=new Vector3(position.x,0,position.y);visual.rotation=Quaternion.LookRotation(new Vector3(facing.x,0,facing.y));
             Vector2[] points=kind=="chain"?new[]{new Vector2(0,6),new Vector2(0,7.4f),new Vector2(.60f,8.05f),new Vector2(-.60f,8.05f),new Vector2(0,9.0f),new Vector2(.70f,9.7f),new Vector2(-.70f,9.7f),new Vector2(0,10.7f),new Vector2(0,12.0f)}
+                :kind=="wall-chain"?new[]{new Vector2(15.8f,6),new Vector2(17,6),new Vector2(18.2f,6),new Vector2(19.4f,6)}
                 :new[]{kind=="boundary"?new Vector2(19,6):new Vector2(kind=="side"?.58f:0,6)};
             for(int i=0;i<crowds.Count;i++)
             {

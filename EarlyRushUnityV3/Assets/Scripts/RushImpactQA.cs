@@ -24,6 +24,9 @@ namespace EarlyRush
         [Serializable] public class CaseEvidence
         {
             public string name, fixture;
+            public string inputStrategy;
+            public int allTargetsAirborne, allTargetsLanded, targetsNavigationRecovered, wallRecoveringPeak, fullyRecoveredSamples, maxGroundNearby;
+            public float recoverySeparationDistance, minRecoveryPlayerDistance=999f;
             public bool dash, finiteAndContained=true, physicalRootsStable=true;
             public bool sawAir, sawRecovery, sawCompression, sawLandingRebound, recoveredNavigation;
             public bool noPlayerStumble=true, playerForward=true, noAirborneRecycle=true;
@@ -47,7 +50,7 @@ namespace EarlyRush
         [Serializable] public class Report
         {
             public string utc, engine, device, graphicsApi;
-            public string schema="v3-impact-fixtures-1";
+            public string schema="v3-impact-fixtures-2-wall-recovery";
             public string driver="Actual Windows Player QAMove/QADash/QABrace input. --impact-qa alone enables fixture initialization. No runtime position/time overrides after setup. Not OS keyboard automation or a human playtest. Normal three-stage route validation is reported separately.";
             public string sampling="Impact telemetry is sampled after rendered frames. Screenshot cases are separate from the front displacement comparison. Hitstop wall-clock duration includes real frame delays; the remaining budget and repeated refresh are checked independently.";
             public bool passed;
@@ -218,6 +221,7 @@ namespace EarlyRush
                 "available="+chain.initialActive+" launched="+chain.uniqueTargets+
                 "; fewer than six means the saturation limit was not exercised");
             yield return RunCase("boundary-dash","boundary",true,false,false);
+            yield return RunCase("wall-chain-recovery","wall-chain",true,false,false);
             yield return RunCase("front-visual","front",true,false,false,true);
             yield return RunCase("visual-pause","front",true,true,false);
             var visual=report.cases[report.cases.Count-1];
@@ -251,8 +255,22 @@ namespace EarlyRush
             var evidence=new CaseEvidence{name=name,fixture=fixture,dash=dash,
                 primaryStart=initial[0].position,initialCollisionRadius=game.PlayerCollisionRadius};
             running=evidence;
+            bool wallChain=fixture=="wall-chain";
+            evidence.inputStrategy=wallChain?
+                "One real +X dash, then Shift-braked left retreat for 0.9s after first launch; no NPC state or position is overridden.":
+                "Ordinary fixture movement for 0.72s; dash cases send one input pulse and retain forward movement.";
             report.cases.Add(evidence);
             foreach(var p in initial)if(p.active)evidence.initialActive++;
+            if(wallChain)
+            {
+                bool separated=evidence.initialActive==4;
+                for(int i=0;i<initial.Length;i++)
+                    for(int j=i+1;j<initial.Length;j++)
+                        if(initial[i].active&&initial[j].active)
+                            separated &= Vector2.Distance(initial[i].position,initial[j].position)>.85f;
+                Assert(name+": starts with four separate grounded targets",separated,
+                    "active="+evidence.initialActive+" spacing must exceed 0.85m before impact");
+            }
             bool screenshotCase=pausePhases||fixture=="chain"||captureOnly;
             if(screenshotCase)
             {
@@ -263,12 +281,13 @@ namespace EarlyRush
             float begin=game.TotalTime;
             float wallLimit=Time.realtimeSinceStartup+18f;
             float desiredDuration=pausePhases||captureOnly?5.5f:4.5f;
-            Vector2 direction=fixture=="boundary"?Vector2.right:Vector2.up;
+            Vector2 direction=fixture=="boundary"||wallChain?Vector2.right:Vector2.up;
             Vector2 launchPlayer=game.Position;
             bool dashSent=false,compared=false,advanceMeasured=false;
             bool compressionAttempted=false,airAttempted=false,apexAttempted=false,tumbleAttempted=false,landingAttempted=false;
             string pendingShot=null;
             bool navStarted=false,skipDiff=true;
+            float retreatBegan=-1;
             float navBegin=0,navProgress=0;
             int navGeneration=0;
             Vector2 navPosition=Vector2.zero;
@@ -278,6 +297,10 @@ namespace EarlyRush
             float freezeWallStart=-1;
             int[] launchBase=new int[initial.Length];
             bool[] hit=new bool[initial.Length];
+            bool[] sawAirBySlot=new bool[initial.Length],slotNavigationRecovered=new bool[initial.Length];
+            float[] readyProgressBase=new float[initial.Length];
+            Vector2[] readyPositionBase=new Vector2[initial.Length];
+            for(int i=0;i<initial.Length;i++)readyProgressBase[i]=float.NaN;
             for(int i=0;i<initial.Length;i++){launchBase[i]=initial[i].launchCount;}
             int firstDashId=-1;
             while(!finished&&game.TotalTime-begin<desiredDuration&&Time.realtimeSinceStartup<wallLimit)
@@ -286,6 +309,12 @@ namespace EarlyRush
                 game.QAMove=!idle&&elapsed<.72f?direction:Vector2.zero;
                 game.QABrace=false;
                 if(dash&&!dashSent&&elapsed>=.04f){game.QADash=true;dashSent=true;}
+                if(wallChain&&game.TotalLaunches>0)
+                {
+                    if(retreatBegan<0)retreatBegan=elapsed;
+                    game.QADash=false;game.QABrace=true;
+                    game.QAMove=elapsed-retreatBegan<.9f?Vector2.left:Vector2.zero;
+                }
                 if(pendingShot!=null)
                 {
                     string phase=pendingShot;pendingShot=null;
@@ -343,9 +372,40 @@ namespace EarlyRush
                 evidence.finiteAndContained &= Finite(game.Position.x)&&Finite(game.Position.y)&&
                     Free(game.Position,game.World,game.PlayerCollisionRadius-.006f);
                 if(dash)evidence.noPlayerStumble &= !game.IsStumbling;
+                int nearWallRecovering=0,readyAfterLanding=0;
                 for(int i=0;i<probes.Length;i++)
                 {
                     var p=probes[i];
+                    if(i<sawAirBySlot.Length&&p.airborne&&p.height>.25f)sawAirBySlot[i]=true;
+                    if(wallChain&&p.active)
+                    {
+                        if(p.recovering)
+                        {
+                            if(p.position.x>game.World.boundsMax.x-2.5f)nearWallRecovering++;
+                            evidence.minRecoveryPlayerDistance=Mathf.Min(evidence.minRecoveryPlayerDistance,
+                                Vector2.Distance(p.position,game.Position));
+                            if(!skipDiff&&i<previous.Length&&previous[i].recovering&&
+                                previous[i].generation==p.generation&&previous[i].landCount>0)
+                                evidence.recoverySeparationDistance+=Vector2.Distance(p.position,previous[i].position);
+                        }
+                        if(p.landCount>0&&!p.airborne&&!p.recovering)
+                        {
+                            readyAfterLanding++;
+                            if(i<crowd.Length&&i<readyProgressBase.Length)
+                            {
+                                if(float.IsNaN(readyProgressBase[i]))
+                                {readyProgressBase[i]=crowd[i].progress;readyPositionBase[i]=p.position;}
+                                else if(crowd[i].progress-readyProgressBase[i]>.4f&&
+                                    Vector2.Distance(p.position,readyPositionBase[i])>.4f)
+                                    slotNavigationRecovered[i]=true;
+                            }
+                        }
+                        int groundNeighbors=0;
+                        for(int j=0;j<probes.Length;j++)
+                            if(probes[j].active&&!probes[j].airborne&&!probes[j].recovering&&
+                                (p.position-probes[j].position).sqrMagnitude<.25f*.25f)groundNeighbors++;
+                        evidence.maxGroundNearby=Mathf.Max(evidence.maxGroundNearby,groundNeighbors);
+                    }
                     if(p.active)
                     {
                         evidence.finiteAndContained &= Finite(p.position.x)&&Finite(p.position.y)&&Finite(p.height)&&
@@ -383,6 +443,11 @@ namespace EarlyRush
                         if(p.dashId!=firstDashId)Assert(name+": one input pulse owns all launches",false,"slot="+i+" dashId="+p.dashId+" expected="+firstDashId);
                     }
                 }
+                if(wallChain)
+                {
+                    evidence.wallRecoveringPeak=Mathf.Max(evidence.wallRecoveringPeak,nearWallRecovering);
+                    if(readyAfterLanding==4)evidence.fullyRecoveredSamples++;
+                }
                 evidence.peakHeight=Mathf.Max(evidence.peakHeight,primary.height);
                 evidence.peakSpin=Mathf.Max(evidence.peakSpin,Mathf.Abs(primary.spinDegrees));
                 evidence.sawAir |= primary.airborne&&primary.height>.25f;
@@ -399,7 +464,7 @@ namespace EarlyRush
                     evidence.playerAdvance=Vector2.Dot(game.Position-launchPlayer,direction);
                     advanceMeasured=true;
                 }
-                if(evidence.primaryLaunchTime>=0&&elapsed<evidence.primaryLaunchTime+.45f&&fixture!="boundary")
+                if(evidence.primaryLaunchTime>=0&&elapsed<evidence.primaryLaunchTime+.45f&&fixture!="boundary"&&!wallChain)
                     evidence.playerForward &= Vector2.Dot(game.Velocity,direction)>-.1f;
                 if(!compared&&elapsed>=.9f)
                 {
@@ -476,6 +541,12 @@ namespace EarlyRush
             evidence.maxDepth=game.MaxObservedChainDepth;
             evidence.maxTargets=game.MaxObservedDashTargets;
             evidence.normalContacts=game.NormalContactCount;
+            for(int i=0;i<initial.Length&&i<last.Length;i++)
+            {
+                if(sawAirBySlot[i])evidence.allTargetsAirborne++;
+                if(hit[i]&&last[i].landCount>0)evidence.allTargetsLanded++;
+                if(slotNavigationRecovered[i])evidence.targetsNavigationRecovered++;
+            }
             evidence.finalScaleError=ScaleError(game.PlayerVisualScale);
             bool allSettled=true;
             foreach(var p in last)
@@ -537,10 +608,30 @@ namespace EarlyRush
                     "independent unique="+evidence.uniqueTargets+" public launches="+evidence.launches+
                     " max targets="+evidence.maxTargets+" depth="+evidence.maxDepth+" repeats="+evidence.duplicateLaunches);
                 Assert(name+": own dash causes no player stumble",evidence.noPlayerStumble,"total stumble="+game.TotalStumbleTime);
-                if(fixture!="boundary"&&!pausePhases)
+                if(fixture!="boundary"&&!wallChain&&!pausePhases)
                     Assert(name+": player keeps moving through its impact",
                         evidence.playerForward&&evidence.playerAdvance>1f,
                         "forward="+evidence.playerForward+" advance in .45s="+evidence.playerAdvance);
+            }
+            if(wallChain)
+            {
+                Assert(name+": actual dash launches and lands all four wall targets",
+                    evidence.uniqueTargets==4&&evidence.allTargetsAirborne==4&&evidence.allTargetsLanded==4,
+                    "unique="+evidence.uniqueTargets+" sampled airborne="+evidence.allTargetsAirborne+
+                    " landed="+evidence.allTargetsLanded+" chain="+evidence.chainLaunches);
+                Assert(name+": recovery separates the wall crowd without player shoving",
+                    evidence.wallRecoveringPeak>=3&&evidence.recoverySeparationDistance>.1f&&
+                    evidence.minRecoveryPlayerDistance>.9f&&evidence.normalContacts==0,
+                    "near-wall recovering peak="+evidence.wallRecoveringPeak+
+                    " actual recovery displacement sum="+evidence.recoverySeparationDistance+
+                    " min player distance="+evidence.minRecoveryPlayerDistance+" ordinary contacts="+evidence.normalContacts);
+                Assert(name+": recovered ground crowd respects the unchanged pile limit",
+                    evidence.fullyRecoveredSamples>0&&evidence.maxGroundNearby<=3,
+                    "all-four-recovered samples="+evidence.fullyRecoveredSamples+
+                    " max ground members within 0.25m of any active center="+evidence.maxGroundNearby);
+                Assert(name+": all four commuters resume navigation",
+                    evidence.targetsNavigationRecovered==4,
+                    "independently observed forward-progress and displacement targets="+evidence.targetsNavigationRecovered);
             }
             Debug.Log("RUSH_IMPACT_CASE "+JsonUtility.ToJson(evidence));
             running=null;
