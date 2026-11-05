@@ -1,48 +1,40 @@
-# Unity generated state
-**/[Ll]ibrary/
-**/[Tt]emp/
-**/[Oo]bj/
-**/[Ll]ogs/
-**/[Uu]ser[Ss]ettings/
-**/[Bb]uild/
-**/[Bb]uilds/
-**/MemoryCaptures/
-**/Recordings/
-**/.vs/
-**/.idea/
-**/.vscode/
+# Keep this local repository limited to the Unity project source.
+/*
+!/.gitignore
+!/Assets/
+!/Packages/
+!/ProjectSettings/
+!/Docs/
+!/Tools/
 
-# Generated IDE/build files
+# Unity and editor-generated files.
+/[Ll]ibrary/
+/[Tt]emp/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/.vs/
+/.idea/
 *.csproj
 *.sln
 *.suo
 *.user
 *.userprefs
 *.pidb
-*.booproj
-*.svd
 *.pdb
 *.mdb
 *.opendb
 *.VC.db
-*.log
-*.tmp
 
-# Local delivery and test artifacts
-/artifacts/
-/qa-output/
-*.exe
-*.dll
-*.zip
-*.7z
-*.unitypackage
-
-# Credentials and machine-local state
+# Local credentials and delivery archives.
 .env
 .env.*
-*.pem
-*.key
-.aws/
-.codex/
-.DS_Store
-Thumbs.db
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.zip
