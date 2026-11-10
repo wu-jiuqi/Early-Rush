@@ -26,8 +26,8 @@ namespace EarlyRush.V10
             cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.39f,.6f,.53f);cam.nearClipPlane=.1f;cam.farClipPlane=80;
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
-            panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
-            qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
+            panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v10-panorama");
+            qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v10-qa");Load(0,seed);
             if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
         public void Load(int stage,int nextSeed)
