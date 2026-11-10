@@ -143,7 +143,8 @@ namespace EarlyRush.V9
                 if(!MoveTo(run,f.position-Vector2.up*2,30,out reason))return EndReplay(run,result,reason);
                 // A fresh forward touch followed by separation. Holding does not generate repeated flips.
                 for(int i=0;i<30;i++)run.Tick(1f/60,Vector2.up);
-                for(int i=0;i<30;i++)run.Tick(1f/60,Vector2.down);
+                // Bike reversal includes braking time; retreat long enough to actually separate.
+                for(int i=0;i<60;i++)run.Tick(1f/60,Vector2.down);
             }
             if(!run.tasks[2].done)return EndReplay(run,result,"Flip input route failed to solve");
             if(!MoveTo(run,run.map.exit,30,out reason))return EndReplay(run,result,reason);

@@ -215,7 +215,9 @@ namespace EarlyRush.V9
             var m=new MapData { seed=seed,stage=stage,corridorWidth=9 };
             int mirror=(seed&1)==0?1:-1;
             string baseFloor=stage==0?"floors-v3/asphalt":stage==1?"floors-v3/ceramic":"floors-v3/carpet";
-            string secondary=stage==0?"floors-v3/ceramic":stage==1?"legacy-floors/floor-tile":"floors-v3/ceramic";
+            // Street courtyards stay asphalt; office workrooms stay carpet. Only dedicated
+            // edge/threshold patches may use a different material, never the full task room.
+            string secondary=stage==0?"floors-v3/asphalt":stage==1?"legacy-floors/floor-tile":"floors-v3/carpet";
             string[][] semantic={
                 new[]{"residential-court","shop-avenue","signal-junction","market-square","repair-block","cycle-garden","puzzle-court","station-square","station-approach"},
                 new[]{"ticket-hall","concourse-loop","gate-approach","transfer-hall","platform-hall","carriage-link","arrival-cleaning-hall","exit-concourse","station-exit"},
@@ -234,7 +236,7 @@ namespace EarlyRush.V9
                 if(i%2==0)
                 {
                     // A meaningful arrival/interaction room wider than its entrance; two side alcoves.
-                    Rect room=OrientedBounds(middle,d,stage==1?15:stage==2?11:13,stage==1?14:stage==2?10:12);CarveRoom(m,module,stage==0?"street-court":stage==1?"station-hall":"office-workroom",room,secondary);
+                    Rect room=OrientedBounds(middle,d,stage==1?11:stage==2?8:9,stage==1?10:stage==2?8:9);CarveRoom(m,module,stage==0?"street-court":stage==1?"station-hall":"office-workroom",room,secondary);
                     for(int side=-1;side<=1;side+=2)
                         CarveRoom(m,module,"alcove",OrientedBounds(middle+d*7+n*side*12,d,5,5),secondary);
                 }
@@ -246,7 +248,7 @@ namespace EarlyRush.V9
                     Zone(m,module,"loop-entry",SegmentBounds(first,first+offset,3),secondary);
                     Zone(m,module,"loop-lane",SegmentBounds(first+offset,last+offset,3),secondary);
                     Zone(m,module,"loop-rejoin",SegmentBounds(last+offset,last,3),secondary);
-                    CarveRoom(m,module,"decision-plaza",OrientedBounds(middle,d,9,10),secondary);
+                    CarveRoom(m,module,"decision-plaza",OrientedBounds(middle,d,7,8),secondary);
                 }
                 for(float distance=10;distance<length-8;distance+=11)
                 {
@@ -268,10 +270,12 @@ namespace EarlyRush.V9
                 CarveSegment(m,entry,entry+side*23,3);CarveSegment(m,rejoin,rejoin+side*23,3);
                 Zone(m,module,"task-entry",SegmentBounds(entry,entry+side*23,3),secondary);
                 Zone(m,module,"task-rejoin",SegmentBounds(rejoin,rejoin+side*23,3),secondary);
-                // Dedicated task room is broad enough for all current wheel/chair/cloth configurations.
-                CarveRoom(m,module,kinds[stage][i]+"-room",OrientedBounds(center,dir,18,10),secondary);
+                // Compact task bay plus a narrow entry-to-rejoin spine: no 36x20 empty hall.
+                CarveSegment(m,entry+side*23,rejoin+side*23,3);
+                Zone(m,module,"task-spine",SegmentBounds(entry+side*23,rejoin+side*23,3),secondary);
+                CarveRoom(m,module,kinds[stage][i]+"-room",OrientedBounds(center,dir,11,7),secondary);
                 var site=new TaskSite{index=i,kind=kinds[stage][i],center=center,entrance=entry,rejoin=rejoin,
-                    start=center-dir*7-side*2,target=center+dir*7+side*3,checkpoints=new[]{center+dir*3-side*2},routeDistance=m.NearestRouteDistance(entry)};
+                    start=center-dir*7-side*2,target=center+dir*7+side*3,checkpoints=new Vector2[0],routeDistance=m.NearestRouteDistance(entry)};
                 m.tasks.Add(site);module.fixtureSlots.Add(center);
             }
             m.signal=m.route[3]-Vector2.up*10;m.platform=m.tasks[0].center;m.trainDoor=m.platform+Vector2.up*6;
@@ -279,6 +283,26 @@ namespace EarlyRush.V9
             {
                 CarveRoom(m,m.modules[4],"waiting-sides",new Rect(m.platform.x-7,m.platform.y-5,14,8),secondary);
                 CarveRoom(m,m.modules[4],"carriage",new Rect(m.trainDoor.x-7,m.trainDoor.y,14,9),baseFloor);
+            }
+            // Functional backdrops belong to map occupancy, not arbitrary renderer decoration.
+            // Never cover the centre interaction, wheel starts, flip touch row or chair sockets.
+            for(int i=0;i<3;i++)
+            {
+                var t=m.tasks[i];Vector2 c=t.center;
+                string main=stage==0?(i==0?"street/storefront":i==1?"street/boxes":"street/bench"):
+                    stage==1?(i==0?"metro/platform-bench":i==1?"metro/kiosk":"metro/pillar"):
+                    i==1?"office/filing-cabinet":"office/desk-chair";
+                Vector2 back=c+Vector2.up*(i==2?10:4);
+                if(stage==0&&i==1)back=t.target+Vector2.up*3;
+                if(stage==2&&i==1)back=t.start+Vector2.up*3;
+                if(stage==1&&i==0)back=c+new Vector2(6,1);
+                AddStructure(m,"task-backdrop-"+i,main,back,3,2,3.5f);
+                string small=stage==0?"street/bush-planter":stage==1?"metro/pillar":"office/plant";
+                // Two corners give each bay a composed foreground/background without a prop wall.
+                AddStructure(m,"task-corner-"+i,small,c+new Vector2(-6,8),1,2,1.7f);
+                AddStructure(m,"task-corner-"+i,small,c+new Vector2(6,-8),1,2,1.7f);
+                string sideArt=stage==0?(i==1?"street/boxes":"street/bench"):stage==1?"metro/platform-bench":i==1?"office/filing-cabinet":"office/sofa";
+                AddStructure(m,"task-side-"+i,sideArt,c+new Vector2(-6,-2),2,2,2.4f);
             }
             // Visible furniture/planter islands create choices within the wider halls, never an
             // invisible collider. Their exact footprints are removed from the walkable cell mask.
@@ -290,11 +314,17 @@ namespace EarlyRush.V9
                 bool safe=true;foreach(var task in m.tasks)if(Vector2.Distance(at,task.center)<18)safe=false;
                 if(!safe)continue;
                 string art=stage==0?"street/bush-planter":stage==1?"metro/pillar":"office/desk-chair";
-                m.structures.Add(new StructureV9{kind=stage==0?"planter-island":stage==1?"hall-pillar":"workstation-island",artKey=art,bounds=rect,position=at-Vector2.up*1.3f,width=3.4f});
-                for(int y=Mathf.CeilToInt(rect.yMin+.5f);y<=Mathf.FloorToInt(rect.yMax-.5f);y++)
-                    for(int x=Mathf.CeilToInt(rect.xMin+.5f);x<=Mathf.FloorToInt(rect.xMax-.5f);x++)m.cells.Remove(new Vector2Int(x,y));
+                AddStructure(m,stage==0?"planter-island":stage==1?"hall-pillar":"workstation-island",art,at,3,3,3.4f);
             }
             return m;
+        }
+        static void AddStructure(MapData map,string kind,string art,Vector2 centre,int widthCells,int heightCells,float artWidth)
+        {
+            Vector2Int cell=MapData.Cell(centre);int x0=cell.x-widthCells/2,y0=cell.y-heightCells/2;
+            Rect footprint=new Rect(x0-.5f,y0-.5f,widthCells,heightCells);
+            map.structures.Add(new StructureV9{kind=kind,artKey=art,bounds=footprint,
+                position=new Vector2(footprint.center.x,footprint.yMin+.2f),width=artWidth});
+            for(int y=y0;y<y0+heightCells;y++)for(int x=x0;x<x0+widthCells;x++)map.cells.Remove(new Vector2Int(x,y));
         }
         static Rect SegmentBounds(Vector2 a,Vector2 b,int half)
         {return Rect.MinMaxRect(Mathf.Min(a.x,b.x)-half-.5f,Mathf.Min(a.y,b.y)-half-.5f,Mathf.Max(a.x,b.x)+half+.5f,Mathf.Max(a.y,b.y)+half+.5f);}
