@@ -17,6 +17,7 @@ namespace EarlyRush.V9
         [Range(5f, 12f)] public float cameraSize = 7.5f;
         int seed=91026;bool fullMap,help,qa,panorama,recorded,runtimeQa;int selected=-1;
         readonly bool[] failureShown=new bool[3];string notice="";double noticeUntil;
+        int seenDashLaunches,seenPlayerLaunches;double impactAt=-10;Vector2 impactPoint,playerFlightFacing=Vector2.up;
         float uiScale=1;Vector2 uiOffset;Texture2D triangle;
         public Camera GameCamera => cam;
         Vector2 ViewHalf => new Vector2(cam.orthographicSize*cam.aspect,cam.orthographicSize);
@@ -33,17 +34,26 @@ namespace EarlyRush.V9
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
             qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
-            runtimeQa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
-            if(runtimeQa){Application.runInBackground=true;gameObject.AddComponent<RushRuntimeCheckV11>();}
+            bool v12Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v12-runtime-qa");
+            runtimeQa=v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
+            if(runtimeQa)
+            {
+                Application.runInBackground=true;
+                if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
+            }
             if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
-        public void Load(int stage,int nextSeed)
+        public void Load(int stage,int nextSeed){LoadModelForReview(new RunV9(stage,nextSeed));}
+        // Allows runtime diagnostics to render an explicitly declared mechanism fixture from a fresh world.
+        public void LoadModelForReview(RunV9 simulation)
         {
+            if(simulation==null)throw new ArgumentNullException(nameof(simulation));
+            int stage=simulation.stage,nextSeed=simulation.seed;
             if(world)Destroy(world.gameObject);foreach(var o in owned)if(o)Destroy(o);owned.Clear();tileSets.Clear();
             people.Clear();peopleShadows.Clear();bodies.Clear();fixtures.Clear();dirt.Clear();decor.Clear();
             if(mapTexture)Destroy(mapTexture);world=new GameObject("V9 Stage "+stage).transform;
             seed=nextSeed;selected=-1;recorded=false;notice="";Array.Clear(failureShown,0,failureShown.Length);
-            run=new RunV9(stage,seed);BuildWorld();
+            run=simulation;seenDashLaunches=seenPlayerLaunches=0;playerFlightFacing=run.facing;impactAt=-10;BuildWorld();
             cameraFollow.Reset(run.player,mapBounds,ViewHalf);
             cam.transform.position=new Vector3(cameraFollow.Position.x,cameraFollow.Position.y,-30);
             Debug.Log("V9_PRESENTATION_READY stage="+stage+" cells="+run.map.cells.Count+" seed="+seed);
@@ -291,24 +301,45 @@ namespace EarlyRush.V9
             if(run.phase!=RunPhase.Paused)
             {
                 float width=run.bicycle?1.3f:1.05f;
-                ArtV8.SetFacing(hero,run.bicycle?"bike-feedback/bike-":"people/boy-",run.facing,width);
+                // The player's simulation-facing may change with held input while in the air.
+                // Capture a view-only direction once and retain it until landing has settled.
+                if(run.PlayerLaunchCount!=seenPlayerLaunches)playerFlightFacing=run.velocity.sqrMagnitude>.001f?run.velocity.normalized:run.facing;
+                Vector2 heroFacing=run.IsAirborne||run.PlayerLandingFeedback01>0?playerFlightFacing:run.facing;
+                ArtV8.SetFacing(hero,run.bicycle?"bike-feedback/bike-":"people/boy-",heroFacing,width);
                 ActorPoseV11 pose=run.IsAirborne?ActorPoseV11.Airborne:run.IsBracing?ActorPoseV11.Brace:run.IsDashing?ActorPoseV11.Dash:ActorPoseV11.Walk;
-                RushActorPoseV11.Apply(hero,heroShadow,run.player,run.velocity,run.facing,width,run.elapsed,pose,0,run.PlayerHeight,0,run.bicycle);
+                RushActorPoseV11.Apply(hero,heroShadow,run.player,run.velocity,heroFacing,width,run.elapsed,pose,0,run.PlayerHeight,0,run.bicycle,run.PlayerFlightProgress01,run.PlayerLandingFeedback01);
                 hero.color=run.BraceFeedback01>0?Color.Lerp(Color.white,new Color(.54f,1,.8f),run.BraceFeedback01):Color.white;
                 for(int i=0;i<run.people.Count;i++)
                 {
                     var p=run.people[i];people[i].enabled=!p.exited;peopleShadows[i].enabled=!p.exited;if(p.exited)continue;
                     bool attacking=p.actionPhase==NpcActionPhase.Windup||p.actionPhase==NpcActionPhase.Charging;
-                    Vector2 direction=attacking?p.chargeDirection:p.velocity;
+                    // The launch direction survives wall contact and the zero velocity at landing.
+                    Vector2 direction=p.dashAirborne||p.dashLandingFeedback01>0?p.dashFlightDirection:attacking?p.chargeDirection:p.velocity;
                     float personWidth=1.05f*(1+(p.appearance%3-1)*.035f);
                     ArtV8.SetFacing(people[i],p.art+"-",direction,personWidth);
                     ActorPoseV11 personPose=p.actionPhase==NpcActionPhase.Windup?ActorPoseV11.Windup:
                         p.actionPhase==NpcActionPhase.Charging?ActorPoseV11.Dash:p.actionPhase==NpcActionPhase.Recovery?
                         (p.chargeCancelled?ActorPoseV11.Cancelled:ActorPoseV11.Recovery):ActorPoseV11.Walk;
                     float progress=p.actionPhase==NpcActionPhase.Windup?run.NpcWindup01(p):run.NpcRecovery01(p);
-                    RushActorPoseV11.Apply(people[i],peopleShadows[i],p.position,p.velocity,direction,personWidth,run.elapsed,personPose,progress,0,p.appearance,false);
+                    if(p.kind==PersonKind.Coffee)
+                    {
+                        if(p.coffeeState==CoffeeState.GuardingCup)personPose=ActorPoseV11.Brace;
+                        else if(p.coffeeState==CoffeeState.SpillReaction){personPose=ActorPoseV11.Recovery;progress=.15f;}
+                    }
+                    if(p.dashAirborne)personPose=ActorPoseV11.Airborne;
+                    RushActorPoseV11.Apply(people[i],peopleShadows[i],p.position,p.velocity,direction,personWidth,run.elapsed,personPose,progress,p.dashHeight,p.appearance,false,p.dashFlightProgress01,p.dashLandingFeedback01);
                     people[i].color=RushActorPoseV11.Tint(p.appearance);
                 }
+            }
+            if(run.DashLaunchCount!=seenDashLaunches||run.PlayerLaunchCount!=seenPlayerLaunches)
+            {
+                impactAt=run.elapsed;impactPoint=run.player;
+                if(run.DashLaunchCount!=seenDashLaunches)
+                {
+                    float nearest=float.MaxValue;foreach(var person in run.people)if(person.dashAirborne)
+                    {float distance=(person.position-run.player).sqrMagnitude;if(distance<nearest){nearest=distance;impactPoint=person.position;}}
+                }
+                seenDashLaunches=run.DashLaunchCount;seenPlayerLaunches=run.PlayerLaunchCount;
             }
             for(int i=0;i<run.bodies.Count;i++){var b=run.bodies[i];ArtV8.SetPosition(bodies[i],b.position);bodies[i].color=b.done?new Color(.75f,1,.8f):Color.white;}
             for(int i=0;i<run.fixtures.Count;i++)
@@ -404,14 +435,14 @@ namespace EarlyRush.V9
                 if(run.eventKind=="rain"&&run.eventAge>=2)for(int i=0;i<18;i++)Icon("fx-decal/rain",new Rect(i*89%1280,((float)run.elapsed*115+i*101)%780-60,30,70),.22f);
             }
             if(run.phase!=RunPhase.Playing)DrawModal();
-            if(help){Fill(new Rect(300,170,680,390),cream);GUI.Label(new Rect(325,190,630,350),"空格：向当前输入方向冲刺；Shift：稳步或稳车。\n稳步不会下车，可应对路人的主动冲撞。\n蓄力方向锁定后可侧移躲开，或提前按住 Shift 抵挡。\n碰撞没有血量、扣分或直接扣时惩罚；任务例外仍有效。\n按时抵达 1 星；完成至少 1 项加 1 星；全任务再加 1 星。\nR 救回附近物品；镜头保持固定方向。F1 收起。",small);}
+            if(help){Fill(new Rect(300,170,680,390),cream);GUI.Label(new Rect(325,190,630,350),"空格：向当前输入方向冲刺；Shift：稳步或稳车。\n稳步不会下车；冲刺可撞开普通人，任务碰撞规则仍有效。\n蓄力方向锁定后可侧移躲开，或提前按住 Shift 抵挡。\n碰撞没有血量、扣分或直接扣时惩罚；任务例外仍有效。\n按时抵达 1 星；完成至少 1 项加 1 星；全任务再加 1 星。\nR 救回附近物品；镜头保持固定方向。F1 收起。",small);}
         }
         void DrawActionStatus()
         {
-            Fill(new Rect(530,18,455,76),cream);
+            Fill(new Rect(530,18,455,76),Color.Lerp(cream,gold,Mathf.Clamp01(run.DashImpactFeedback01)*.35f));
             string travel=run.bicycle?"骑行":"步行";
             string state=run.IsAirborne?"被撞 · 腾空":run.IsBracing?(run.bicycle?"稳车":"稳步"):run.IsDashing?"冲刺中":"自由移动";
-            GUI.Label(new Rect(540,20,435,30),travel+" · "+state+(run.BraceFeedback01>0?" · 抵住冲撞":""),label);
+            GUI.Label(new Rect(540,20,435,30),travel+" · "+state+(run.DashImpactFeedback01>0?" · 累计撞开 "+run.DashLaunchCount:run.BraceFeedback01>0?" · 抵住冲撞":""),label);
             GUI.Label(new Rect(540,50,158,28),run.DashReady01>=.999f?"空格 · 冲刺就绪":"冲刺冷却",small);
             Fill(new Rect(710,58,250,9),new Color(.69f,.78f,.72f));Fill(new Rect(710,58,250*run.DashReady01,9),gold);
         }
@@ -448,7 +479,7 @@ namespace EarlyRush.V9
             }
             foreach(var p in run.people)if(p.kind==PersonKind.Coffee&&!p.exited)
             {
-                Rect r=WorldRect(p.position+Vector2.up*1.6f,34,34);if(!Visible(r))continue;Icon("ui/thought",r);Icon("legacy-extras/coffee",new Rect(r.x+5,r.y+3,24,24),p.spilled?.3f:1);
+                Rect r=WorldRect(p.position+Vector2.up*(1.6f+p.dashHeight),34,34);if(!Visible(r))continue;Icon("ui/thought",r);Icon("legacy-extras/coffee",new Rect(r.x+5,r.y+3,24,24),p.spilled?.3f:1);
             }
             if(run.stage==0)
             {
@@ -457,7 +488,7 @@ namespace EarlyRush.V9
             // Only normal commuters can expose a combat tell. M1 passengers have no task warning.
             foreach(var p in run.people)
             {
-                if(p.exited||p.kind==PersonKind.Alighting||p.actionPhase==NpcActionPhase.Cruise)continue;
+                if(p.exited||p.dashAirborne||p.kind==PersonKind.Alighting||p.actionPhase==NpcActionPhase.Cruise)continue;
                 Rect body=WorldRect(p.position+Vector2.up*1.8f,100,24);if(!Visible(body))continue;
                 if(p.actionPhase==NpcActionPhase.Windup)
                 {
@@ -473,7 +504,31 @@ namespace EarlyRush.V9
                 }
                 if(p.actionPhase==NpcActionPhase.Recovery&&p.chargeCancelled&&run.NpcRecovery01(p)<.5f)GUI.Label(body,"收势",small);
             }
+            DrawImpactFeedback();
             // No M1 arrow, target marker, start/complete callout or special passenger highlight.
+        }
+        void DrawImpactFeedback()
+        {
+            float age=(float)(run.elapsed-impactAt);if(age<0||age>.36f)return;
+            Rect location=WorldRect(impactPoint+Vector2.up*.25f,2,2);if(!Visible(location))return;
+            Vector2 center=location.center;float t=age/.36f,radius=18+42*t;
+            Color color=new Color(1,.77f,.24f,(1-t)*.85f);
+            for(int i=0;i<16;i++)
+            {
+                float a=i*Mathf.PI*2/16,b=(i+1)*Mathf.PI*2/16;
+                GuiLine(center+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius,center+new Vector2(Mathf.Cos(b),Mathf.Sin(b))*radius,3*(1-t)+1,color);
+            }
+            for(int i=0;i<4;i++)
+            {
+                Vector2 direction=new Vector2(Mathf.Cos(i*Mathf.PI*.5f+.3f),Mathf.Sin(i*Mathf.PI*.5f+.3f));
+                GuiLine(center+direction*(radius+7),center+direction*(radius+24),3,color);
+            }
+        }
+        void GuiLine(Vector2 a,Vector2 b,float thickness,Color color)
+        {
+            Matrix4x4 matrix=GUI.matrix;Vector2 direction=b-a;
+            GUIUtility.RotateAroundPivot(Mathf.Atan2(direction.y,direction.x)*Mathf.Rad2Deg,a);
+            Fill(new Rect(a.x,a.y-thickness*.5f,direction.magnitude,thickness),color);GUI.matrix=matrix;
         }
         string TaskProgress(TaskV9 task)
         {

@@ -1,0 +1,379 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using UnityEngine;
+
+namespace EarlyRush.V9
+{
+    /// <summary>Rendered Player checks driven through Tick and public action inputs. Fixture setup is explicit.</summary>
+    public sealed class RushRuntimeCheckV12 : MonoBehaviour
+    {
+        const float Step = 1f / 60;
+        [Serializable] public sealed class CheckRecord { public string name, evidence; public bool passed; }
+        [Serializable] public sealed class SampleRecord
+        {
+            public string name, scope,densityAtStart,densityAtEnd;
+            public int stage, population, visiblePeak, movingPeople, charges, launches, blocks;
+            public int aiPeople,distinctDestinations,progressingPeople,routePlans,destinationChanges,yieldEvents;
+            public int dashLaunches,coffeeGuards,coffeeSpills,coffeeGuardSamples,coffeeSpillSamples,coffeeReturnSamples;
+            public float peakNpcHeight;
+            public int walkingSamples,yieldingSamples,waitingSignalSamples,waitingSamples,arrivedSamples,replanningSamples;
+            public double elapsed;
+            public float movementMeters, playerDistance, peakHeight;
+        }
+        [Serializable] public sealed class PedestrianObservation
+        {
+            public int stage,id,routePlans,destinationChanges,yieldEvents;
+            public double elapsed;public string state,profile,coffeeState;public Vector2 position,destination;
+        }
+        [Serializable] public sealed class Report
+        {
+            public string version = "v12-independent-pedestrians-runtime-1", utc, device, unity;
+            public string scope = "Unmodified generated pedestrian populations observed for 15 simulation seconds per stage (four 1/60-second ticks per rendered frame), plus isolated legacy action mechanism fixtures. Accelerated simulation is NOT an FPS/performance test, complete-route evidence, or human playtest. Only observer/legacy-fixture starts are arranged; normal pedestrian destinations, plans, movement and states evolve through Tick.";
+            public bool passed;
+            public float wallSeconds;
+            public List<CheckRecord> checks = new List<CheckRecord>();
+            public List<SampleRecord> samples = new List<SampleRecord>();
+            public List<PedestrianObservation> pedestrianSnapshots = new List<PedestrianObservation>();
+            public List<string> screenshots = new List<string>();
+            public List<string> errors = new List<string>();
+        }
+
+        readonly Report report = new Report();
+        RushPlayV9 game;
+        string output;
+        float began;
+        bool finished;
+
+        void Awake()
+        {
+            Application.runInBackground = true;
+            began = Time.realtimeSinceStartup;
+            output = Path.GetFullPath(Path.Combine(Application.dataPath, "../QA/runtime-v12"));
+            foreach (string arg in Environment.GetCommandLineArgs())
+                if (arg.StartsWith("--v12-qa-output=", StringComparison.Ordinal)) output = Path.GetFullPath(arg.Substring("--v12-qa-output=".Length));
+            Directory.CreateDirectory(output);
+            report.utc = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
+            report.device = SystemInfo.graphicsDeviceName; report.unity = Application.unityVersion;
+            Application.logMessageReceived += OnLog;
+        }
+
+        void OnLog(string message, string stack, LogType type)
+        {
+            if (!finished && (type == LogType.Error || type == LogType.Exception || type == LogType.Assert)) report.errors.Add(message + "\n" + stack);
+        }
+
+        void Update()
+        {
+            // A real-time watchdog still terminates a stalled coroutine or a frozen simulation clock.
+            if (!finished && Time.realtimeSinceStartup - began > 120)
+            { report.errors.Add("Runtime suite exceeded the 120-second wall-clock budget"); Finish(); }
+        }
+
+        IEnumerator Start()
+        {
+            yield return null;
+            game = GetComponent<RushPlayV9>();
+            if (!game) game = FindFirstObjectByType<RushPlayV9>();
+            if (!game) { report.errors.Add("RushPlayV9 not found"); Finish(); yield break; }
+            IEnumerator suite = Suite();
+            while (!finished)
+            {
+                bool moved = false; object next = null;
+                try { moved = suite.MoveNext(); if (moved) next = suite.Current; }
+                catch (Exception error) { report.errors.Add(error.ToString()); Finish(); }
+                if (finished) yield break;
+                if (!moved) break;
+                yield return next;
+            }
+            if (!finished) Finish();
+        }
+
+        IEnumerator Suite()
+        {
+            for (int stage = 0; stage < 3; stage++)
+            {
+                game.Load(stage, 91026);
+                yield return null;
+                var run = game.run;
+                // This changes only the initial observer position. It does not claim travel from spawn.
+                Vector2 direction; run.player = PopulationObservationPoint(run, out direction); run.velocity = Vector2.zero;
+                game.FrameForReview(); run.Begin(); game.RenderFrame();
+                var sample = new SampleRecord { name = "pedestrians-stage-" + stage, stage = stage,
+                    scope = "Unmodified generated AI actors; arranged observer start; 15 simulated seconds, four ticks per render frame. Not FPS or complete-route evidence.", population = ActivePeople(run) };
+                Vector2 playerStart = run.player;
+                var previous = new Dictionary<int, Vector2>(); var distances = new Dictionary<int, float>();
+                var initialDistance = new Dictionary<int, float>(); var initialChanges = new Dictionary<int, int>();
+                var destinations = new HashSet<Vector2Int>();
+                foreach (var person in run.people)
+                {
+                    previous[person.id] = person.position; distances[person.id] = 0;
+                    if(!person.hasPedestrianAI)continue;
+                    sample.aiPeople++;destinations.Add(MapData.Cell(person.destination));
+                    initialDistance[person.id]=Vector2.Distance(person.position,person.destination);
+                    initialChanges[person.id]=person.destinationChanges;
+                }
+                sample.distinctDestinations=destinations.Count;sample.densityAtStart=run.CrowdDensitySummary();
+                RecordPedestrians(run);game.RenderFrame();
+                yield return new WaitForEndOfFrame();Capture(sample.name + "-t00.png");
+                int ticks=0;bool signalWaitersStationary=true;
+                while(ticks<900 && run.phase==RunPhase.Playing)
+                {
+                    for(int batch=0;batch<4&&ticks<900&&run.phase==RunPhase.Playing;batch++,ticks++)
+                    {
+                        run.Tick(Step, direction * .25f);
+                        foreach (var person in run.people)
+                        {
+                            if (person.exited || !previous.ContainsKey(person.id)) continue;
+                            float distance = Vector2.Distance(previous[person.id], person.position);
+                            distances[person.id] += distance; previous[person.id] = person.position; sample.movementMeters += distance;
+                            if(person.kind==PersonKind.Coffee)
+                            {
+                                if(person.coffeeState==CoffeeState.GuardingCup)sample.coffeeGuardSamples++;
+                                else if(person.coffeeState==CoffeeState.SpillReaction)sample.coffeeSpillSamples++;
+                                else if(person.coffeeState==CoffeeState.ReturningEmpty)sample.coffeeReturnSamples++;
+                            }
+                            if(!person.hasPedestrianAI)continue;
+                            switch(person.aiState)
+                            {
+                                case PedestrianState.Walking:sample.walkingSamples++;break;
+                                case PedestrianState.Yielding:sample.yieldingSamples++;break;
+                                case PedestrianState.WaitingSignal:sample.waitingSignalSamples++;signalWaitersStationary&=person.velocity.magnitude<.1f;break;
+                                case PedestrianState.Waiting:sample.waitingSamples++;break;
+                                case PedestrianState.Arrived:sample.arrivedSamples++;break;
+                                case PedestrianState.Replanning:sample.replanningSamples++;break;
+                            }
+                        }
+                    }
+                    game.RenderFrame();sample.visiblePeak = Math.Max(sample.visiblePeak, VisiblePeople(run));
+                    sample.peakHeight = Mathf.Max(sample.peakHeight, run.PlayerHeight);
+                    yield return null;
+                }
+                foreach (float distance in distances.Values) if (distance > .1f) sample.movingPeople++;
+                foreach(var person in run.people)if(person.hasPedestrianAI)
+                {
+                    sample.routePlans+=person.routePlans;sample.destinationChanges+=person.destinationChanges;sample.yieldEvents+=person.yieldEvents;
+                    if(person.kind==PersonKind.Coffee){sample.coffeeGuards+=person.coffeeGuardCount;if(person.spilled)sample.coffeeSpills++;}
+                    if(initialDistance.ContainsKey(person.id)&&(person.destinationChanges>initialChanges[person.id]||
+                        Vector2.Distance(person.position,person.destination)<initialDistance[person.id]-.5f))sample.progressingPeople++;
+                }
+                sample.elapsed = run.elapsed; sample.playerDistance = Vector2.Distance(playerStart, run.player);
+                sample.densityAtEnd=run.CrowdDensitySummary();
+                Debug.Log("V12_RUNTIME_DENSITY stage="+stage+" t00="+sample.densityAtStart+" t15="+sample.densityAtEnd);
+                sample.charges = run.NpcChargeCount; sample.launches = run.PlayerLaunchCount; sample.blocks = run.BraceBlockCount;sample.dashLaunches=run.DashLaunchCount;
+                report.samples.Add(sample);RecordPedestrians(run);
+                Check(ticks==900 && run.elapsed>=14.99,"Full 15-second generated population observation stage="+stage,"ticks="+ticks+" elapsed="+run.elapsed);
+                Check(sample.aiPeople>0&&sample.distinctDestinations>1,"Generated actors have independent destinations stage="+stage,"AI="+sample.aiPeople+" unique destination cells="+sample.distinctDestinations);
+                Check(sample.population > 0 && sample.visiblePeak > 0, "Generated pedestrians are visible stage=" + stage, "active=" + sample.population + " visiblePeak=" + sample.visiblePeak);
+                Check(sample.movingPeople > 0&&sample.progressingPeople>0, "Pedestrians make destination progress stage=" + stage, "moving=" + sample.movingPeople + " progressing="+sample.progressingPeople+" totalMeters=" + sample.movementMeters);
+                Check(sample.routePlans>0,"Pedestrians execute path plans stage="+stage,"plans="+sample.routePlans+" destinationChanges="+sample.destinationChanges+" yields="+sample.yieldEvents);
+                Check(signalWaitersStationary,"Observed signal-wait state remains stationary stage="+stage,"waitingSignalSamples="+sample.waitingSignalSamples+" (zero means no runtime signal-wait observation; model checks cover the rule)");
+                Check(run.map.IsWalkable(run.player, RunV9.PlayerRadius), "Local input stays in walkable area stage=" + stage, run.player.ToString());
+                yield return new WaitForEndOfFrame(); Capture(sample.name + "-t15.png"); SaveTrace(run, sample.name);
+
+            }
+
+            game.Load(0, 91026); yield return null;
+            var dash = game.run; HideGeneratedPeople(dash); dash.Begin(); game.FrameForReview();
+            Vector2 dashStart = dash.player;
+            Check(dash.TryDash(Vector2.up), "Dash accepts a real public input", "isolated local fixture at spawn");
+            for (int tick = 0; tick < 6; tick++) { dash.Tick(Step, Vector2.up); game.RenderFrame(); yield return null; }
+            Check(dash.IsDashing && Vector2.Distance(dashStart, dash.player) > dash.config.walkSpeed * .1f, "Dash has observed increased displacement", "distance=" + Vector2.Distance(dashStart, dash.player));
+            yield return new WaitForEndOfFrame(); Capture("fixture-player-dash.png");
+            dash.SetBracing(true); dash.Tick(Step, Vector2.up); game.RenderFrame();
+            Check(dash.IsBracing && !dash.IsDashing, "Steady stance cancels dash", "public SetBracing(true), then real Tick");
+            yield return new WaitForEndOfFrame(); Capture("fixture-player-brace.png");
+            double pausedTime = dash.elapsed; Vector2 pausedPosition = dash.player; float cooldown = dash.DashReady01;
+            dash.Pause(); Vector3 cameraPosition = game.GameCamera.transform.position;
+            dash.Tick(5, Vector2.up);
+            for (int frame = 0; frame < 3; frame++) { game.RenderFrame(); yield return null; }
+            Check(dash.elapsed == pausedTime && dash.player == pausedPosition && dash.DashReady01 == cooldown && game.GameCamera.transform.position == cameraPosition,
+                "Pause freezes actual runtime simulation and follow camera", "three rendered frames and a rejected five-second Tick");
+            SaveTrace(dash, "fixture-dash-brace-pause");
+
+            // Real dash contact against one ordinary actor, without directly setting flight results.
+            game.Load(0,91026);yield return null;
+            var impact=game.run;var target=PrepareChargeFixture(impact);
+            Vector2 impactDirection=(target.position-impact.player).normalized;
+            target.canRush=false;impact.player=target.position-impactDirection*1.35f;impact.velocity=Vector2.zero;
+            Vector2 targetStart=target.position;impact.Begin();game.FrameForReview();
+            Check(impact.TryDash(impactDirection),"Dash impact fixture accepts public dash input","ordinary non-rushing actor; initial positions explicitly arranged");
+            bool impactCaptured=false;float npcHeight=0;
+            for(int tick=0;tick<75;tick++)
+            {
+                impact.Tick(Step,impactDirection);game.RenderFrame();npcHeight=Mathf.Max(npcHeight,target.dashHeight);
+                if(!impactCaptured&&target.dashAirborne&&target.dashHeight>.6f)
+                {
+                    impactCaptured=true;yield return new WaitForEndOfFrame();Capture("fixture-player-dash-launch.png");
+                }
+                yield return null;
+            }
+            Check(impact.DashLaunchCount==1&&npcHeight>.6f&&impactCaptured,"Player dash causes visible ordinary-NPC flight","launches="+impact.DashLaunchCount+" peakHeight="+npcHeight);
+            Check(!target.dashAirborne&&target.dashHeight==0&&Vector2.Distance(targetStart,target.position)>.1f,
+                "Dash target lands after physical displacement","distance="+Vector2.Distance(targetStart,target.position)+" airborne="+target.dashAirborne);
+            report.samples.Add(new SampleRecord{name="fixture-player-dash-launch",stage=0,population=1,elapsed=impact.elapsed,dashLaunches=impact.DashLaunchCount,peakNpcHeight=npcHeight,
+                scope="Controlled ordinary-actor fixture; only initial positions/canRush are arranged. TryDash and Tick produce contact, displacement, flight and landing."});
+            SaveTrace(impact,"fixture-player-dash-launch");
+
+            // The shared test fixture establishes only initial conditions. Guard/spill outcomes develop via Tick.
+            PersonV9 coffeePerson;Vector2 coffeeDirection;
+            RunV9 coffee=RushCoffeeAITestsV12.CreateDashFixture(out coffeePerson,out coffeeDirection);
+            game.LoadModelForReview(coffee);yield return null;coffee.Begin();game.FrameForReview();
+            Check(coffee.TryDash(coffeeDirection),"Coffee reaction fixture accepts public dash input","no spilled/coffeeState/task-result assignment");
+            bool guardCaptured=false,spillCaptured=false;
+            for(int tick=0;tick<150;tick++)
+            {
+                Vector2 coffeeInput=coffeePerson.spilled?Vector2.zero:tick<30?coffeeDirection:(coffeePerson.position-coffee.player).normalized;
+                coffee.Tick(Step,coffeeInput);game.RenderFrame();
+                if(!guardCaptured&&coffeePerson.coffeeState==CoffeeState.GuardingCup)
+                {guardCaptured=true;yield return new WaitForEndOfFrame();Capture("fixture-coffee-guard.png");}
+                if(!spillCaptured&&coffeePerson.coffeeState==CoffeeState.SpillReaction)
+                {spillCaptured=true;yield return new WaitForEndOfFrame();Capture("fixture-coffee-spill.png");}
+                yield return null;
+            }
+            Check(guardCaptured&&coffeePerson.coffeeGuardCount>0,"Coffee carrier visibly guards before contact","guardCount="+coffeePerson.coffeeGuardCount);
+            Check(spillCaptured&&coffeePerson.spilled&&coffee.tasks[0].count==1,"Real contact triggers one coffee spill and visible reaction","spilled="+coffeePerson.spilled+" ledger="+coffee.tasks[0].count);
+            Check(coffee.DashLaunchCount==0,"Coffee collision remains a task exception","dash launches="+coffee.DashLaunchCount);
+            report.samples.Add(new SampleRecord{name="fixture-coffee-guard-spill",stage=2,population=1,elapsed=coffee.elapsed,coffeeGuards=coffeePerson.coffeeGuardCount,coffeeSpills=coffee.tasks[0].count,
+                scope="Controlled coffee AI fixture from CreateDashFixture. Public dash input and real Tick trigger guard and spill; no reaction or result is assigned."});
+            SaveTrace(coffee,"fixture-coffee-guard-spill");
+
+            for (int defence = 0; defence < 2; defence++)
+            {
+                game.Load(0, 91026); yield return null;
+                var run = game.run; PersonV9 attacker = PrepareChargeFixture(run);
+                bool braced = defence == 1;
+                run.Begin(); run.SetBracing(braced); game.FrameForReview();
+                bool sawWindup = false, capturedWindup = false, capturedImpact = false;
+                Vector2 start = run.player; float height = 0;
+                for (int tick = 0; tick < 180 && run.phase == RunPhase.Playing; tick++)
+                {
+                    run.Tick(Step, Vector2.zero); game.RenderFrame();
+                    height = Mathf.Max(height, run.PlayerHeight);
+                    if (attacker.actionPhase == NpcActionPhase.Windup)
+                    {
+                        sawWindup = true;
+                        if (!capturedWindup && run.NpcWindup01(attacker) >= .25f)
+                        {
+                            capturedWindup = true;
+                            yield return new WaitForEndOfFrame(); Capture(braced ? "fixture-braced-npc-windup.png" : "fixture-unbraced-npc-windup.png");
+                        }
+                    }
+                    if (!capturedImpact && (braced ? run.BraceBlockCount > 0 : run.PlayerHeight > .55f))
+                    {
+                        capturedImpact = true;
+                        yield return new WaitForEndOfFrame(); Capture(braced ? "fixture-brace-block.png" : "fixture-player-knockback.png");
+                    }
+                    if (capturedImpact && !run.IsAirborne && attacker.actionPhase == NpcActionPhase.Recovery && (braced || tick > 65)) break;
+                    yield return null;
+                }
+                string name = braced ? "fixture-brace-block" : "fixture-unbraced-knockback";
+                Check(sawWindup && run.NpcChargeCount > 0, name + " observes windup before an actual charge", "charges=" + run.NpcChargeCount + " windup=" + sawWindup);
+                Check(braced ? run.BraceBlockCount == 1 && run.PlayerLaunchCount == 0 : run.PlayerLaunchCount == 1 && height > 0,
+                    name + " observed outcome", "blocks=" + run.BraceBlockCount + " launches=" + run.PlayerLaunchCount + " peakHeight=" + height);
+                Check(capturedImpact, name + " captured the observed outcome", "No attack-result or task-state assignment is used");
+                for (int tick = 0; tick < 40; tick++) { run.Tick(Step, Vector2.zero); game.RenderFrame(); yield return null; }
+                Check(!run.IsAirborne && run.PlayerHeight == 0, name + " leaves bounded recovery", "height=" + run.PlayerHeight);
+                report.samples.Add(new SampleRecord { name = name, scope = "Legacy action mechanism fixture without pedestrian AI: generated actors hidden; one ordinary attacker and player arranged on a verified lane. Attack state evolves through Tick. This does not certify V12 AI impatience decisions.", stage = 0, population = 1,
+                    charges = run.NpcChargeCount, launches = run.PlayerLaunchCount, blocks = run.BraceBlockCount, elapsed = run.elapsed, peakHeight = height, playerDistance = Vector2.Distance(start, run.player) });
+                SaveTrace(run, name);
+            }
+            yield return null;
+        }
+
+        void RecordPedestrians(RunV9 run)
+        {
+            foreach(var person in run.people)if(person.hasPedestrianAI&&!person.exited)
+                report.pedestrianSnapshots.Add(new PedestrianObservation{stage=run.stage,id=person.id,elapsed=run.elapsed,
+                    position=person.position,destination=person.destination,state=person.aiState.ToString(),profile=person.profile.ToString(),coffeeState=person.kind==PersonKind.Coffee?person.coffeeState.ToString():"",
+                    routePlans=person.routePlans,destinationChanges=person.destinationChanges,yieldEvents=person.yieldEvents});
+        }
+        static void HideGeneratedPeople(RunV9 run) { foreach (var person in run.people) person.exited = true; }
+
+        static PersonV9 PrepareChargeFixture(RunV9 run)
+        {
+            HideGeneratedPeople(run);
+            for (float distance = 18; distance < run.map.PathLength - 18; distance += 2)
+            {
+                Vector2 point = run.map.PointAtDistance(distance), direction = (run.map.PointAtDistance(distance + 1) - point).normalized;
+                bool clear = direction.sqrMagnitude > .9f;
+                for (float along = 0; along < 4; along += .3f)
+                {
+                    Vector2 sample = point + direction * along;
+                    if (run.IsCrowdProtected(sample, 1) || !run.map.IsWalkable(sample, .7f)) clear = false;
+                }
+                if (!clear) continue;
+                run.player = point + direction * 2.2f; run.velocity = Vector2.zero;
+                var attacker = new PersonV9 { id = 8100, kind = PersonKind.Ordinary, position = point, home = point, target = run.player, canRush = true, actionInitialized = true };
+                run.people.Add(attacker); return attacker;
+            }
+            throw new InvalidOperationException("No clear unprotected lane for the runtime charge fixture");
+        }
+
+        static Vector2 PopulationObservationPoint(RunV9 run, out Vector2 direction)
+        {
+            int best = -1; Vector2 chosen = run.map.spawn; direction = Vector2.up;
+            for (float distance = 18; distance < run.map.PathLength - 18; distance += 4)
+            {
+                Vector2 point = run.map.PointAtDistance(distance);
+                if (!run.map.IsWalkable(point, RunV9.PlayerRadius)) continue;
+                int count = 0;
+                foreach (var person in run.people)
+                    if (!person.exited && Mathf.Abs(person.position.x - point.x) < 10 && Mathf.Abs(person.position.y - point.y) < 6) count++;
+                if (count <= best) continue;
+                best = count; chosen = point; direction = (run.map.PointAtDistance(distance + 1) - point).normalized;
+            }
+            return chosen;
+        }
+
+        static int ActivePeople(RunV9 run) { int count = 0; foreach (var person in run.people) if (!person.exited) count++; return count; }
+        int VisiblePeople(RunV9 run)
+        {
+            int count = 0;
+            foreach (var person in run.people)
+            {
+                Vector3 view = game.GameCamera.WorldToViewportPoint(new Vector3(person.position.x, person.position.y, 0));
+                if (!person.exited && view.z > 0 && view.x >= 0 && view.x <= 1 && view.y >= 0 && view.y <= 1) count++;
+            }
+            return count;
+        }
+
+        void Check(bool passed, string name, string evidence)
+        {
+            report.checks.Add(new CheckRecord { name = name, passed = passed, evidence = evidence });
+            Debug.Log("V12_RUNTIME_CHECK " + (passed ? "PASS " : "FAIL ") + name + " " + evidence);
+        }
+
+        void Capture(string name)
+        {
+            Texture2D image = ScreenCapture.CaptureScreenshotAsTexture();
+            if (!image) throw new InvalidOperationException("Screenshot capture failed: " + name);
+            try { File.WriteAllBytes(Path.Combine(output, name), image.EncodeToPNG()); report.screenshots.Add(name); }
+            finally { Destroy(image); }
+        }
+
+        void SaveTrace(RunV9 run, string name)
+        {
+            var text = new StringBuilder("time,type,id,x,y\n"); var culture = CultureInfo.InvariantCulture;
+            foreach (var entry in run.telemetry)
+                text.AppendLine(string.Join(",", entry.time.ToString(culture), entry.type, entry.id.ToString(culture), entry.position.x.ToString(culture), entry.position.y.ToString(culture)));
+            File.WriteAllText(Path.Combine(output, name + ".csv"), text.ToString());
+        }
+
+        void Finish()
+        {
+            if (finished) return;
+            finished = true; report.wallSeconds = Time.realtimeSinceStartup - began;
+            report.passed = report.errors.Count == 0 && report.checks.Count > 0 && report.checks.TrueForAll(check => check.passed);
+            File.WriteAllText(Path.Combine(output, "runtime-report.json"), JsonUtility.ToJson(report, true));
+            File.WriteAllText(Path.Combine(output, "README.txt"), report.scope + "\nPopulation screenshots are the unchanged generated actors at t=0 and t=15 simulation seconds, with an arranged observer start and four ticks per rendered frame. Behavioral counts and individual snapshots are in runtime-report.json. This acceleration does not measure FPS. Action screenshots use a legacy controlled one-attacker mechanism fixture, not a V12 AI decision test. No screenshot proves a complete route or natural attack frequency.\nPassed: " + report.passed + "\nErrors: " + report.errors.Count);
+            Debug.Log("V12_RUNTIME_RESULT passed=" + report.passed + " checks=" + report.checks.Count + " errors=" + report.errors.Count);
+            Application.Quit(report.passed ? 0 : 1);
+        }
+
+        void OnDestroy() { Application.logMessageReceived -= OnLog; }
+    }
+}
