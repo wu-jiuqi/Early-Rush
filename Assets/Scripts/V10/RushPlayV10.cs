@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using EarlyRush.V8;
+using ArtV8 = EarlyRush.V8.ArtV8;
 using EarlyRush.V9;
 namespace EarlyRush.V10
 {
@@ -17,7 +17,7 @@ namespace EarlyRush.V10
         Vector3 cameraVelocity;Vector2 cameraAnchor;int seed=91026;bool fullMap,help,qa,panorama,recorded;int selected=-1;
         Font font;GUIStyle label,small,title;Texture2D mapTexture;
         Rect mapBounds;Color ink=new Color(.08f,.23f,.25f),cream=new Color(.99f,.97f,.9f),gold=new Color(1,.8f,.2f);
-        string[] names={"早高峰 · 街道","换乘 · 地铁","上班 · 公司"};
+        string[] names={"��߷� �� �ֵ�","���� �� ����","�ϰ� �� ��˾"};
         string[] stageIcons={"legacy-icons/bike","legacy-icons/train","legacy-icons/clock"};
         void Awake()
         {
@@ -275,7 +275,7 @@ namespace EarlyRush.V10
             DrawMap(fullMap?new Rect(660,106,590,585):new Rect(1008,18,254,184));
             if(selected>=0&&!HiddenTask(run.tasks[selected])){var t=run.tasks[selected];Fill(new Rect(20,212,398,104),cream);GUI.Label(new Rect(29,218,380,36),t.title,label);GUI.Label(new Rect(32,257,374,48),TaskHelp(t),small);}
             Fill(new Rect(20,660,180,9),ink);Fill(new Rect(20,660,180*run.energy,9),gold);
-            GUI.Label(new Rect(15,680,490,28),"W A S D  ·  SPACE 冲刺  ·  R 救回  ·  TAB 地图  ·  F1",small);
+            GUI.Label(new Rect(15,680,490,28),"W A S D  ��  SPACE ���  ��  R �Ȼ�  ��  TAB ��ͼ  ��  F1",small);
             DrawWorldHints();
             if(run.eventKind.Length>0)
             {
@@ -283,12 +283,12 @@ namespace EarlyRush.V10
                 if(run.eventKind=="rain"&&run.eventAge>=2)for(int i=0;i<18;i++)Icon("fx-decal/rain",new Rect(i*89%1280,((float)run.elapsed*115+i*101)%780-60,30,70),.22f);
             }
             if(run.phase!=RunPhase.Playing)DrawModal();
-            if(help){Fill(new Rect(300,190,680,360),cream);GUI.Label(new Rect(325,210,630,280),"碰撞没有生命值惩罚。\n九项任务有各自的成功与失败条件。\n按时通过 1 星；至少完成 1 项再加 1 星；全 3 项再加 1 星。\n固定 W 上 / D 右；相机不随转弯旋转。\nR 只救回 8 米内尚未完成的可推动物。\nF1 收起",label);}
+            if(help){Fill(new Rect(300,190,680,360),cream);GUI.Label(new Rect(325,210,630,280),"��ײû������ֵ�ͷ���\n���������и��Եĳɹ���ʧ��������\n��ʱͨ�� 1 �ǣ�������� 1 ���ټ� 1 �ǣ�ȫ 3 ���ټ� 1 �ǡ�\n�̶� W �� / D �ң��������ת����ת��\nR ֻ�Ȼ� 8 ������δ��ɵĿ��ƶ��\nF1 ����",label);}
         }
         string TaskHelp(TaskV9 t)
         {
-            if(t.state==TaskState.Failed)return "本项失败，仍可继续通勤。重试当前场景可重新挑战。";
-            switch(t.id){case "S1":return "拿到早餐后保持一段时间；碰撞超过容忍次数会失败。";case "S2":return "将两个车轮推到修理店，完成后获得自行车。";case "S3":return "碰撞翻牌，同时改变相邻牌；让五张牌与目标颜色一致。";case "M2":return "退开，再在指针进入金色节拍窗时碰撞机器。";case "M3":return "推动抹布擦遍水渍；以实际覆盖面积结算。";case "O1":return "留意拿咖啡的同事，打翻数量超过容忍次数会失败。";case "O2":return "领取文件，在时限内送至对应编号的办公桌。";case "O3":return "把五把椅子推入空位；每个位置只能停一把。";default:return "";}
+            if(t.state==TaskState.Failed)return "����ʧ�ܣ��Կɼ���ͨ�ڡ����Ե�ǰ������������ս��";
+            switch(t.id){case "S1":return "�õ���ͺ󱣳�һ��ʱ�䣻��ײ�������̴�����ʧ�ܡ�";case "S2":return "�����������Ƶ������꣬��ɺ������г���";case "S3":return "��ײ���ƣ�ͬʱ�ı������ƣ�����������Ŀ����ɫһ�¡�";case "M2":return "�˿�������ָ������ɫ���Ĵ�ʱ��ײ������";case "M3":return "�ƶ�Ĩ������ˮ�գ���ʵ�ʸ���������㡣";case "O1":return "�����ÿ��ȵ�ͬ�£��������������̴�����ʧ�ܡ�";case "O2":return "��ȡ�ļ�����ʱ����������Ӧ��ŵİ칫����";case "O3":return "��������������λ��ÿ��λ��ֻ��ͣһ�ѡ�";default:return "";}
         }
         Rect WorldRect(Vector2 p,float w,float h)
         {
@@ -345,24 +345,25 @@ namespace EarlyRush.V10
             if(run.phase==RunPhase.Ready)
             {
                 Icon(stageIcons[run.stage],new Rect(587,150,106,100));GUI.Label(new Rect(380,259,520,50),names[run.stage],title);
-                GUI.Label(new Rect(380,322,520,60),"穿过街区与转角，准时抵达。\n碰撞推动物品，观察任务图标。",label);
-                GUI.Label(new Rect(380,400,520,70),"WASD 固定方向 · 空格冲刺\nR 救回附近物品 · Esc 暂停",small);
-                if(Button(new Rect(485,525,310,68),"legacy-icons/play","出发"))run.Begin();
+                GUI.Label(new Rect(380,322,520,60),"����������ת�ǣ�׼ʱ�ִ\n��ײ�ƶ���Ʒ���۲�����ͼ�ꡣ",label);
+                GUI.Label(new Rect(380,400,520,70),"WASD �̶����� �� �ո���\nR �Ȼظ�����Ʒ �� Esc ��ͣ",small);
+                if(Button(new Rect(485,525,310,68),"legacy-icons/play","����"))run.Begin();
             }
             else if(run.phase==RunPhase.Paused)
             {
-                GUI.Label(new Rect(400,200,480,55),"暂停",title);GUI.Label(new Rect(400,275,480,45),"计时已停止",label);
-                if(Button(new Rect(470,360,340,65),"legacy-icons/play","继续"))run.Resume();if(Button(new Rect(470,450,340,65),"legacy-icons/retry","重试本场景"))Load(run.stage,seed);
+                GUI.Label(new Rect(400,200,480,55),"��ͣ",title);GUI.Label(new Rect(400,275,480,45),"��ʱ��ֹͣ",label);
+                if(Button(new Rect(470,360,340,65),"legacy-icons/play","����"))run.Resume();if(Button(new Rect(470,450,340,65),"legacy-icons/retry","���Ա�����"))Load(run.stage,seed);
             }
             else
             {
-                Icon(run.success?"result/on-time":"result/late",new Rect(565,145,150,135));GUI.Label(new Rect(400,285,480,50),run.success?"准时抵达":"迟到了，再试一次",title);
+                Icon(run.success?"result/on-time":"result/late",new Rect(565,145,150,135));GUI.Label(new Rect(400,285,480,50),run.success?"׼ʱ�ִ�":"�ٵ��ˣ�����һ��",title);
                 for(int i=0;i<3;i++)Icon("legacy-extras/star",new Rect(477+i*115,355,96,86),i<run.stars?1:.18f);
-                GUI.Label(new Rect(395,452,490,40),"任务 "+run.Completed+" / 3  ·  "+TimeSpan.FromSeconds(run.elapsed).ToString(@"mm\:ss"),label);
-                if(Button(new Rect(395,530,225,65),"legacy-icons/retry","重试"))Load(run.stage,seed);
-                if(run.success&&Button(new Rect(650,530,230,65),"legacy-icons/play",run.stage<2?"下一场景":"再来一轮"))Load(run.stage<2?run.stage+1:0,seed);
+                GUI.Label(new Rect(395,452,490,40),"���� "+run.Completed+" / 3  ��  "+TimeSpan.FromSeconds(run.elapsed).ToString(@"mm\:ss"),label);
+                if(Button(new Rect(395,530,225,65),"legacy-icons/retry","����"))Load(run.stage,seed);
+                if(run.success&&Button(new Rect(650,530,230,65),"legacy-icons/play",run.stage<2?"��һ����":"����һ��"))Load(run.stage<2?run.stage+1:0,seed);
             }
         }
         void OnDestroy(){foreach(var o in owned)if(o)Destroy(o);if(mapTexture)Destroy(mapTexture);if(font)Destroy(font);if(world)Destroy(world.gameObject);if(cam)Destroy(cam.gameObject);}
     }
 }
+
