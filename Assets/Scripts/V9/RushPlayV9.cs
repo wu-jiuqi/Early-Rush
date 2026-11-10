@@ -20,6 +20,13 @@ namespace EarlyRush.V9
         int seenDashLaunches,seenPlayerLaunches;double impactAt=-10;Vector2 impactPoint,playerFlightFacing=Vector2.up;
         float uiScale=1;Vector2 uiOffset;Texture2D triangle;
         public Camera GameCamera => cam;
+        // Read-only production projection for runtime screenshot checks. Pixels have a top-left origin.
+        public Rect GetMapPanelForReview(bool expanded)=>expanded?new Rect(660,106,590,585):new Rect(1008,18,254,184);
+        public RushMinimapProjectionV13 CreateMinimapProjection(Rect panel,bool expanded)=>new RushMinimapProjectionV13(mapBounds,panel,run.player,expanded);
+        public RushMinimapProjectionV13 CreateMinimapProjection(bool expanded)=>CreateMinimapProjection(GetMapPanelForReview(expanded),expanded);
+        public Vector2 GuiToScreenPixel(Vector2 point)=>RushMinimapProjectionV13.GuiToScreenPixel(point,Screen.width,Screen.height);
+        // Diagnostic display setup only, not evidence that a Tab key was pressed.
+        public void SetExpandedMapForReview(bool expanded){fullMap=expanded;}
         Vector2 ViewHalf => new Vector2(cam.orthographicSize*cam.aspect,cam.orthographicSize);
         Font font;GUIStyle label,small,title;Texture2D mapTexture;
         Rect mapBounds;Color ink=new Color(.08f,.23f,.25f),cream=new Color(.99f,.97f,.9f),gold=new Color(1,.8f,.2f);
@@ -34,12 +41,13 @@ namespace EarlyRush.V9
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
             qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
+            bool v13Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v13-runtime-qa");
             bool v12Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v12-runtime-qa");
-            runtimeQa=v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
+            runtimeQa=v13Qa||v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
             if(runtimeQa)
             {
                 Application.runInBackground=true;
-                if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
+                if(v13Qa)gameObject.AddComponent<RushRuntimeCheckV13>();else if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
             }
             if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
@@ -278,7 +286,7 @@ namespace EarlyRush.V9
                         (Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0));
                     // Bracing wins when Shift and Space arrive in the same frame.
                     run.SetBracing(Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
-                    if(Input.GetKeyDown(KeyCode.Space))run.TryDash(movement);
+                    if(Input.GetKeyDown(KeyCode.Space))run.PressDash(movement);
                     run.Tick(Time.unscaledDeltaTime,movement);
                 }
             }
@@ -364,7 +372,7 @@ namespace EarlyRush.V9
             int minX=int.MaxValue,minY=int.MaxValue,maxX=int.MinValue,maxY=int.MinValue;
             foreach(var p in run.map.cells){minX=Mathf.Min(minX,p.x);minY=Mathf.Min(minY,p.y);maxX=Mathf.Max(maxX,p.x);maxY=Mathf.Max(maxY,p.y);}
             mapBounds=new Rect(minX-.5f,minY-.5f,maxX-minX+1,maxY-minY+1);
-            mapTexture=new Texture2D(maxX-minX+1,maxY-minY+1,TextureFormat.RGBA32,false){filterMode=FilterMode.Point};
+            mapTexture=new Texture2D(maxX-minX+1,maxY-minY+1,TextureFormat.RGBA32,false){filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp};
             var colors=new Color32[mapTexture.width*mapTexture.height];foreach(var p in run.map.cells)colors[(p.y-minY)*mapTexture.width+p.x-minX]=new Color(.22f,.56f,.53f,.85f);
             mapTexture.SetPixels32(colors);mapTexture.Apply(false,true);
         }
@@ -384,9 +392,9 @@ namespace EarlyRush.V9
         bool HiddenTask(TaskV9 t)=>run.stage==1&&t.id=="M1"&&t.state!=TaskState.Failed;
         void OnGUI()
         {
-            if(run==null)return;GuiStyles();uiScale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
-            uiOffset=new Vector2((Screen.width-1280*uiScale)*.5f,(Screen.height-720*uiScale)*.5f);
-            GUI.matrix=Matrix4x4.TRS(new Vector3(uiOffset.x,uiOffset.y,0),Quaternion.identity,new Vector3(uiScale,uiScale,1));
+            if(run==null)return;GuiStyles();uiScale=RushMinimapProjectionV13.GuiScale(Screen.width,Screen.height);
+            uiOffset=RushMinimapProjectionV13.GuiOffset(Screen.width,Screen.height);
+            GUI.matrix=RushMinimapProjectionV13.GuiMatrix(Screen.width,Screen.height);
             Fill(new Rect(18,16,420,76),cream);Icon(stageIcons[run.stage],new Rect(27,23,60,60));GUI.Label(new Rect(90,24,70,50),(run.stage+1)+"/3",title);
             Icon("legacy-icons/clock",new Rect(170,25,46,46));GUI.Label(new Rect(220,24,200,50),TimeSpan.FromSeconds(run.Remaining).ToString(@"mm\:ss"),title);
             for(int i=0;i<run.tasks.Count;i++)
@@ -417,7 +425,7 @@ namespace EarlyRush.V9
                 }
             }
             if(Button(new Rect(450,20,62,62),"legacy-icons/pause")){if(run.phase==RunPhase.Playing)run.Pause();else if(run.phase==RunPhase.Paused)run.Resume();}
-            DrawMap(fullMap?new Rect(660,106,590,585):new Rect(1008,18,254,184));
+            DrawMap(GetMapPanelForReview(fullMap));
             if(selected>=0&&!HiddenTask(run.tasks[selected])){var t=run.tasks[selected];Fill(new Rect(20,228,426,124),cream);GUI.Label(new Rect(29,234,408,36),t.title,label);GUI.Label(new Rect(32,272,402,72),TaskHelp(t),small);}
             GUI.Label(new Rect(15,680,930,28),"WASD / 方向键 · 空格冲刺 · Shift 稳步 / 稳车 · R 救回 · TAB 地图 · Esc 暂停 · F1",small);
             DrawActionStatus();
@@ -435,7 +443,7 @@ namespace EarlyRush.V9
                 if(run.eventKind=="rain"&&run.eventAge>=2)for(int i=0;i<18;i++)Icon("fx-decal/rain",new Rect(i*89%1280,((float)run.elapsed*115+i*101)%780-60,30,70),.22f);
             }
             if(run.phase!=RunPhase.Playing)DrawModal();
-            if(help){Fill(new Rect(300,170,680,390),cream);GUI.Label(new Rect(325,190,630,350),"空格：向当前输入方向冲刺；Shift：稳步或稳车。\n稳步不会下车；冲刺可撞开普通人，任务碰撞规则仍有效。\n蓄力方向锁定后可侧移躲开，或提前按住 Shift 抵挡。\n碰撞没有血量、扣分或直接扣时惩罚；任务例外仍有效。\n按时抵达 1 星；完成至少 1 项加 1 星；全任务再加 1 星。\nR 救回附近物品；镜头保持固定方向。F1 收起。",small);}
+            if(help){Fill(new Rect(300,170,680,390),cream);GUI.Label(new Rect(325,190,630,350),"点按空格：向当前输入方向冲刺；冷却快结束时可提前按下。\nShift：稳步或稳车，不会下车；松开后可再次冲刺。\n冲刺可撞开普通人，任务碰撞规则仍有效。\n蓄力方向锁定后可侧移躲开，或提前按住 Shift 抵挡。\n碰撞没有血量、扣分或直接扣时惩罚；任务例外仍有效。\n按时抵达 1 星；完成至少 1 项加 1 星；全任务再加 1 星。\nR 救回附近物品；镜头保持固定方向。F1 收起。",small);}
         }
         void DrawActionStatus()
         {
@@ -443,7 +451,7 @@ namespace EarlyRush.V9
             string travel=run.bicycle?"骑行":"步行";
             string state=run.IsAirborne?"被撞 · 腾空":run.IsBracing?(run.bicycle?"稳车":"稳步"):run.IsDashing?"冲刺中":"自由移动";
             GUI.Label(new Rect(540,20,435,30),travel+" · "+state+(run.DashImpactFeedback01>0?" · 累计撞开 "+run.DashLaunchCount:run.BraceFeedback01>0?" · 抵住冲撞":""),label);
-            GUI.Label(new Rect(540,50,158,28),run.DashReady01>=.999f?"空格 · 冲刺就绪":"冲刺冷却",small);
+            GUI.Label(new Rect(540,50,158,28),run.DashBuffered?"已接收 · 即将冲刺":run.DashReady01>=.999f?"空格 · 冲刺就绪":"冲刺冷却",small);
             Fill(new Rect(710,58,250,9),new Color(.69f,.78f,.72f));Fill(new Rect(710,58,250*run.DashReady01,9),gold);
         }
         string TaskHelp(TaskV9 t)
@@ -570,27 +578,27 @@ namespace EarlyRush.V9
                 triangle.SetPixels(colors);triangle.Apply();
             }
             Matrix4x4 before=GUI.matrix;Color old=GUI.color;
-            GUIUtility.RotateAroundPivot(Mathf.Atan2(worldDirection.x,worldDirection.y)*Mathf.Rad2Deg,center);
+            // Rotate in the same virtual GUI coordinates first; apply scale/letterboxing after.
+            // Left-multiplying a window-space rotation moves the marker at non-1:1 resolutions.
+            GUI.matrix=before*RushMinimapProjectionV13.RotationAbout(center,worldDirection);
             GUI.color=color;GUI.DrawTexture(new Rect(center.x-size/2,center.y-size/2,size,size),triangle);
             GUI.color=old;GUI.matrix=before;
         }
         void DrawMap(Rect r)
         {
             Fill(r,new Color(.99f,.98f,.9f,.96f));
-            GUI.BeginGroup(r);
-            Rect inner=new Rect(10,10,r.width-20,r.height-32);
-            float scale=fullMap?Mathf.Min(inner.width/mapBounds.width,inner.height/mapBounds.height):inner.width/42f;
-            Vector2 center=fullMap?mapBounds.center:run.player;
-            Func<Vector2,Vector2> point=p=>inner.center+new Vector2(p.x-center.x,center.y-p.y)*scale;
-            Vector2 topLeft=point(new Vector2(mapBounds.xMin,mapBounds.yMax));
-            GUI.DrawTexture(new Rect(topLeft.x,topLeft.y,mapBounds.width*scale,mapBounds.height*scale),mapTexture,ScaleMode.StretchToFill,true);
+            var projection=CreateMinimapProjection(r,fullMap);Rect inner=projection.ContentRect;
+            // Crop both source UVs and destination together. No nested GUI group or giant
+            // off-panel texture rectangle can introduce a second marker coordinate space.
+            if(projection.DrawRect.width>0&&projection.DrawRect.height>0)
+                GUI.DrawTextureWithTexCoords(projection.DrawRect,mapTexture,projection.UvRect,true);
             Action<Vector2,string,float,bool> marker=(worldPosition,key,alpha,failed)=>
             {
-                Vector2 raw=point(worldPosition);Vector2 p=new Vector2(Mathf.Clamp(raw.x,inner.x+10,inner.xMax-10),Mathf.Clamp(raw.y,inner.y+10,inner.yMax-10));
-                if(raw!=p&&!fullMap)
+                bool offscreen;Vector2 p=projection.ProjectMarker(worldPosition,10,out offscreen);
+                if(offscreen&&!fullMap)
                 {
                     if(alpha<.5f)return; // Finished/failed tasks never keep directing the player off-screen.
-                    Triangle(p,new Vector2(raw.x-p.x,p.y-raw.y),12,ink);
+                    Triangle(p,worldPosition-projection.SourceRect.center,12,ink);
                     p+= (inner.center-p).normalized*16;
                 }
                 Icon(key,new Rect(p.x-9,p.y-9,18,18),alpha);
@@ -610,15 +618,15 @@ namespace EarlyRush.V9
                 {
                     // Quantise to a region: the desk is identified from its portrait in the world.
                     Vector2 region=new Vector2(Mathf.Round(closest.position.x/8)*8,Mathf.Round(closest.position.y/8)*8);
-                    Vector2 raw=point(region),p=new Vector2(Mathf.Clamp(raw.x,inner.x+14,inner.xMax-14),Mathf.Clamp(raw.y,inner.y+14,inner.yMax-14));
-                    if(raw!=p){Triangle(p,new Vector2(raw.x-p.x,p.y-raw.y),14,ink);p+=(inner.center-p).normalized*20;}
+                    bool offscreen;Vector2 p=projection.ProjectMarker(region,14,out offscreen);
+                    if(offscreen){Triangle(p,region-projection.SourceRect.center,14,ink);p+=(inner.center-p).normalized*20;}
                     LeaderPortrait(new Rect(p.x-12,p.y-12,24,24),closest.index);
                 }
             }
             marker(run.map.exit,"legacy-icons/exit",1,false);
-            Triangle(point(run.player),run.facing,16,gold);
-            Fill(new Rect(0,r.height-22,r.width,22),cream);GUI.Label(new Rect(0,r.height-22,r.width,22),fullMap?"全图 · 北向固定 · TAB 收起":"附近道路 · 北向固定 · TAB 全图",small);
-            GUI.EndGroup();
+            Triangle(projection.WorldToGui(run.player),run.facing,16,gold);
+            Rect caption=new Rect(r.x,r.yMax-22,r.width,22);
+            Fill(caption,cream);GUI.Label(caption,fullMap?"全图 · 北向固定 · TAB 收起":"附近道路 · 北向固定 · TAB 全图",small);
         }
         int UnlockedStage()
         {
