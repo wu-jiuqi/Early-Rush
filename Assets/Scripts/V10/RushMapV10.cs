@@ -126,9 +126,14 @@ namespace EarlyRush.V10
                 // The sole connection between waiting and arrival graphs passes through the
                 // carriage district. Closing this portal must disconnect the chapter exit.
                 Vector2 a=m.route[7],b=m.route[8],mid=(a+b)*.5f;
-                var portal=new PortalV10{id="train-required",kind="train-carriage-bridge",entry=a,exit=b,requiredTrainPassage=true,bounds=new Rect(mid.x-2,mid.y-5,4,10)};
+                var portal=new PortalV10{id="train-required",kind="train-carriage-bridge",entry=a,exit=b,requiredTrainPassage=true,bounds=new Rect(mid.x-2,mid.y-12,4,24)};
                 m.portals.Add(portal);m.regions[8].encounter="traverse-carriage-then-alight";
                 Paint(m,new Rect(mid.x-22,mid.y-4,44,8),"carriage",7,"carriage-floor");
+                // No bypass along the external platform lip: the only cross-cut opening is
+                // inside the carriage. Render these same boundaries, not a picture-only wall.
+                for(int y=Mathf.CeilToInt(mid.y-12);y<mid.y+12;y++)
+                    for(int x=Mathf.CeilToInt(mid.x-2);x<mid.x+2;x++)
+                        if(y<mid.y-4||y>=mid.y+4)m.cells.Remove(new Vector2Int(x,y));
             }
             // Later floor zones may overlap earlier furniture; collision occupancy wins last.
             foreach(var structure in m.structures)

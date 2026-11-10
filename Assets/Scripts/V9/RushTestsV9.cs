@@ -131,20 +131,33 @@ namespace EarlyRush.V9
                 if(!body.done)return EndReplay(run,result,"Wheel push route stuck id="+body.id);
             }
             if(!run.bicycle)return EndReplay(run,result,"Two wheels did not grant bike");
-            int solution=-1;
-            for(int mask=0;mask<32;mask++)
+            // Re-read the visible board state after EVERY real touch. Navigation can itself
+            // touch a neighbour; a precomputed full sequence then becomes stale.
+            for(int attempt=0;attempt<40&&!run.tasks[2].done;attempt++)
             {
-                var state=(bool[])run.boards.Clone();for(int i=0;i<5;i++)if((mask&(1<<i))!=0)for(int j=Mathf.Max(0,i-1);j<=Mathf.Min(4,i+1);j++)state[j]=!state[j];
-                bool solved=true;for(int i=0;i<5;i++)solved&=state[i]==run.boardGoal[i];if(solved){solution=mask;break;}
-            }
-            if(solution<0)return EndReplay(run,result,"No flip solution");
-            foreach(var f in run.fixtures)if(f.kind==FixtureKind.FlipBoard&&(solution&(1<<f.index))!=0)
-            {
-                if(!MoveTo(run,f.position-Vector2.up*2,30,out reason))return EndReplay(run,result,reason);
-                // A fresh forward touch followed by separation. Holding does not generate repeated flips.
-                for(int i=0;i<30;i++)run.Tick(1f/60,Vector2.up);
-                // Bike reversal includes braking time; retreat long enough to actually separate.
-                for(int i=0;i<60;i++)run.Tick(1f/60,Vector2.down);
+                int solution=-1;
+                for(int mask=0;mask<32;mask++)
+                {
+                    var state=(bool[])run.boards.Clone();for(int i=0;i<5;i++)if((mask&(1<<i))!=0)for(int j=Mathf.Max(0,i-1);j<=Mathf.Min(4,i+1);j++)state[j]=!state[j];
+                    bool solved=true;for(int i=0;i<5;i++)solved&=state[i]==run.boardGoal[i];if(solved){solution=mask;break;}
+                }
+                if(solution<0)return EndReplay(run,result,"No flip solution");
+                FixtureV9 chosen=null;
+                foreach(var f in run.fixtures)if(f.kind==FixtureKind.FlipBoard&&(solution&(1<<f.index))!=0){chosen=f;break;}
+                if(chosen==null)break;
+                // Traverse below the entire bank, never diagonally between neighbouring boards.
+                Vector2 lane=new Vector2(run.player.x,chosen.position.y-4);
+                if(!MoveTo(run,lane,30,out reason)||!MoveTo(run,chosen.position-Vector2.up*4,30,out reason))return EndReplay(run,result,reason);
+                var before=(bool[])run.boards.Clone();double approach=run.elapsed;bool changed=false;
+                while(!changed&&run.elapsed-approach<3&&!run.tasks[2].done)
+                {
+                    // Low input amplitude reduces bike overshoot without changing game speed.
+                    run.Tick(1f/60,Vector2.up*.3f);
+                    for(int i=0;i<5;i++)changed|=before[i]!=run.boards[i];
+                }
+                for(int i=0;i<90;i++)run.Tick(1f/60,Vector2.down*.5f);
+                run.Tick(.3f,Vector2.zero);
+                if(!changed)return EndReplay(run,result,"No fresh flip contact index="+chosen.index);
             }
             if(!run.tasks[2].done)return EndReplay(run,result,"Flip input route failed to solve");
             if(!MoveTo(run,run.map.exit,30,out reason))return EndReplay(run,result,reason);
