@@ -15,8 +15,15 @@ namespace EarlyRush.V9
                 if(module.index%2==1){denseSum+=nearby;denseSamples++;}else{quietSum+=nearby;quietSamples++;}
             }
             foreach(var person in people)if(person.kind!=PersonKind.Alighting&&IsPedestrianReserved(person.position,person.radius))protectedCount++;
+            var hotspots=new string[4];
+            for(int n=0;n<4;n++)
+            {
+                var module=map.modules[n*2+1];Vector2 center=(module.entrance+module.exit)*.5f;
+                hotspots[n]=VisibleCrowdCount(center,13.333333f,7.5f).ToString();
+            }
             return "population="+people.Count+" radius=8 denseMean="+(denseSum/(float)Mathf.Max(1,denseSamples)).ToString("F2",System.Globalization.CultureInfo.InvariantCulture)+
-                " calmMean="+(quietSum/(float)Mathf.Max(1,quietSamples)).ToString("F2",System.Globalization.CultureInfo.InvariantCulture)+" samplePeak="+peak+" taskWorkspaceActors="+protectedCount;
+                " calmMean="+(quietSum/(float)Mathf.Max(1,quietSamples)).ToString("F2",System.Globalization.CultureInfo.InvariantCulture)+" samplePeak="+peak+" taskWorkspaceActors="+protectedCount+
+                " fixedHotspotViewportCounts="+string.Join("/",hotspots);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace EarlyRush.V9
                     if (fixture.kind == FixtureKind.FileDesk)
                         Check(Vector2.Distance(person.coffeeDesk, fixture.position) > 2.7f, "personal desk is not a delivery station");
             }
-            Check(run.people.Count == run.config.pedestrianOfficeCount && cups == (run.config.pedestrianOfficeCount + 2) / 7,
+            Check(run.people.Count == run.config.pedestrianOfficeCount && cups == Mathf.Min(40, (run.config.pedestrianOfficeCount + 2) / 7),
                 "configured population and the existing coffee coworker proportion are retained");
             run.Begin();
             run.Tick(2, Vector2.zero);

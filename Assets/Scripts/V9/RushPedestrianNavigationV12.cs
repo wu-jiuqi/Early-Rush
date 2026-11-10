@@ -21,6 +21,75 @@ namespace EarlyRush.V9
         float[] pedestrianCost, pedestrianPriority;
         int pedestrianSearchStamp, pedestrianHeapCount;
         bool pedestrianNavigationReady;
+        const float PedestrianReservationCellSize = 4;
+        readonly Dictionary<Vector2Int, List<Rect>> pedestrianReservationIndex = new Dictionary<Vector2Int, List<Rect>>();
+        bool pedestrianReservationIndexReady;
+        int pedestrianReservationIndexedCount;
+
+        /// <summary>Rebuild after changing static walking reservations; exact rectangles remain authoritative.</summary>
+        internal void BuildPedestrianReservationIndex()
+        {
+            pedestrianReservationIndex.Clear();
+            pedestrianReservationIndexReady = false;
+            pedestrianReservationIndexedCount = pedestrianReservations.Count;
+            foreach (Rect reservation in pedestrianReservations)
+            {
+                float minX = Mathf.Min(reservation.xMin, reservation.xMax), maxX = Mathf.Max(reservation.xMin, reservation.xMax);
+                float minY = Mathf.Min(reservation.yMin, reservation.yMax), maxY = Mathf.Max(reservation.yMin, reservation.yMax);
+                if (!PedestrianReservationRange(minX, maxX, minY, maxY, 16384, out int x0, out int x1, out int y0, out int y1))
+                {
+                    // Malformed or enormous rectangles retain the original full-scan semantics.
+                    pedestrianReservationIndex.Clear();
+                    return;
+                }
+                for (int y = y0; y <= y1; y++) for (int x = x0; x <= x1; x++)
+                {
+                    var key = new Vector2Int(x, y);
+                    if (!pedestrianReservationIndex.TryGetValue(key, out var bucket))
+                    { bucket = new List<Rect>(); pedestrianReservationIndex.Add(key, bucket); }
+                    bucket.Add(reservation);
+                }
+            }
+            pedestrianReservationIndexReady = true;
+        }
+
+        /// <summary>Broad phase only: every candidate still uses the unchanged strict Rect boundary test.</summary>
+        internal bool IsPedestrianReservedFast(Vector2 point, float margin = 0)
+        {
+            float extent = Mathf.Max(0, margin);
+            if (!pedestrianReservationIndexReady || pedestrianReservationIndexedCount != pedestrianReservations.Count ||
+                float.IsNaN(margin) || float.IsInfinity(margin) ||
+                !PedestrianReservationRange(point.x - extent, point.x + extent, point.y - extent, point.y + extent,
+                    64, out int x0, out int x1, out int y0, out int y1))
+            {
+                foreach (var reservation in pedestrianReservations)
+                    if (InsideExpanded(reservation, point, margin)) return true;
+                return false;
+            }
+            for (int y = y0; y <= y1; y++) for (int x = x0; x <= x1; x++)
+                if (pedestrianReservationIndex.TryGetValue(new Vector2Int(x, y), out var bucket))
+                    foreach (var reservation in bucket)
+                        if (InsideExpanded(reservation, point, margin)) return true;
+            return false;
+        }
+
+        static bool PedestrianReservationRange(float minX, float maxX, float minY, float maxY, int maximumCells,
+            out int x0, out int x1, out int y0, out int y1)
+        {
+            x0 = x1 = y0 = y1 = 0;
+            if (float.IsNaN(minX) || float.IsNaN(maxX) || float.IsNaN(minY) || float.IsNaN(maxY) ||
+                float.IsInfinity(minX) || float.IsInfinity(maxX) || float.IsInfinity(minY) || float.IsInfinity(maxY)) return false;
+            // Bound integer conversion and loop increments before calculating cell ranges.
+            const float coordinateLimit = 1000000000;
+            if (Mathf.Abs(minX) > coordinateLimit || Mathf.Abs(maxX) > coordinateLimit ||
+                Mathf.Abs(minY) > coordinateLimit || Mathf.Abs(maxY) > coordinateLimit) return false;
+            x0 = Mathf.FloorToInt(minX / PedestrianReservationCellSize);
+            x1 = Mathf.FloorToInt(maxX / PedestrianReservationCellSize);
+            y0 = Mathf.FloorToInt(minY / PedestrianReservationCellSize);
+            y1 = Mathf.FloorToInt(maxY / PedestrianReservationCellSize);
+            long width = (long)x1 - x0 + 1, height = (long)y1 - y0 + 1;
+            return width > 0 && height > 0 && width <= maximumCells && height <= maximumCells && width * height <= maximumCells;
+        }
 
         public IReadOnlyList<Vector2> PedestrianPoints => pedestrianPointView;
         public int PedestrianNavigationNodeCount => pedestrianNodes.Count;
@@ -39,6 +108,8 @@ namespace EarlyRush.V9
         public void InitializePedestrianNavigation()
         {
             var watch = Stopwatch.StartNew();
+            // Rebuilding the nav graph also refreshes same-count edits to reservation geometry.
+            BuildPedestrianReservationIndex();
             pedestrianNavigationReady = false;
             pedestrianNodeIndex.Clear();
             pedestrianNodes.Clear();

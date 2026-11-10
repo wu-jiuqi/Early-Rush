@@ -202,6 +202,125 @@ namespace EarlyRush.V9
             Check(largestStep<1&&run.map.IsWalkable(first.position,first.radius)&&run.map.IsWalkable(second.position,second.radius),"overlap recovery is gradual and does not cross walls");
         }
 
+        sealed class DenseTrack
+        {
+            internal readonly Vector2[] positions=new Vector2[41];
+            internal readonly float[] travelled=new float[41];
+            internal Vector2 previous;
+            internal float distance,stopped,longestStop;
+            internal DenseTrack(Vector2 position)
+            {previous=position;for(int i=0;i<positions.Length;i++)positions[i]=position;}
+        }
+
+        static float Quantile(List<float> values,float q)
+        {
+            if(values.Count==0)return 0;
+            values.Sort();return values[Mathf.Clamp(Mathf.RoundToInt((values.Count-1)*q),0,values.Count-1)];
+        }
+
+        /// <summary>
+        /// Read-only density evidence, not an acceptance shortcut. The same 26.67 x 15 world-unit
+        /// window is sampled at 0/10/30/60 seconds, with no camera zoom, actor filtering, or input.
+        /// A single stage can be selected for a bounded recheck; defaults retain all populations.
+        /// </summary>
+        public static string ObserveDenseFlow(int stage=-1,int seconds=60)
+        {
+            if(stage < -1||stage>2)throw new ArgumentOutOfRangeException(nameof(stage));
+            if(seconds<10||seconds>120)throw new ArgumentOutOfRangeException(nameof(seconds));
+            var report=new System.Text.StringBuilder();
+            int first=stage<0?0:stage,last=stage<0?2:stage;
+            for(int chapter=first;chapter<=last;chapter++)
+            {
+                var watch=System.Diagnostics.Stopwatch.StartNew();
+                var run=new RunV9(chapter,91026);var tracks=new Dictionary<int,DenseTrack>();
+                var crossings=new Dictionary<int,double>[4];
+                for(int i=0;i<4;i++)crossings[i]=new Dictionary<int,double>();
+                foreach(var person in run.people)tracks[person.id]=new DenseTrack(person.position);
+                int invalidGround=0,reservedSamples=0;float maximumStep=0;
+                var reservedIds=new HashSet<int>();var invalidIds=new HashSet<int>();
+                run.Begin();
+                for(int frame=0;frame<=seconds*4&&run.phase==RunPhase.Playing;frame++)
+                {
+                    if(frame>0)
+                    {
+                        run.Tick(.25f,Vector2.zero);
+                        foreach(var person in run.people)
+                        {
+                            if(!tracks.TryGetValue(person.id,out var track))tracks[person.id]=track=new DenseTrack(person.position);
+                            float step=Vector2.Distance(track.previous,person.position);maximumStep=Mathf.Max(maximumStep,step);
+                            track.distance+=step;
+                            bool intentional=person.exited||person.aiState==PedestrianState.Waiting||person.aiState==PedestrianState.WaitingSignal||
+                                person.aiState==PedestrianState.Arrived||person.actionPhase!=NpcActionPhase.Cruise||person.dashAirborne;
+                            track.stopped=!intentional&&step<.015f?track.stopped+.25f:0;
+                            track.longestStop=Mathf.Max(track.longestStop,track.stopped);
+                            if(!person.exited)for(int hotspot=0;hotspot<4;hotspot++)
+                            {
+                                var module=run.map.modules[hotspot*2+1];Vector2 center=(module.entrance+module.exit)*.5f;
+                                Vector2 along=(module.exit-module.entrance).normalized;
+                                float before=Vector2.Dot(track.previous-center,along),after=Vector2.Dot(person.position-center,along);
+                                if(before*after<0&&Mathf.Abs(person.position.x-center.x)<40f/3&&Mathf.Abs(person.position.y-center.y)<7.5f)
+                                    crossings[hotspot][person.id]=run.elapsed;
+                            }
+                            track.previous=person.position;track.positions[frame%41]=person.position;track.travelled[frame%41]=track.distance;
+                        }
+                    }
+                    foreach(var person in run.people)if(!person.exited)
+                    {
+                        if(!run.map.IsWalkable(person.position,person.radius)){invalidGround++;invalidIds.Add(person.id);}
+                        if(run.IsPedestrianReserved(person.position,person.radius)){reservedSamples++;reservedIds.Add(person.id);}
+                    }
+                    if(frame==0||frame==40||frame==120||frame==240||frame==seconds*4)
+                    {
+                        for(int hotspot=0;hotspot<4;hotspot++)
+                        {
+                            var module=run.map.modules[hotspot*2+1];Vector2 center=(module.entrance+module.exit)*.5f;
+                            int visible=0,ordinary=0,coffee=0,yielding=0,movedOne=0,crossed=0;
+                            var nearest=new List<float>();var net=new List<float>();var travel=new List<float>();
+                            foreach(var person in run.people)
+                            {
+                                if(person.exited||Mathf.Abs(person.position.x-center.x)>=40f/3||Mathf.Abs(person.position.y-center.y)>=7.5f)continue;
+                                visible++;if(person.kind==PersonKind.Ordinary)ordinary++;if(person.kind==PersonKind.Coffee)coffee++;
+                                if(person.aiState==PedestrianState.Yielding)yielding++;
+                                float closest=float.MaxValue;foreach(var other in run.people)
+                                    if(other!=person&&!other.exited)closest=Mathf.Min(closest,Vector2.Distance(person.position,other.position));
+                                if(closest<float.MaxValue)nearest.Add(closest);
+                                DenseTrack track=tracks[person.id];int past=Mathf.Max(0,frame-40)%41;
+                                float displacement=Vector2.Distance(track.positions[past],person.position);
+                                net.Add(displacement);travel.Add(track.distance-track.travelled[past]);if(displacement>=1)movedOne++;
+                            }
+                            foreach(var time in crossings[hotspot].Values)if(time>run.elapsed-10)crossed++;
+                            string line="V12_DENSE_VIEW stage="+chapter+" seconds="+run.elapsed+" module="+module.index+" center="+center+
+                                " window=26.6667x15 visible="+visible+" ordinary="+ordinary+" coffee="+coffee+" yielding="+yielding+
+                                " nearestP25="+Quantile(nearest,.25f)+" nearestMedian="+Quantile(nearest,.5f)+" nearestP90="+Quantile(nearest,.9f)+
+                                " progressWindowSeconds="+Mathf.Min(frame*.25f,10)+" medianNetMetres="+Quantile(net,.5f)+
+                                " medianTravelMetres="+Quantile(travel,.5f)+" movedAtLeast1m="+movedOne+" distinctCentreCrossers10s="+crossed;
+                            Debug.Log(line);report.AppendLine(line);
+                        }
+                    }
+                    if(watch.Elapsed.TotalSeconds>300)throw new TimeoutException("Dense-flow observation exceeded its explicit 300-second per-stage wall-clock budget");
+                }
+                int stopped10=0,stopped15=0;float longest=0;var examples=new System.Text.StringBuilder();
+                foreach(var person in run.people)
+                {
+                    DenseTrack track=tracks[person.id];longest=Mathf.Max(longest,track.longestStop);
+                    if(track.longestStop>=10)stopped10++;
+                    if(track.longestStop>=15)
+                    {
+                        stopped15++;if(stopped15<=12)examples.Append(" id="+person.id+" stopped="+track.longestStop+" state="+person.aiState+
+                            " at="+person.position+" goal="+person.destination+" plans="+person.routePlans);
+                    }
+                }
+                string summary="V12_DENSE_FLOW stage="+chapter+" seed=91026 simulatedSeconds="+run.elapsed+" population="+run.people.Count+
+                    " arrivals="+run.PedestrianArrivals+" replans="+run.PedestrianReplans+" yields="+run.PedestrianYieldEvents+
+                    " signalWaits="+run.PedestrianSignalWaits+" stoppedAtLeast10s="+stopped10+" stoppedAtLeast15s="+stopped15+
+                    " longestUnintentionalStop="+longest+" invalidGroundSamples="+invalidGround+" invalidGroundActors="+invalidIds.Count+
+                    " taskReservedSamples="+reservedSamples+" taskReservedActors="+reservedIds.Count+" maxQuarterSecondStep="+maximumStep+
+                    " wallSeconds="+watch.Elapsed.TotalSeconds+examples;
+                Debug.Log(summary);report.AppendLine(summary);
+            }
+            return report.ToString();
+        }
+
         /// <summary>Optional bounded diagnostic; uses full default populations and does not alter AI.</summary>
         public static string ObserveLongRun(int seconds=60)
         {

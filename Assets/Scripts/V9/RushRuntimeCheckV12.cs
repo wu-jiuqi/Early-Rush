@@ -15,7 +15,7 @@ namespace EarlyRush.V9
         [Serializable] public sealed class CheckRecord { public string name, evidence; public bool passed; }
         [Serializable] public sealed class SampleRecord
         {
-            public string name, scope,densityAtStart,densityAtEnd;
+            public string name, scope,densityAtStart,densityAtEnd,observationLocation;
             public int stage, population, visiblePeak, movingPeople, charges, launches, blocks;
             public int aiPeople,distinctDestinations,progressingPeople,routePlans,destinationChanges,yieldEvents;
             public int dashLaunches,coffeeGuards,coffeeSpills,coffeeGuardSamples,coffeeSpillSamples,coffeeReturnSamples;
@@ -23,6 +23,15 @@ namespace EarlyRush.V9
             public int walkingSamples,yieldingSamples,waitingSignalSamples,waitingSamples,arrivedSamples,replanningSamples;
             public double elapsed;
             public float movementMeters, playerDistance, peakHeight;
+            public Vector2 hotspotCenter,observerStart,cameraAtStart,cameraAtEnd;
+        }
+        [Serializable] public sealed class ViewObservation
+        {
+            public string screenshot,location,scope;
+            public int stage,visiblePeople,peopleWithinRadius8;
+            public double elapsed;
+            public Vector2 player,cameraCenter,densityCenter;
+            public float orthographicSize,aspect;
         }
         [Serializable] public sealed class PedestrianObservation
         {
@@ -31,12 +40,13 @@ namespace EarlyRush.V9
         }
         [Serializable] public sealed class Report
         {
-            public string version = "v12-independent-pedestrians-runtime-1", utc, device, unity;
-            public string scope = "Unmodified generated pedestrian populations observed for 15 simulation seconds per stage (four 1/60-second ticks per rendered frame), plus isolated legacy action mechanism fixtures. Accelerated simulation is NOT an FPS/performance test, complete-route evidence, or human playtest. Only observer/legacy-fixture starts are arranged; normal pedestrian destinations, plans, movement and states evolve through Tick.";
+            public string version = "v12-independent-pedestrians-runtime-2", utc, device, unity;
+            public string scope = "Unmodified generated pedestrian populations observed with zero movement input for 15 simulation seconds at module 1 per stage (four 1/60-second ticks per rendered frame), plus isolated legacy action mechanism fixtures. Hotspot observer starts and subsequent task/quiet-loop views are explicitly arranged; only the observer is relocated for comparison views, with no further Tick or NPC changes. Each population screenshot records its actual camera center and unchanged gameplay zoom. Accelerated simulation is NOT an FPS/performance test, complete-route evidence, or human playtest.";
             public bool passed;
             public float wallSeconds;
             public List<CheckRecord> checks = new List<CheckRecord>();
             public List<SampleRecord> samples = new List<SampleRecord>();
+            public List<ViewObservation> views = new List<ViewObservation>();
             public List<PedestrianObservation> pedestrianSnapshots = new List<PedestrianObservation>();
             public List<string> screenshots = new List<string>();
             public List<string> errors = new List<string>();
@@ -100,10 +110,13 @@ namespace EarlyRush.V9
                 yield return null;
                 var run = game.run;
                 // This changes only the initial observer position. It does not claim travel from spawn.
-                Vector2 direction; run.player = PopulationObservationPoint(run, out direction); run.velocity = Vector2.zero;
+                ModuleV9 observationModule;Vector2 hotspotCenter;
+                run.player = PopulationObservationPoint(run,out observationModule,out hotspotCenter); run.velocity = Vector2.zero;
                 game.FrameForReview(); run.Begin(); game.RenderFrame();
                 var sample = new SampleRecord { name = "pedestrians-stage-" + stage, stage = stage,
-                    scope = "Unmodified generated AI actors; arranged observer start; 15 simulated seconds, four ticks per render frame. Not FPS or complete-route evidence.", population = ActivePeople(run) };
+                    scope = "Unmodified generated AI actors at fixed module 1; arranged walkable shoulder observer start, zero movement input. Real contacts may displace the observer; screenshot metadata records actual camera centers. 15 simulated seconds, four ticks per render frame. Not FPS or complete-route evidence.",
+                    population = ActivePeople(run),observationLocation=observationModule.kind,hotspotCenter=hotspotCenter,
+                    observerStart=run.player,cameraAtStart=game.GameCamera.transform.position };
                 Vector2 playerStart = run.player;
                 var previous = new Dictionary<int, Vector2>(); var distances = new Dictionary<int, float>();
                 var initialDistance = new Dictionary<int, float>(); var initialChanges = new Dictionary<int, int>();
@@ -118,13 +131,14 @@ namespace EarlyRush.V9
                 }
                 sample.distinctDestinations=destinations.Count;sample.densityAtStart=run.CrowdDensitySummary();
                 RecordPedestrians(run);game.RenderFrame();
-                yield return new WaitForEndOfFrame();Capture(sample.name + "-t00.png");
+                yield return new WaitForEndOfFrame();CapturePopulationView(sample.name + "-t00.png",run,observationModule.kind,hotspotCenter,false);
+                sample.visiblePeak=VisiblePeople(run);
                 int ticks=0;bool signalWaitersStationary=true;
                 while(ticks<900 && run.phase==RunPhase.Playing)
                 {
                     for(int batch=0;batch<4&&ticks<900&&run.phase==RunPhase.Playing;batch++,ticks++)
                     {
-                        run.Tick(Step, direction * .25f);
+                        run.Tick(Step, Vector2.zero);
                         foreach (var person in run.people)
                         {
                             if (person.exited || !previous.ContainsKey(person.id)) continue;
@@ -150,6 +164,11 @@ namespace EarlyRush.V9
                     }
                     game.RenderFrame();sample.visiblePeak = Math.Max(sample.visiblePeak, VisiblePeople(run));
                     sample.peakHeight = Mathf.Max(sample.peakHeight, run.PlayerHeight);
+                    if(ticks==300)
+                    {
+                        yield return new WaitForEndOfFrame();
+                        CapturePopulationView(sample.name + "-t05.png",run,observationModule.kind,hotspotCenter,false);
+                    }
                     yield return null;
                 }
                 foreach (float distance in distances.Values) if (distance > .1f) sample.movingPeople++;
@@ -160,7 +179,7 @@ namespace EarlyRush.V9
                     if(initialDistance.ContainsKey(person.id)&&(person.destinationChanges>initialChanges[person.id]||
                         Vector2.Distance(person.position,person.destination)<initialDistance[person.id]-.5f))sample.progressingPeople++;
                 }
-                sample.elapsed = run.elapsed; sample.playerDistance = Vector2.Distance(playerStart, run.player);
+                sample.elapsed = run.elapsed; sample.playerDistance = Vector2.Distance(playerStart, run.player);sample.cameraAtEnd=game.GameCamera.transform.position;
                 sample.densityAtEnd=run.CrowdDensitySummary();
                 Debug.Log("V12_RUNTIME_DENSITY stage="+stage+" t00="+sample.densityAtStart+" t15="+sample.densityAtEnd);
                 sample.charges = run.NpcChargeCount; sample.launches = run.PlayerLaunchCount; sample.blocks = run.BraceBlockCount;sample.dashLaunches=run.DashLaunchCount;
@@ -171,8 +190,25 @@ namespace EarlyRush.V9
                 Check(sample.movingPeople > 0&&sample.progressingPeople>0, "Pedestrians make destination progress stage=" + stage, "moving=" + sample.movingPeople + " progressing="+sample.progressingPeople+" totalMeters=" + sample.movementMeters);
                 Check(sample.routePlans>0,"Pedestrians execute path plans stage="+stage,"plans="+sample.routePlans+" destinationChanges="+sample.destinationChanges+" yields="+sample.yieldEvents);
                 Check(signalWaitersStationary,"Observed signal-wait state remains stationary stage="+stage,"waitingSignalSamples="+sample.waitingSignalSamples+" (zero means no runtime signal-wait observation; model checks cover the rule)");
-                Check(run.map.IsWalkable(run.player, RunV9.PlayerRadius), "Local input stays in walkable area stage=" + stage, run.player.ToString());
-                yield return new WaitForEndOfFrame(); Capture(sample.name + "-t15.png"); SaveTrace(run, sample.name);
+                Check(run.map.IsWalkable(run.player, RunV9.PlayerRadius), "Stationary observer remains in walkable area stage=" + stage, "zero movement input; actual contact displacement="+sample.playerDistance+" position="+run.player);
+                yield return new WaitForEndOfFrame(); CapturePopulationView(sample.name + "-t15.png",run,observationModule.kind,hotspotCenter,false); SaveTrace(run, sample.name);
+
+                // Comparison views of the same t=15 population state. These are camera samples,
+                // never traversal/task-completion evidence: only the observer is moved, no Tick.
+                foreach(var task in run.map.tasks)
+                {
+                    PlaceComparisonObserver(run,task.entrance);
+                    yield return new WaitForEndOfFrame();
+                    CapturePopulationView(sample.name+"-task-"+task.index+"-entry-t15.png",run,task.kind+" task entrance",task.entrance,true);
+                    PlaceComparisonObserver(run,task.center);
+                    yield return new WaitForEndOfFrame();
+                    CapturePopulationView(sample.name+"-task-"+task.index+"-workspace-t15.png",run,task.kind+" task workspace",task.center,true);
+                }
+                ZoneV9 quietLoop=run.map.zones.Find(zone=>zone.moduleIndex==observationModule.index&&zone.kind=="loop-lane");
+                if(quietLoop==null)throw new InvalidOperationException("Module 1 has no comparison loop lane");
+                PlaceComparisonObserver(run,quietLoop.bounds.center);
+                yield return new WaitForEndOfFrame();
+                CapturePopulationView(sample.name+"-quiet-loop-t15.png",run,observationModule.kind+" parallel loop",quietLoop.bounds.center,true);
 
             }
 
@@ -313,20 +349,53 @@ namespace EarlyRush.V9
             throw new InvalidOperationException("No clear unprotected lane for the runtime charge fixture");
         }
 
-        static Vector2 PopulationObservationPoint(RunV9 run, out Vector2 direction)
+        static Vector2 PopulationObservationPoint(RunV9 run,out ModuleV9 module,out Vector2 hotspotCenter)
         {
-            int best = -1; Vector2 chosen = run.map.spawn; direction = Vector2.up;
-            for (float distance = 18; distance < run.map.PathLength - 18; distance += 4)
+            module=run.map.modules.Find(candidate=>candidate.index==1);
+            if(module==null)throw new InvalidOperationException("No semantic module 1 for fixed population observation");
+            hotspotCenter=(module.entrance+module.exit)*.5f;
+            Vector2 direction=(module.exit-module.entrance).normalized,shoulder=new Vector2(-direction.y,direction.x);
+            // Use the same semantic location for every density revision, never search for a
+            // flattering maximum. The observer stands beside the central flow, not across it.
+            return FindReviewPoint(run,hotspotCenter+shoulder*3.25f);
+        }
+
+        static Vector2 FindReviewPoint(RunV9 run,Vector2 preferred)
+        {
+            for(int ring=0;ring<=6;ring++)for(int x=-ring;x<=ring;x++)for(int y=-ring;y<=ring;y++)
             {
-                Vector2 point = run.map.PointAtDistance(distance);
-                if (!run.map.IsWalkable(point, RunV9.PlayerRadius)) continue;
-                int count = 0;
-                foreach (var person in run.people)
-                    if (!person.exited && Mathf.Abs(person.position.x - point.x) < 10 && Mathf.Abs(person.position.y - point.y) < 6) count++;
-                if (count <= best) continue;
-                best = count; chosen = point; direction = (run.map.PointAtDistance(distance + 1) - point).normalized;
+                if(Math.Max(Math.Abs(x),Math.Abs(y))!=ring)continue;
+                Vector2 point=preferred+new Vector2(x,y)*.5f;
+                if(!run.map.IsWalkable(point,RunV9.PlayerRadius))continue;
+                bool clear=true;
+                foreach(var person in run.people)if(!person.exited&&(person.position-point).sqrMagnitude<Mathf.Pow(person.radius+RunV9.PlayerRadius+.05f,2)){clear=false;break;}
+                if(!clear)continue;
+                foreach(var body in run.bodies)if((body.position-point).sqrMagnitude<Mathf.Pow(body.radius+RunV9.PlayerRadius+.05f,2)){clear=false;break;}
+                if(!clear)continue;
+                foreach(var fixture in run.fixtures)if((fixture.kind==FixtureKind.FlipBoard||fixture.kind==FixtureKind.Capsule)&&
+                    (fixture.position-point).sqrMagnitude<Mathf.Pow(fixture.radius+RunV9.PlayerRadius+.05f,2)){clear=false;break;}
+                if(clear)return point;
             }
-            return chosen;
+            throw new InvalidOperationException("No clear walkable observer point near "+preferred);
+        }
+
+        void PlaceComparisonObserver(RunV9 run,Vector2 preferred)
+        {
+            run.player=FindReviewPoint(run,preferred);run.velocity=Vector2.zero;
+            game.FrameForReview();game.RenderFrame();
+        }
+
+        void CapturePopulationView(string name,RunV9 run,string location,Vector2 densityCenter,bool relocated)
+        {
+            int nearby=0;foreach(var person in run.people)if(!person.exited&&(person.position-densityCenter).sqrMagnitude<64)nearby++;
+            Capture(name);
+            report.views.Add(new ViewObservation{screenshot=name,location=location,stage=run.stage,elapsed=run.elapsed,
+                player=run.player,cameraCenter=game.GameCamera.transform.position,densityCenter=densityCenter,
+                orthographicSize=game.GameCamera.orthographicSize,aspect=game.GameCamera.aspect,
+                visiblePeople=VisiblePeople(run),peopleWithinRadius8=nearby,
+                scope=relocated?"Arranged comparison view: observer relocated after the 15-second observation; identical NPC state, no further Tick. Not travel or task-completion evidence.":
+                    "Fixed semantic hotspot, arranged shoulder start and zero movement input. Original generated NPCs evolve only through Tick; actual camera center recorded if contacts move the observer."});
+            Debug.Log("V12_RUNTIME_VIEW "+name+" location="+location+" elapsed="+run.elapsed+" camera="+game.GameCamera.transform.position+" radius8="+nearby);
         }
 
         static int ActivePeople(RunV9 run) { int count = 0; foreach (var person in run.people) if (!person.exited) count++; return count; }
@@ -369,7 +438,7 @@ namespace EarlyRush.V9
             finished = true; report.wallSeconds = Time.realtimeSinceStartup - began;
             report.passed = report.errors.Count == 0 && report.checks.Count > 0 && report.checks.TrueForAll(check => check.passed);
             File.WriteAllText(Path.Combine(output, "runtime-report.json"), JsonUtility.ToJson(report, true));
-            File.WriteAllText(Path.Combine(output, "README.txt"), report.scope + "\nPopulation screenshots are the unchanged generated actors at t=0 and t=15 simulation seconds, with an arranged observer start and four ticks per rendered frame. Behavioral counts and individual snapshots are in runtime-report.json. This acceleration does not measure FPS. Action screenshots use a legacy controlled one-attacker mechanism fixture, not a V12 AI decision test. No screenshot proves a complete route or natural attack frequency.\nPassed: " + report.passed + "\nErrors: " + report.errors.Count);
+            File.WriteAllText(Path.Combine(output, "README.txt"), report.scope + "\nPopulation screenshots show the original generated actors at t=0, t=5 and t=15 simulation seconds at the fixed module-1 hotspot. The observer starts on a walkable shoulder with zero movement input; real contacts may move them. The views array records actual camera centers, gameplay zoom, visible counts and counts within radius 8 of each declared density center. Task-entry/workspace and quiet-loop images relocate only the observer after t=15, with no NPC changes or further Tick; these are arranged comparison views, not paths actually travelled. Behavioral counts and individual snapshots are in runtime-report.json. Four simulation ticks per rendered frame do not measure FPS. Action screenshots use controlled fixtures, not a V12 AI decision test. No screenshot proves a complete route or natural attack frequency.\nPassed: " + report.passed + "\nErrors: " + report.errors.Count);
             Debug.Log("V12_RUNTIME_RESULT passed=" + report.passed + " checks=" + report.checks.Count + " errors=" + report.errors.Count);
             Application.Quit(report.passed ? 0 : 1);
         }

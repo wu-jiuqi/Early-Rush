@@ -108,6 +108,10 @@ public static class BuildEarlyRushV12
     [MenuItem("Early Rush/V12/Validate and Build Windows")]
     public static void Build() { Validate(); BuildPlayer(); }
 
+    // Useful while tuning crowd presentation; release evidence still requires Validate().
+    [MenuItem("Early Rush/V12/Quick Checks and Preview Build")]
+    public static void BuildPreview() { ValidateQuick(); BuildPlayer(); }
+
     // Focused follow-up after coffee-only logic fixes; this does not replace full validation.
     [MenuItem("Early Rush/V12/Validate Coffee and Office Follow-up")]
     public static void ValidateOfficeFollowup()
