@@ -21,19 +21,36 @@ namespace EarlyRush.V9
     /// One unit square per integer centre. Coordinates are fixed world right/up,
     /// not a character-relative or road-relative input frame. No GameObjects.
     /// </summary>
+    [Serializable]
     public sealed class ModuleV9
     {
         public int index;public string kind,floorKey;public Vector2 entrance,exit;public Rect bounds;
-        public readonly List<Vector2> fixtureSlots=new List<Vector2>();
-        public readonly List<Vector2> decorSlots=new List<Vector2>();
+        public List<Vector2> fixtureSlots=new List<Vector2>();
+        public List<Vector2> decorSlots=new List<Vector2>();
     }
 
+    [Serializable] public sealed class ZoneV9 { public int moduleIndex;public string kind,floorKey;public Rect bounds; }
+    [Serializable] public sealed class StructureV9 { public string kind,artKey;public Rect bounds;public Vector2 position;public float width; }
+    [Serializable] public sealed class PreviewV9
+    {
+        public string schema="early-rush-v9-map-2";public int stage,seed;public bool timingVerified=false;
+        public Vector2 spawn,exit,signal,platform,trainDoor;public Vector2[] route;public Vector2Int[] cells;
+        public ModuleV9[] modules;public ZoneV9[] zones;public StructureV9[] structures;public TaskSite[] tasks;
+    }
     public sealed class MapData
     {
         public HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
         public List<Vector2> route = new List<Vector2>();
         public Vector2 spawn, exit, signal, platform, trainDoor;
         public List<ModuleV9> modules=new List<ModuleV9>();
+        public List<ZoneV9> zones=new List<ZoneV9>();
+        public List<StructureV9> structures=new List<StructureV9>();
+        public string ToPreviewJson()
+        {
+            var ordered=new List<Vector2Int>(cells);ordered.Sort((a,b)=>a.y==b.y?a.x.CompareTo(b.x):a.y.CompareTo(b.y));
+            return JsonUtility.ToJson(new PreviewV9 { stage=stage,seed=seed,spawn=spawn,exit=exit,signal=signal,platform=platform,trainDoor=trainDoor,
+                route=route.ToArray(),cells=ordered.ToArray(),modules=modules.ToArray(),zones=zones.ToArray(),structures=structures.ToArray(),tasks=tasks.ToArray() },true);
+        }
         public List<TaskSite> tasks = new List<TaskSite>();
         public int seed, stage;
         public float corridorWidth;
@@ -135,6 +152,29 @@ namespace EarlyRush.V9
                     if (!IsWalkable(p, 1.05f) || !reachable.Contains(Cell(p))) { reason = "task clearance/connectivity " + t.index; return false; }
                 if (Vector2.Distance(t.start, t.target) < 3) { reason = "task already in target"; return false; }
             }
+            if(modules.Count!=9||zones.Count<30||structures.Count<2){reason="insufficient module diversity";return false;}
+            var moduleKinds=new HashSet<string>();foreach(var module in modules)moduleKinds.Add(module.kind);
+            if(moduleKinds.Count<7){reason="repeated module semantics";return false;}
+            int loops=0;foreach(var zone in zones)if(zone.kind=="loop-lane")loops++;
+            if(loops<3){reason="missing bypass loops";return false;}
+            // Protect the full current task interaction envelope, not just centre dots.
+            var operational=new List<Vector2>();
+            if(stage==0)
+            {
+                operational.Add(tasks[1].start+Vector2.right*1.5f);operational.Add(tasks[1].start-Vector2.right*1.5f);
+                for(int i=0;i<5;i++){operational.Add(tasks[2].center+new Vector2((i-2)*2,-2));operational.Add(tasks[2].center+new Vector2((i-2)*2,2));}
+            }
+            if(stage==1)
+            {
+                operational.Add(platform+new Vector2(-4,-4));operational.Add(platform+new Vector2(4,-4));operational.Add(trainDoor+Vector2.up*2);
+                operational.Add(tasks[1].center-Vector2.up*2);
+                for(int x=-4;x<=4;x+=2)operational.Add(tasks[2].center+new Vector2(x,0));
+            }
+            if(stage==2)for(int i=0;i<6;i++)
+            {operational.Add(tasks[2].center+new Vector2((i%3-1)*3,(i/3)*3-4));operational.Add(tasks[2].center+new Vector2((i%3-1)*3,(i/3)*3+4));}
+            foreach(var point in operational)if(!IsWalkable(point,1.05f)||!reachable.Contains(Cell(point))){reason="task operational envelope blocked";return false;}
+            foreach(var structure in structures)
+                if(IsWalkable(structure.bounds.center,.1f)){reason="structure footprint not removed";return false;}
             return true;
         }
 
@@ -171,59 +211,105 @@ namespace EarlyRush.V9
 
         static MapData Generate(int stage, int seed)
         {
-            var rng = new System.Random(unchecked(seed * 397 ^ (stage + 1) * 7919));
-            var m = new MapData { seed = seed, stage = stage, corridorWidth = 11 + rng.Next(0, 2) * 2 };
-            int horizontal = rng.Next(60, 71), vertical = rng.Next(58, 66);
-            int mirror = (seed & 1) == 0 ? 1 : -1;
-            Vector2 p = Vector2.zero; m.route.Add(p);
-            Vector2[] directions = { Vector2.up, Vector2.right, Vector2.up, Vector2.left, Vector2.up, Vector2.left, Vector2.up, Vector2.right, Vector2.up };
-            foreach (Vector2 direction in directions)
+            var rng=new System.Random(unchecked(seed*397^(stage+1)*7919));
+            var m=new MapData { seed=seed,stage=stage,corridorWidth=9 };
+            int mirror=(seed&1)==0?1:-1;
+            string baseFloor=stage==0?"floors-v3/asphalt":stage==1?"floors-v3/ceramic":"floors-v3/carpet";
+            string secondary=stage==0?"floors-v3/ceramic":stage==1?"legacy-floors/floor-tile":"floors-v3/ceramic";
+            string[][] semantic={
+                new[]{"residential-court","shop-avenue","signal-junction","market-square","repair-block","cycle-garden","puzzle-court","station-square","station-approach"},
+                new[]{"ticket-hall","concourse-loop","gate-approach","transfer-hall","platform-hall","carriage-link","arrival-cleaning-hall","exit-concourse","station-exit"},
+                new[]{"reception","coffee-corridors","document-hub","open-office","team-workrooms","atrium-loop","chair-workshop","meeting-foyer","meeting-room"}};
+            Vector2 p=Vector2.zero;m.route.Add(p);
+            Vector2[] directions={Vector2.up,Vector2.right,Vector2.up,Vector2.left,Vector2.up,Vector2.left,Vector2.up,Vector2.right,Vector2.up};
+            for(int i=0;i<directions.Length;i++)
             {
-                Vector2 d = new Vector2(direction.x * mirror, direction.y);
-                p += d * (d.x != 0 ? horizontal : vertical);
-                m.route.Add(p);
+                Vector2 d=new Vector2(directions[i].x*mirror,directions[i].y);
+                // Variable module lengths and widths are spatial variety, not an elapsed-time guarantee.
+                float length=rng.Next(56,69);Vector2 end=p+d*length;int half=stage==1?(i%3==1?4:5):stage==2?(i%3==1?3:4):(i%3==1?3:4);
+                var module=new ModuleV9{index=i,kind=semantic[stage][i],floorKey=baseFloor,entrance=p,exit=end,
+                    bounds=SegmentBounds(p,end,half)};m.modules.Add(module);
+                CarveSegment(m,p,end,half);Zone(m,module,"through-lane",SegmentBounds(p,end,half),baseFloor);
+                Vector2 n=new Vector2(-d.y,d.x),middle=(p+end)*.5f;
+                if(i%2==0)
+                {
+                    // A meaningful arrival/interaction room wider than its entrance; two side alcoves.
+                    Rect room=OrientedBounds(middle,d,stage==1?15:stage==2?11:13,stage==1?14:stage==2?10:12);CarveRoom(m,module,stage==0?"street-court":stage==1?"station-hall":"office-workroom",room,secondary);
+                    for(int side=-1;side<=1;side+=2)
+                        CarveRoom(m,module,"alcove",OrientedBounds(middle+d*7+n*side*12,d,5,5),secondary);
+                }
+                else
+                {
+                    // Two entrances to a parallel passage form a genuine traversable loop.
+                    Vector2 first=p+d*14,last=end-d*14,offset=n*(i==3?-1:1)*(stage==1?17:stage==2?13:14);
+                    CarveSegment(m,first,first+offset,3);CarveSegment(m,first+offset,last+offset,3);CarveSegment(m,last+offset,last,3);
+                    Zone(m,module,"loop-entry",SegmentBounds(first,first+offset,3),secondary);
+                    Zone(m,module,"loop-lane",SegmentBounds(first+offset,last+offset,3),secondary);
+                    Zone(m,module,"loop-rejoin",SegmentBounds(last+offset,last,3),secondary);
+                    CarveRoom(m,module,"decision-plaza",OrientedBounds(middle,d,9,10),secondary);
+                }
+                for(float distance=10;distance<length-8;distance+=11)
+                {
+                    module.decorSlots.Add(p+d*distance+n*(half+2));
+                    module.decorSlots.Add(p+d*distance-n*(half+2));
+                }
+                m.route.Add(end);p=end;
             }
-            m.spawn = m.route[0]; m.exit = m.route[m.route.Count - 1];
-            int half = Mathf.FloorToInt(m.corridorWidth / 2);
-            for (int i = 1; i < m.route.Count; i++) CarveSegment(m, m.route[i - 1], m.route[i], half);
-            // Rooms are attached at the centre of three separated upward legs.
-            // A parallel side lane offers distinct entry and rejoin, not a dead end.
-            int[] segments = { 2, 4, 6 };
-            for (int i = 0; i < 3; i++)
+            m.spawn=m.route[0];m.exit=m.route[m.route.Count-1];
+            CarveRoom(m,m.modules[0],"spawn-buffer",OrientedBounds(m.spawn+Vector2.up*4,Vector2.up,8,8),secondary);
+            CarveRoom(m,m.modules[8],stage==2?"meeting-attendance":"exit-buffer",OrientedBounds(m.exit-Vector2.up*3,Vector2.up,8,9),secondary);
+            int[][] stageSegments={new[]{0,4,6},new[]{4,0,6},new[]{0,2,6}};
+            string[][] kinds={new[]{"breakfast","repair","flip"},new[]{"platform","capsule","cleaning"},new[]{"coffee","delivery","chairs"}};
+            for(int i=0;i<3;i++)
             {
-                int segment = segments[i];
-                Vector2 a = m.route[segment], b = m.route[segment + 1];
-                Vector2 dir = (b - a).normalized, side = new Vector2(dir.y, -dir.x) * (i == 1 ? -mirror : mirror);
-                Vector2 midpoint = (a + b) * .5f;
-                Vector2 center = midpoint + side * 13;
-                Vector2 entry = midpoint - dir * 13, rejoin = midpoint + dir * 13;
-                CarveSegment(m, entry, entry + side * 13, 5);
-                CarveSegment(m, rejoin, rejoin + side * 13, 5);
-                CarveSegment(m, entry + side * 13, rejoin + side * 13, 7);
-                Vector2 start = center - dir * 7 - side * 2;
-                Vector2 bend = center + dir * 3 - side * 2;
-                Vector2 target = center + dir * 7 + side * 3;
-                m.tasks.Add(new TaskSite { index = i, center = center, entrance = entry, rejoin = rejoin, start = start, target = target,
-                    checkpoints = new[] { bend }, routeDistance = m.NearestRouteDistance(entry) });
+                int segment=stageSegments[stage][i];var module=m.modules[segment];
+                Vector2 a=module.entrance,b=module.exit,dir=(b-a).normalized,side=new Vector2(dir.y,-dir.x)*(i==1?-mirror:mirror);
+                Vector2 midpoint=(a+b)*.5f,center=midpoint+side*23,entry=midpoint-dir*15,rejoin=midpoint+dir*15;
+                CarveSegment(m,entry,entry+side*23,3);CarveSegment(m,rejoin,rejoin+side*23,3);
+                Zone(m,module,"task-entry",SegmentBounds(entry,entry+side*23,3),secondary);
+                Zone(m,module,"task-rejoin",SegmentBounds(rejoin,rejoin+side*23,3),secondary);
+                // Dedicated task room is broad enough for all current wheel/chair/cloth configurations.
+                CarveRoom(m,module,kinds[stage][i]+"-room",OrientedBounds(center,dir,18,10),secondary);
+                var site=new TaskSite{index=i,kind=kinds[stage][i],center=center,entrance=entry,rejoin=rejoin,
+                    start=center-dir*7-side*2,target=center+dir*7+side*3,checkpoints=new[]{center+dir*3-side*2},routeDistance=m.NearestRouteDistance(entry)};
+                m.tasks.Add(site);module.fixtureSlots.Add(center);
             }
-            for(int i=1;i<m.route.Count;i++)m.modules.Add(new ModuleV9 { index=i-1, entrance=m.route[i-1], exit=m.route[i], kind="commute", bounds=new Rect(Mathf.Min(m.route[i-1].x,m.route[i].x)-half,Mathf.Min(m.route[i-1].y,m.route[i].y)-half,Mathf.Abs(m.route[i].x-m.route[i-1].x)+half*2,Mathf.Abs(m.route[i].y-m.route[i-1].y)+half*2) });
-            // Street learning tasks earlier; metro machine before platform; office deliveries spread later.
-            if(stage==1){var machine=m.tasks[0];m.tasks[0]=m.tasks[1];m.tasks[1]=machine;m.tasks[0].index=0;m.tasks[1].index=1;}
+            m.signal=m.route[3]-Vector2.up*10;m.platform=m.tasks[0].center;m.trainDoor=m.platform+Vector2.up*6;
+            if(stage==1)
+            {
+                CarveRoom(m,m.modules[4],"waiting-sides",new Rect(m.platform.x-7,m.platform.y-5,14,8),secondary);
+                CarveRoom(m,m.modules[4],"carriage",new Rect(m.trainDoor.x-7,m.trainDoor.y,14,9),baseFloor);
+            }
+            // Visible furniture/planter islands create choices within the wider halls, never an
+            // invisible collider. Their exact footprints are removed from the walkable cell mask.
             foreach(var module in m.modules)
             {
-                module.floorKey=stage==0?"floors-v3/asphalt":stage==1?"floors-v3/ceramic":"floors-v3/carpet";
-                module.kind=module.index%3==0?"crossing":module.index%3==1?"promenade":"junction";
-                Vector2 forward=(module.exit-module.entrance).normalized,normal=new Vector2(-forward.y,forward.x);
-                for(float distance=12;distance<Vector2.Distance(module.entrance,module.exit)-8;distance+=12)
-                    module.decorSlots.Add(module.entrance+forward*distance+normal*(half+2));
-                foreach(var site in m.tasks)if(module.bounds.Contains(site.entrance))module.fixtureSlots.Add(site.center);
+                Vector2 d=(module.exit-module.entrance).normalized,n=new Vector2(-d.y,d.x),middle=(module.exit+module.entrance)*.5f;
+                if(module.index%2==0)continue;
+                Vector2 at=MapData.Cell(middle-n*6);Rect rect=new Rect(at.x-1.5f,at.y-1.5f,3,3);
+                bool safe=true;foreach(var task in m.tasks)if(Vector2.Distance(at,task.center)<18)safe=false;
+                if(!safe)continue;
+                string art=stage==0?"street/bush-planter":stage==1?"metro/pillar":"office/desk-chair";
+                m.structures.Add(new StructureV9{kind=stage==0?"planter-island":stage==1?"hall-pillar":"workstation-island",artKey=art,bounds=rect,position=at-Vector2.up*1.3f,width=3.4f});
+                for(int y=Mathf.CeilToInt(rect.yMin+.5f);y<=Mathf.FloorToInt(rect.yMax-.5f);y++)
+                    for(int x=Mathf.CeilToInt(rect.xMin+.5f);x<=Mathf.FloorToInt(rect.xMax-.5f);x++)m.cells.Remove(new Vector2Int(x,y));
             }
-            string[][] kinds={new[]{"breakfast","repair","flip"},new[]{"platform","capsule","cleaning"},new[]{"coffee","delivery","chairs"}};
-            for(int i=0;i<3;i++)m.tasks[i].kind=kinds[stage][i];
-            m.signal=m.route[3]-Vector2.up*10;
-            m.platform=m.tasks[0].center;m.trainDoor=m.platform+Vector2.up*6;
             return m;
-
+        }
+        static Rect SegmentBounds(Vector2 a,Vector2 b,int half)
+        {return Rect.MinMaxRect(Mathf.Min(a.x,b.x)-half-.5f,Mathf.Min(a.y,b.y)-half-.5f,Mathf.Max(a.x,b.x)+half+.5f,Mathf.Max(a.y,b.y)+half+.5f);}
+        static Rect OrientedBounds(Vector2 center,Vector2 direction,float longitudinal,float lateral)
+        {return Mathf.Abs(direction.y)>.5f?new Rect(center.x-lateral,center.y-longitudinal,lateral*2,longitudinal*2):new Rect(center.x-longitudinal,center.y-lateral,longitudinal*2,lateral*2);}
+        static void Zone(MapData map,ModuleV9 module,string kind,Rect bounds,string floor)
+        {
+            map.zones.Add(new ZoneV9{moduleIndex=module.index,kind=kind,bounds=bounds,floorKey=floor});
+            module.bounds=Rect.MinMaxRect(Mathf.Min(module.bounds.xMin,bounds.xMin),Mathf.Min(module.bounds.yMin,bounds.yMin),Mathf.Max(module.bounds.xMax,bounds.xMax),Mathf.Max(module.bounds.yMax,bounds.yMax));
+        }
+        static void CarveRoom(MapData map,ModuleV9 module,string kind,Rect bounds,string floor)
+        {
+            for(int y=Mathf.CeilToInt(bounds.yMin);y<=Mathf.FloorToInt(bounds.yMax);y++)
+                for(int x=Mathf.CeilToInt(bounds.xMin);x<=Mathf.FloorToInt(bounds.xMax);x++)map.cells.Add(new Vector2Int(x,y));
+            Zone(map,module,kind,bounds,floor);
         }
 
         static void CarveSegment(MapData map, Vector2 a, Vector2 b, int half)

@@ -26,6 +26,7 @@ namespace EarlyRush.V9
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
+            if(qa){Application.runInBackground=true;StartCoroutine(CaptureReview());}
         }
         public void Load(int stage,int nextSeed)
         {
@@ -35,6 +36,32 @@ namespace EarlyRush.V9
             seed=nextSeed;selected=-1;recorded=false;run=new RunV9(stage,seed);BuildWorld();
             cameraAnchor=run.player;cameraVelocity=Vector3.zero;cam.transform.position=new Vector3(run.player.x,run.player.y,-30);
             Debug.Log("V9_PRESENTATION_READY stage="+stage+" cells="+run.map.cells.Count+" seed="+seed);
+        }
+        System.Collections.IEnumerator CaptureReview()
+        {
+            // Static view sampling only. Camera teleportation is not gameplay or route evidence.
+            string output=System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath,"../QA/visual-samples"));
+            System.IO.Directory.CreateDirectory(output);
+            System.IO.File.WriteAllText(System.IO.Path.Combine(output,"README.txt"),"Static camera samples, world only, no HUD. No simulated play or task-completion evidence. Seed 91026.");
+            for(int stage=0;stage<3;stage++)
+            {
+                Load(stage,91026);yield return null;yield return null;RenderFrame();
+                System.IO.File.WriteAllText(System.IO.Path.Combine(output,"layout-stage-"+stage+".json"),run.map.ToPreviewJson());
+                var points=new List<Vector2>{run.player};foreach(var site in run.map.tasks)points.Add(site.center);points.Add(run.map.exit);
+                for(int i=0;i<points.Count;i++)
+                {
+                    cam.transform.position=new Vector3(points[i].x,points[i].y,-30);
+                    var rt=new RenderTexture(1280,720,24);rt.Create();var previous=RenderTexture.active;
+                    var tex=new Texture2D(1280,720,TextureFormat.RGB24,false);
+                    try
+                    {
+                        cam.targetTexture=rt;cam.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,1280,720),0,0);tex.Apply();
+                        System.IO.File.WriteAllBytes(System.IO.Path.Combine(output,"stage-"+stage+"-sample-"+i+"-world-only.png"),tex.EncodeToPNG());
+                    }
+                    finally{cam.targetTexture=null;RenderTexture.active=previous;rt.Release();Destroy(rt);Destroy(tex);}
+                }
+            }
+            Debug.Log("V9_VISUAL_SAMPLES_COMPLETE "+output);Application.Quit();
         }
         Tile[] Tiles(string key)
         {
@@ -63,6 +90,22 @@ namespace EarlyRush.V9
             var grid=new GameObject("V9 World Grid").AddComponent<Grid>();grid.transform.SetParent(world,false);grid.cellSize=Vector3.one;
             string floor=run.stage==0?"floors-v3/asphalt":run.stage==1?"floors-v3/ceramic":"floors-v3/carpet";
             LayTiles(grid,"Walkable Tilemap",run.map.cells,floor,ArtV8.FloorOrder,Color.white);
+            // Apply later zones last, only to existing walkable cells: never fill a structure hole.
+            var materialCells=new Dictionary<string,List<Vector2Int>>();
+            foreach(var cell in run.map.cells)
+            {
+                string key=floor;foreach(var zone in run.map.zones)if(zone.bounds.Contains((Vector2)cell))key=zone.floorKey;
+                if(key==floor)continue;
+                if(!materialCells.TryGetValue(key,out var list)){list=new List<Vector2Int>();materialCells.Add(key,list);}list.Add(cell);
+            }
+            foreach(var pair in materialCells)LayTiles(grid,"Zone Tilemap "+pair.Key,pair.Value,pair.Key,ArtV8.FloorOrder+1,Color.white);
+            foreach(var structure in run.map.structures)
+            {
+                // The map supplies the contact pivot and width. Do not substitute Rect.center,
+                // recenter the sprite, or add a second inconsistent collider in the view layer.
+                var sr=ArtV8.Create(world,structure.artKey,structure.position,structure.width);
+                sr.name="Structure "+structure.kind;decor.Add(sr);
+            }
             var border=new HashSet<Vector2Int>();Vector2Int[] dirs={Vector2Int.up,Vector2Int.down,Vector2Int.left,Vector2Int.right};
             foreach(var c in run.map.cells)foreach(var d in dirs)if(!run.map.cells.Contains(c+d))for(int n=1;n<=8;n++)if(!run.map.cells.Contains(c+d*n))border.Add(c+d*n);
             LayTiles(grid,"Environment Tilemap",border,"floors-v3/ceramic",ArtV8.FloorOrder-1,run.stage==0?new Color(.92f,1,.93f):run.stage==1?new Color(.8f,.94f,.94f):new Color(.95f,.9f,.8f));
@@ -105,6 +148,11 @@ namespace EarlyRush.V9
                 string key=keys[rng.Next(keys.Length)];var sprite=ArtV8.Sprite(key);float width=3.2f,scale=width/sprite.bounds.size.x;
                 Vector2 lo=pos+(Vector2)sprite.bounds.min*scale-Vector2.one*.5f,hi=pos+(Vector2)sprite.bounds.max*scale+Vector2.one*.5f;
                 bool overlaps=false;for(int y=Mathf.FloorToInt(lo.y);y<=Mathf.CeilToInt(hi.y)&&!overlaps;y++)for(int x=Mathf.FloorToInt(lo.x);x<=Mathf.CeilToInt(hi.x);x++)if(run.map.cells.Contains(new Vector2Int(x,y))){overlaps=true;break;}
+                if(!overlaps)
+                {
+                    var visualRect=Rect.MinMaxRect(lo.x,lo.y,hi.x,hi.y);
+                    foreach(var structure in run.map.structures)if(visualRect.Overlaps(structure.bounds)){overlaps=true;break;}
+                }
                 if(overlaps)continue;decor.Add(ArtV8.Create(world,key,pos,width));placed.Add(pos);
             }
         }

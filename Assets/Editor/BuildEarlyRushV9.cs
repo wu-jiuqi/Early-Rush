@@ -15,6 +15,7 @@ public static class BuildEarlyRushV9
         var summary=new System.Text.StringBuilder("V9 review validation\nModel assertions: "+assertions+"\n");bool all=true;
         for(int stage=0;stage<3;stage++)
         {
+            File.WriteAllText(Path.Combine(output,"layout-stage-"+stage+".json"),new RunV9(stage,91026).map.ToPreviewJson());
             var result=RushTestsV9.ReplayMainline(stage,91026);
             string line="stage="+stage+" mainline="+result.success+" elapsed="+result.elapsed+" contacts="+result.contacts+" stopped="+result.stoppedAt+" reason="+result.reason;
             summary.AppendLine(line);Debug.Log("V9_INPUT_REPLAY "+line);all&=result.success;
