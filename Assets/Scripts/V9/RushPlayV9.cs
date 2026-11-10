@@ -9,15 +9,16 @@ namespace EarlyRush.V9
     public sealed class RushPlayV9 : MonoBehaviour
     {
         public RunV9 run;
-        Camera cam; Transform world; SpriteRenderer hero,train;
-        readonly List<SpriteRenderer> people=new List<SpriteRenderer>(), bodies=new List<SpriteRenderer>(), fixtures=new List<SpriteRenderer>(), dirt=new List<SpriteRenderer>(), decor=new List<SpriteRenderer>();
+        Camera cam; Transform world; SpriteRenderer hero,heroShadow,train;
+        readonly List<SpriteRenderer> people=new List<SpriteRenderer>(), peopleShadows=new List<SpriteRenderer>(), bodies=new List<SpriteRenderer>(), fixtures=new List<SpriteRenderer>(), dirt=new List<SpriteRenderer>(), decor=new List<SpriteRenderer>();
         readonly List<UnityEngine.Object> owned=new List<UnityEngine.Object>();
         readonly Dictionary<string,Tile[]> tileSets=new Dictionary<string,Tile[]>();
         public RushCameraV10 cameraFollow = new RushCameraV10();
         [Range(5f, 12f)] public float cameraSize = 7.5f;
-        int seed=91026;bool fullMap,help,qa,panorama,recorded;int selected=-1;
+        int seed=91026;bool fullMap,help,qa,panorama,recorded,runtimeQa;int selected=-1;
         readonly bool[] failureShown=new bool[3];string notice="";double noticeUntil;
         float uiScale=1;Vector2 uiOffset;Texture2D triangle;
+        public Camera GameCamera => cam;
         Vector2 ViewHalf => new Vector2(cam.orthographicSize*cam.aspect,cam.orthographicSize);
         Font font;GUIStyle label,small,title;Texture2D mapTexture;
         Rect mapBounds;Color ink=new Color(.08f,.23f,.25f),cream=new Color(.99f,.97f,.9f),gold=new Color(1,.8f,.2f);
@@ -32,12 +33,14 @@ namespace EarlyRush.V9
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
             qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
+            runtimeQa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
+            if(runtimeQa){Application.runInBackground=true;gameObject.AddComponent<RushRuntimeCheckV11>();}
             if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
         public void Load(int stage,int nextSeed)
         {
             if(world)Destroy(world.gameObject);foreach(var o in owned)if(o)Destroy(o);owned.Clear();tileSets.Clear();
-            people.Clear();bodies.Clear();fixtures.Clear();dirt.Clear();decor.Clear();
+            people.Clear();peopleShadows.Clear();bodies.Clear();fixtures.Clear();dirt.Clear();decor.Clear();
             if(mapTexture)Destroy(mapTexture);world=new GameObject("V9 Stage "+stage).transform;
             seed=nextSeed;selected=-1;recorded=false;notice="";Array.Clear(failureShown,0,failureShown.Length);
             run=new RunV9(stage,seed);BuildWorld();
@@ -177,6 +180,7 @@ namespace EarlyRush.V9
             ArtV8.Create(world,"ui/selection",run.map.exit,3.2f,ArtV8.GroundMarkOrder+1);
             if(run.stage==1){train=ArtV8.Create(world,"metro/train-closed",run.map.trainDoor+Vector2.up*1.5f,7);decor.Add(train);}
             else train=null;
+            heroShadow=ArtV8.Create(world,"fx-decal/actor-shadow",run.player,.9f,ArtV8.GroundMarkOrder+3);
             hero=ArtV8.Create(world,"people/boy-up",run.player,1.05f);
             SyncEntities();CreateMapTexture();
         }
@@ -231,7 +235,12 @@ namespace EarlyRush.V9
         }
         void SyncEntities()
         {
-            while(people.Count<run.people.Count){var p=run.people[people.Count];people.Add(ArtV8.Create(world,p.art+"-down",p.position,1.05f));}
+            while(people.Count<run.people.Count)
+            {
+                var p=run.people[people.Count];
+                peopleShadows.Add(ArtV8.Create(world,"fx-decal/actor-shadow",p.position,.85f,ArtV8.GroundMarkOrder+3));
+                people.Add(ArtV8.Create(world,p.art+"-down",p.position,1.05f));
+            }
             while(bodies.Count<run.bodies.Count){var b=run.bodies[bodies.Count];bodies.Add(ArtV8.Create(world,b.art,b.position,b.radius*2.2f));}
             while(fixtures.Count<run.fixtures.Count)
             {
@@ -249,12 +258,19 @@ namespace EarlyRush.V9
             {
                 BodyV9 closest=null;float distance=8;foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(run.player,b.position)<distance){closest=b;distance=Vector2.Distance(run.player,b.position);}if(closest!=null)run.Rescue(closest.id);
             }
-            if(!qa)
+            if(!qa&&!runtimeQa)
             {
                 if(Time.unscaledDeltaTime>1&&run.phase==RunPhase.Playing)run.Pause();
-                else run.Tick(Time.unscaledDeltaTime,new Vector2(
-                    (Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0),
-                    (Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0)));
+                else
+                {
+                    Vector2 movement=new Vector2(
+                        (Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0),
+                        (Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0));
+                    // Bracing wins when Shift and Space arrive in the same frame.
+                    run.SetBracing(Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
+                    if(Input.GetKeyDown(KeyCode.Space))run.TryDash(movement);
+                    run.Tick(Time.unscaledDeltaTime,movement);
+                }
             }
             RenderFrame();
             if(run.phase==RunPhase.Results&&!recorded)
@@ -271,8 +287,29 @@ namespace EarlyRush.V9
         }
         public void RenderFrame()
         {
-            SyncEntities();float width=run.bicycle?1.3f:1.05f;ArtV8.SetFacing(hero,run.bicycle?"bike-feedback/bike-":"people/boy-",run.facing,width);ArtV8.SetPosition(hero,run.player);ArtV8.SetWidth(hero,width);
-            for(int i=0;i<run.people.Count;i++){var p=run.people[i];people[i].enabled=!p.exited;ArtV8.SetPosition(people[i],p.position);ArtV8.SetFacing(people[i],p.art+"-",p.velocity,1.05f);}
+            SyncEntities();
+            if(run.phase!=RunPhase.Paused)
+            {
+                float width=run.bicycle?1.3f:1.05f;
+                ArtV8.SetFacing(hero,run.bicycle?"bike-feedback/bike-":"people/boy-",run.facing,width);
+                ActorPoseV11 pose=run.IsAirborne?ActorPoseV11.Airborne:run.IsBracing?ActorPoseV11.Brace:run.IsDashing?ActorPoseV11.Dash:ActorPoseV11.Walk;
+                RushActorPoseV11.Apply(hero,heroShadow,run.player,run.velocity,run.facing,width,run.elapsed,pose,0,run.PlayerHeight,0,run.bicycle);
+                hero.color=run.BraceFeedback01>0?Color.Lerp(Color.white,new Color(.54f,1,.8f),run.BraceFeedback01):Color.white;
+                for(int i=0;i<run.people.Count;i++)
+                {
+                    var p=run.people[i];people[i].enabled=!p.exited;peopleShadows[i].enabled=!p.exited;if(p.exited)continue;
+                    bool attacking=p.actionPhase==NpcActionPhase.Windup||p.actionPhase==NpcActionPhase.Charging;
+                    Vector2 direction=attacking?p.chargeDirection:p.velocity;
+                    float personWidth=1.05f*(1+(p.appearance%3-1)*.035f);
+                    ArtV8.SetFacing(people[i],p.art+"-",direction,personWidth);
+                    ActorPoseV11 personPose=p.actionPhase==NpcActionPhase.Windup?ActorPoseV11.Windup:
+                        p.actionPhase==NpcActionPhase.Charging?ActorPoseV11.Dash:p.actionPhase==NpcActionPhase.Recovery?
+                        (p.chargeCancelled?ActorPoseV11.Cancelled:ActorPoseV11.Recovery):ActorPoseV11.Walk;
+                    float progress=p.actionPhase==NpcActionPhase.Windup?run.NpcWindup01(p):run.NpcRecovery01(p);
+                    RushActorPoseV11.Apply(people[i],peopleShadows[i],p.position,p.velocity,direction,personWidth,run.elapsed,personPose,progress,0,p.appearance,false);
+                    people[i].color=RushActorPoseV11.Tint(p.appearance);
+                }
+            }
             for(int i=0;i<run.bodies.Count;i++){var b=run.bodies[i];ArtV8.SetPosition(bodies[i],b.position);bodies[i].color=b.done?new Color(.75f,1,.8f):Color.white;}
             for(int i=0;i<run.fixtures.Count;i++)
             {
@@ -289,8 +326,8 @@ namespace EarlyRush.V9
                 failureShown[i]=true;notice=run.tasks[i].title+"失败，仍可继续通勤。";noticeUntil=run.elapsed+4;
             }
         }
-        void OnApplicationFocus(bool value){if(!value&&run!=null&&!qa)run.Pause();}
-        void OnApplicationPause(bool value){if(value&&run!=null)run.Pause();}
+        void OnApplicationFocus(bool value){if(!value&&run!=null&&!qa&&!runtimeQa)run.Pause();}
+        void OnApplicationPause(bool value){if(value&&run!=null&&!runtimeQa)run.Pause();}
         void CreateMapTexture()
         {
             int minX=int.MaxValue,minY=int.MaxValue,maxX=int.MinValue,maxY=int.MinValue;
@@ -351,7 +388,8 @@ namespace EarlyRush.V9
             if(Button(new Rect(450,20,62,62),"legacy-icons/pause")){if(run.phase==RunPhase.Playing)run.Pause();else if(run.phase==RunPhase.Paused)run.Resume();}
             DrawMap(fullMap?new Rect(660,106,590,585):new Rect(1008,18,254,184));
             if(selected>=0&&!HiddenTask(run.tasks[selected])){var t=run.tasks[selected];Fill(new Rect(20,228,426,124),cream);GUI.Label(new Rect(29,234,408,36),t.title,label);GUI.Label(new Rect(32,272,402,72),TaskHelp(t),small);}
-            GUI.Label(new Rect(15,680,535,28),"WASD / 方向键移动 · R 救回 · TAB 地图 · Esc 暂停 · F1",small);
+            GUI.Label(new Rect(15,680,930,28),"WASD / 方向键 · 空格冲刺 · Shift 稳步 / 稳车 · R 救回 · TAB 地图 · Esc 暂停 · F1",small);
+            DrawActionStatus();
             if(run.stage==0&&run.tasks[0].state==TaskState.Active)
             {
                 Fill(new Rect(20,608,430,62),cream);
@@ -362,11 +400,20 @@ namespace EarlyRush.V9
             DrawWorldHints();
             if(run.eventKind.Length>0)
             {
-                Icon(run.eventKind=="rain"?"legacy-icons/rain":"fx-decal/caution",new Rect(600,20,60,60));
+                Icon(run.eventKind=="rain"?"legacy-icons/rain":"fx-decal/caution",new Rect(1180,212,60,60));
                 if(run.eventKind=="rain"&&run.eventAge>=2)for(int i=0;i<18;i++)Icon("fx-decal/rain",new Rect(i*89%1280,((float)run.elapsed*115+i*101)%780-60,30,70),.22f);
             }
             if(run.phase!=RunPhase.Playing)DrawModal();
-            if(help){Fill(new Rect(300,190,680,360),cream);GUI.Label(new Rect(325,210,630,280),"碰撞没有生命值惩罚。\n九项任务有各自的成功与失败条件。\n按时通过 1 星；至少完成 1 项再加 1 星；全 3 项再加 1 星。\n固定 W 上 / D 右；相机不随转弯旋转。\nR 只救回 8 米内尚未完成的可推动物。\nF1 收起",label);}
+            if(help){Fill(new Rect(300,170,680,390),cream);GUI.Label(new Rect(325,190,630,350),"空格：向当前输入方向冲刺；Shift：稳步或稳车。\n稳步不会下车，可应对路人的主动冲撞。\n蓄力方向锁定后可侧移躲开，或提前按住 Shift 抵挡。\n碰撞没有血量、扣分或直接扣时惩罚；任务例外仍有效。\n按时抵达 1 星；完成至少 1 项加 1 星；全任务再加 1 星。\nR 救回附近物品；镜头保持固定方向。F1 收起。",small);}
+        }
+        void DrawActionStatus()
+        {
+            Fill(new Rect(530,18,455,76),cream);
+            string travel=run.bicycle?"骑行":"步行";
+            string state=run.IsAirborne?"被撞 · 腾空":run.IsBracing?(run.bicycle?"稳车":"稳步"):run.IsDashing?"冲刺中":"自由移动";
+            GUI.Label(new Rect(540,20,435,30),travel+" · "+state+(run.BraceFeedback01>0?" · 抵住冲撞":""),label);
+            GUI.Label(new Rect(540,50,158,28),run.DashReady01>=.999f?"空格 · 冲刺就绪":"冲刺冷却",small);
+            Fill(new Rect(710,58,250,9),new Color(.69f,.78f,.72f));Fill(new Rect(710,58,250*run.DashReady01,9),gold);
         }
         string TaskHelp(TaskV9 t)
         {
@@ -406,6 +453,25 @@ namespace EarlyRush.V9
             if(run.stage==0)
             {
                 Rect r=WorldRect(run.map.signal+new Vector2(-run.map.corridorWidth*.4f,1),44,72);if(Visible(r)){Fill(r,ink);Fill(new Rect(r.x+10,r.y+8,24,24),run.SignalGreen?new Color(.22f,.32f,.26f):new Color(1,.24f,.13f));Fill(new Rect(r.x+10,r.y+40,24,24),run.SignalGreen?new Color(.24f,1,.48f):new Color(.22f,.32f,.26f));GUI.Label(new Rect(r.x-10,r.y+74,64,24),run.SignalGreen?"可通行 ↑":"停止 ━",small);}
+            }
+            // Only normal commuters can expose a combat tell. M1 passengers have no task warning.
+            foreach(var p in run.people)
+            {
+                if(p.exited||p.kind==PersonKind.Alighting||p.actionPhase==NpcActionPhase.Cruise)continue;
+                Rect body=WorldRect(p.position+Vector2.up*1.8f,100,24);if(!Visible(body))continue;
+                if(p.actionPhase==NpcActionPhase.Windup)
+                {
+                    float amount=run.NpcWindup01(p);Fill(new Rect(body.x+10,body.y+22,80,6),cream);
+                    Fill(new Rect(body.x+10,body.y+22,80*amount,6),new Color(.95f,.4f,.18f));GUI.Label(body,"蓄力",small);
+                    Rect aim=WorldRect(p.position+p.chargeDirection*(1+.5f*amount),24,24);
+                    Triangle(aim.center,p.chargeDirection,24,new Color(.95f,.4f,.18f));
+                    break;
+                }
+                if(p.actionPhase==NpcActionPhase.Charging)
+                {
+                    Rect aim=WorldRect(p.position+p.chargeDirection*.9f,22,22);Triangle(aim.center,p.chargeDirection,22,gold);break;
+                }
+                if(p.actionPhase==NpcActionPhase.Recovery&&p.chargeCancelled&&run.NpcRecovery01(p)<.5f)GUI.Label(body,"收势",small);
             }
             // No M1 arrow, target marker, start/complete callout or special passenger highlight.
         }
@@ -513,7 +579,7 @@ namespace EarlyRush.V9
             {
                 Icon(stageIcons[run.stage],new Rect(587,150,106,100));GUI.Label(new Rect(380,259,520,50),names[run.stage],title);
                 GUI.Label(new Rect(380,322,520,60),(run.stage==0?"步行出发，准时抵达地铁入口。":run.stage==1?"乘车后前往出站点。":"准时进入会议室参会区。")+"\n任务均可跳过，不影响前往终点。",label);
-                GUI.Label(new Rect(380,386,520,38),"WASD / 方向键 · R 救回物品 · Esc 暂停",small);
+                GUI.Label(new Rect(380,386,520,38),"WASD / 方向键 · 空格冲刺 · Shift 稳步 / 稳车\nR 救回物品 · Esc 暂停",small);
                 int unlocked=UnlockedStage();
                 for(int i=0;i<3;i++)
                 {

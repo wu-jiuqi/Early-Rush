@@ -32,17 +32,40 @@ namespace EarlyRush.V9
                 for(int i=0;i<n;i+=32){box(i,0,1,n,seam);box(0,i,n,1,seam);}
                 tex.wrapMode=TextureWrapMode.Repeat;
             }
+            else if(key=="fx-decal/actor-shadow")
+            {
+                for(int y=2;y<32;y++)for(int x=12;x<116;x++)
+                {
+                    float distance=(x-64)*(x-64)/(52f*52f)+(y-16)*(y-16)/(15f*15f);
+                    if(distance<1)pixels[y*n+x]=new Color(.08f,.2f,.2f,(1-distance)*.27f);
+                }
+            }
             else if(key.StartsWith("people/"))
             {
-                box(34,9,22,24,Ink);box(73,9,22,24,Ink);disc(64,48,33,key.Contains("boy")?Coral:Teal);
+                bool woman=key.Contains("woman"),commuter=key.Contains("commuter"),up=key.EndsWith("up");
+                Color coat=key.Contains("boy")?Coral:woman?new Color32(147,134,170,255):commuter?new Color32(106,145,169,255):Teal;
+                box(34,9,22,24,Ink);box(73,9,22,24,Ink);disc(64,48,woman?31:33,coat);
+                if(woman){disc(64,94,27,Ink);box(40,72,12,25,Ink);box(78,72,11,25,Ink);}
                 disc(64,88,24,Skin);box(42,100,45,10,Ink);
-                if(!key.EndsWith("up")){disc(55,90,3,Ink);disc(73,90,3,Ink);}
-                int dx=key.EndsWith("left")?-1:key.EndsWith("right")?1:0;disc(64+dx*30,61,7,Gold);
+                if(commuter){box(39,100,50,15,Gold);box(83,96,15,5,Gold);}
+                if(up){box(46,80,37,25,Ink);if(!key.Contains("boy")){box(40,32,48,34,Ink);box(46,38,36,22,coat);}}
+                else {disc(55,90,3,Ink);disc(73,90,3,Ink);if(!woman&&!commuter&&!key.Contains("boy"))line(50,90,78,90,Ink);}
+                int dx=key.EndsWith("left")?-1:key.EndsWith("right")?1:0;
+                if(dx!=0){disc(64+dx*22,88,8,Skin);box(dx<0?25:89,37,12,24,Gold);}
+                else if(!up)box(83,37,14,24,Gold);
             }
             else if(key.Contains("wheel")||key.Contains("bike"))
             {
                 if(key.Contains("wheel")){disc(64,52,42,Ink);disc(64,52,31,Cream);line(32,52,96,52,Teal);line(64,20,64,84,Teal);}
-                else {disc(28,34,24,Ink);disc(28,34,16,Cream);disc(100,34,24,Ink);disc(100,34,16,Cream);line(28,34,52,70,Teal);line(52,70,70,34,Teal);line(70,34,28,34,Teal);line(52,70,90,72,Teal);line(90,72,100,34,Teal);line(70,34,90,72,Teal);disc(62,103,14,Skin);box(49,73,27,20,Coral);}
+                else if(key.EndsWith("up")||key.EndsWith("down"))
+                {
+                    box(57,8,14,28,Ink);box(57,62,14,31,Ink);line(64,28,64,75,Teal);
+                    line(35,66,93,66,Ink);box(44,47,40,39,Coral);disc(64,100,18,Skin);box(48,109,32,8,Ink);
+                    line(45,50,37,29,Ink);line(83,50,91,29,Ink);
+                    if(key.EndsWith("down")){disc(58,101,2,Ink);disc(70,101,2,Ink);}else box(49,91,30,19,Ink);
+                }
+                else {disc(28,34,24,Ink);disc(28,34,16,Cream);disc(100,34,24,Ink);disc(100,34,16,Cream);line(28,34,52,70,Teal);line(52,70,70,34,Teal);line(70,34,28,34,Teal);line(52,70,90,72,Teal);line(90,72,100,34,Teal);line(70,34,90,72,Teal);disc(62,103,14,Skin);box(49,73,27,20,Coral);disc(73,104,3,Ink);}
+                if(key.EndsWith("left"))for(int y=0;y<n;y++)for(int x=0;x<n/2;x++){Color saved=pixels[y*n+x];pixels[y*n+x]=pixels[y*n+n-1-x];pixels[y*n+n-1-x]=saved;}
             }
             else if(key.Contains("desk")||key.Contains("meeting-table"))
             {box(15,13,9,32,Ink);box(104,13,9,32,Ink);box(7,35,114,62,Cream);box(7,35,114,8,Teal);box(31,58,37,28,Ink);box(35,62,29,20,Teal);box(81,58,23,31,Gold);}
