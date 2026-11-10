@@ -1,0 +1,460 @@
+{
+  "schema": "early-rush-street-slicing-1",
+  "master": "master/street-district-master-v2.png",
+  "masterSha256": "133c745e78305cef29c4c3b800cf09292a47b105afe0fb139dbfae86c120fe27",
+  "masterCanvasPx": [
+    887,
+    1774
+  ],
+  "coordinateConvention": "Top-left pixel origin, rectangles [x,y,width,height], end-exclusive. Exact integer edge sharing; zero gap and zero overlap.",
+  "xEdges": [
+    0,
+    410,
+    887
+  ],
+  "yEdges": [
+    0,
+    440,
+    810,
+    1285,
+    1774
+  ],
+  "tiles": [
+    {
+      "id": "tile-01",
+      "row": 0,
+      "column": 0,
+      "sourceRectPx": [
+        0,
+        0,
+        410,
+        440
+      ],
+      "sourceCrop": "reference/crops/tile-01.png",
+      "neighbors": {
+        "bottom": "tile-03",
+        "left": null,
+        "top": null,
+        "right": "tile-02"
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          0,
+          440,
+          410,
+          440
+        ],
+        "left": [
+          0,
+          0,
+          0,
+          440
+        ],
+        "top": [
+          0,
+          0,
+          410,
+          0
+        ],
+        "right": [
+          410,
+          0,
+          410,
+          440
+        ]
+      }
+    },
+    {
+      "id": "tile-02",
+      "row": 0,
+      "column": 1,
+      "sourceRectPx": [
+        410,
+        0,
+        477,
+        440
+      ],
+      "sourceCrop": "reference/crops/tile-02.png",
+      "neighbors": {
+        "bottom": "tile-04",
+        "left": "tile-01",
+        "top": null,
+        "right": null
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          410,
+          440,
+          887,
+          440
+        ],
+        "left": [
+          410,
+          0,
+          410,
+          440
+        ],
+        "top": [
+          410,
+          0,
+          887,
+          0
+        ],
+        "right": [
+          887,
+          0,
+          887,
+          440
+        ]
+      }
+    },
+    {
+      "id": "tile-03",
+      "row": 1,
+      "column": 0,
+      "sourceRectPx": [
+        0,
+        440,
+        410,
+        370
+      ],
+      "sourceCrop": "reference/crops/tile-03.png",
+      "neighbors": {
+        "bottom": "tile-05",
+        "left": null,
+        "top": "tile-01",
+        "right": "tile-04"
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          0,
+          810,
+          410,
+          810
+        ],
+        "left": [
+          0,
+          440,
+          0,
+          810
+        ],
+        "top": [
+          0,
+          440,
+          410,
+          440
+        ],
+        "right": [
+          410,
+          440,
+          410,
+          810
+        ]
+      }
+    },
+    {
+      "id": "tile-04",
+      "row": 1,
+      "column": 1,
+      "sourceRectPx": [
+        410,
+        440,
+        477,
+        370
+      ],
+      "sourceCrop": "reference/crops/tile-04.png",
+      "neighbors": {
+        "bottom": "tile-06",
+        "left": "tile-03",
+        "top": "tile-02",
+        "right": null
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          410,
+          810,
+          887,
+          810
+        ],
+        "left": [
+          410,
+          440,
+          410,
+          810
+        ],
+        "top": [
+          410,
+          440,
+          887,
+          440
+        ],
+        "right": [
+          887,
+          440,
+          887,
+          810
+        ]
+      }
+    },
+    {
+      "id": "tile-05",
+      "row": 2,
+      "column": 0,
+      "sourceRectPx": [
+        0,
+        810,
+        410,
+        475
+      ],
+      "sourceCrop": "reference/crops/tile-05.png",
+      "neighbors": {
+        "bottom": "tile-07",
+        "left": null,
+        "top": "tile-03",
+        "right": "tile-06"
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          0,
+          1285,
+          410,
+          1285
+        ],
+        "left": [
+          0,
+          810,
+          0,
+          1285
+        ],
+        "top": [
+          0,
+          810,
+          410,
+          810
+        ],
+        "right": [
+          410,
+          810,
+          410,
+          1285
+        ]
+      }
+    },
+    {
+      "id": "tile-06",
+      "row": 2,
+      "column": 1,
+      "sourceRectPx": [
+        410,
+        810,
+        477,
+        475
+      ],
+      "sourceCrop": "reference/crops/tile-06.png",
+      "neighbors": {
+        "bottom": "tile-08",
+        "left": "tile-05",
+        "top": "tile-04",
+        "right": null
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          410,
+          1285,
+          887,
+          1285
+        ],
+        "left": [
+          410,
+          810,
+          410,
+          1285
+        ],
+        "top": [
+          410,
+          810,
+          887,
+          810
+        ],
+        "right": [
+          887,
+          810,
+          887,
+          1285
+        ]
+      }
+    },
+    {
+      "id": "tile-07",
+      "row": 3,
+      "column": 0,
+      "sourceRectPx": [
+        0,
+        1285,
+        410,
+        489
+      ],
+      "sourceCrop": "reference/crops/tile-07.png",
+      "neighbors": {
+        "bottom": null,
+        "left": null,
+        "top": "tile-05",
+        "right": "tile-08"
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          0,
+          1774,
+          410,
+          1774
+        ],
+        "left": [
+          0,
+          1285,
+          0,
+          1774
+        ],
+        "top": [
+          0,
+          1285,
+          410,
+          1285
+        ],
+        "right": [
+          410,
+          1285,
+          410,
+          1774
+        ]
+      }
+    },
+    {
+      "id": "tile-08",
+      "row": 3,
+      "column": 1,
+      "sourceRectPx": [
+        410,
+        1285,
+        477,
+        489
+      ],
+      "sourceCrop": "reference/crops/tile-08.png",
+      "neighbors": {
+        "bottom": null,
+        "left": "tile-07",
+        "top": "tile-06",
+        "right": null
+      },
+      "sharedEdgesMasterPx": {
+        "bottom": [
+          410,
+          1774,
+          887,
+          1774
+        ],
+        "left": [
+          410,
+          1285,
+          410,
+          1774
+        ],
+        "top": [
+          410,
+          1285,
+          887,
+          1285
+        ],
+        "right": [
+          887,
+          1285,
+          887,
+          1774
+        ]
+      }
+    }
+  ],
+  "props": [
+    {
+      "rect": [
+        404,
+        10,
+        153,
+        145
+      ],
+      "sourceCrop": "props/crops/metro.png",
+      "id": "metro"
+    },
+    {
+      "rect": [
+        477,
+        1370,
+        130,
+        125
+      ],
+      "sourceCrop": "props/crops/breakfast.png",
+      "id": "breakfast"
+    },
+    {
+      "rect": [
+        264,
+        841,
+        120,
+        125
+      ],
+      "sourceCrop": "props/crops/repair.png",
+      "id": "repair"
+    },
+    {
+      "rect": [
+        180,
+        520,
+        160,
+        105
+      ],
+      "sourceCrop": "props/crops/flip-board.png",
+      "id": "flip-board"
+    },
+    {
+      "rect": [
+        660,
+        1172,
+        40,
+        96
+      ],
+      "sourceCrop": "props/crops/signal.png",
+      "id": "signal"
+    },
+    {
+      "rect": [
+        190,
+        475,
+        65,
+        43
+      ],
+      "sourceCrop": "props/crops/bench.png",
+      "id": "bench"
+    },
+    {
+      "rect": [
+        359,
+        135,
+        58,
+        100
+      ],
+      "sourceCrop": "props/crops/tree.png",
+      "id": "tree"
+    },
+    {
+      "rect": [
+        183,
+        227,
+        65,
+        53
+      ],
+      "sourceCrop": "props/crops/planter.png",
+      "id": "planter"
+    }
+  ],
+  "boundaryPolicy": "Preserve positions and visible edge continuity from the master when regenerating. Optional technical composite can retain the original outer 8 source pixels plus an 8-pixel inner alpha blend. This is explicit source-image compositing, not new artwork generation.",
+  "scope": "Reference crops and technical cut/assembly only; this script does not generate or paint artwork."
+}

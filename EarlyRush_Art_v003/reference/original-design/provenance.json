@@ -1,0 +1,45 @@
+{
+  "schema": "early-rush-original-design-references-1",
+  "extractedOn": "2026-11-11",
+  "sourceDocument": "D:\\企业微信\\WXWork\\1688858106907285\\Cache\\File\\2026-11\\Early_Rush_三阶段关卡设计方案_v3.docx",
+  "sourceDocumentSha256": "da6b3bd885b326c959f14bacc47debddbaabea131abff5df5e09d20eb70f47b9",
+  "sourceVersion": "规划版本3.0，2026-11-10",
+  "textExtract": "D:\\AI NAS\\_references\\Early_Rush_v3.txt",
+  "method": "Read DOCX ZIP entries without image transcoding; media bytes unchanged",
+  "referenceScope": "画风、比例、构图参考；九任务设施和判定以正文为准",
+  "images": [
+    {
+      "width": 1448,
+      "stage": "马路通勤",
+      "height": 1086,
+      "relationship": "rId7",
+      "path": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\reference\\original-design\\stage-01-street-original.png",
+      "appendix": "附录一",
+      "entry": "word/media/image1.png",
+      "sha256": "ea8f1bc9f0e1abfb0b847a4b07f9dd72fcfc2577f343636e83dbecae272f9690",
+      "file": "stage-01-street-original.png"
+    },
+    {
+      "width": 1448,
+      "stage": "地铁通勤",
+      "height": 1086,
+      "relationship": "rId8",
+      "path": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\reference\\original-design\\stage-02-metro-original.png",
+      "appendix": "附录二",
+      "entry": "word/media/image2.png",
+      "sha256": "429d3b0155625454369429bac7d7ade7cd768d7c67196a27e67e3d116b8aedee",
+      "file": "stage-02-metro-original.png"
+    },
+    {
+      "width": 1448,
+      "stage": "办公室早会",
+      "height": 1086,
+      "relationship": "rId9",
+      "path": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\reference\\original-design\\stage-03-office-original.png",
+      "appendix": "附录三",
+      "entry": "word/media/image3.png",
+      "sha256": "5e544fc4da05df5a26235563eede66357e1c99557664d17fea4ca2ecc8bd2570",
+      "file": "stage-03-office-original.png"
+    }
+  ]
+}

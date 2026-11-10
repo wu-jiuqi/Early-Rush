@@ -1,0 +1,1172 @@
+{
+  "schema": "early-rush-street-assembly-report-1",
+  "configuration": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\metadata\\assembly-config.json",
+  "outputCanvasPx": [
+    2661,
+    5322
+  ],
+  "boundaryLock": {
+    "enabled": false
+  },
+  "seamPatches": [
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v1.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v1",
+      "destinationRectOutputPx": [
+        930,
+        0,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "a852795e3f4c4fc26273d36c5254606d511cb0d9abdabf19cebeb1d8f526c969",
+      "order": 0,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v2.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v2",
+      "destinationRectOutputPx": [
+        930,
+        1274,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "9b721f8c75c640c715f54d0b29675bcba198db7e6671fed476eb773be5f52d8b",
+      "order": 1,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v3.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v3",
+      "destinationRectOutputPx": [
+        930,
+        2548,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "6a9aa14c50a55b1e37e1b34c23b4a61e2726ab204a51c3c064636e6a428c6b9a",
+      "order": 2,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v4.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v4",
+      "destinationRectOutputPx": [
+        930,
+        3822,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "e3c4e5aee870d579f71b98993caf5861cf71783b5b364135fa21fe567231859a",
+      "order": 3,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h1-left.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h1-left",
+      "destinationRectOutputPx": [
+        0,
+        1020,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "4291bf00d616deaa1afa0049eb6db2822ccab5ea3d1dd0df68d06a778efc5e18",
+      "order": 4,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h1-right.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h1-right",
+      "destinationRectOutputPx": [
+        1201,
+        1020,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "decd1c071fc618722c600854a9f9686387ce43b992dcd15f1dd46122502a46d4",
+      "order": 5,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h2-left.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h2-left",
+      "destinationRectOutputPx": [
+        0,
+        2130,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "2bc81d010a6ab94d68051f87800a8271f10ad84a792324a05ed425f841f75836",
+      "order": 6,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h2-right.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h2-right",
+      "destinationRectOutputPx": [
+        1201,
+        2130,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "5ac2d55cd5c073e368d51d95466737aa1a89112ee9199d4608f9fa1557590db7",
+      "order": 7,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h3-left.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h3-left",
+      "destinationRectOutputPx": [
+        0,
+        3555,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "b36bea15ca95f5c859fa087515401bccaf5647d42a54c54d35d95c4910963a00",
+      "order": 8,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h3-right.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h3-right",
+      "destinationRectOutputPx": [
+        1201,
+        3555,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "fc72e4c7c737f7d2164741de85bbd1b48443d79b5acf783084cf68f248479e05",
+      "order": 9,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/road-fix-1.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "featherOutputPx": 16,
+      "id": "road-fix-1",
+      "destinationRectOutputPx": [
+        1130,
+        1205,
+        200,
+        200
+      ],
+      "kind": "seam-patch",
+      "sha256": "05aef4107e5067f79963eb03fff262255a5aa9e954294297a9668717ccbacab6",
+      "order": 10,
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/road-fix-2.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "featherOutputPx": 16,
+      "id": "road-fix-2",
+      "destinationRectOutputPx": [
+        1130,
+        2210,
+        200,
+        200
+      ],
+      "kind": "seam-patch",
+      "sha256": "6b0f932454378a542e6d1c0729cf4dacb2256d9d10e702633ee0de467d6556da",
+      "order": 11,
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/road-fix-3.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "featherOutputPx": 16,
+      "id": "road-fix-3",
+      "destinationRectOutputPx": [
+        1130,
+        3770,
+        200,
+        200
+      ],
+      "kind": "seam-patch",
+      "sha256": "500a732852c63795ce2edfc659fd4e03b219e0218a8d3614b18574b4c49dec3a",
+      "order": 12,
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "boundedTileDirectory": "tiles/generated-bounded",
+  "warnings": [],
+  "entries": [
+    {
+      "file": "tiles/source/tile-01.png",
+      "sha256": "44febdc781cd17d07c7493d1b066136eeded2fbc88ab858d09feb6dc63fecac2",
+      "kind": "tile",
+      "id": "tile-01",
+      "destinationRectPx": [
+        0,
+        0,
+        1230,
+        1320
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1211,
+        1299
+      ]
+    },
+    {
+      "file": "tiles/source/tile-02.png",
+      "sha256": "d5dd0c6535357988fd1d57617ab3a838b0552c3d97fb8c42f934b85e51957770",
+      "kind": "tile",
+      "id": "tile-02",
+      "destinationRectPx": [
+        1230,
+        0,
+        1431,
+        1320
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1306,
+        1205
+      ]
+    },
+    {
+      "file": "tiles/source/tile-03.png",
+      "sha256": "4f09f1803497a4ca3453bb1cf8cb7233e1562e420fc4ebfd790f96bf21100a22",
+      "kind": "tile",
+      "id": "tile-03",
+      "destinationRectPx": [
+        0,
+        1320,
+        1230,
+        1110
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1320,
+        1191
+      ]
+    },
+    {
+      "file": "tiles/source/tile-04.png",
+      "sha256": "0ccf5389d63cabce42ec4dff0daee149fcf7d22144cee8afa9d3edddb7786653",
+      "kind": "tile",
+      "id": "tile-04",
+      "destinationRectPx": [
+        1230,
+        1320,
+        1431,
+        1110
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1424,
+        1105
+      ]
+    },
+    {
+      "file": "tiles/source/tile-05.png",
+      "sha256": "c8bc45cf7ecfac994e2c909aa8f6dd909904ddad0d339d77054a18b96dc21f35",
+      "kind": "tile",
+      "id": "tile-05",
+      "destinationRectPx": [
+        0,
+        2430,
+        1230,
+        1425
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1165,
+        1350
+      ]
+    },
+    {
+      "file": "tiles/source/tile-06-stopline-v2.png",
+      "sha256": "ffc01b9ecdc26f37c02997313888b3aa8af1237a1d599b24b2831305870baf41",
+      "kind": "tile",
+      "id": "tile-06",
+      "destinationRectPx": [
+        1230,
+        2430,
+        1431,
+        1425
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "tiles/source/tile-07.png",
+      "sha256": "8feeb12bdbce6afd042e055728a063e2231e3f1f041eb918b28b4c4f4abbefe6",
+      "kind": "tile",
+      "id": "tile-07",
+      "destinationRectPx": [
+        0,
+        3855,
+        1230,
+        1467
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1149,
+        1369
+      ]
+    },
+    {
+      "file": "tiles/source/tile-08.png",
+      "sha256": "3bfcb7a7d8f2d98c12ce83a7a766afc75214abb00be456f55a0959749c62cc91",
+      "kind": "tile",
+      "id": "tile-08",
+      "destinationRectPx": [
+        1230,
+        3855,
+        1431,
+        1467
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        1239,
+        1270
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v1.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v1",
+      "destinationRectOutputPx": [
+        930,
+        0,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "a852795e3f4c4fc26273d36c5254606d511cb0d9abdabf19cebeb1d8f526c969",
+      "order": 0,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v2.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v2",
+      "destinationRectOutputPx": [
+        930,
+        1274,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "9b721f8c75c640c715f54d0b29675bcba198db7e6671fed476eb773be5f52d8b",
+      "order": 1,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v3.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v3",
+      "destinationRectOutputPx": [
+        930,
+        2548,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "6a9aa14c50a55b1e37e1b34c23b4a61e2726ab204a51c3c064636e6a428c6b9a",
+      "order": 2,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-v4.png",
+      "sourceRectPx": [
+        0,
+        0,
+        793,
+        1983
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-v4",
+      "destinationRectOutputPx": [
+        930,
+        3822,
+        600,
+        1500
+      ],
+      "kind": "seam-patch",
+      "sha256": "e3c4e5aee870d579f71b98993caf5861cf71783b5b364135fa21fe567231859a",
+      "order": 3,
+      "sourceCanvasPx": [
+        793,
+        1983
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h1-left.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h1-left",
+      "destinationRectOutputPx": [
+        0,
+        1020,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "4291bf00d616deaa1afa0049eb6db2822ccab5ea3d1dd0df68d06a778efc5e18",
+      "order": 4,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h1-right.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h1-right",
+      "destinationRectOutputPx": [
+        1201,
+        1020,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "decd1c071fc618722c600854a9f9686387ce43b992dcd15f1dd46122502a46d4",
+      "order": 5,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h2-left.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h2-left",
+      "destinationRectOutputPx": [
+        0,
+        2130,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "2bc81d010a6ab94d68051f87800a8271f10ad84a792324a05ed425f841f75836",
+      "order": 6,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h2-right.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h2-right",
+      "destinationRectOutputPx": [
+        1201,
+        2130,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "5ac2d55cd5c073e368d51d95466737aa1a89112ee9199d4608f9fa1557590db7",
+      "order": 7,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h3-left.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h3-left",
+      "destinationRectOutputPx": [
+        0,
+        3555,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "b36bea15ca95f5c859fa087515401bccaf5647d42a54c54d35d95c4910963a00",
+      "order": 8,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/seam-h3-right.png",
+      "sourceRectPx": [
+        0,
+        0,
+        1956,
+        804
+      ],
+      "featherOutputPx": 60,
+      "id": "seam-h3-right",
+      "destinationRectOutputPx": [
+        1201,
+        3555,
+        1460,
+        600
+      ],
+      "kind": "seam-patch",
+      "sha256": "fc72e4c7c737f7d2164741de85bbd1b48443d79b5acf783084cf68f248479e05",
+      "order": 9,
+      "sourceCanvasPx": [
+        1956,
+        804
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/road-fix-1.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "featherOutputPx": 16,
+      "id": "road-fix-1",
+      "destinationRectOutputPx": [
+        1130,
+        1205,
+        200,
+        200
+      ],
+      "kind": "seam-patch",
+      "sha256": "05aef4107e5067f79963eb03fff262255a5aa9e954294297a9668717ccbacab6",
+      "order": 10,
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/road-fix-2.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "featherOutputPx": 16,
+      "id": "road-fix-2",
+      "destinationRectOutputPx": [
+        1130,
+        2210,
+        200,
+        200
+      ],
+      "kind": "seam-patch",
+      "sha256": "6b0f932454378a542e6d1c0729cf4dacb2256d9d10e702633ee0de467d6556da",
+      "order": 11,
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "perimeterPolicy": "No feather on sides coinciding with full-canvas edges.",
+      "file": "tiles/seam-generated/road-fix-3.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "featherOutputPx": 16,
+      "id": "road-fix-3",
+      "destinationRectOutputPx": [
+        1130,
+        3770,
+        200,
+        200
+      ],
+      "kind": "seam-patch",
+      "sha256": "500a732852c63795ce2edfc659fd4e03b219e0218a8d3614b18574b4c49dec3a",
+      "order": 12,
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/ground-zone-frame.png",
+      "sha256": "45e35e49e48bcf22c20a37daaf04438a4985d721b90b376d5db95ecad6524e38",
+      "kind": "overlay",
+      "id": "breakfast-pickup-frame",
+      "destinationRectMasterPx": [
+        488.1923076923077,
+        1471.8125,
+        104.61538461538461,
+        52.30769230769231
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/ground-zone-frame.png",
+      "sha256": "45e35e49e48bcf22c20a37daaf04438a4985d721b90b376d5db95ecad6524e38",
+      "kind": "overlay",
+      "id": "repair-target-frame",
+      "destinationRectMasterPx": [
+        269.03846153846155,
+        927.4375,
+        116.92307692307692,
+        58.46153846153846
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/facades/breakfast-stall.png",
+      "sha256": "16148ac1b9cd8e61e5b7613c6e678e5c9719de16b3821c6bce1ef686be719560",
+      "kind": "overlay",
+      "id": "breakfast-stall",
+      "destinationRectMasterPx": [
+        476.9065934065934,
+        1365.89010989011,
+        132.21978021978023,
+        132.21978021978023
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/exported/facades/repair-shop.png",
+      "sha256": "d71da08f5efdd41ea060e5480bcb63b4c439f96b74e2cc60133c360c0aafe9f6",
+      "kind": "overlay",
+      "id": "repair-shop",
+      "destinationRectMasterPx": [
+        256.4925373134328,
+        827.2388059701492,
+        137.55223880597015,
+        137.55223880597015
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/exported/facades/metro-entry.png",
+      "sha256": "52a16f1544e5aa67f571fd50ca92906ae9a7f907a93c3f1e15464051fa2e7459",
+      "kind": "overlay",
+      "id": "metro-entry",
+      "destinationRectMasterPx": [
+        398.2113022113022,
+        7.115479115479115,
+        158.5061425061425,
+        158.5061425061425
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/wheel.png",
+      "sha256": "215a92eaf5a077191be3c8d7269e257cd6f1f73490d15252f53f51cbbde84679",
+      "kind": "overlay",
+      "id": "wheel-a-loose",
+      "destinationRectMasterPx": [
+        296.9387755102041,
+        970.734693877551,
+        26.122448979591837,
+        26.122448979591837
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/wheel.png",
+      "sha256": "215a92eaf5a077191be3c8d7269e257cd6f1f73490d15252f53f51cbbde84679",
+      "kind": "overlay",
+      "id": "wheel-b-loose",
+      "destinationRectMasterPx": [
+        350.9387755102041,
+        970.734693877551,
+        26.122448979591837,
+        26.122448979591837
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-target.png",
+      "sha256": "7bc42fc2297256700cdc6c52538aae998ba8ce850a9b66e1b9dfa29774597105",
+      "kind": "overlay",
+      "id": "flip-target",
+      "destinationRectMasterPx": [
+        231.684,
+        509.168,
+        69.632,
+        69.632
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "sha256": "09b9754fc996d5f0acdcd3b5d5af5751af87c55e20bb409d3eb7e157927eadba",
+      "kind": "overlay",
+      "id": "flip-face-1",
+      "destinationRectMasterPx": [
+        200.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-base.png",
+      "sha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "kind": "overlay",
+      "id": "flip-base-1",
+      "destinationRectMasterPx": [
+        200.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-face-moon.png",
+      "sha256": "a2a8d72c404cd509eeef93f70887b1086b542efc788546af2366d98eaf259636",
+      "kind": "overlay",
+      "id": "flip-face-2",
+      "destinationRectMasterPx": [
+        225.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-base.png",
+      "sha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "kind": "overlay",
+      "id": "flip-base-2",
+      "destinationRectMasterPx": [
+        225.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "sha256": "09b9754fc996d5f0acdcd3b5d5af5751af87c55e20bb409d3eb7e157927eadba",
+      "kind": "overlay",
+      "id": "flip-face-3",
+      "destinationRectMasterPx": [
+        250.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-base.png",
+      "sha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "kind": "overlay",
+      "id": "flip-base-3",
+      "destinationRectMasterPx": [
+        250.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-face-moon.png",
+      "sha256": "a2a8d72c404cd509eeef93f70887b1086b542efc788546af2366d98eaf259636",
+      "kind": "overlay",
+      "id": "flip-face-4",
+      "destinationRectMasterPx": [
+        275.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-base.png",
+      "sha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "kind": "overlay",
+      "id": "flip-base-4",
+      "destinationRectMasterPx": [
+        275.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "sha256": "09b9754fc996d5f0acdcd3b5d5af5751af87c55e20bb409d3eb7e157927eadba",
+      "kind": "overlay",
+      "id": "flip-face-5",
+      "destinationRectMasterPx": [
+        300.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/flip-base.png",
+      "sha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "kind": "overlay",
+      "id": "flip-base-5",
+      "destinationRectMasterPx": [
+        300.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/pedestrian-signal-green.png",
+      "sha256": "dbd6f28c217eb36acfccb33c893f901447fae212519df30688430d31e1f2e07b",
+      "kind": "overlay",
+      "id": "signal-left-green",
+      "destinationRectMasterPx": [
+        629.5925925925926,
+        1175.6296296296296,
+        94.81481481481481,
+        94.81481481481481
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        512
+      ]
+    },
+    {
+      "file": "assets/exported/interactions/pedestrian-signal-green.png",
+      "sha256": "dbd6f28c217eb36acfccb33c893f901447fae212519df30688430d31e1f2e07b",
+      "kind": "overlay",
+      "id": "signal-right-green",
+      "destinationRectMasterPx": [
+        735.5925925925926,
+        1175.6296296296296,
+        94.81481481481481,
+        94.81481481481481
+      ],
+      "sourceRectPx": [
+        0,
+        0,
+        512,
+        512
+      ]
+    }
+  ],
+  "scope": "Offline technical composite, not Unity integration or gameplay validation. Generated seam repairs are alpha composited in recorded order. Resampling alone does not create new detail."
+}

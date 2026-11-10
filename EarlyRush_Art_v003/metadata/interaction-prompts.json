@@ -1,0 +1,568 @@
+{
+  "schema": "early-rush-v003-interactions-1",
+  "date": "2026-11-11",
+  "generationTool": "built-in image_gen",
+  "status": "Map-art reassembly sample; not exact runtime-world mapping",
+  "assets": [
+    {
+      "id": "wheel",
+      "prompt": "Use case: background-extraction. Asset type: Early Rush v003 independent interactive wheel sprite, transparent PNG. Input image 1 is the current approved-composition repair-shop crop; image 2 is its complete district reference. Extract and cleanly redraw exactly ONE of the two loose bicycle wheels below the repair shop, matching that reference's shape, camera, colors and toy illustration finish. One dark desaturated teal tire with pale cream-metal spokes and a small teal hub, subtle rounded volume, near-top-down game asset camera with a lightly visible front edge, clear readable silhouette. Keep the same visual vocabulary as the loose wheels in image 1. Center the single wheel on a square canvas, about 72% of canvas width, generous completely transparent safety margin all around. Real alpha background. No shop, bicycle frame, road, ground tile, target outline, text, icon sheet, additional wheel, cast shadow patch, pedestal, scenery or checkerboard. This wheel will be instantiated twice by the game; output only one wheel. Soft light from upper left, restrained shading, no bright white rim.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\repair.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-8612c409-0287-43ad-a888-1879e5cd9a62.png",
+      "savedSource": "assets/source/interactions/wheel.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          333,
+          341,
+          576,
+          588
+        ],
+        "bbox16": [
+          332,
+          340,
+          578,
+          590
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 253,
+        "zeroRatio": 0.8511366498019733
+      },
+      "output": "assets/exported/interactions/wheel.png",
+      "export": {
+        "scale": 0.34,
+        "canvas": [
+          256,
+          256
+        ],
+        "sourceAnchor": [
+          621,
+          635
+        ],
+        "targetAnchor": [
+          128,
+          128
+        ],
+        "drawOrder": "independent; reuse twice"
+      },
+      "sourceSha256": "5e634a03ff32d922b7c8f5d6f74637b4aad7b9b3cc52e1d3c3d0f17f2dfb9a72",
+      "outputSha256": "215a92eaf5a077191be3c8d7269e257cd6f1f73490d15252f53f51cbbde84679",
+      "outputStats": {
+        "width": 256,
+        "height": 256,
+        "bbox128": [
+          30,
+          28,
+          196,
+          200
+        ],
+        "bbox16": [
+          30,
+          28,
+          197,
+          201
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 253,
+        "zeroRatio": 0.60943603515625
+      }
+    },
+    {
+      "id": "flip-base",
+      "prompt": "Use case: background-extraction. Asset type: Early Rush v003 fixed flip-puzzle base, transparent game sprite. Reference image is the CURRENT v003 flip-puzzle courtyard crop. Isolate and redraw ONE of the FIVE SMALL SQUARE BUTTON-LIKE FLIP PANELS in the front row, not the large rear target sign. Make only its stationary base: a softly rounded pale cream square rim, a narrow teal lower side/plinth visible beneath it, and a completely empty central inset with real transparent alpha so a separate colored face can be layered underneath. The center is a rounded square opening, NOT a solid blank tile. Match the reference top-down orientation: square top with vertical/horizontal screen edges, front edge has subtle depth, no isometric diamond. Exact single asset centered, square canvas with 18% transparent margin all sides; footprint roughly72% width, slightly less height. Smooth toy illustration, cream/teal, soft upper-left lighting. No symbol, no sun, no moon, no yellow center, no giant rear sign, no board row, no ground, no contact shadow, no text. Actual transparent background and transparent central hole. This base stays fixed while a separate center face flips.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\flip-board.png"
+      ],
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-d1fb6a4b-f217-4928-8379-4826d4304c2b.png",
+      "savedSource": "assets/source/interactions/flip-base.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          273,
+          277,
+          694,
+          707
+        ],
+        "bbox16": [
+          272,
+          276,
+          696,
+          709
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 0,
+        "zeroRatio": 0.800406482350577
+      },
+      "output": "assets/exported/interactions/flip-base.png",
+      "export": {
+        "scale": 0.28,
+        "canvas": [
+          256,
+          256
+        ],
+        "sourceAnchor": [
+          618,
+          572
+        ],
+        "targetAnchor": [
+          128,
+          128
+        ],
+        "drawOrder": "above face; central opening transparent"
+      },
+      "sourceSha256": "f319a38d3dea73001baa66e92abe1e027c6739a2fa1f920be7fdfa84c14c4cbc",
+      "outputSha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "outputStats": {
+        "width": 256,
+        "height": 256,
+        "bbox128": [
+          31,
+          45,
+          195,
+          198
+        ],
+        "bbox16": [
+          31,
+          45,
+          195,
+          199
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 0,
+        "zeroRatio": 0.6413726806640625
+      }
+    },
+    {
+      "id": "flip-face-sun",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\assets\\source\\interactions\\flip-base.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\flip-board.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Asset type: replaceable SUN face insert for Early Rush's small flip puzzle. Image 1 is the stationary base with an empty transparent opening; image 2 is the reference courtyard. Generate ONLY a single flat rounded-square yellow face plate that fills the opening in image 1, with a clear small cream SUN pictogram (round disc and eight short rays) in its middle. The face is shallow, top surface facing the camera like image 1, no isometric rotation. Preserve image 1 canvas, position, scale, top-down angle and the opening's rounded rectangle shape: place the face over the central opening, filling that opening with a tiny hidden underlap for compositing. Remove/omit all of the surrounding cream rim and teal plinth; those are a separately retained asset. Only the yellow insert with sun is visible on transparent background; no rim, base, feet, buttons, text, second face, scenery, drop shadow or circular bullseye. Matte smooth toy finish, soft upper-left light, saturated warm yellow, simple legible cream sun. Actual alpha outside the face. This is an OVERLAY layer, not the entire puzzle pedestal. Keep canvas square and retain ample transparent margin.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-a57d4a9e-af49-4439-9585-055635e1ad0b.png",
+      "savedSource": "assets/source/interactions/flip-face-sun.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          343,
+          364,
+          545,
+          499
+        ],
+        "bbox16": [
+          342,
+          363,
+          547,
+          500
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 253,
+        "zeroRatio": 0.8289772568291833
+      },
+      "output": "assets/exported/interactions/flip-face-sun.png",
+      "export": {
+        "scale": 0.28,
+        "canvas": [
+          256,
+          256
+        ],
+        "sourceAnchor": [
+          615.5,
+          613.5
+        ],
+        "targetAnchor": [
+          128,
+          128
+        ],
+        "drawOrder": "below base; identical destination rectangle as base"
+      },
+      "sourceSha256": "c4e7ace930aed91e8369e2d2d903c144c851c95b8140f8e53bab071ff2296966",
+      "outputSha256": "09b9754fc996d5f0acdcd3b5d5af5751af87c55e20bb409d3eb7e157927eadba",
+      "outputStats": {
+        "width": 256,
+        "height": 256,
+        "bbox128": [
+          52,
+          58,
+          153,
+          140
+        ],
+        "bbox16": [
+          52,
+          58,
+          154,
+          140
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 253,
+        "zeroRatio": 0.6805267333984375
+      }
+    },
+    {
+      "id": "flip-face-moon",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\assets\\source\\interactions\\flip-face-sun.png"
+      ],
+      "prompt": "Use case: precise-object-edit. This is the second state of the SAME Early Rush flip-face overlay shown in the input image. CHANGE ONLY the yellow face color to deep muted teal and the cream sun pictogram to one simple cream crescent MOON. Preserve the exact input canvas size, face silhouette, rounded corners, face bounding rectangle, pixel position, viewing angle, edge thickness, soft upper-left light and generous transparent margin. Same asset, same dimensions, same anchor. Moon is centered and large enough to remain readable at small game scale; no stars or additional objects. The outside alpha mask must remain unchanged. Do not add a frame, plinth, ground, shadow, text, extra tile or scenery. Keep true transparency. Only the face color and internal pictogram change.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-053c3df0-0092-475c-967f-61027a5ca7ff.png",
+      "savedSource": "assets/source/interactions/flip-face-moon.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          339,
+          362,
+          551,
+          504
+        ],
+        "bbox16": [
+          338,
+          361,
+          553,
+          505
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 253,
+        "zeroRatio": 0.825835158434
+      },
+      "output": "assets/exported/interactions/flip-face-moon.png",
+      "export": {
+        "scale": 0.28,
+        "canvas": [
+          256,
+          256
+        ],
+        "sourceAnchor": [
+          615.5,
+          613.5
+        ],
+        "targetAnchor": [
+          128,
+          128
+        ],
+        "drawOrder": "below base; identical destination rectangle as base"
+      },
+      "sourceSha256": "ed0c9b6c92fcfe73d79ed7d22899a0818e9028da845fb43f3e6413ce3a2be3cc",
+      "outputSha256": "a2a8d72c404cd509eeef93f70887b1086b542efc788546af2366d98eaf259636",
+      "outputStats": {
+        "width": 256,
+        "height": 256,
+        "bbox128": [
+          51,
+          57,
+          155,
+          142
+        ],
+        "bbox16": [
+          51,
+          57,
+          155,
+          142
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 253,
+        "zeroRatio": 0.674530029296875
+      }
+    },
+    {
+      "id": "flip-target",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\flip-board.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\assets\\source\\interactions\\flip-face-sun.png"
+      ],
+      "prompt": "Use case: background-extraction. Asset type: Early Rush v003 flip-puzzle target sign. Reference image 1 is the current courtyard; isolate ONLY the LARGE UPRIGHT TEAL TARGET SIGN at the back of the five small floor panels. Recreate its cream rounded outer frame, teal rounded-square face and two short sturdy feet matching the reference shape, camera, palette and soft toy-game illustration. Replace the original orange bullseye with the clear SUN symbol from image 2: cream round sun disc with eight short rays on a warm yellow inset centered in the target face. This communicates 'all panels sun'; no words or numbers. ONE free-standing goal sign only, no five small panel row, no courtyard, no plants, no paving, no trees. Near-top-down fixed north-facing view like the scene, not isometric. Square canvas, centered, generous fully transparent safety margins, full feet visible. Real alpha background. Upper-left gentle light, compact attached shading only, no ground slab or broad cast shadow.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-8eb8c7a1-29ef-4d25-8390-f6dc7797b250.png",
+      "savedSource": "assets/source/interactions/flip-target.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          228,
+          255,
+          795,
+          750
+        ],
+        "bbox16": [
+          227,
+          254,
+          797,
+          752
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 253,
+        "zeroRatio": 0.6726030132602784
+      },
+      "output": "assets/exported/interactions/flip-target.png",
+      "export": {
+        "scale": 0.5,
+        "canvas": [
+          512,
+          512
+        ],
+        "sourceAnchor": [
+          625,
+          1003
+        ],
+        "targetAnchor": [
+          256,
+          460.8
+        ],
+        "drawOrder": "independent upright target sign"
+      },
+      "sourceSha256": "7e8c55f6ef767354aef35ed750907cd90decc17e4be030f04919bd6e7fac9a5e",
+      "outputSha256": "7bc42fc2297256700cdc6c52538aae998ba8ce850a9b66e1b9dfa29774597105",
+      "outputStats": {
+        "width": 512,
+        "height": 512,
+        "bbox128": [
+          57,
+          87,
+          398,
+          375
+        ],
+        "bbox16": [
+          57,
+          86,
+          399,
+          376
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 253,
+        "zeroRatio": 0.5151710510253906
+      }
+    },
+    {
+      "id": "pedestrian-signal-green",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\assets\\source\\interactions\\pedestrian-signal-green-initial.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Correct ONLY the two human pictograms inside this signal, preserving the exact original canvas size, signal housing, pole, foot, alpha silhouette, position, colors, lighting and framing. This remains GREEN state: upper lamp UNLIT dark slate, lower lamp illuminated mint green. Upper human: clearly STANDING STILL, two straight PARALLEL vertical legs close together and arms hanging down alongside the torso; no spread star pose. Lower human: clearly WALKING IN SIDE PROFILE toward the right, head slightly ahead of shoulder, one arm bent forward and the other arm back, one leg forward and one leg back in an obvious stride; the figure must be asymmetric, not a symmetrical X/star. Keep icons within their existing lamp areas. No other change. No red light. Real transparent background unchanged.",
+      "revisions": [
+        {
+          "prompt": "Use case: background-extraction. Asset type: one freestanding pedestrian traffic signal, GREEN state, Early Rush v003 transparent game sprite. Reference image1 shows the exact small pedestrian signal design, image2 its district context. Isolate/recreate exactly one slim cream pole supporting a tall rounded rectangular teal signal case with a thin cream border, two vertically stacked pedestrian lamps, and a tiny stable foot. Match the reference's soft toy illustration, near-top-down north-facing game view, rounded geometry, cream/teal materials and upper-left light. Crucial state: ONLY the LOWER WALKING PERSON is illuminated bright mint green. The UPPER STANDING PERSON is OFF: very dark desaturated slate, no red color or red glow. Never both illuminated. Lamp pictograms are clearly distinct standing versus walking human forms. Keep the entire pole, case and foot visible. Center the asset on a SQUARE canvas with generous transparent margin; approximately72% canvas height, very narrow width. No ground, pavement, plant, second signal, street, road marking, shadow patch, text, letters, numbers or other scenery. Real transparent alpha background, no colored rectangle or checkerboard behind it. This will be edited into a red state with exactly the same pole/canvas/anchor.",
+          "refs": [
+            "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\signal.png",
+            "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+          ],
+          "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-29b4cc93-979b-440c-84c9-efc7f3213a4a.png",
+          "savedSource": "assets/source/interactions/pedestrian-signal-green-initial.png",
+          "reason": "Initial lamps use too-similar symmetric pedestrian poses; revise to clear standing/walking distinction."
+        }
+      ],
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-a1d7fafb-4131-43ca-a312-0bba86a42ea2.png",
+      "savedSource": "assets/source/interactions/pedestrian-signal-green.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          524,
+          209,
+          205,
+          864
+        ],
+        "bbox16": [
+          524,
+          209,
+          206,
+          865
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 253,
+        "zeroRatio": 0.9226418045984905
+      },
+      "output": "assets/exported/interactions/pedestrian-signal-green.png",
+      "export": {
+        "scale": 0.5,
+        "canvas": [
+          512,
+          512
+        ],
+        "sourceAnchor": [
+          627,
+          1072
+        ],
+        "targetAnchor": [
+          256,
+          460.8
+        ],
+        "drawOrder": "state replacement; exact same destination rectangle as red"
+      },
+      "sourceSha256": "b4bf4e84e47d836026460b39a68a0d9a6c493ae640096339275fe7ca0d4122f8",
+      "outputSha256": "dbd6f28c217eb36acfccb33c893f901447fae212519df30688430d31e1f2e07b",
+      "outputStats": {
+        "width": 512,
+        "height": 512,
+        "bbox128": [
+          205,
+          29,
+          102,
+          432
+        ],
+        "bbox16": [
+          204,
+          29,
+          104,
+          433
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 253,
+        "zeroRatio": 0.8863906860351562
+      }
+    },
+    {
+      "id": "pedestrian-signal-red",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\assets\\source\\interactions\\pedestrian-signal-green.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Change ONLY the illumination state of this exact pedestrian traffic signal from GREEN to RED. Preserve the exact original canvas size, pole and housing silhouette, foot, position, alpha mask, lighting, materials, camera and both human pictogram shapes. The UPPER straight standing person becomes illuminated coral RED. The LOWER walking person becomes completely UNLIT dark desaturated slate, like the upper lamp was before; remove all mint green glow. Exactly one lamp is lit. Never both lights active. Do not move or reshape anything, do not add ground or shadow. Keep all transparent pixels transparent. Same image geometry and same anchor, only red/green lamp state changes.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-a4ac84d5-bbdc-4845-aca7-2274cd8ae1a1.png",
+      "savedSource": "assets/source/interactions/pedestrian-signal-red.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          523,
+          209,
+          208,
+          865
+        ],
+        "bbox16": [
+          522,
+          208,
+          210,
+          867
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 253,
+        "zeroRatio": 0.9210882432992733
+      },
+      "output": "assets/exported/interactions/pedestrian-signal-red.png",
+      "export": {
+        "scale": 0.5,
+        "canvas": [
+          512,
+          512
+        ],
+        "sourceAnchor": [
+          627,
+          1072
+        ],
+        "targetAnchor": [
+          256,
+          460.8
+        ],
+        "drawOrder": "state replacement; exact same destination rectangle as green"
+      },
+      "sourceSha256": "a97965b6098dd82b68c961e725734072444d44a2fe96c5ce197c166beac00510",
+      "outputSha256": "12f1985b8362fab951916163a639c18b23cef50b49f494d63ff022b5344250bf",
+      "outputStats": {
+        "width": 512,
+        "height": 512,
+        "bbox128": [
+          204,
+          29,
+          104,
+          433
+        ],
+        "bbox16": [
+          203,
+          28,
+          106,
+          434
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 253,
+        "zeroRatio": 0.8842506408691406
+      }
+    },
+    {
+      "id": "ground-zone-frame",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\assets\\source\\interactions\\ground-zone-frame-initial.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Redesign ONLY this dashed ground marker's proportions and fill opacity. It is currently far too elongated. The VISIBLE MARKER ITSELF, excluding transparent margin, must be exactly THREE times as wide as tall (3:1), a normal rounded rectangle, not a capsule long banner. Show it centered on a SQUARE canvas with ample transparent margin, so the object occupies roughly78% canvas width and26% canvas height. Keep a single thin teal dashed stroke, rounded corners, absolutely flat 2D top-down plane with straight horizontal/vertical edges. No bevel, glow, solid edge band, shadow, lighting, raised cushion or depth. The interior is faint pale cream with LOW ALPHA, about30% opacity, through which paving will be visible. Outside the stroke is fully transparent. No text, no icon, no ground, no new elements. Output one neutral ground-zone decal with actual transparent alpha, including translucent center. The teal dashed stroke remains clearer than the fill.",
+      "revisions": [
+        {
+          "prompt": "Use case: background-extraction. Asset type: Early Rush v003 neutral flat ground-zone decal. Reference image shows a repair shop and a pale teal dashed rounded rectangular ground marker beneath the two loose wheels. Isolate ONLY that ground marker, redrawn cleanly as a flat TOP-DOWN rectangle about 3 TIMES AS WIDE AS TALL, horizontal and vertical edges parallel to the image canvas. A delicate evenly spaced teal DASHED outline with rounded corners encloses a faint semi-transparent pale CREAM fill. Background outside the outline is completely transparent. Fill itself is translucent so paving remains visible through it. Strictly 2D ground paint: zero thickness, no bevel, no frame/plinth, no cast shadow, no perspective trapezoid, no texture grid, no highlights. No shop, wheels, sun, numbers, text, symbols, illustration, ornaments or colored backdrop. Only one neutral dashed rectangular marker, centered with ample alpha safety margin. Match the reference teal and warm cream. Deliver real alpha, including semi-transparent fill, not a checkerboard illustration. This decal is reused for breakfast collection and wheel placement zones.",
+          "refs": [
+            "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\repair.png"
+          ],
+          "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-a24fbf34-8bb1-4ee7-9c58-f232ba352674.png",
+          "savedSource": "assets/source/interactions/ground-zone-frame-initial.png",
+          "reason": "Generated marker is too elongated; actual visible marker must be about3:1, rather than only canvas3:1."
+        }
+      ],
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-13d34bc1-763b-4c04-9a55-d7d22f9d84d5.png",
+      "savedSource": "assets/source/interactions/ground-zone-frame.png",
+      "sourceStats": {
+        "width": 1254,
+        "height": 1254,
+        "bbox128": [
+          131,
+          517,
+          991,
+          257
+        ],
+        "bbox16": [
+          130,
+          516,
+          993,
+          258
+        ],
+        "edgeMax": 0,
+        "centerAlpha": 171,
+        "zeroRatio": 0.837194025370807
+      },
+      "output": "assets/exported/interactions/ground-zone-frame.png",
+      "export": {
+        "scale": 0.42,
+        "canvas": [
+          512,
+          256
+        ],
+        "sourceAnchor": [
+          626,
+          645.5
+        ],
+        "targetAnchor": [
+          256,
+          128
+        ],
+        "drawOrder": "ground overlay below independent interactive items"
+      },
+      "sourceSha256": "65c948927fc3230405d01db03f819569f9ca8593e46364ed244811079f0240d5",
+      "outputSha256": "45e35e49e48bcf22c20a37daaf04438a4985d721b90b376d5db95ecad6524e38",
+      "outputStats": {
+        "width": 512,
+        "height": 256,
+        "bbox128": [
+          48,
+          74,
+          416,
+          108
+        ],
+        "bbox16": [
+          47,
+          73,
+          418,
+          109
+        ],
+        "edgeMax": 1,
+        "centerAlpha": 173,
+        "zeroRatio": 0.65972900390625
+      }
+    }
+  ],
+  "exportMethod": "System.Drawing technical-only uniform resample and explicit anchor translation onto RGBA canvases; no recoloring, no masking, no artistic repainting, no nonuniform stretching.",
+  "layerAssembly": {
+    "groundFrame": "True translucent cream center; measured source center alpha171/255, not exact requested30%. No code alpha modification.",
+    "flip": "Draw face then base into exactly the same rectangle. Face and base each256x256. Layer anchor is opening center at0.5,0.5. Suggested5-face starting example: moon,sun,moon,sun,moon; this is visual demonstration, not proof of puzzle solvability.",
+    "signals": "Same512x512 canvas, scale0.5, source ground anchor627,1072 -> output256,460.8. Swap whole state image; slight generated-pixel silhouette variation is retained."
+  }
+}

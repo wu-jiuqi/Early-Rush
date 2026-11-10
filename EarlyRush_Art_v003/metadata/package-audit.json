@@ -1,0 +1,93 @@
+{
+  "schema": "early-rush-package-audit-1",
+  "independentAssets": [
+    {
+      "id": "breakfast-stall",
+      "file": "assets/exported/facades/breakfast-stall.png",
+      "sha256": "16148ac1b9cd8e61e5b7613c6e678e5c9719de16b3821c6bce1ef686be719560",
+      "valid": true
+    },
+    {
+      "id": "repair-shop",
+      "file": "assets/exported/facades/repair-shop.png",
+      "sha256": "d71da08f5efdd41ea060e5480bcb63b4c439f96b74e2cc60133c360c0aafe9f6",
+      "valid": true
+    },
+    {
+      "id": "metro-entry",
+      "file": "assets/exported/facades/metro-entry.png",
+      "sha256": "52a16f1544e5aa67f571fd50ca92906ae9a7f907a93c3f1e15464051fa2e7459",
+      "valid": true
+    },
+    {
+      "id": "bench",
+      "file": "assets/exported/facades/bench.png",
+      "sha256": "32dd08a3c97d279d2688284553a57ad1beefbd302f5821d900a89c60cf8a3c2a",
+      "valid": true
+    },
+    {
+      "id": "tree-planter",
+      "file": "assets/exported/facades/tree-planter.png",
+      "sha256": "29d58dfee6c1bb7ab10febae69f3cd180a6e0979f095fcb23335b3c3cd9cd263",
+      "valid": true
+    },
+    {
+      "id": "low-planter",
+      "file": "assets/exported/facades/low-planter.png",
+      "sha256": "12ee463f0ad72f2c5ac0c4df4b1033d7e32015c3052f749fb0afb3baf402b662",
+      "valid": true
+    },
+    {
+      "id": "wheel",
+      "file": "assets/exported/interactions/wheel.png",
+      "sha256": "215a92eaf5a077191be3c8d7269e257cd6f1f73490d15252f53f51cbbde84679",
+      "valid": true
+    },
+    {
+      "id": "flip-base",
+      "file": "assets/exported/interactions/flip-base.png",
+      "sha256": "d8777ab661801845a5e6b0e6b06e58dab9ec4edea50a939211f83a926a2b8290",
+      "valid": true
+    },
+    {
+      "id": "flip-face-sun",
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "sha256": "09b9754fc996d5f0acdcd3b5d5af5751af87c55e20bb409d3eb7e157927eadba",
+      "valid": true
+    },
+    {
+      "id": "flip-face-moon",
+      "file": "assets/exported/interactions/flip-face-moon.png",
+      "sha256": "a2a8d72c404cd509eeef93f70887b1086b542efc788546af2366d98eaf259636",
+      "valid": true
+    },
+    {
+      "id": "flip-target",
+      "file": "assets/exported/interactions/flip-target.png",
+      "sha256": "7bc42fc2297256700cdc6c52538aae998ba8ce850a9b66e1b9dfa29774597105",
+      "valid": true
+    },
+    {
+      "id": "pedestrian-signal-green",
+      "file": "assets/exported/interactions/pedestrian-signal-green.png",
+      "sha256": "dbd6f28c217eb36acfccb33c893f901447fae212519df30688430d31e1f2e07b",
+      "valid": true
+    },
+    {
+      "id": "pedestrian-signal-red",
+      "file": "assets/exported/interactions/pedestrian-signal-red.png",
+      "sha256": "12f1985b8362fab951916163a639c18b23cef50b49f494d63ff022b5344250bf",
+      "valid": true
+    },
+    {
+      "id": "ground-zone-frame",
+      "file": "assets/exported/interactions/ground-zone-frame.png",
+      "sha256": "45e35e49e48bcf22c20a37daaf04438a4985d721b90b376d5db95ecad6524e38",
+      "valid": true
+    }
+  ],
+  "independentAssetCount": 14,
+  "jsonFilesParsed": 17,
+  "userArtApproval": false,
+  "unityImported": false
+}

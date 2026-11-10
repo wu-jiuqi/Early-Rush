@@ -1,0 +1,47 @@
+{
+  "schema": "early-rush-seam-repair-1",
+  "status": "three seam repairs generated and visually inspected individually; assembly inspection pending",
+  "tool": "built-in image_gen",
+  "jobs": [
+    {
+      "id": "seam-v1",
+      "reference": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\seam-v1.png",
+      "output": "tiles/seam-generated/seam-v1.png",
+      "prompt": "Use case: precise-object-edit.\nAsset type: seam repair strip for an already assembled game environment. The input is a 600 x 1500 vertical crop across a vertical join between two generated map tiles. Keep the exact same tall 2:5 framing and full content extent.\nRepair ONLY the visible join around the CENTRAL VERTICAL LINE (x=300 of the 600-pixel-wide input), primarily within x=200..400. Where an object, curb, lane dash, paving grid or shadow crosses the seam, reconstruct that small crossing continuously and cleanly. Remove doubled edges, mismatched halves, broken yellow curbs, interrupted white road dashes, discontinuous cream paving, local color mismatch and any soft blur stripe. The result should look as though both sides were painted together as one crisp, coherent continuous map.\nINVARIANTS: preserve the existing map layout, road centerlines, road widths, curb shapes, building footprints and heights, tree count and positions, plant containers, lamps, benches and every object's scale. Do not redesign the neighborhood. Do not add, remove, relocate, enlarge or replace objects. Outside the small central seam correction, preserve the original pixels and detail as closely as possible; especially the outermost 60 pixels of both side edges and the top and bottom 60 pixels must stay unchanged for stitching. Never draw a new strip of pavement or a wide blurred stripe to hide the seam. Do not blur or lower detail. No change in crop, camera, zoom, perspective, overall colors or lighting.\nMaintain exactly the original rounded toy-like 2.5D teal/cream/yellow materials, fixed overhead north-up view and soft upper-left light. Output ONE repaired full strip, opaque, same 2:5 aspect ratio, no labels, no border, no text, no crop margins, no before-after panels.",
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-7aa80733-d6aa-4490-ad8d-a4e2f61adf88.png",
+      "generatedCanvasPx": [
+        793,
+        1983
+      ],
+      "referenceSha256": "58893B34CB727495007D4970133376AB0172AE1E2FA9C44CF0CEEA545BAC6173",
+      "outputSha256": "A852795E3F4C4FC26273D36C5254606D511CB0D9ABDABF19CEBEB1D8F526C969"
+    },
+    {
+      "id": "seam-v2",
+      "reference": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\seam-v2.png",
+      "output": "tiles/seam-generated/seam-v2.png",
+      "prompt": "Use case: precise-object-edit.\nAsset type: seam repair strip for an already assembled game environment. The input is a 600 x 1500 vertical crop across a vertical join between two generated map tiles. Keep the exact same tall 2:5 framing and full content extent.\nRepair ONLY the visible join around the CENTRAL VERTICAL LINE (x=300 of the 600-pixel-wide input), primarily within x=200..400. Where an object, curb, lane dash, paving grid or shadow crosses the seam, reconstruct that small crossing continuously and cleanly. Remove doubled edges, mismatched halves, broken yellow curbs, interrupted white road dashes, discontinuous cream paving, local color mismatch and any soft blur stripe. The result should look as though both sides were painted together as one crisp, coherent continuous map.\nINVARIANTS: preserve the existing map layout, road centerlines, road widths, curb shapes, building footprints and heights, tree count and positions, plant containers, lamps, benches and every object's scale. Do not redesign the neighborhood. Do not add, remove, relocate, enlarge or replace objects. Outside the small central seam correction, preserve the original pixels and detail as closely as possible; especially the outermost 60 pixels of both side edges and the top and bottom 60 pixels must stay unchanged for stitching. Never draw a new strip of pavement or a wide blurred stripe to hide the seam. Do not blur or lower detail. No change in crop, camera, zoom, perspective, overall colors or lighting.\nMaintain exactly the original rounded toy-like 2.5D teal/cream/yellow materials, fixed overhead north-up view and soft upper-left light. Output ONE repaired full strip, opaque, same 2:5 aspect ratio, no labels, no border, no text, no crop margins, no before-after panels.",
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-248a1b83-1c72-4255-b19b-3d9c9cd0285c.png",
+      "generatedCanvasPx": [
+        793,
+        1983
+      ],
+      "referenceSha256": "7937F4F5A9472C81586BF96400CEEE5FAB5AC4DDF21A87267A86FAC72358030D",
+      "outputSha256": "9B721F8C75C640C715F54D0B29675BCBA198DB7E6671FED476EB773BE5F52D8B"
+    },
+    {
+      "id": "seam-v3",
+      "reference": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\seam-v3.png",
+      "output": "tiles/seam-generated/seam-v3.png",
+      "prompt": "Use case: precise-object-edit.\nAsset type: seam repair strip for an already assembled game environment. The input is a 600 x 1500 vertical crop across a vertical join between two generated map tiles. Keep the exact same tall 2:5 framing and full content extent.\nRepair ONLY the visible join around the CENTRAL VERTICAL LINE (x=300 of the 600-pixel-wide input), primarily within x=200..400. Where an object, curb, lane dash, paving grid or shadow crosses the seam, reconstruct that small crossing continuously and cleanly. Remove doubled edges, mismatched halves, broken yellow curbs, interrupted white road dashes, discontinuous cream paving, local color mismatch and any soft blur stripe. The result should look as though both sides were painted together as one crisp, coherent continuous map.\nINVARIANTS: preserve the existing map layout, road centerlines, road widths, curb shapes, building footprints and heights, tree count and positions, plant containers, lamps, benches and every object's scale. Do not redesign the neighborhood. Do not add, remove, relocate, enlarge or replace objects. Outside the small central seam correction, preserve the original pixels and detail as closely as possible; especially the outermost 60 pixels of both side edges and the top and bottom 60 pixels must stay unchanged for stitching. Never draw a new strip of pavement or a wide blurred stripe to hide the seam. Do not blur or lower detail. No change in crop, camera, zoom, perspective, overall colors or lighting.\nMaintain exactly the original rounded toy-like 2.5D teal/cream/yellow materials, fixed overhead north-up view and soft upper-left light. Output ONE repaired full strip, opaque, same 2:5 aspect ratio, no labels, no border, no text, no crop margins, no before-after panels.",
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-045fae57-3776-4e80-b2da-6e07a114a65e.png",
+      "generatedCanvasPx": [
+        793,
+        1983
+      ],
+      "referenceSha256": "C3E9AF28679C58368D23D36AFBC536619FD267AF1240A3904C2A70093F8D194D",
+      "outputSha256": "6A9AA14C50A55B1E37E1B34C23B4A61E2726AB204A51C3C064636E6A428C6B9A"
+    }
+  ],
+  "review": "Central hard joins and mismatched halves repaired with image_gen. All files preserve full vertical context and roughly 2:5 aspect. Image generation can alter fine texture outside the requested center; pixel invariance and final seamless assembly are not guaranteed. Technical compositor must normalize to the source rectangle and inspect external blend edges. No old low-resolution master border is embedded by this process."
+}

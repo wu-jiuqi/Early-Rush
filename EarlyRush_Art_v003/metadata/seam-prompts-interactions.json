@@ -1,0 +1,68 @@
+{
+  "schema": "early-rush-v003-seam-edits-1",
+  "date": "2026-11-11",
+  "tool": "built-in image_gen",
+  "scope": "Three local seam patches only; no technical reassembly",
+  "assets": [
+    {
+      "id": "seam-v4",
+      "input": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\seam-v4.png",
+      "output": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-generated\\seam-v4.png",
+      "sourceCanvas": [
+        600,
+        1500
+      ],
+      "mainSeam": "vertical x=300",
+      "prompt": "Use case: precise-object-edit. This is a seam-repair patch from an already assembled Early Rush game-map artwork, NOT a new map design. Preserve every existing building, tree, planter, bench, lamp, doorway, road and pavement in exactly its current position, size, orientation and count. Retain the cream/teal/yellow soft top-down toy illustration, crisp controlled detail and existing light direction. Repair only stitching discontinuities: discontinuous curb profiles, broken road dashes, split paving grids, doubled contour fragments and abrupt local material/color joins. Continue the existing geometry naturally through the seam, making a single unbroken road and curb. Keep ALL four outer edges and at least the outermost24pixels of the source exactly unchanged; do not crop, add a frame, change scale, move the camera or redesign any block. No people, text, icons, task markers, wheels, flip panels, target sign or task fixtures may be added back. No soft blur hiding the seam, no new decorative objects, no labels, no transparent background. Retain the input aspect ratio. Input is600x1500 portrait. Main seam is the vertical midline x=300 from top to bottom. Concentrate repairs in a narrow band around that line, especially where the upper horizontal road/curb crosses it, while retaining the long straight road on the left and all courtyard foliage on the right. Also repair the small visibly stitched material discontinuity near the top within the interior. Preserve the main road center x≈197 and its exact width. Output exactly the same tall2:5 composition.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-7559051a-d1c0-43ec-858b-626948c02600.png",
+      "inputSha256": "3f6ebcf984039dc31c31ab2eb1174ae63bf2c70d01ed2476734cd9a87fe079ba",
+      "outputSha256": "e3c4e5aee870d579f71b98993caf5861cf71783b5b364135fa21fe567231859a",
+      "generatedCanvas": [
+        793,
+        1983
+      ]
+    },
+    {
+      "id": "seam-h1-left",
+      "input": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\seam-h1-left.png",
+      "output": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-generated\\seam-h1-left.png",
+      "sourceCanvas": [
+        1460,
+        600
+      ],
+      "mainSeam": "horizontal y=300, vertical crossing x=1230",
+      "prompt": "Use case: precise-object-edit. This is a seam-repair patch from an already assembled Early Rush game-map artwork, NOT a new map design. Preserve every existing building, tree, planter, bench, lamp, doorway, road and pavement in exactly its current position, size, orientation and count. Retain the cream/teal/yellow soft top-down toy illustration, crisp controlled detail and existing light direction. Repair only stitching discontinuities: discontinuous curb profiles, broken road dashes, split paving grids, doubled contour fragments and abrupt local material/color joins. Continue the existing geometry naturally through the seam, making a single unbroken road and curb. Keep ALL four outer edges and at least the outermost24pixels of the source exactly unchanged; do not crop, add a frame, change scale, move the camera or redesign any block. No people, text, icons, task markers, wheels, flip panels, target sign or task fixtures may be added back. No soft blur hiding the seam, no new decorative objects, no labels, no transparent background. Retain the input aspect ratio. Input is1460x600 landscape. Main seam is horizontal y=300 through the middle; it creates an abrupt asphalt color join. A vertical stitching seam also crosses near x=1230, breaking the yellow curb and rooftop near the right side. Repair those two interior joins and their intersection. Align the existing yellow curb thickness, pale dashed road centerline, cream paving grid and split right-hand roof surface, while keeping the road's left and right turns and all furniture precisely where they already are. Output the same73:30 landscape aspect ratio.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-81a25afd-8690-41a0-9b5e-0d7f760df989.png",
+      "inputSha256": "31c299aef8f55e21e3224608426ea406e1949ed9d66d6813cc60d62eaa73cffd",
+      "outputSha256": "4291bf00d616deaa1afa0049eb6db2822ccab5ea3d1dd0df68d06a778efc5e18",
+      "generatedCanvas": [
+        1956,
+        804
+      ]
+    },
+    {
+      "id": "seam-h1-right",
+      "input": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\seam-h1-right.png",
+      "output": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-generated\\seam-h1-right.png",
+      "sourceCanvas": [
+        1460,
+        600
+      ],
+      "mainSeam": "horizontal y=300, vertical crossing near left x=30",
+      "prompt": "Use case: precise-object-edit. This is a seam-repair patch from an already assembled Early Rush game-map artwork, NOT a new map design. Preserve every existing building, tree, planter, bench, lamp, doorway, road and pavement in exactly its current position, size, orientation and count. Retain the cream/teal/yellow soft top-down toy illustration, crisp controlled detail and existing light direction. Repair only stitching discontinuities: discontinuous curb profiles, broken road dashes, split paving grids, doubled contour fragments and abrupt local material/color joins. Continue the existing geometry naturally through the seam, making a single unbroken road and curb. Keep ALL four outer edges and at least the outermost24pixels of the source exactly unchanged; do not crop, add a frame, change scale, move the camera or redesign any block. No people, text, icons, task markers, wheels, flip panels, target sign or task fixtures may be added back. No soft blur hiding the seam, no new decorative objects, no labels, no transparent background. Retain the input aspect ratio. Input is1460x600 landscape. Main seam is horizontal y=300 through the middle. Repair the disjoint asphalt/curb at the left turn, the abrupt paving joins, and the split building roof/body near the far right where that seam cuts through. A narrow vertical join lies near x=30 at the far left; repair only its interior portion without changing the outer24pixel boundary strip. Keep the left road bend, all rooftops, windows, planters and trees in exactly the same positions; no new windows or objects. Output the same73:30 landscape aspect ratio.",
+      "generatedSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c683-b13f-7963-926b-a07b0532d4cd\\exec-2a5a5506-b244-4619-b7fd-1f4723740fdd.png",
+      "inputSha256": "e0141e4d42051249de6ec4a5f975d38c7cbf6fedc667c15b6b91c717a500ba43",
+      "outputSha256": "decd1c071fc618722c600854a9f9686387ce43b992dcd15f1dd46122502a46d4",
+      "generatedCanvas": [
+        1956,
+        804
+      ]
+    }
+  ],
+  "review": {
+    "visualReview": "Central hard seams visually removed, curbs and asphalt/paving continued. No task objects or characters added. Original native generation dimensions retained.",
+    "edgeCaveat": "Outer-edge invariance was requested in prompts but is not a pixel-exact guarantee from generative editing. Outputs have larger native dimensions; do not treat native output as coordinate-identical without technical alignment/border preservation.",
+    "operations": "Only generated images copied to assigned paths. No technical reassembly, masking, resize or code painting performed.",
+    "toolCallsPerAsset": 1
+  }
+}

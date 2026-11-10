@@ -1,0 +1,48 @@
+{
+  "images": [
+    {
+      "nonOpaquePixels": 0,
+      "sha256": "0887bc5c129b090e16a5854eea20525f988012085254e275e4e9bec399faa483",
+      "fullyTransparentPixels": 0,
+      "size": [
+        2661,
+        5322
+      ],
+      "file": "previews/street-generated-ground-assembled.png"
+    },
+    {
+      "nonOpaquePixels": 0,
+      "sha256": "aa14823a08c48f281df9a9d4e27b9c2a407f7661aafdfb31c1b6ff5adf25cab2",
+      "fullyTransparentPixels": 0,
+      "size": [
+        2661,
+        5322
+      ],
+      "file": "previews/street-generated-full-assembled.png"
+    }
+  ],
+  "scope": "Pixel/dimension/hash checks only. Visual review separately checks task counts and seams; no gameplay or Unity validation.",
+  "tileCoverageExact": true,
+  "intentionalOverlayPairs": "5 flip faces and matching bases share rectangles; faces draw first. Two wheels and two green signals reuse assets at distinct positions.",
+  "duplicateOverlayIds": [],
+  "missingResources": [],
+  "masterBoundaryLockEnabled": false,
+  "warnings": [],
+  "overlayCount": 20,
+  "seamPatchCount": 13,
+  "tileCount": 8,
+  "duplicateFileAndRectPlacements": [],
+  "uniqueSourceFilesChecked": 31,
+  "tileArea": 14161842,
+  "declaredResourceCount": 14,
+  "canvasPx": [
+    2661,
+    5322
+  ],
+  "sourceHashFailures": [],
+  "tileDimensionFailures": [],
+  "overlappingTiles": [],
+  "schema": "early-rush-final-art-technical-validation-1",
+  "configurationSha256": "b0a3d1272fc42bae6873d18bf4e73068df91b1fe081bd12252fe897bda102469",
+  "canvasArea": 14161842
+}

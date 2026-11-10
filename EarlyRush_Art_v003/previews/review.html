@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Early Rush · 首关完整街区审片</title>
+<style>
+:root{color-scheme:light;--ink:#173f38;--muted:#60766e;--line:#d4dfd4;--paper:#f8f5e9;--teal:#237d6d;--yellow:#eec849}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}button,a,input{touch-action:manipulation}a{color:var(--teal)}button{font:inherit;cursor:pointer;border:1px solid var(--line);border-radius:9px;background:#fffdf4;color:var(--ink);padding:7px 12px}button:hover{border-color:var(--teal)}button[aria-pressed=true]{background:var(--teal);color:white;border-color:var(--teal)}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}header{padding:24px 28px 16px;max-width:1800px;margin:auto}header h1{font-size:26px;line-height:1.25;margin:5px 0 9px;font-weight:720;letter-spacing:.02em}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--teal)}header p{max-width:1000px;margin:0;color:var(--muted);font-size:14px}.toolbar{max-width:1800px;margin:auto;padding:0 28px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.view-buttons{display:flex;gap:5px;flex-wrap:wrap}.toolbar .spacer{flex:1}.zoom-control{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}input[type=range]{accent-color:var(--teal);width:115px}.viewer{height:76vh;min-height:440px;max-height:1200px;margin:0 28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;background:#dce2d4;box-shadow:0 7px 22px #143d2e09}.pane{position:relative;flex:1;min-width:0;overflow:hidden;cursor:grab;touch-action:none;user-select:none}.pane+.pane{border-left:2px solid var(--paper)}.pane.dragging{cursor:grabbing}.pane img{position:absolute;max-width:none;display:block;pointer-events:none;user-select:none;box-shadow:0 4px 25px #143d2e18}.pane-label{position:absolute;left:12px;top:12px;z-index:2;background:#fffcf0ed;border:1px solid #ffffffae;border-radius:7px;padding:5px 10px;font-size:12px;font-weight:650;pointer-events:none}.unavailable{position:absolute;bottom:14px;left:14px;background:#fff9e8;padding:8px 12px;border-radius:7px;display:none;font-size:12px}.pane.missing .unavailable{display:block}.hintline{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:9px 28px 22px}.hintline a{white-space:nowrap}main{max-width:1800px;margin:auto}.content{padding:0 28px 35px}.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:15px;margin:30px 0 12px}.section-head h2{font-size:19px;margin:0}.section-head p{font-size:12px;color:var(--muted);margin:0}.tiles{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}.assets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:10px;background:#fffdf5;overflow:hidden}.card .picture{display:block;aspect-ratio:1/1;overflow:hidden;background:#f2eddd}.card img{width:100%;height:100%;display:block;object-fit:contain}.tiles .card img{object-fit:cover}.card-content{padding:8px 10px}.card strong{display:block;font-size:12px;font-weight:650}.card small{font-size:11px;color:var(--muted)}.card-links{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;margin-top:5px}.note{margin-top:24px;background:#ecefe1;border-left:4px solid var(--teal);padding:15px 18px;font-size:13px}.note p{margin:0 0 7px}.note p:last-child{margin:0}.reference-links{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin-top:16px}footer{border-top:1px solid var(--line);padding:16px 28px 26px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.count{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}.empty-thumb{padding:16px;color:var(--muted);font-size:12px}
+@media(min-width:1800px){.viewer{max-width:1744px;margin-left:auto;margin-right:auto}}@media(max-width:1000px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.assets{grid-template-columns:repeat(4,minmax(0,1fr))}.toolbar .spacer{display:none}.viewer{height:68vh}}@media(max-width:600px){header{padding:20px 14px 13px}header h1{font-size:23px}.toolbar{padding:0 14px 12px;gap:7px}button{padding:6px 9px;font-size:13px}.viewer{margin:0 14px;min-height:380px}.hintline{margin-left:14px;margin-right:14px}.content{padding-left:14px;padding-right:14px}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.assets{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{align-items:start;flex-direction:column;gap:3px}.pane-label{left:5px;top:5px;padding:4px 5px;font-size:10px}.zoom-control input{width:80px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">EARLY RUSH / STREET DISTRICT / V003</div>
+  <h1>首关 · 完整街区</h1>
+  <p>从整张街区参考图出发，拆出地块和独立设施，再回拼检查。三个视图使用同一图像坐标；可放大查看局部，或同步对比整体与分区结果。</p>
+</header>
+<main>
+<div class="toolbar" aria-label="地图查看工具">
+  <div class="view-buttons" role="group" aria-label="图层视图">
+    <button data-mode="master" aria-pressed="false">完整参考图</button>
+    <button data-mode="ground" aria-pressed="false">地块回拼</button>
+    <button data-mode="full" aria-pressed="true">设施回拼</button>
+    <button data-mode="compare" aria-pressed="false">三图对比</button>
+  </div>
+  <span class="spacer"></span>
+  <button id="fit">适合窗口</button><button id="fitWidth">适合宽度</button>
+  <label class="zoom-control">缩放 <input id="zoom" type="range" min="10" max="400" value="40" aria-label="缩放比例"><output id="zoomValue">40%</output></label>
+  <button id="zoomIn" aria-label="放大">＋</button><button id="zoomOut" aria-label="缩小">−</button>
+</div>
+<div class="viewer" id="viewer" aria-label="可缩放和拖动的地图查看器"></div>
+<div class="hintline"><span>滚轮缩放 · 按住拖动 · 双击适合窗口 · 三图对比时同步移动</span><span id="openLinks"></span></div>
+<div class="content">
+  <div class="section-head"><h2>任务近景</h2><p>从最终设施回拼图裁出，未另外重绘。</p></div>
+  <div class="assets" id="detailGrid"></div>
+  <div class="section-head"><h2>8 个地块</h2><p>编号从左到右、从上到下。点击查看完整地块。</p></div>
+  <div class="tiles" id="tileGrid"></div>
+  <div class="section-head"><h2>独立设施与道具</h2><p>透明 PNG；人物与动态状态不烘焙进地面。</p></div>
+  <div class="assets" id="assetGrid"></div>
+  <div class="note">
+    <p><strong>查看边界：</strong>这是首关美术候选与离线回拼。完整参考图用于统一街区规模、路线观感和风格，并非当前游戏世界的逐像素映射；尚未导入 Unity，也未完成可达性与玩法验收。</p>
+    <p>地块接缝使用带上下文的独立生成修复图，再按边缘透明度合成；不复用低清参考图边缘来遮盖接缝。独立设施按回拼坐标放回场景；这不等同于已经建立碰撞、遮挡或互动规则。</p>
+  </div>
+  <div class="reference-links">
+    <a href="street-slicing-plan.png" target="_blank" rel="noopener">编号切分图</a>
+    <a href="../reference/original-design/stage-01-street-original.png" target="_blank" rel="noopener">原策划画风参考</a>
+    <a href="../reference/layout-guide/street-layout-guide-labeled.png" target="_blank" rel="noopener">现有关卡尺度对照</a>
+    <a href="../README.md" target="_blank" rel="noopener">交付说明</a>
+  </div>
+</div>
+</main>
+<footer><span>首关完整流程：总图 → 裁切与拆件 → 分区生成 → 组装复核</span><span>2026-11-11 · 本地文件，无外部依赖</span></footer>
+<script>
+'use strict';
+const images={master:{src:'../master/street-district-master-v2.png',label:'完整参考图'},ground:{src:'street-generated-ground-assembled.png',label:'地块回拼'},full:{src:'street-generated-full-assembled.png',label:'设施回拼'}};
+const viewer=document.getElementById('viewer');
+const logical={w:887,h:1774};
+const camera={x:443.5,y:887,scale:.4};
+let mode='full',drag=null;
+const zoomInput=document.getElementById('zoom'),zoomValue=document.getElementById('zoomValue');
+function update(){for(const pane of viewer.children){const img=pane.querySelector('img');img.style.width=`${logical.w*camera.scale}px`;img.style.height=`${logical.h*camera.scale}px`;img.style.left=`${pane.clientWidth/2-camera.x*camera.scale}px`;img.style.top=`${pane.clientHeight/2-camera.y*camera.scale}px`;}zoomInput.value=Math.round(camera.scale*100);zoomValue.textContent=`${Math.round(camera.scale*100)}%`;}
+function fit(widthOnly=false){const pane=viewer.firstElementChild;if(!pane)return;camera.scale=widthOnly?(pane.clientWidth-28)/logical.w:Math.min((pane.clientWidth-28)/logical.w,(pane.clientHeight-28)/logical.h);camera.x=logical.w/2;camera.y=logical.h/2;update();}
+function changeZoom(value,anchor){const next=Math.max(.08,Math.min(4,value));if(anchor){const {pane,x,y}=anchor;const worldX=camera.x+(x-pane.clientWidth/2)/camera.scale;const worldY=camera.y+(y-pane.clientHeight/2)/camera.scale;camera.x=worldX-(x-pane.clientWidth/2)/next;camera.y=worldY-(y-pane.clientHeight/2)/next;}camera.scale=next;update();}
+function setMode(next){mode=next;viewer.replaceChildren();const keys=mode==='compare'?['master','ground','full']:[mode];for(const key of keys){const data=images[key];const pane=document.createElement('div');pane.className='pane';pane.setAttribute('role','img');pane.setAttribute('aria-label',data.label);pane.tabIndex=0;const img=document.createElement('img');img.src=data.src;img.alt=data.label;img.draggable=false;img.addEventListener('error',()=>pane.classList.add('missing'));img.addEventListener('load',()=>pane.classList.remove('missing'));const label=document.createElement('span');label.className='pane-label';label.textContent=data.label;const missing=document.createElement('span');missing.className='unavailable';missing.textContent='此视图文件尚未生成';pane.append(img,label,missing);viewer.append(pane);pane.addEventListener('pointerdown',event=>{if(event.button!==0)return;event.preventDefault();pane.setPointerCapture(event.pointerId);pane.classList.add('dragging');drag={id:event.pointerId,pane,x:event.clientX,y:event.clientY,startX:camera.x,startY:camera.y};});pane.addEventListener('pointermove',event=>{if(!drag||drag.id!==event.pointerId)return;camera.x=drag.startX-(event.clientX-drag.x)/camera.scale;camera.y=drag.startY-(event.clientY-drag.y)/camera.scale;update();});const release=()=>{drag=null;pane.classList.remove('dragging');};pane.addEventListener('pointerup',release);pane.addEventListener('pointercancel',release);pane.addEventListener('wheel',event=>{event.preventDefault();const r=pane.getBoundingClientRect();changeZoom(camera.scale*Math.exp(-event.deltaY*.0015),{pane,x:event.clientX-r.left,y:event.clientY-r.top});},{passive:false});pane.addEventListener('dblclick',()=>fit());pane.addEventListener('keydown',event=>{const amount=80/camera.scale;if(event.key==='ArrowLeft')camera.x-=amount;else if(event.key==='ArrowRight')camera.x+=amount;else if(event.key==='ArrowUp')camera.y-=amount;else if(event.key==='ArrowDown')camera.y+=amount;else return;event.preventDefault();update();});}document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));const openLinks=document.getElementById('openLinks');openLinks.replaceChildren();keys.forEach((key,index)=>{if(index)openLinks.append(document.createTextNode(' · '));const a=document.createElement('a');a.href=images[key].src;a.target='_blank';a.rel='noopener';a.textContent=`打开${images[key].label}`;openLinks.append(a);});fit();}
+document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.mode)));
+document.getElementById('fit').addEventListener('click',()=>fit());document.getElementById('fitWidth').addEventListener('click',()=>fit(true));document.getElementById('zoomIn').addEventListener('click',()=>changeZoom(camera.scale*1.3));document.getElementById('zoomOut').addEventListener('click',()=>changeZoom(camera.scale/1.3));zoomInput.addEventListener('input',()=>changeZoom(Number(zoomInput.value)/100));new ResizeObserver(()=>update()).observe(viewer);
+function card(title,src,links){const article=document.createElement('article');article.className='card';const a=document.createElement('a');a.className='picture';a.href=src;a.target='_blank';a.rel='noopener';const img=document.createElement('img');img.src=src;img.alt=title;img.loading='lazy';a.append(img);const content=document.createElement('div');content.className='card-content';const strong=document.createElement('strong');strong.textContent=title;content.append(strong);const nav=document.createElement('div');nav.className='card-links';for(const [label,href]of links){const link=document.createElement('a');link.textContent=label;link.href=href;link.target='_blank';link.rel='noopener';nav.append(link);}content.append(nav);article.append(a,content);return article;}
+for(const[title,src]of [['早餐摊','detail-breakfast.png'],['受控过街','detail-crossing.png'],['自行车修理店','detail-repair.png'],['翻面挑战','detail-flip.png'],['地铁入口','detail-metro.png']])document.getElementById('detailGrid').append(card(title,src,[['查看近景',src]]));
+for(let n=1;n<=8;n++){const id=`tile-${String(n).padStart(2,'0')}`,selected=n===6?'tile-06-stopline-v2':id;document.getElementById('tileGrid').append(card(id,`../tiles/generated-bounded/${id}.png`,[['参考裁片',`../reference/crops/${id}.png`],['生成原图',`../tiles/source/${selected}.png`]]));}
+const assets=[
+ ['早餐摊','../assets/exported/facades/breakfast-stall.png'],['修车店','../assets/exported/facades/repair-shop.png'],['地铁入口','../assets/exported/facades/metro-entry.png'],['长椅','../assets/exported/facades/bench.png'],['树与花盆','../assets/exported/facades/tree-planter.png'],['低矮花箱','../assets/exported/facades/low-planter.png'],
+ ['独立车轮','../assets/exported/interactions/wheel.png'],['翻板底座','../assets/exported/interactions/flip-base.png'],['翻板正面','../assets/exported/interactions/flip-face-sun.png'],['翻板反面','../assets/exported/interactions/flip-face-moon.png'],['翻板目标牌','../assets/exported/interactions/flip-target.png'],['行人绿灯','../assets/exported/interactions/pedestrian-signal-green.png'],['行人红灯','../assets/exported/interactions/pedestrian-signal-red.png'],['地面检查框','../assets/exported/interactions/ground-zone-frame.png']
+];
+for(const[title,src]of assets)document.getElementById('assetGrid').append(card(title,src,[['透明 PNG',src]]));
+setMode('full');
+</script>
+</body>
+</html>

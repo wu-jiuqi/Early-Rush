@@ -1,0 +1,432 @@
+{
+  "schema": "early-rush-art-assembly-1",
+  "outputScale": 3,
+  "boundaryLock": {
+    "enabled": false,
+    "solidMasterPx": 8,
+    "featherMasterPx": 8
+  },
+  "tiles": [
+    {
+      "id": "tile-01",
+      "file": "tiles/source/tile-01.png"
+    },
+    {
+      "id": "tile-02",
+      "file": "tiles/source/tile-02.png"
+    },
+    {
+      "id": "tile-03",
+      "file": "tiles/source/tile-03.png"
+    },
+    {
+      "id": "tile-04",
+      "file": "tiles/source/tile-04.png"
+    },
+    {
+      "id": "tile-05",
+      "file": "tiles/source/tile-05.png"
+    },
+    {
+      "id": "tile-06",
+      "file": "tiles/source/tile-06-stopline-v2.png"
+    },
+    {
+      "id": "tile-07",
+      "file": "tiles/source/tile-07.png"
+    },
+    {
+      "id": "tile-08",
+      "file": "tiles/source/tile-08.png"
+    }
+  ],
+  "overlays": [
+    {
+      "id": "breakfast-pickup-frame",
+      "file": "assets/exported/interactions/ground-zone-frame.png",
+      "destinationRectMasterPx": [
+        488.1923076923077,
+        1471.8125,
+        104.61538461538461,
+        52.30769230769231
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "repair-target-frame",
+      "file": "assets/exported/interactions/ground-zone-frame.png",
+      "destinationRectMasterPx": [
+        269.03846153846155,
+        927.4375,
+        116.92307692307692,
+        58.46153846153846
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "breakfast-stall",
+      "file": "assets/exported/facades/breakfast-stall.png",
+      "destinationRectMasterPx": [
+        476.9065934065934,
+        1365.89010989011,
+        132.21978021978023,
+        132.21978021978023
+      ],
+      "placement": "Uniform full-canvas scaling with alpha128 visible bounds aligned to master; no trim or repaint."
+    },
+    {
+      "id": "repair-shop",
+      "file": "assets/exported/facades/repair-shop.png",
+      "destinationRectMasterPx": [
+        256.4925373134328,
+        827.2388059701492,
+        137.55223880597015,
+        137.55223880597015
+      ],
+      "placement": "Uniform full-canvas scaling with alpha128 visible bounds aligned to master; no trim or repaint."
+    },
+    {
+      "id": "metro-entry",
+      "file": "assets/exported/facades/metro-entry.png",
+      "destinationRectMasterPx": [
+        398.2113022113022,
+        7.115479115479115,
+        158.5061425061425,
+        158.5061425061425
+      ],
+      "placement": "Uniform full-canvas scaling with alpha128 visible bounds aligned to master; no trim or repaint."
+    },
+    {
+      "id": "wheel-a-loose",
+      "file": "assets/exported/interactions/wheel.png",
+      "destinationRectMasterPx": [
+        296.9387755102041,
+        970.734693877551,
+        26.122448979591837,
+        26.122448979591837
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "wheel-b-loose",
+      "file": "assets/exported/interactions/wheel.png",
+      "destinationRectMasterPx": [
+        350.9387755102041,
+        970.734693877551,
+        26.122448979591837,
+        26.122448979591837
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "flip-target",
+      "file": "assets/exported/interactions/flip-target.png",
+      "destinationRectMasterPx": [
+        231.684,
+        509.168,
+        69.632,
+        69.632
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "flip-face-1",
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "destinationRectMasterPx": [
+        200.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Same canvas transform as base. Mixed faces are visual demonstration, not a solvability claim."
+    },
+    {
+      "id": "flip-base-1",
+      "file": "assets/exported/interactions/flip-base.png",
+      "destinationRectMasterPx": [
+        200.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "flip-face-2",
+      "file": "assets/exported/interactions/flip-face-moon.png",
+      "destinationRectMasterPx": [
+        225.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Same canvas transform as base. Mixed faces are visual demonstration, not a solvability claim."
+    },
+    {
+      "id": "flip-base-2",
+      "file": "assets/exported/interactions/flip-base.png",
+      "destinationRectMasterPx": [
+        225.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "flip-face-3",
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "destinationRectMasterPx": [
+        250.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Same canvas transform as base. Mixed faces are visual demonstration, not a solvability claim."
+    },
+    {
+      "id": "flip-base-3",
+      "file": "assets/exported/interactions/flip-base.png",
+      "destinationRectMasterPx": [
+        250.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "flip-face-4",
+      "file": "assets/exported/interactions/flip-face-moon.png",
+      "destinationRectMasterPx": [
+        275.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Same canvas transform as base. Mixed faces are visual demonstration, not a solvability claim."
+    },
+    {
+      "id": "flip-base-4",
+      "file": "assets/exported/interactions/flip-base.png",
+      "destinationRectMasterPx": [
+        275.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "flip-face-5",
+      "file": "assets/exported/interactions/flip-face-sun.png",
+      "destinationRectMasterPx": [
+        300.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Same canvas transform as base. Mixed faces are visual demonstration, not a solvability claim."
+    },
+    {
+      "id": "flip-base-5",
+      "file": "assets/exported/interactions/flip-base.png",
+      "destinationRectMasterPx": [
+        300.5025641025641,
+        580.5846153846154,
+        28.882051282051282,
+        28.882051282051282
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "signal-left-green",
+      "file": "assets/exported/interactions/pedestrian-signal-green.png",
+      "destinationRectMasterPx": [
+        629.5925925925926,
+        1175.6296296296296,
+        94.81481481481481,
+        94.81481481481481
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    },
+    {
+      "id": "signal-right-green",
+      "file": "assets/exported/interactions/pedestrian-signal-green.png",
+      "destinationRectMasterPx": [
+        735.5925925925926,
+        1175.6296296296296,
+        94.81481481481481,
+        94.81481481481481
+      ],
+      "placement": "Uniform full-canvas scale; art image coordinates, not physics coordinates."
+    }
+  ],
+  "scope": "Image-space art reference reconstruction only. Not world collision data or Unity integration.",
+  "seamPatches": [
+    {
+      "id": "seam-v1",
+      "file": "tiles/seam-generated/seam-v1.png",
+      "destinationRectOutputPx": [
+        930,
+        0,
+        600,
+        1500
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-v2",
+      "file": "tiles/seam-generated/seam-v2.png",
+      "destinationRectOutputPx": [
+        930,
+        1274,
+        600,
+        1500
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-v3",
+      "file": "tiles/seam-generated/seam-v3.png",
+      "destinationRectOutputPx": [
+        930,
+        2548,
+        600,
+        1500
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-v4",
+      "file": "tiles/seam-generated/seam-v4.png",
+      "destinationRectOutputPx": [
+        930,
+        3822,
+        600,
+        1500
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-h1-left",
+      "file": "tiles/seam-generated/seam-h1-left.png",
+      "destinationRectOutputPx": [
+        0,
+        1020,
+        1460,
+        600
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-h1-right",
+      "file": "tiles/seam-generated/seam-h1-right.png",
+      "destinationRectOutputPx": [
+        1201,
+        1020,
+        1460,
+        600
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-h2-left",
+      "file": "tiles/seam-generated/seam-h2-left.png",
+      "destinationRectOutputPx": [
+        0,
+        2130,
+        1460,
+        600
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-h2-right",
+      "file": "tiles/seam-generated/seam-h2-right.png",
+      "destinationRectOutputPx": [
+        1201,
+        2130,
+        1460,
+        600
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-h3-left",
+      "file": "tiles/seam-generated/seam-h3-left.png",
+      "destinationRectOutputPx": [
+        0,
+        3555,
+        1460,
+        600
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "seam-h3-right",
+      "file": "tiles/seam-generated/seam-h3-right.png",
+      "destinationRectOutputPx": [
+        1201,
+        3555,
+        1460,
+        600
+      ],
+      "featherOutputPx": 60
+    },
+    {
+      "id": "road-fix-1",
+      "file": "tiles/seam-generated/road-fix-1.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "destinationRectOutputPx": [
+        1130,
+        1205,
+        200,
+        200
+      ],
+      "featherOutputPx": 16,
+      "note": "The selected inner200 of280 context maps to native1254 crop [179,179,896,896], with subpixel rounding only."
+    },
+    {
+      "id": "road-fix-2",
+      "file": "tiles/seam-generated/road-fix-2.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "destinationRectOutputPx": [
+        1130,
+        2210,
+        200,
+        200
+      ],
+      "featherOutputPx": 16,
+      "note": "The selected inner200 of280 context maps to native1254 crop [179,179,896,896], with subpixel rounding only."
+    },
+    {
+      "id": "road-fix-3",
+      "file": "tiles/seam-generated/road-fix-3.png",
+      "sourceRectPx": [
+        179,
+        179,
+        896,
+        896
+      ],
+      "destinationRectOutputPx": [
+        1130,
+        3770,
+        200,
+        200
+      ],
+      "featherOutputPx": 16,
+      "note": "The selected inner200 of280 context maps to native1254 crop [179,179,896,896], with subpixel rounding only."
+    }
+  ]
+}

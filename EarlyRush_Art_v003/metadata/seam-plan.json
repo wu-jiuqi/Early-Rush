@@ -1,0 +1,153 @@
+{
+  "source": "previews/street-generated-ground-unlocked.png",
+  "sourceSha256": "6bba821ee40c7f09e0724723e90b143ec8f66278aaf8ec79cc70df6041cf98f5",
+  "schema": "early-rush-seam-repair-plan-1",
+  "composition": "image_gen creates repair art from each context crop; technical placement blends outer 60 output pixels except at the full-canvas perimeter. No original low-resolution master edge pixels are reintroduced.",
+  "seams": [
+    {
+      "featherOutputPx": 60,
+      "axis": "vertical",
+      "order": 0,
+      "input": "tiles/seam-inputs/seam-v1.png",
+      "rect": [
+        930,
+        0,
+        600,
+        1500
+      ],
+      "inputSha256": "58893b34cb727495007d4970133376ab0172ae1e2fa9c44cf0ceea545bac6173",
+      "id": "seam-v1"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "vertical",
+      "order": 1,
+      "input": "tiles/seam-inputs/seam-v2.png",
+      "rect": [
+        930,
+        1274,
+        600,
+        1500
+      ],
+      "inputSha256": "7937f4f5a9472c81586bf96400ceee5fab5ac4ddf21a87267a86fac72358030d",
+      "id": "seam-v2"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "vertical",
+      "order": 2,
+      "input": "tiles/seam-inputs/seam-v3.png",
+      "rect": [
+        930,
+        2548,
+        600,
+        1500
+      ],
+      "inputSha256": "c3e9af28679c58368d23d36afbc536619fd267af1240a3904c2a70093f8d194d",
+      "id": "seam-v3"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "vertical",
+      "order": 3,
+      "input": "tiles/seam-inputs/seam-v4.png",
+      "rect": [
+        930,
+        3822,
+        600,
+        1500
+      ],
+      "inputSha256": "3f6ebcf984039dc31c31ab2eb1174ae63bf2c70d01ed2476734cd9a87fe079ba",
+      "id": "seam-v4"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "horizontal",
+      "order": 4,
+      "input": "tiles/seam-inputs/seam-h1-left.png",
+      "rect": [
+        0,
+        1020,
+        1460,
+        600
+      ],
+      "inputSha256": "31c299aef8f55e21e3224608426ea406e1949ed9d66d6813cc60d62eaa73cffd",
+      "id": "seam-h1-left"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "horizontal",
+      "order": 5,
+      "input": "tiles/seam-inputs/seam-h1-right.png",
+      "rect": [
+        1201,
+        1020,
+        1460,
+        600
+      ],
+      "inputSha256": "e0141e4d42051249de6ec4a5f975d38c7cbf6fedc667c15b6b91c717a500ba43",
+      "id": "seam-h1-right"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "horizontal",
+      "order": 6,
+      "input": "tiles/seam-inputs/seam-h2-left.png",
+      "rect": [
+        0,
+        2130,
+        1460,
+        600
+      ],
+      "inputSha256": "11466863bd9306dd8f2deefcf003189b2a7e8a485121fa79357f4e6a5ca9ebb0",
+      "id": "seam-h2-left"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "horizontal",
+      "order": 7,
+      "input": "tiles/seam-inputs/seam-h2-right.png",
+      "rect": [
+        1201,
+        2130,
+        1460,
+        600
+      ],
+      "inputSha256": "fb9b674454632274edf567881de37e30926dc68f9a3c12bace4bd9d989b04b54",
+      "id": "seam-h2-right"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "horizontal",
+      "order": 8,
+      "input": "tiles/seam-inputs/seam-h3-left.png",
+      "rect": [
+        0,
+        3555,
+        1460,
+        600
+      ],
+      "inputSha256": "b599d451c3d82c8dd65299b65e20cc6ef897555c89982da41120c2f69010ffcb",
+      "id": "seam-h3-left"
+    },
+    {
+      "featherOutputPx": 60,
+      "axis": "horizontal",
+      "order": 9,
+      "input": "tiles/seam-inputs/seam-h3-right.png",
+      "rect": [
+        1201,
+        3555,
+        1460,
+        600
+      ],
+      "inputSha256": "88fddb51d054b1842f35379429732ca76a70556a3da7d2de603a71c598172d34",
+      "id": "seam-h3-right"
+    }
+  ],
+  "canvasPx": [
+    2661,
+    5322
+  ],
+  "order": "Four vertical repair strips, then six horizontal repair strips, listed in order."
+}

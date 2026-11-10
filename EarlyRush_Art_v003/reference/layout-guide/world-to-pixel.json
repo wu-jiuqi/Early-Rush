@@ -1,0 +1,316 @@
+{
+  "schema": "early-rush-large-layout-guide-1",
+  "seed": 91026,
+  "stage": 0,
+  "source": "EarlyRush_Art_v002/metadata/layouts/layout-stage-0.json",
+  "sourceSha256": "c97f833b0c0341e5cd83c91a01004f1501155b9f2610d94778dd62ee40bde1d2",
+  "purpose": "Non-artistic layout guide for image generation. This is not generated environment art or a gameplay screenshot.",
+  "canvasPx": [
+    1024,
+    2048
+  ],
+  "worldBounds": {
+    "minY": -10.0,
+    "maxY": 335.0,
+    "maxX": 90.0,
+    "minX": -90.0
+  },
+  "transform": {
+    "pixelsPerWorldUnit": 5.688888888888889,
+    "worldToPixelX": "offsetX+(worldX-minX)*pixelsPerWorldUnit",
+    "offsetPx": [
+      0.0,
+      42.66666666666663
+    ],
+    "worldToPixelY": "offsetY+(maxY-worldY)*pixelsPerWorldUnit"
+  },
+  "walkableBounds": {
+    "cells": 10824,
+    "maxY": 321.5,
+    "minY": -4.5,
+    "minX": -78.5,
+    "maxX": 78.5,
+    "height": 326.0,
+    "width": 157.0
+  },
+  "route": [
+    {
+      "x": 0.0,
+      "y": 0.0
+    },
+    {
+      "x": 0.0,
+      "y": 56.0
+    },
+    {
+      "x": 61.0,
+      "y": 56.0
+    },
+    {
+      "x": 61.0,
+      "y": 123.0
+    },
+    {
+      "x": 3.0,
+      "y": 123.0
+    },
+    {
+      "x": 3.0,
+      "y": 180.0
+    },
+    {
+      "x": -61.0,
+      "y": 180.0
+    },
+    {
+      "x": -61.0,
+      "y": 248.0
+    },
+    {
+      "x": 5.0,
+      "y": 248.0
+    },
+    {
+      "x": 5.0,
+      "y": 316.0
+    }
+  ],
+  "routeLengthWorldUnits": 565.0,
+  "segments": [
+    {
+      "start": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "length": 56.0,
+      "index": 0,
+      "end": {
+        "x": 0.0,
+        "y": 56.0
+      },
+      "kind": "residential-court"
+    },
+    {
+      "start": {
+        "x": 0.0,
+        "y": 56.0
+      },
+      "length": 61.0,
+      "index": 1,
+      "end": {
+        "x": 61.0,
+        "y": 56.0
+      },
+      "kind": "shop-avenue"
+    },
+    {
+      "start": {
+        "x": 61.0,
+        "y": 56.0
+      },
+      "length": 67.0,
+      "index": 2,
+      "end": {
+        "x": 61.0,
+        "y": 123.0
+      },
+      "kind": "signal-junction"
+    },
+    {
+      "start": {
+        "x": 61.0,
+        "y": 123.0
+      },
+      "length": 58.0,
+      "index": 3,
+      "end": {
+        "x": 3.0,
+        "y": 123.0
+      },
+      "kind": "market-square"
+    },
+    {
+      "start": {
+        "x": 3.0,
+        "y": 123.0
+      },
+      "length": 57.0,
+      "index": 4,
+      "end": {
+        "x": 3.0,
+        "y": 180.0
+      },
+      "kind": "repair-block"
+    },
+    {
+      "start": {
+        "x": 3.0,
+        "y": 180.0
+      },
+      "length": 64.0,
+      "index": 5,
+      "end": {
+        "x": -61.0,
+        "y": 180.0
+      },
+      "kind": "cycle-garden"
+    },
+    {
+      "start": {
+        "x": -61.0,
+        "y": 180.0
+      },
+      "length": 68.0,
+      "index": 6,
+      "end": {
+        "x": -61.0,
+        "y": 248.0
+      },
+      "kind": "puzzle-court"
+    },
+    {
+      "start": {
+        "x": -61.0,
+        "y": 248.0
+      },
+      "length": 66.0,
+      "index": 7,
+      "end": {
+        "x": 5.0,
+        "y": 248.0
+      },
+      "kind": "station-square"
+    },
+    {
+      "start": {
+        "x": 5.0,
+        "y": 248.0
+      },
+      "length": 68.0,
+      "index": 8,
+      "end": {
+        "x": 5.0,
+        "y": 316.0
+      },
+      "kind": "station-approach"
+    }
+  ],
+  "tasks": [
+    {
+      "index": 0,
+      "center": {
+        "x": 23.0,
+        "y": 28.0
+      },
+      "checkpoints": [],
+      "start": {
+        "x": 21.0,
+        "y": 21.0
+      },
+      "target": {
+        "x": 26.0,
+        "y": 35.0
+      },
+      "entrance": {
+        "x": 0.0,
+        "y": 13.0
+      },
+      "rejoin": {
+        "x": 0.0,
+        "y": 43.0
+      },
+      "routeDistance": 13.0,
+      "kind": "breakfast"
+    },
+    {
+      "index": 1,
+      "center": {
+        "x": -20.0,
+        "y": 151.5
+      },
+      "checkpoints": [],
+      "start": {
+        "x": -18.0,
+        "y": 144.5
+      },
+      "target": {
+        "x": -23.0,
+        "y": 158.5
+      },
+      "entrance": {
+        "x": 3.0,
+        "y": 136.5
+      },
+      "rejoin": {
+        "x": 3.0,
+        "y": 166.5
+      },
+      "routeDistance": 255.5,
+      "kind": "repair"
+    },
+    {
+      "index": 2,
+      "center": {
+        "x": -38.0,
+        "y": 214.0
+      },
+      "checkpoints": [],
+      "start": {
+        "x": -40.0,
+        "y": 207.0
+      },
+      "target": {
+        "x": -35.0,
+        "y": 221.0
+      },
+      "entrance": {
+        "x": -61.0,
+        "y": 199.0
+      },
+      "rejoin": {
+        "x": -61.0,
+        "y": 229.0
+      },
+      "routeDistance": 382.0,
+      "kind": "flip"
+    }
+  ],
+  "spawn": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "exit": {
+    "x": 5.0,
+    "y": 316.0
+  },
+  "signal": {
+    "x": 61.0,
+    "y": 113.0
+  },
+  "exampleView": {
+    "width": 26.6666666666667,
+    "height": 15.0,
+    "cameraOrthographicSize": 7.5,
+    "screenPx": [
+      1280,
+      720
+    ],
+    "center": {
+      "y": 100.0,
+      "x": -45.0
+    }
+  },
+  "colors": {
+    "fixedStructureFootprint": "#78968C",
+    "outsideNonWalkable": "#D9DFD5",
+    "walkableMainLane": "#929795",
+    "walkableSideAreas": "#F6ECD8"
+  },
+  "constraints": [
+    "Preserve continuous main route and task branch/rejoin connections.",
+    "The outside color is nonwalkable context; ornamental buildings may fill it without creating new playable shortcuts.",
+    "Art may use softer corners but must not silently redraw collision or route data.",
+    "The rectangular view is a scale comparison, not a constraint on final map camera placement.",
+    "No art has been painted by this script."
+  ]
+}

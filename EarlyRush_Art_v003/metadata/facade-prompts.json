@@ -1,0 +1,309 @@
+{
+  "schema": "early-rush-map-extraction-1",
+  "status": "six generated and technically exported candidates; not imported or user-approved",
+  "method": "built-in image_gen, source crops and full master; technical uniform scale only",
+  "jobs": [
+    {
+      "id": "breakfast-stall",
+      "crop": "breakfast",
+      "rect": [
+        490,
+        1385,
+        105,
+        94
+      ],
+      "detail": "Extract only the single small breakfast stall exactly as shown. Preserve its rounded emerald/teal awning roof, centered cream bun pictogram medallion (no text), alternating cream and teal vertical awning scallops, two cream posts, wood counter, two bamboo bun steamers and small cream tray. Keep the subtle teal and cream body, same near-top-down front-facing view and exact compact proportions. Remove surrounding pavement, ground interaction rectangle, every neighboring plant/building and any other object. Do not add person, signage text, floor slab, platform, or back wall beyond what this stall itself contains.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\breakfast.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "prompt": "Use case: background-extraction.\nAsset type: a single separate PNG environment sprite for an existing map, genuine transparent background.\nInput 1 is the EXACT target object crop from an current district master; Input 2 shows its full district context. Treat this as precise asset EXTRACTION and clean high-resolution reconstruction of the SAME object, not redesign. Extract only the single small breakfast stall exactly as shown. Preserve its rounded emerald/teal awning roof, centered cream bun pictogram medallion (no text), alternating cream and teal vertical awning scallops, two cream posts, wood counter, two bamboo bun steamers and small cream tray. Keep the subtle teal and cream body, same near-top-down front-facing view and exact compact proportions. Remove surrounding pavement, ground interaction rectangle, every neighboring plant/building and any other object. Do not add person, signage text, floor slab, platform, or back wall beyond what this stall itself contains.\nPreserve the original rounded toy-like 2.5D rendering, teal/cream/yellow palette, clean soft material, consistent top-left light, small soft contact shadow and north-up near-overhead orthographic scene grammar. No isometric rotation or perspective recession. All parts fully inside canvas with transparent safety margin. Center the one object and make it about 78% of the canvas width. Output one clear sharp 1024px square image on TRUE ALPHA, never a checkerboard, white rectangle or colored background. Keep the contact shadow minimal and confined near its feet. No caption, no frame, no surrounding scene.",
+      "export": {
+        "source": "assets/source/facades/breakfast-stall.png",
+        "output": "assets/exported/facades/breakfast-stall.png",
+        "sourceCanvasPx": [
+          1254,
+          1254
+        ],
+        "canvasPx": [
+          512,
+          512
+        ],
+        "scale": 0.4082934609250399,
+        "alpha128Bbox": [
+          69,
+          74,
+          370,
+          364
+        ],
+        "transparentFraction": 0.48804473876953125,
+        "edgeAlphaMax": 1,
+        "sourceSha256": "8D00167F29186AC467031C81041FDE8086165E5FD67162436822A7483413376D",
+        "outputSha256": "16148AC1B9CD8E61E5B7613C6E678E5C9719DE16B3821C6BCE1EF686BE719560",
+        "masterVisibleRect": [
+          490,
+          1385,
+          105,
+          94
+        ],
+        "placementNote": "Visible-body guide rectangle in the district master pixels, not a world collision or runtime pivot; use alpha bbox for compositing, preserve aspect ratio."
+      },
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-4310c8f2-fb6c-4cc5-82de-c7ba90539651.png"
+    },
+    {
+      "id": "repair-shop",
+      "crop": "repair",
+      "rect": [
+        272,
+        849,
+        106,
+        90
+      ],
+      "detail": "Extract only the single compact bicycle repair booth. Preserve its rounded teal roof with a small white bicycle pictogram, striped cream/teal awning, two cream posts, dark teal back interior, a yellow bicycle frame mounted inside and a teal toolbox at the right. Same front-facing high overhead orthographic view and exact compact proportions. The TWO LOOSE WHEELS outside and ground dashed target are separate gameplay assets and MUST NOT be included. No exterior pavement, no ground slab, no neighboring trees, no labels or extra object.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\repair.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "prompt": "Use case: background-extraction.\nAsset type: a single separate PNG environment sprite for an existing map, genuine transparent background.\nInput 1 is the EXACT target object crop from an current district master; Input 2 shows its full district context. Treat this as precise asset EXTRACTION and clean high-resolution reconstruction of the SAME object, not redesign. Extract only the single compact bicycle repair booth. Preserve its rounded teal roof with a small white bicycle pictogram, striped cream/teal awning, two cream posts, dark teal back interior, a yellow bicycle frame mounted inside and a teal toolbox at the right. Same front-facing high overhead orthographic view and exact compact proportions. The TWO LOOSE WHEELS outside and ground dashed target are separate gameplay assets and MUST NOT be included. No exterior pavement, no ground slab, no neighboring trees, no labels or extra object.\nPreserve the original rounded toy-like 2.5D rendering, teal/cream/yellow palette, clean soft material, consistent top-left light, small soft contact shadow and north-up near-overhead orthographic scene grammar. No isometric rotation or perspective recession. All parts fully inside canvas with transparent safety margin. Center the one object and make it about 78% of the canvas width. Output one clear sharp 1024px square image on TRUE ALPHA, never a checkerboard, white rectangle or colored background. Keep the contact shadow minimal and confined near its feet. No caption, no frame, no surrounding scene.",
+      "export": {
+        "source": "assets/source/facades/repair-shop.png",
+        "output": "assets/exported/facades/repair-shop.png",
+        "sourceCanvasPx": [
+          1254,
+          1254
+        ],
+        "canvasPx": [
+          512,
+          512
+        ],
+        "scale": 0.4082934609250399,
+        "alpha128Bbox": [
+          67,
+          81,
+          376,
+          335
+        ],
+        "transparentFraction": 0.5503616333007812,
+        "edgeAlphaMax": 1,
+        "sourceSha256": "3D8BB65FBA510229536F11F8CBFE5FFF439AEB0EBAAE5F5854153C7B570330A3",
+        "outputSha256": "D71DA08F5EFDD41EA060E5480BCB63B4C439F96B74E2CC60133C360C0AAFE9F6",
+        "masterVisibleRect": [
+          272,
+          849,
+          106,
+          90
+        ],
+        "placementNote": "Visible-body guide rectangle in the district master pixels, not a world collision or runtime pivot; use alpha bbox for compositing, preserve aspect ratio."
+      },
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-816be4e4-4bd7-4dcf-bf26-2e2ac1de3658.png"
+    },
+    {
+      "id": "metro-entry",
+      "crop": "metro",
+      "rect": [
+        414,
+        26,
+        126,
+        110
+      ],
+      "detail": "Extract only the single rounded subway entrance arch at the top of the district. Preserve teal rounded arch mass, cream trim, small white train pictogram, slim yellow accents, cream side pillars and small teal/yellow bollards belonging to entrance. Center opening must be genuinely open and transparent for game characters to pass through; don't fill it with a solid blue panel or wall. Preserve the high overhead front-facing orthographic view, source silhouette, proportions and subtle upper-left shading. Include a narrow yellow threshold lip if attached to entrance itself, but no asphalt road, sidewalk paving, trees, other buildings or wide ground base.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\metro.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "prompt": "Use case: background-extraction.\nAsset type: a single separate PNG environment sprite for an existing map, genuine transparent background.\nInput 1 is the EXACT target object crop from an current district master; Input 2 shows its full district context. Treat this as precise asset EXTRACTION and clean high-resolution reconstruction of the SAME object, not redesign. Extract only the single rounded subway entrance arch at the top of the district. Preserve teal rounded arch mass, cream trim, small white train pictogram, slim yellow accents, cream side pillars and small teal/yellow bollards belonging to entrance. Center opening must be genuinely open and transparent for game characters to pass through; don't fill it with a solid blue panel or wall. Preserve the high overhead front-facing orthographic view, source silhouette, proportions and subtle upper-left shading. Include a narrow yellow threshold lip if attached to entrance itself, but no asphalt road, sidewalk paving, trees, other buildings or wide ground base.\nPreserve the original rounded toy-like 2.5D rendering, teal/cream/yellow palette, clean soft material, consistent top-left light, small soft contact shadow and north-up near-overhead orthographic scene grammar. No isometric rotation or perspective recession. All parts fully inside canvas with transparent safety margin. Center the one object and make it about 78% of the canvas width. Output one clear sharp 1024px square image on TRUE ALPHA, never a checkerboard, white rectangle or colored background. Keep the contact shadow minimal and confined near its feet. No caption, no frame, no surrounding scene.",
+      "export": {
+        "source": "assets/source/facades/metro-entry.png",
+        "output": "assets/exported/facades/metro-entry.png",
+        "sourceCanvasPx": [
+          1254,
+          1254
+        ],
+        "canvasPx": [
+          512,
+          512
+        ],
+        "scale": 0.4082934609250399,
+        "alpha128Bbox": [
+          51,
+          61,
+          407,
+          386
+        ],
+        "transparentFraction": 0.5743141174316406,
+        "edgeAlphaMax": 1,
+        "sourceSha256": "3B35B4AB4784FAA426B95EC011DA326AA2B5CC5596DC886E218C44208E73F164",
+        "outputSha256": "52A16F1544E5AA67F571FD50CA92906AE9A7F907A93C3F1E15464051FA2E7459",
+        "masterVisibleRect": [
+          414,
+          26,
+          126,
+          110
+        ],
+        "placementNote": "Visible-body guide rectangle in the district master pixels, not a world collision or runtime pivot; use alpha bbox for compositing, preserve aspect ratio.",
+        "openingAlphaAtOutputPx240_300": 1
+      },
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-6a8dc788-af4d-4583-b04b-37a9a31690db.png"
+    },
+    {
+      "id": "bench",
+      "crop": "bench",
+      "rect": [
+        195,
+        483,
+        43,
+        24
+      ],
+      "detail": "Extract only the small horizontal blond-wood public bench with green/teal rounded side supports shown in the crop. Preserve its five-ish horizontal wood slats, compact backrest and two side arms/legs. Same front-facing high overhead view and proportions. No trees, plants, pavement, floor slab or other props. It is one full bench with both end supports completely visible.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\bench.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "prompt": "Use case: background-extraction.\nAsset type: a single separate PNG environment sprite for an existing map, genuine transparent background.\nInput 1 is the EXACT target object crop from an current district master; Input 2 shows its full district context. Treat this as precise asset EXTRACTION and clean high-resolution reconstruction of the SAME object, not redesign. Extract only the small horizontal blond-wood public bench with green/teal rounded side supports shown in the crop. Preserve its five-ish horizontal wood slats, compact backrest and two side arms/legs. Same front-facing high overhead view and proportions. No trees, plants, pavement, floor slab or other props. It is one full bench with both end supports completely visible.\nPreserve the original rounded toy-like 2.5D rendering, teal/cream/yellow palette, clean soft material, consistent top-left light, small soft contact shadow and north-up near-overhead orthographic scene grammar. No isometric rotation or perspective recession. All parts fully inside canvas with transparent safety margin. Center the one object and make it about 78% of the canvas width. Output one clear sharp 1024px square image on TRUE ALPHA, never a checkerboard, white rectangle or colored background. Keep the contact shadow minimal and confined near its feet. No caption, no frame, no surrounding scene.",
+      "export": {
+        "source": "assets/source/facades/bench.png",
+        "output": "assets/exported/facades/bench.png",
+        "sourceCanvasPx": [
+          1254,
+          1254
+        ],
+        "canvasPx": [
+          512,
+          512
+        ],
+        "scale": 0.4082934609250399,
+        "alpha128Bbox": [
+          70,
+          164,
+          372,
+          184
+        ],
+        "transparentFraction": 0.7973060607910156,
+        "edgeAlphaMax": 0,
+        "sourceSha256": "942659291EC34FA59DA5FDD16508496BE35EDE4E42042924AE6351B85E9100AC",
+        "outputSha256": "32DD08A3C97D279D2688284553A57AD1BEEFBD302F5821D900A89C60CF8A3C2A",
+        "masterVisibleRect": [
+          195,
+          483,
+          43,
+          24
+        ],
+        "placementNote": "Visible-body guide rectangle in the district master pixels, not a world collision or runtime pivot; use alpha bbox for compositing, preserve aspect ratio."
+      },
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-bb839c30-5eeb-4e1a-9c71-91097da23329.png"
+    },
+    {
+      "id": "tree-planter",
+      "crop": "tree",
+      "rect": [
+        374,
+        147,
+        43,
+        65
+      ],
+      "detail": "Extract only the single small tree in a cream rounded SQUARE planter from the crop. Preserve the clustered rounded lime-green canopy, darker lower foliage, short brown trunk and cream square raised planter with visible dark soil. Match same exact source tree silhouette and view, not a newly designed larger lollipop tree. Remove neighboring plant/tree edges and pavement. No floor slab or extra shrubs outside the planter.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\tree.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "prompt": "Use case: background-extraction.\nAsset type: a single separate PNG environment sprite for an existing map, genuine transparent background.\nInput 1 is the EXACT target object crop from an current district master; Input 2 shows its full district context. Treat this as precise asset EXTRACTION and clean high-resolution reconstruction of the SAME object, not redesign. Extract only the single small tree in a cream rounded SQUARE planter from the crop. Preserve the clustered rounded lime-green canopy, darker lower foliage, short brown trunk and cream square raised planter with visible dark soil. Match same exact source tree silhouette and view, not a newly designed larger lollipop tree. Remove neighboring plant/tree edges and pavement. No floor slab or extra shrubs outside the planter.\nPreserve the original rounded toy-like 2.5D rendering, teal/cream/yellow palette, clean soft material, consistent top-left light, small soft contact shadow and north-up near-overhead orthographic scene grammar. No isometric rotation or perspective recession. All parts fully inside canvas with transparent safety margin. Center the one object and make it about 78% of the canvas width. Output one clear sharp 1024px square image on TRUE ALPHA, never a checkerboard, white rectangle or colored background. Keep the contact shadow minimal and confined near its feet. No caption, no frame, no surrounding scene.",
+      "export": {
+        "source": "assets/source/facades/tree-planter.png",
+        "output": "assets/exported/facades/tree-planter.png",
+        "sourceCanvasPx": [
+          1254,
+          1254
+        ],
+        "canvasPx": [
+          512,
+          512
+        ],
+        "scale": 0.4082934609250399,
+        "alpha128Bbox": [
+          143,
+          42,
+          226,
+          365
+        ],
+        "transparentFraction": 0.7627525329589844,
+        "edgeAlphaMax": 0,
+        "sourceSha256": "5324D88830F6B3DF25000EB9141ACA5D67FC114274D99E09953E763B0A5BE0E3",
+        "outputSha256": "29D58DFEE6C1BB7AB10FEBAE69F3CD180A6E0979F095FCB23335B3C3CD9CD263",
+        "masterVisibleRect": [
+          374,
+          147,
+          43,
+          65
+        ],
+        "placementNote": "Visible-body guide rectangle in the district master pixels, not a world collision or runtime pivot; use alpha bbox for compositing, preserve aspect ratio."
+      },
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-f83a9cc0-1c69-4c25-935d-f59941973c89.png",
+      "revision": {
+        "reason": "First generation added decorative flower motifs on the planter that were not in the master; selected revision restores plain cream square planter.",
+        "previousSource": "assets/source/facades/tree-planter-v1.png",
+        "prompt": "Use case: precise-object-edit. Input 1 is the generated transparent tree sprite to edit. Input 2 is the EXACT original tree in the district master. Change ONLY the planter: replace its added green/yellow painted body and all flower ornaments with the plain unpainted CREAM rounded square planter in Input 2. Remove decorative motifs completely. Keep the entire tree canopy, trunk, view, lighting and transparent background unchanged. The planter should be shallow and squat like the reference, not a tall decorated pot. Do not add anything. Genuine transparent alpha background, clean edges.",
+        "references": [
+          "assets/source/facades/tree-planter-v1.png",
+          "props/crops/tree.png"
+        ],
+        "tool": "built-in image_gen"
+      }
+    },
+    {
+      "id": "low-planter",
+      "crop": "planter",
+      "rect": [
+        200,
+        228,
+        58,
+        28
+      ],
+      "detail": "Extract only the LOW WIDE rectangular rounded cream flower planter at the bottom of the crop, containing small green shrubs with white five-petal flowers and yellow centers. DO NOT include the separate tall tree behind it. Preserve the low horizontal rectangular container, exact cream rim, green leaves, white flowers, source proportions and high overhead frontal view. No pavement, no floor slab, no other plants outside its own container.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\props\\crops\\planter.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\master\\street-district-master-v2.png"
+      ],
+      "prompt": "Use case: background-extraction.\nAsset type: a single separate PNG environment sprite for an existing map, genuine transparent background.\nInput 1 is the EXACT target object crop from an current district master; Input 2 shows its full district context. Treat this as precise asset EXTRACTION and clean high-resolution reconstruction of the SAME object, not redesign. Extract only the LOW WIDE rectangular rounded cream flower planter at the bottom of the crop, containing small green shrubs with white five-petal flowers and yellow centers. DO NOT include the separate tall tree behind it. Preserve the low horizontal rectangular container, exact cream rim, green leaves, white flowers, source proportions and high overhead frontal view. No pavement, no floor slab, no other plants outside its own container.\nPreserve the original rounded toy-like 2.5D rendering, teal/cream/yellow palette, clean soft material, consistent top-left light, small soft contact shadow and north-up near-overhead orthographic scene grammar. No isometric rotation or perspective recession. All parts fully inside canvas with transparent safety margin. Center the one object and make it about 78% of the canvas width. Output one clear sharp 1024px square image on TRUE ALPHA, never a checkerboard, white rectangle or colored background. Keep the contact shadow minimal and confined near its feet. No caption, no frame, no surrounding scene.",
+      "export": {
+        "source": "assets/source/facades/low-planter.png",
+        "output": "assets/exported/facades/low-planter.png",
+        "sourceCanvasPx": [
+          1254,
+          1254
+        ],
+        "canvasPx": [
+          512,
+          512
+        ],
+        "scale": 0.4082934609250399,
+        "alpha128Bbox": [
+          61,
+          198,
+          390,
+          143
+        ],
+        "transparentFraction": 0.6762809753417969,
+        "edgeAlphaMax": 1,
+        "sourceSha256": "841136A87374ED16755D13AFA6CF858D62E0792BCD4FFC2234EA2D8BDBD03DC8",
+        "outputSha256": "12EE463F0AD72F2C5AC0C4DF4B1033D7E32015C3052F749FB0AFB3BAF402B662",
+        "masterVisibleRect": [
+          200,
+          228,
+          58,
+          28
+        ],
+        "placementNote": "Visible-body guide rectangle in the district master pixels, not a world collision or runtime pivot; use alpha bbox for compositing, preserve aspect ratio."
+      },
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-58e2b563-718a-40eb-a82a-b72330c3e58b.png"
+    }
+  ],
+  "technicalExport": "Uniform full-canvas scale to 512x512. No trim, background removal, recoloring, repainting or shape edit. Alpha preserved. Contact sheet is normal compositing on cream for inspection.",
+  "review": {
+    "count": 6,
+    "creamCompositeInspected": true,
+    "wideWhiteHaloSeen": false,
+    "edgeAlphaMaximum": 1,
+    "metroOpeningAlpha": 1,
+    "notes": "Full-canvas alpha preserved. Some generated hidden low-alpha RGB looks noisy in raw viewer; normal compositing is clean. All master placements are approximate image-space visible bounds, not collision or world mapping. Reconstruction can differ slightly in geometry from tiny master crop. Metro opening deliberately transparent instead of baked blue background. No Unity import or in-game approval."
+  }
+}

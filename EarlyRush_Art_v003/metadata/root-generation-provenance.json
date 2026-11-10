@@ -1,0 +1,110 @@
+{
+  "schema": "early-rush-v003-root-generation-provenance-1",
+  "date": "2026-11-11",
+  "tool": "built-in image_gen",
+  "userApproval": false,
+  "masters": [
+    {
+      "file": "master/street-master-v1.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-4668079f-c235-439b-8103-979fbaf294a1.png",
+      "prompt": "metadata/master-prompt.txt",
+      "status": "rejected by user: geographic extent too small"
+    },
+    {
+      "file": "master/street-district-master-v2.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-f2b98cc6-bb3b-4322-8b17-214052d22f51.png",
+      "prompt": "metadata/large-master-prompt.txt",
+      "status": "selected reference candidate, user art approval pending",
+      "nativeCanvas": [
+        887,
+        1774
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "id": "tile-01",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-01.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-0164840c-bb87-4566-9483-3ea67dbb5dc7.png"
+    },
+    {
+      "id": "tile-02",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-02.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-ea80108d-c4e4-45ce-a800-e3a5c02b0437.png"
+    },
+    {
+      "id": "tile-03",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-03.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-197c0e1e-68cb-428e-a338-9d236ba30eb9.png"
+    },
+    {
+      "id": "tile-04",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-04.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-ebcba9db-610a-4656-aefa-6e9e016641ec.png"
+    },
+    {
+      "id": "tile-05",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-05.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-8ddc4635-83c6-43e3-8bcd-2baeaaf9844b.png"
+    },
+    {
+      "id": "tile-06",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-06.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-47f2bd96-bee6-40c4-a9e3-824fbe196c88.png"
+    },
+    {
+      "id": "tile-07",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-07.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-f6125437-4060-4d11-8080-e949ea5c878c.png"
+    },
+    {
+      "id": "tile-08",
+      "promptSet": "metadata/tile-prompts.json",
+      "source": "tiles/source/tile-08.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-bcb10c4b-47a4-4b89-9abb-63074ef14ddf.png"
+    }
+  ],
+  "crossingRevision": {
+    "selected": "tiles/source/tile-06-stopline-v2.png",
+    "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-ba79e2a3-e2e0-4e5d-9c57-6623bd5f864b.png",
+    "prompt": "metadata/crossing-revision-prompt.txt"
+  },
+  "seamRepairs": [
+    {
+      "id": "seam-h2-left",
+      "promptSet": "metadata/seam-prompts-root.json",
+      "file": "tiles/seam-generated/seam-h2-left.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-bd115db5-7de9-41a8-bf7d-eb777af50643.png"
+    },
+    {
+      "id": "seam-h2-right",
+      "promptSet": "metadata/seam-prompts-root.json",
+      "file": "tiles/seam-generated/seam-h2-right.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-e198a678-ce64-470a-b751-2b2287ccc353.png"
+    },
+    {
+      "id": "seam-h3-left",
+      "promptSet": "metadata/seam-prompts-root.json",
+      "file": "tiles/seam-generated/seam-h3-left.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-e246dda0-9eec-4846-bcd6-69c991c45ac9.png"
+    },
+    {
+      "id": "seam-h3-right",
+      "promptSet": "metadata/seam-prompts-root.json",
+      "file": "tiles/seam-generated/seam-h3-right.png",
+      "nativeSource": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-23e56d61-7945-4730-9fb0-756e922058cd.png"
+    }
+  ],
+  "notes": [
+    "Prompts are exact historical generation inputs. Any generated prompt wording such as approved-composition means the selected working reference only, not user approval.",
+    "Native generation sizes differ from prompt requests; final composite dimensions are recorded separately.",
+    "All artistic regeneration and seam repair used image_gen. Code only created geometric guides, crops, resampling, alpha composition and diagnostics."
+  ]
+}

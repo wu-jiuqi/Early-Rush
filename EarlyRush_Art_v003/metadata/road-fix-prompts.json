@@ -1,0 +1,68 @@
+{
+  "schema": "early-rush-local-road-fix-1",
+  "status": "three single-pass local corrections generated; central white dash ghosts removed; no repeated generation",
+  "source": "previews/street-generated-ground-assembled.png",
+  "tool": "built-in image_gen",
+  "composition": "Root will normalize output to 280x280, use inner200x200 offset40, feather outer16px; no composition performed by this agent.",
+  "jobs": [
+    {
+      "id": "road-fix-1",
+      "reference": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\road-fix-1.png",
+      "sourceRect": [
+        1090,
+        1165,
+        280,
+        280
+      ],
+      "output": "tiles/seam-generated/road-fix-1.png",
+      "prompt": "Use case: precise-object-edit.\nInput is one 280 x 280 pixel context crop from a finished top-down stylized game map. Make a very small seam correction ONLY at the central white lane dash near pixel (140,140). It has a faint double/ghost white stroke; replace the doubled mark with ONE clean opaque short white dash matching the thickness, length, rounded corners, spacing, direction and brightness of the neighboring road dashes. Remove only its ghost copy and reconstruct the same asphalt behind it. If the same central seam makes a tiny discontinuity in the yellow curb, join that small edge cleanly without moving the curb.\nPreserve every other aspect: road width and curvature, all lane markings elsewhere, curb width and location, pavement grid, objects, colors, existing asphalt texture, soft lighting, camera and framing. Do not redesign or retexture the whole road. Keep the entire outermost 60 pixels unchanged for stitching. No added objects, no removed surrounding details, no extra markings, no blur stripe or broad smudge. Keep correction confined to the central small ghost mark, and keep the exact full input square extent.\nOutput one opaque square 1:1 repaired context image, no border, no labels, no before-after.",
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-d8394606-bad2-4e9f-b5bf-9bf83a93b311.png",
+      "generatedCanvasPx": [
+        1254,
+        1254
+      ],
+      "referenceSha256": "215596DC5030AA163E73B0C2D5543DCC1BCE8129D033BF4D20944A9344C9DCCB",
+      "outputSha256": "05AEF4107E5067F79963EB03FFF262255A5AA9E954294297A9668717CCBACAB6"
+    },
+    {
+      "id": "road-fix-2",
+      "reference": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\road-fix-2.png",
+      "sourceRect": [
+        1090,
+        2170,
+        280,
+        280
+      ],
+      "output": "tiles/seam-generated/road-fix-2.png",
+      "prompt": "Use case: precise-object-edit.\nInput is one 280 x 280 pixel context crop from a finished top-down stylized game map. Make a very small seam correction ONLY at the central white lane dash near pixel (140,140). It has a faint double/ghost white stroke; replace the doubled mark with ONE clean opaque short white dash matching the thickness, length, rounded corners, spacing, direction and brightness of the neighboring road dashes. Remove only its ghost copy and reconstruct the same asphalt behind it. If the same central seam makes a tiny discontinuity in the yellow curb, join that small edge cleanly without moving the curb.\nPreserve every other aspect: road width and curvature, all lane markings elsewhere, curb width and location, pavement grid, objects, colors, existing asphalt texture, soft lighting, camera and framing. Do not redesign or retexture the whole road. Keep the entire outermost 60 pixels unchanged for stitching. No added objects, no removed surrounding details, no extra markings, no blur stripe or broad smudge. Keep correction confined to the central small ghost mark, and keep the exact full input square extent.\nOutput one opaque square 1:1 repaired context image, no border, no labels, no before-after.",
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-848abe9a-61a0-443e-8cba-9f791e1b05bd.png",
+      "generatedCanvasPx": [
+        1254,
+        1254
+      ],
+      "referenceSha256": "03E72054970300F207D0628A72670F730CA0B5FB0C7EA761E9DF63FB10F78ED1",
+      "outputSha256": "6B0F932454378A542E6D1C0729CF4DACB2256D9D10E702633EE0DE467D6556DA"
+    },
+    {
+      "id": "road-fix-3",
+      "reference": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v003\\tiles\\seam-inputs\\road-fix-3.png",
+      "sourceRect": [
+        1090,
+        3730,
+        280,
+        280
+      ],
+      "output": "tiles/seam-generated/road-fix-3.png",
+      "prompt": "Use case: precise-object-edit.\nInput is one 280 x 280 pixel context crop from a finished top-down stylized game map. Make a very small seam correction ONLY at the central white lane dash near pixel (140,140). It has a faint double/ghost white stroke; replace the doubled mark with ONE clean opaque short white dash matching the thickness, length, rounded corners, spacing, direction and brightness of the neighboring road dashes. Remove only its ghost copy and reconstruct the same asphalt behind it. If the same central seam makes a tiny discontinuity in the yellow curb, join that small edge cleanly without moving the curb.\nPreserve every other aspect: road width and curvature, all lane markings elsewhere, curb width and location, pavement grid, objects, colors, existing asphalt texture, soft lighting, camera and framing. Do not redesign or retexture the whole road. Keep the entire outermost 60 pixels unchanged for stitching. No added objects, no removed surrounding details, no extra markings, no blur stripe or broad smudge. Keep correction confined to the central small ghost mark, and keep the exact full input square extent.\nOutput one opaque square 1:1 repaired context image, no border, no labels, no before-after.",
+      "generatedOriginalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c691-5f5a-7980-bdff-0173c5f1f5b5\\exec-3b776fc3-a908-47bc-979e-e3153d1ebd53.png",
+      "generatedCanvasPx": [
+        1254,
+        1254
+      ],
+      "referenceSha256": "3AB8CF6A0DDDEDF3AF0BE2D6AFA4C38DCBA36749E4FA2EC875651C0F0A9D687D",
+      "outputSha256": "500A732852C63795CE2EDFC659FD4E03B219E0218A8D3614B18574B4C49DEC3A"
+    }
+  ],
+  "sourceSha256": "BD0C307ABCF8E63F3EA91C1AD72DDCB83236FD8C9AA07DE3A231A02B4FC892D8",
+  "review": "All three central ghost dashes replaced with single white marks. road-fix-2 retains some pre-existing soft alignment around the yellow curb; this is recorded rather than repeatedly regenerated. Surrounding fine texture can differ slightly after generative editing. Final composition and external blend review are owned by root."
+}
