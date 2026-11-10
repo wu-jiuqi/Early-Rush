@@ -1,0 +1,3 @@
+﻿BEFORE id=3017 coffee=(11.84, 109.90) player=(11.84, 108.95) playerWalkable=False coffeeState=Carrying ai=Walking preferred=(-0.74, 0.68) destination=(7.00, 141.00) task=Active distance=0.9499969
+AFTER coffee=(11.82, 109.96) player=(11.84, 108.95) playerWalkable=False coffeeState=Carrying ai=Walking spilled=False task=Active count=0 distance=1.009265 velocity=(0.00, 3.60)
+CONTACT id=-1 at=(11.84, 108.95) time=0.0166666675359011

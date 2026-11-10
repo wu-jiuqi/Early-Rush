@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/EarlyRushV12.unity
-    guid: 14e81c07be8d7ff4e872b009852ac3b0
+    path: Assets/Scenes/EarlyRushV13.unity
+    guid: ef73a45e328a4e54caf12d386cfc5295
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

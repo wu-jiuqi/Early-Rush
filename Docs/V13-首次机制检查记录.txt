@@ -1,0 +1,27 @@
+Early Rush V13 validation
+UTC: 2026-11-10T18:19:42.9692075Z
+Scope: mechanisms only; no route completion claim
+Default stage deadline: 420 seconds. Seed: 91026
+Model/map: FAILED System.InvalidOperationException: V9 test failed: coffee unique spill above threshold fails
+  at EarlyRush.V9.RushTestsV9.Check (System.Boolean yes, System.String label) [0x00020] in D:\AI NAS\Early-Rush\Assets\Scripts\V9\RushTestsV9.cs:10 
+  at EarlyRush.V9.RushTestsV9.ContactFixtures () [0x00328] in D:\AI NAS\Early-Rush\Assets\Scripts\V9\RushTestsV9.cs:139 
+  at EarlyRush.V9.RushTestsV9.RunAll (System.Int32 seeds) [0x0032e] in D:\AI NAS\Early-Rush\Assets\Scripts\V9\RushTestsV9.cs:33 
+  at BuildEarlyRushV13+<>c__DisplayClass7_0.<ValidateInternal>b__1 () [0x00000] in D:\AI NAS\Early-Rush\Assets\Editor\BuildEarlyRushV13.cs:39 
+  at BuildEarlyRushV13+<>c__DisplayClass7_0.<ValidateInternal>b__0 (System.String name, System.Func`1[TResult] test) [0x00000] in D:\AI NAS\Early-Rush\Assets\Editor\BuildEarlyRushV13.cs:36 
+Action mechanisms: 43 checks passed
+Dash cadence and input buffer: 80 checks passed
+Independent pedestrian mechanisms: 9686 checks passed
+Route crowd coverage: 4741 checks passed
+Dash impact mechanisms: 25 checks passed
+Coffee mechanisms: 312 checks passed
+Minimap projection: 321 checks passed
+Camera numeric regression: 6 checks passed
+Density stage=0 population=760 radius=8 denseMean=25.13 calmMean=19.70 samplePeak=38 taskWorkspaceActors=0 fixedHotspotViewportCounts=61/61/65/60 wholeRoute={stage=0 seconds=0.00 population=760 routeSampleStep=12 viewport=26.6667x15 eligible=45 excluded=1 visibleMin=13 p10=14 median=25 max=64 empty=0 below6=0 longestEmptySampledM=0 longestBelow6SampledM=0 junctionMean=39.39 connectorMean=24.52 bypassActors=0}
+Map seed=91026 stage=0: 1 checks passed
+Density stage=1 population=900 radius=8 denseMean=29.75 calmMean=22.80 samplePeak=45 taskWorkspaceActors=0 fixedHotspotViewportCounts=75/73/71/73 wholeRoute={stage=1 seconds=0.00 population=900 routeSampleStep=12 viewport=26.6667x15 eligible=44 excluded=2 visibleMin=14 p10=19 median=30 max=73 empty=0 below6=0 longestEmptySampledM=0 longestBelow6SampledM=0 junctionMean=47.71 connectorMean=28.67 bypassActors=0}
+Map seed=91026 stage=1: 1 checks passed
+Density stage=2 population=700 radius=8 denseMean=22.38 calmMean=18.05 samplePeak=37 taskWorkspaceActors=0 fixedHotspotViewportCounts=57/55/57/56 wholeRoute={stage=2 seconds=0.00 population=700 routeSampleStep=12 viewport=26.6667x15 eligible=42 excluded=4 visibleMin=11 p10=13 median=25 max=59 empty=0 below6=0 longestEmptySampledM=0 longestBelow6SampledM=0 junctionMean=37.24 connectorMean=22.36 bypassActors=0}
+Map seed=91026 stage=2: 1 checks passed
+Assertions include repeated actor/map checks, not independent test-case counts. Replays use actual input and unchanged task rules; they are not human timing or FPS evidence.
+Wall-clock seconds: 58.27
+Passed: False
