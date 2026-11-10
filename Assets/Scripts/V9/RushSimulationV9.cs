@@ -88,7 +88,7 @@ namespace EarlyRush.V9
         void Log(string type,int id=-1){telemetry.Add(new TelemetryV9{time=elapsed,type=type,id=id,position=player});}
         void Cue(string kind){Log(kind);onCue?.Invoke(kind);}
         public void Begin(){if(phase==RunPhase.Ready){phase=RunPhase.Playing;Log("begin");}}
-        public void Pause(){if(phase==RunPhase.Playing){phase=RunPhase.Paused;velocity=Vector2.zero;boost=0;Log("pause");}}
+        public void Pause(){if(phase==RunPhase.Playing){CancelPlayerActionInput();phase=RunPhase.Paused;velocity=Vector2.zero;boost=0;Log("pause");}}
         public void Resume(){if(phase==RunPhase.Paused){phase=RunPhase.Playing;velocity=Vector2.zero;Log("resume");}}
         void SetState(int index,TaskState state){var t=tasks[index];if(t.done||t.state==TaskState.Failed||t.state==state)return;t.state=state;if(state==TaskState.Active)t.startedAt=elapsed;Log(t.id+":"+state);if(!(stage==1&&index==0&&state!=TaskState.Failed))onCue?.Invoke(state==TaskState.Complete?"task":state==TaskState.Failed?"task-fail":"start");}
         public void Rescue(int bodyId)
@@ -369,7 +369,7 @@ namespace EarlyRush.V9
         {
             if(phase!=RunPhase.Playing)return;success=onTime&&elapsed<=limit+1e-8;
             if(stage==2&&success&&tasks[0].state==TaskState.Active)SetState(0,TaskState.Complete);
-            stars=Score(success,Completed);phase=RunPhase.Results;velocity=Vector2.zero;eventKind="";Cue(success?"win":"late");
+            stars=Score(success,Completed);CancelPlayerActionInput();phase=RunPhase.Results;velocity=Vector2.zero;eventKind="";Cue(success?"win":"late");
         }
     }
 }
