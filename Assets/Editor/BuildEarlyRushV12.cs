@@ -112,38 +112,43 @@ public static class BuildEarlyRushV12
     [MenuItem("Early Rush/V12/Quick Checks and Preview Build")]
     public static void BuildPreview() { ValidateQuick(); BuildPlayer(); }
 
-    // Focused follow-up after coffee-only logic fixes; this does not replace full validation.
+    // Focused follow-ups retain other-stage evidence; they do not replace full validation.
     [MenuItem("Early Rush/V12/Validate Coffee and Office Follow-up")]
-    public static void ValidateOfficeFollowup()
+    public static void ValidateOfficeFollowup() { ValidateStageFollowup(2,"office",true); }
+
+    [MenuItem("Early Rush/V12/Validate Street Input Follow-up")]
+    public static void ValidateStreetFollowup() { ValidateStageFollowup(0,"street",false); }
+
+    static void ValidateStageFollowup(int stage,string label,bool checkCoffee)
     {
         string output = Destination + "/QA";
         Directory.CreateDirectory(output);
-        var report = new StringBuilder("Early Rush V12 coffee/office follow-up\n");
+        var report = new StringBuilder("Early Rush V12 " + label + " follow-up\n");
         report.AppendLine("UTC: " + DateTime.UtcNow.ToString("o", Invariant));
-        report.AppendLine("Scope: final coffee-state changes, default population and unchanged 420-second office input routes. Other-stage evidence remains in validation.txt.");
-        int checks = RushCoffeeAITestsV12.RunAll();
-        report.AppendLine("Coffee mechanisms: " + checks + " checks passed");
+        report.AppendLine("Scope: focused stage=" + stage + " replay with default population and unchanged 420-second deadline. Other-stage evidence remains in validation.txt.");
+        if(checkCoffee)report.AppendLine("Coffee mechanisms: " + RushCoffeeAITestsV12.RunAll() + " checks passed");
         bool success = true;
         foreach (bool allTasks in new[] { false, true })
         {
-            var route = allTasks ? RushTestsV9.ReplayAllTasks(2, RouteSeed) : RushTestsV9.ReplayMainline(2, RouteSeed);
+            var route = allTasks ? RushTestsV9.ReplayAllTasks(stage, RouteSeed) : RushTestsV9.ReplayMainline(stage, RouteSeed);
             bool passed = route.success && route.elapsed <= new ConfigV9().stageLimit + .00001 && (!allTasks || route.completed == 3);
             string kind = allTasks ? "all-tasks" : "mainline";
-            string line = kind + " stage=2 seed=" + RouteSeed + " success=" + passed + " seconds=" + route.elapsed.ToString("F2", Invariant) +
+            string line = kind + " stage=" + stage + " seed=" + RouteSeed + " success=" + passed + " seconds=" + route.elapsed.ToString("F2", Invariant) +
                 " contacts=" + route.contacts + (allTasks ? " completed=" + route.completed + " states=" + string.Join("|", route.taskStates ?? new string[0]) : "") +
                 " reason=" + route.reason;
-            success &= passed; report.AppendLine(line); Debug.Log("V12_OFFICE_FOLLOWUP " + line);
+            success &= passed; report.AppendLine(line); Debug.Log("V12_"+label.ToUpperInvariant()+"_FOLLOWUP " + line);
             var trace = new StringBuilder("time,type,id,x,y\n");
             foreach (var entry in route.trace)
                 trace.AppendLine(string.Join(",", entry.time.ToString(Invariant), entry.type, entry.id.ToString(Invariant), entry.position.x.ToString(Invariant), entry.position.y.ToString(Invariant)));
-            File.WriteAllText(output + "/followup-" + kind + "-stage-2.csv", trace.ToString());
+            File.WriteAllText(output + "/followup-" + kind + "-stage-" + stage + ".csv", trace.ToString());
         }
         report.AppendLine("Passed: " + success);
-        File.WriteAllText(output + "/validation-office-followup.txt", report.ToString());
-        if (!success) throw new Exception("V12 office follow-up failed");
+        File.WriteAllText(output + "/validation-"+label+"-followup.txt", report.ToString());
+        if (!success) throw new Exception("V12 "+label+" follow-up failed");
     }
 
     public static void BuildAfterOfficeFollowup() { ValidateOfficeFollowup(); BuildPlayer(); }
+    public static void BuildAfterStreetFollowup() { ValidateStreetFollowup(); BuildPlayer(); }
 
     public static void BuildPlayer()
     {

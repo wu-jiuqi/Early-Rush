@@ -200,16 +200,22 @@ namespace EarlyRush.V9
                 if(!body.done)return EndReplay(run,result,"Wheel push route stuck id="+body.id);
             }
             if(!run.bicycle)return EndReplay(run,result,"Two wheels did not grant bike");
-            int solution=-1;
-            for(int mask=0;mask<32;mask++)
+            // The bicycle can brush a board while braking into the task bay. Arrive below the
+            // row before reading it, then solve the observed state again after every real touch.
+            if(!MoveTo(run,run.map.tasks[2].center-Vector2.up*4,30,out reason))return EndReplay(run,result,reason);
+            for(int attempt=0;attempt<12&&!run.tasks[2].done&&run.phase==RunPhase.Playing;attempt++)
             {
-                var state=(bool[])run.boards.Clone();for(int i=0;i<5;i++)if((mask&(1<<i))!=0)for(int j=Mathf.Max(0,i-1);j<=Mathf.Min(4,i+1);j++)state[j]=!state[j];
-                bool solved=true;for(int i=0;i<5;i++)solved&=state[i]==run.boardGoal[i];if(solved){solution=mask;break;}
-            }
-            if(solution<0)return EndReplay(run,result,"No flip solution");
-            foreach(var f in run.fixtures)if(f.kind==FixtureKind.FlipBoard&&(solution&(1<<f.index))!=0)
-            {
-                if(!MoveTo(run,f.position-Vector2.up*2,30,out reason))return EndReplay(run,result,reason);
+                int solution=CurrentFlipSolution(run);
+                if(solution<0)return EndReplay(run,result,"No solution for observed flip state");
+                if(solution==0){run.Tick(1f/60,Vector2.zero);break;}
+                FixtureV9 f=null;foreach(var candidate in run.fixtures)
+                    if(candidate.kind==FixtureKind.FlipBoard&&(solution&(1<<candidate.index))!=0){f=candidate;break;}
+                if(f==null)return EndReplay(run,result,"Observed flip solution has no matching board");
+                if(!MoveTo(run,f.position-Vector2.up*2.5f,30,out reason))return EndReplay(run,result,reason);
+                // Navigation itself is physical input too: an incidental touch invalidates the
+                // old plan. Do not apply a cached operation to an already changed board state.
+                if(run.tasks[2].done)break;
+                if(CurrentFlipSolution(run)!=solution)continue;
                 // Detect a real new contact rather than assuming a fixed input duration reached it.
                 int before=ContactCount(run,f.id);double started=run.elapsed;
                 while(ContactCount(run,f.id)==before&&run.phase==RunPhase.Playing&&run.elapsed-started<3)run.Tick(1f/60,Vector2.up);
@@ -219,6 +225,18 @@ namespace EarlyRush.V9
             if(!run.tasks[2].done)return EndReplay(run,result,"Flip input route failed to solve");
             if(!MoveTo(run,run.map.exit,30,out reason))return EndReplay(run,result,reason);
             return EndReplay(run,result,"Street input route finished; not timing acceptance");
+        }
+        static int CurrentFlipSolution(RunV9 run)
+        {
+            for(int mask=0;mask<(1<<run.boards.Length);mask++)
+            {
+                var state=(bool[])run.boards.Clone();
+                for(int i=0;i<state.Length;i++)if((mask&(1<<i))!=0)
+                    for(int j=Mathf.Max(0,i-1);j<=Mathf.Min(state.Length-1,i+1);j++)state[j]=!state[j];
+                bool solved=true;for(int i=0;i<state.Length;i++)solved&=state[i]==run.boardGoal[i];
+                if(solved)return mask;
+            }
+            return -1;
         }
         static bool CrowdRisk(RunV9 run,PersonV9 person)
         {
