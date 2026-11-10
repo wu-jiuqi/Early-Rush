@@ -13,15 +13,20 @@ namespace EarlyRush.V9
         readonly List<SpriteRenderer> people=new List<SpriteRenderer>(), bodies=new List<SpriteRenderer>(), fixtures=new List<SpriteRenderer>(), dirt=new List<SpriteRenderer>(), decor=new List<SpriteRenderer>();
         readonly List<UnityEngine.Object> owned=new List<UnityEngine.Object>();
         readonly Dictionary<string,Tile[]> tileSets=new Dictionary<string,Tile[]>();
-        Vector3 cameraVelocity;Vector2 cameraAnchor;int seed=91026;bool fullMap,help,qa,panorama,recorded;int selected=-1;
+        public RushCameraV10 cameraFollow = new RushCameraV10();
+        [Range(5f, 12f)] public float cameraSize = 7.5f;
+        int seed=91026;bool fullMap,help,qa,panorama,recorded;int selected=-1;
+        readonly bool[] failureShown=new bool[3];string notice="";double noticeUntil;
+        float uiScale=1;Vector2 uiOffset;Texture2D triangle;
+        Vector2 ViewHalf => new Vector2(cam.orthographicSize*cam.aspect,cam.orthographicSize);
         Font font;GUIStyle label,small,title;Texture2D mapTexture;
         Rect mapBounds;Color ink=new Color(.08f,.23f,.25f),cream=new Color(.99f,.97f,.9f),gold=new Color(1,.8f,.2f);
         string[] names={"早高峰 · 街道","换乘 · 地铁","上班 · 公司"};
-        string[] stageIcons={"legacy-icons/bike","legacy-icons/train","legacy-icons/clock"};
+        string[] stageIcons={"people/boy-up","legacy-icons/train","legacy-icons/clock"};
         void Awake()
         {
             Application.targetFrameRate=60;QualitySettings.vSyncCount=1;
-            cam=new GameObject("V9 Fixed North Camera").AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=7.5f;
+            cam=new GameObject("V9 Fixed North Camera").AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=cameraSize;
             cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.39f,.6f,.53f);cam.nearClipPlane=.1f;cam.farClipPlane=80;
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
@@ -34,9 +39,17 @@ namespace EarlyRush.V9
             if(world)Destroy(world.gameObject);foreach(var o in owned)if(o)Destroy(o);owned.Clear();tileSets.Clear();
             people.Clear();bodies.Clear();fixtures.Clear();dirt.Clear();decor.Clear();
             if(mapTexture)Destroy(mapTexture);world=new GameObject("V9 Stage "+stage).transform;
-            seed=nextSeed;selected=-1;recorded=false;run=new RunV9(stage,seed);BuildWorld();
-            cameraAnchor=run.player;cameraVelocity=Vector3.zero;cam.transform.position=new Vector3(run.player.x,run.player.y,-30);
+            seed=nextSeed;selected=-1;recorded=false;notice="";Array.Clear(failureShown,0,failureShown.Length);
+            run=new RunV9(stage,seed);BuildWorld();
+            cameraFollow.Reset(run.player,mapBounds,ViewHalf);
+            cam.transform.position=new Vector3(cameraFollow.Position.x,cameraFollow.Position.y,-30);
             Debug.Log("V9_PRESENTATION_READY stage="+stage+" cells="+run.map.cells.Count+" seed="+seed);
+        }
+        // Static review framing only; gameplay never calls this during a running stage.
+        public void FrameForReview()
+        {
+            cameraFollow.Reset(run.player,mapBounds,ViewHalf);
+            cam.transform.position=new Vector3(cameraFollow.Position.x,cameraFollow.Position.y,-30);
         }
         System.Collections.IEnumerator CapturePanoramas()
         {
@@ -164,7 +177,7 @@ namespace EarlyRush.V9
             ArtV8.Create(world,"ui/selection",run.map.exit,3.2f,ArtV8.GroundMarkOrder+1);
             if(run.stage==1){train=ArtV8.Create(world,"metro/train-closed",run.map.trainDoor+Vector2.up*1.5f,7);decor.Add(train);}
             else train=null;
-            hero=ArtV8.Create(world,run.stage==0?"bike-feedback/bike-up":"people/boy-up",run.player,run.stage==0?1.25f:1.05f);
+            hero=ArtV8.Create(world,"people/boy-up",run.player,1.05f);
             SyncEntities();CreateMapTexture();
         }
         void GroundDetail(string key,Vector2 position,float width,float rotation=0)
@@ -239,12 +252,20 @@ namespace EarlyRush.V9
             if(!qa)
             {
                 if(Time.unscaledDeltaTime>1&&run.phase==RunPhase.Playing)run.Pause();
-                else {if(Input.GetKeyDown(KeyCode.Space))run.TryDash();run.Tick(Time.unscaledDeltaTime,new Vector2((Input.GetKey(KeyCode.D)?1:0)-(Input.GetKey(KeyCode.A)?1:0),(Input.GetKey(KeyCode.W)?1:0)-(Input.GetKey(KeyCode.S)?1:0)));}
+                else run.Tick(Time.unscaledDeltaTime,new Vector2(
+                    (Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0),
+                    (Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0)));
             }
             RenderFrame();
             if(run.phase==RunPhase.Results&&!recorded)
             {
-                recorded=true;if(run.success){int previous=PlayerPrefs.GetInt("V9Best"+run.stage,0);PlayerPrefs.SetInt("V9Best"+run.stage,Mathf.Max(previous,run.stars));PlayerPrefs.Save();}
+                recorded=true;if(run.success)
+                {
+                    int previous=PlayerPrefs.GetInt("V9Best"+run.stage,0);
+                    PlayerPrefs.SetInt("V9Best"+run.stage,Mathf.Max(previous,run.stars));
+                    PlayerPrefs.SetInt("V10Unlocked",Mathf.Max(UnlockedStage(),Mathf.Min(2,run.stage+1)));
+                    PlayerPrefs.Save();
+                }
                 Debug.Log("V9_RESULT stage="+run.stage+" success="+run.success+" stars="+run.stars+" tasks="+run.Completed+" elapsed="+run.elapsed);
             }
         }
@@ -261,11 +282,12 @@ namespace EarlyRush.V9
             for(int i=0;i<run.dirt.Count;i++)dirt[i].enabled=!run.dirt[i].cleaned;
             if(train){bool open=run.trainPhase==TrainPhase.Alighting||run.trainPhase==TrainPhase.Boarding||run.trainPhase==TrainPhase.Arrived;train.sprite=ArtV8.Sprite(open?"metro/train-open":"metro/train-closed");ArtV8.SetWidth(train,7);}
             foreach(var p in decor)if(p){bool cover=p.sortingOrder>hero.sortingOrder&&p.bounds.Contains(new Vector3(run.player.x,run.player.y+.6f,0));p.color=new Color(1,1,1,cover?.48f:1);}
-            // Fixed zoom, fixed north and an axis-aligned dead zone. Never use facing, speed or collision to move/shake the camera.
-            Vector2 d=run.player-cameraAnchor;Vector2 half=new Vector2(2.6f,1.8f);
-            if(Mathf.Abs(d.x)>half.x)cameraAnchor.x=run.player.x-Mathf.Sign(d.x)*half.x;
-            if(Mathf.Abs(d.y)>half.y)cameraAnchor.y=run.player.y-Mathf.Sign(d.y)*half.y;
-            cam.transform.position=Vector3.SmoothDamp(cam.transform.position,new Vector3(cameraAnchor.x,cameraAnchor.y,-30),ref cameraVelocity,.22f,80,Mathf.Min(Time.unscaledDeltaTime,.1f));
+            Vector2 cameraPoint=cameraFollow.Step(run.player,mapBounds,ViewHalf,Time.unscaledDeltaTime,run.phase==RunPhase.Playing&&!qa);
+            if(!qa)cam.transform.position=new Vector3(cameraPoint.x,cameraPoint.y,-30);
+            for(int i=0;i<run.tasks.Count;i++)if(run.tasks[i].state==TaskState.Failed&&!failureShown[i])
+            {
+                failureShown[i]=true;notice=run.tasks[i].title+"失败，仍可继续通勤。";noticeUntil=run.elapsed+4;
+            }
         }
         void OnApplicationFocus(bool value){if(!value&&run!=null&&!qa)run.Pause();}
         void OnApplicationPause(bool value){if(value&&run!=null)run.Pause();}
@@ -287,30 +309,56 @@ namespace EarlyRush.V9
         void Icon(string key,Rect r,float alpha=1){var tex=ArtV8.Texture(key);if(!tex)return;Color old=GUI.color;GUI.color=new Color(1,1,1,alpha);GUI.DrawTexture(r,tex,ScaleMode.ScaleToFit,true);GUI.color=old;}
         bool Button(Rect r,string icon,string text="")
         {
-            bool click=GUI.Button(r,GUIContent.none,GUIStyle.none);Icon(r.Contains(Event.current.mousePosition)?"ui/teal-hover":"ui/teal-normal",r);
+            bool click=GUI.Button(r,GUIContent.none,GUIStyle.none);
+            Fill(r,!GUI.enabled?new Color(.79f,.84f,.8f):r.Contains(Event.current.mousePosition)?new Color(.42f,.78f,.72f):new Color(.63f,.84f,.77f));
             Icon(icon,new Rect(r.x+8,r.y+8,r.height-16,r.height-16));if(text.Length>0)GUI.Label(new Rect(r.x+r.height,r.y,r.width-r.height,r.height),text,label);return click;
         }
         bool HiddenTask(TaskV9 t)=>run.stage==1&&t.id=="M1"&&t.state!=TaskState.Failed;
         void OnGUI()
         {
-            if(run==null)return;GuiStyles();GUI.matrix=Matrix4x4.Scale(new Vector3(Screen.width/1280f,Screen.height/720f,1));
+            if(run==null)return;GuiStyles();uiScale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
+            uiOffset=new Vector2((Screen.width-1280*uiScale)*.5f,(Screen.height-720*uiScale)*.5f);
+            GUI.matrix=Matrix4x4.TRS(new Vector3(uiOffset.x,uiOffset.y,0),Quaternion.identity,new Vector3(uiScale,uiScale,1));
             Fill(new Rect(18,16,420,76),cream);Icon(stageIcons[run.stage],new Rect(27,23,60,60));GUI.Label(new Rect(90,24,70,50),(run.stage+1)+"/3",title);
             Icon("legacy-icons/clock",new Rect(170,25,46,46));GUI.Label(new Rect(220,24,200,50),TimeSpan.FromSeconds(run.Remaining).ToString(@"mm\:ss"),title);
             for(int i=0;i<run.tasks.Count;i++)
             {
-                var t=run.tasks[i];if(HiddenTask(t))continue;Rect r=new Rect(20+i*132,106,124,92);
-                Fill(r,new Color(cream.r,cream.g,cream.b,.94f));if(GUI.Button(r,GUIContent.none,GUIStyle.none))selected=selected==i?-1:i;
-                Icon(t.icon,new Rect(r.x+8,r.y+6,64,58));
-                if(t.state==TaskState.Complete)Icon("legacy-extras/check",new Rect(r.x+77,r.y+13,36,36));
-                else if(t.state==TaskState.Failed){Fill(new Rect(r.x+82,r.y+18,26,26),new Color(.87f,.24f,.17f));GUI.Label(new Rect(r.x+80,r.y+14,30,30),"!",label);}
-                else if(t.limit>0)GUI.Label(new Rect(r.x+69,r.y+11,50,50),t.count+"/"+t.limit,small);
-                Fill(new Rect(r.x+9,r.y+76,106,6),new Color(.68f,.77f,.7f));Fill(new Rect(r.x+9,r.y+76,106*(t.done?1:Mathf.Clamp01(t.progress)),6),gold);
+                var t=run.tasks[i];Rect r=new Rect(20+i*146,106,138,110);
+                Fill(r,new Color(cream.r,cream.g,cream.b,.94f));
+                if(HiddenTask(t))
+                {
+                    // M1 keeps a neutral slot: no name, icon, progress or success notification.
+                    Fill(new Rect(r.x+45,r.y+26,48,48),new Color(.66f,.75f,.69f));
+                    Fill(new Rect(r.x+48,r.y+29,42,42),cream);continue;
+                }
+                if(GUI.Button(r,GUIContent.none,GUIStyle.none))selected=selected==i?-1:i;
+                Icon(t.icon,new Rect(r.x+8,r.y+5,46,46));
+                if(t.state==TaskState.Complete)Icon("legacy-extras/check",new Rect(r.x+86,r.y+12,34,34));
+                else if(t.state==TaskState.Failed)GUI.Label(new Rect(r.x+83,r.y+10,38,36),"×",title);
+                else GUI.Label(new Rect(r.x+60,r.y+9,72,40),TaskProgress(t),small);
+                GUI.Label(new Rect(r.x+2,r.y+52,r.width-4,28),t.title,small);
+                if(t.id=="S3")for(int n=0;n<run.boardGoal.Length;n++)
+                {
+                    var cell=new Rect(r.x+16+n*22,r.y+82,16,16);Fill(cell,run.boardGoal[n]?gold:new Color(.22f,.78f,.76f));
+                    GUI.Label(cell,run.boardGoal[n]?"●":"○",small);
+                }
+                else
+                {
+                    Fill(new Rect(r.x+9,r.y+92,120,6),new Color(.68f,.77f,.7f));
+                    Fill(new Rect(r.x+9,r.y+92,120*(t.done?1:Mathf.Clamp01(t.progress)),6),gold);
+                }
             }
             if(Button(new Rect(450,20,62,62),"legacy-icons/pause")){if(run.phase==RunPhase.Playing)run.Pause();else if(run.phase==RunPhase.Paused)run.Resume();}
             DrawMap(fullMap?new Rect(660,106,590,585):new Rect(1008,18,254,184));
-            if(selected>=0&&!HiddenTask(run.tasks[selected])){var t=run.tasks[selected];Fill(new Rect(20,212,398,104),cream);GUI.Label(new Rect(29,218,380,36),t.title,label);GUI.Label(new Rect(32,257,374,48),TaskHelp(t),small);}
-            Fill(new Rect(20,660,180,9),ink);Fill(new Rect(20,660,180*run.energy,9),gold);
-            GUI.Label(new Rect(15,680,490,28),"W A S D  ·  SPACE 冲刺  ·  R 救回  ·  TAB 地图  ·  F1",small);
+            if(selected>=0&&!HiddenTask(run.tasks[selected])){var t=run.tasks[selected];Fill(new Rect(20,228,426,124),cream);GUI.Label(new Rect(29,234,408,36),t.title,label);GUI.Label(new Rect(32,272,402,72),TaskHelp(t),small);}
+            GUI.Label(new Rect(15,680,535,28),"WASD / 方向键移动 · R 救回 · TAB 地图 · Esc 暂停 · F1",small);
+            if(run.stage==0&&run.tasks[0].state==TaskState.Active)
+            {
+                Fill(new Rect(20,608,430,62),cream);
+                GUI.Label(new Rect(30,611,410,54),"进食 "+(run.tasks[0].progress*run.config.breakfastGameMinutes).ToString("0.0")+" / "+run.config.breakfastGameMinutes.ToString("0.0")+" 游戏分钟\n1 游戏分钟 = "+(1/run.config.gameMinutesPerRealSecond).ToString("0")+" 现实秒 · 碰撞 "+run.tasks[0].count+" / "+run.config.breakfastTolerance,small);
+            }
+            DrawDocuments();
+            if(notice.Length>0&&run.elapsed<noticeUntil&&run.phase==RunPhase.Playing){Fill(new Rect(470,611,510,54),cream);GUI.Label(new Rect(480,615,490,46),notice,small);}
             DrawWorldHints();
             if(run.eventKind.Length>0)
             {
@@ -323,11 +371,11 @@ namespace EarlyRush.V9
         string TaskHelp(TaskV9 t)
         {
             if(t.state==TaskState.Failed)return "本项失败，仍可继续通勤。重试当前场景可重新挑战。";
-            switch(t.id){case "S1":return "拿到早餐后保持一段时间；碰撞超过容忍次数会失败。";case "S2":return "将两个车轮推到修理店，完成后获得自行车。";case "S3":return "碰撞翻牌，同时改变相邻牌；让五张牌与目标颜色一致。";case "M2":return "退开，再在指针进入金色节拍窗时碰撞机器。";case "M3":return "推动抹布擦遍水渍；以实际覆盖面积结算。";case "O1":return "留意拿咖啡的同事，打翻数量超过容忍次数会失败。";case "O2":return "领取文件，在时限内送至对应编号的办公桌。";case "O3":return "把五把椅子推入空位；每个位置只能停一把。";default:return "";}
+            switch(t.id){case "S1":return "进食需 "+run.config.breakfastGameMinutes.ToString("0.0")+" 游戏分钟（约 "+run.config.breakfastDuration.ToString("0")+" 现实秒）。碰撞 > "+run.config.breakfastTolerance+" 次才失败，阈值内不重置进度。";case "S2":return "将两个车轮推到修理店，完成后获得自行车。";case "S3":return "碰撞翻板与相邻板联动；目标图案见任务槽。离开再接触才再次翻面，错误可纠正。";case "M2":return "退开，再在指针进入金色节拍窗时碰撞机器。";case "M3":return "推动抹布擦遍水渍；以实际覆盖面积结算。";case "O1":return "留意拿咖啡的同事，打翻数量超过容忍次数会失败。";case "O2":return "领取文件，在时限内找到相同头像的领导工位。下方头像和小地图提供大致方向。";case "O3":return "把 "+run.config.chairCount+" 把椅子推入空位；每个位置只能停一把。";default:return "";}
         }
         Rect WorldRect(Vector2 p,float w,float h)
         {
-            Vector3 v=cam.WorldToViewportPoint(new Vector3(p.x,p.y,0));return new Rect(v.x*1280-w/2,(1-v.y)*720-h,w,h);
+            Vector3 v=cam.WorldToViewportPoint(new Vector3(p.x,p.y,0));return new Rect((v.x*Screen.width-uiOffset.x)/uiScale-w/2,((1-v.y)*Screen.height-uiOffset.y)/uiScale-h,w,h);
         }
         bool Visible(Rect r)=>r.xMax>0&&r.x<1280&&r.yMax>0&&r.y<720;
         void DrawWorldHints()
@@ -340,10 +388,11 @@ namespace EarlyRush.V9
                 if(f.kind==FixtureKind.FlipBoard)
                 {
                     Fill(new Rect(r.x+13,r.y+13,32,32),run.boardGoal[f.index]?new Color(1,.72f,.15f):new Color(.22f,.78f,.76f));
-                    GUI.Label(new Rect(r.x,r.y-12,58,24),(f.index+1).ToString(),small);continue;
+                    GUI.Label(new Rect(r.x,r.y-12,58,24),"目标 "+(f.index+1),small);GUI.Label(new Rect(r.x+13,r.y+13,32,32),run.boardGoal[f.index]?"●":"○",small);
+                    Rect actual=WorldRect(f.position+Vector2.up*.5f,28,28);GUI.Label(actual,run.boards[f.index]?"●":"○",label);continue;
                 }
                 Icon("ui/speech",r);Icon(f.kind==FixtureKind.Breakfast?"legacy-extras/breakfast":f.kind==FixtureKind.Repair?"legacy-icons/bike":f.art,new Rect(r.x+12,r.y+6,34,34));
-                if(f.kind==FixtureKind.FileDesk)GUI.Label(new Rect(r.x+35,r.y+28,24,25),(f.index+1).ToString(),small);
+                if(f.kind==FixtureKind.FileDesk){LeaderPortrait(new Rect(r.x+5,r.y+1,48,48),f.index);if(run.IsDelivered(f.index))Icon("legacy-extras/check",new Rect(r.x+37,r.y+30,24,24));}
                 if(f.kind==FixtureKind.Capsule&&Vector2.Distance(run.player,f.position)<5)
                 {
                     Rect beat=new Rect(r.center.x-70,r.y-28,140,12);Fill(beat,ink);float window=run.config.beatWindow/run.config.beatPeriod;
@@ -356,23 +405,106 @@ namespace EarlyRush.V9
             }
             if(run.stage==0)
             {
-                Rect r=WorldRect(run.map.signal+new Vector2(-run.map.corridorWidth*.4f,1),44,72);if(Visible(r)){Fill(r,ink);Fill(new Rect(r.x+10,r.y+8,24,24),run.SignalGreen?new Color(.22f,.32f,.26f):new Color(1,.24f,.13f));Fill(new Rect(r.x+10,r.y+40,24,24),run.SignalGreen?new Color(.24f,1,.48f):new Color(.22f,.32f,.26f));}
+                Rect r=WorldRect(run.map.signal+new Vector2(-run.map.corridorWidth*.4f,1),44,72);if(Visible(r)){Fill(r,ink);Fill(new Rect(r.x+10,r.y+8,24,24),run.SignalGreen?new Color(.22f,.32f,.26f):new Color(1,.24f,.13f));Fill(new Rect(r.x+10,r.y+40,24,24),run.SignalGreen?new Color(.24f,1,.48f):new Color(.22f,.32f,.26f));GUI.Label(new Rect(r.x-10,r.y+74,64,24),run.SignalGreen?"可通行 ↑":"停止 ━",small);}
             }
             // No M1 arrow, target marker, start/complete callout or special passenger highlight.
         }
+        string TaskProgress(TaskV9 task)
+        {
+            if(task.id=="M3")return Mathf.RoundToInt(task.progress*100)+"%";
+            if(task.id=="S1"&&task.state==TaskState.Active)return Mathf.RoundToInt(task.progress*100)+"%\n碰撞 "+task.count+"/"+task.limit;
+            if(task.id=="O2"&&task.state==TaskState.Active)return task.count+"/"+task.limit+"\n"+Mathf.Max(0,(float)(run.config.deliveryDuration-run.elapsed+task.startedAt)).ToString("0")+"秒";
+            return task.limit>0?task.count+"/"+task.limit:"—";
+        }
+        string TaskResult(TaskV9 task)=>task.state==TaskState.Complete?"完成":task.state==TaskState.Failed?"失败":"未完成";
+        void LeaderPortrait(Rect r,int id)
+        {
+            Color[] colors={new Color(.23f,.67f,.67f),new Color(.77f,.43f,.36f),new Color(.44f,.49f,.76f),new Color(.64f,.57f,.3f),new Color(.65f,.4f,.66f)};
+            Fill(r,colors[id%colors.Length]);
+            // Deliberately simple placeholder portraits, shared by held files and desks.
+            Fill(new Rect(r.x+r.width*.23f,r.y+r.height*.2f,r.width*.54f,r.height*.55f),new Color(1,.82f,.63f));
+            Fill(new Rect(r.x+r.width*.21f,r.y+r.height*.13f,r.width*.58f,r.height*(id%2==0?.17f:.25f)),ink);
+            Fill(new Rect(r.x+r.width*.31f,r.y+r.height*.43f,r.width*.08f,r.height*.07f),ink);
+            Fill(new Rect(r.x+r.width*.61f,r.y+r.height*.43f,r.width*.08f,r.height*.07f),ink);
+            if(id%3==1)Fill(new Rect(r.x+r.width*.28f,r.y+r.height*.42f,r.width*.44f,r.height*.04f),ink);
+            GUI.Label(new Rect(r.x,r.y+r.height*.68f,r.width,r.height*.3f),"甲乙丙丁戊"[id%5].ToString(),small);
+        }
+        void DrawDocuments()
+        {
+            if(run.stage!=2||run.tasks[1].state!=TaskState.Active)return;
+            Fill(new Rect(20,574,430,96),cream);
+            GUI.Label(new Rect(26,576,418,27),"待送文件 · 对照相同头像 · "+Mathf.Max(0,(float)(run.config.deliveryDuration-run.elapsed+run.tasks[1].startedAt)).ToString("0")+" 秒",small);
+            int slot=0;foreach(var f in run.fixtures)if(f.kind==FixtureKind.FileDesk&&!run.IsDelivered(f.index))
+            {
+                LeaderPortrait(new Rect(35+slot*77,610,48,48),f.index);slot++;
+            }
+        }
+        void Triangle(Vector2 center,Vector2 worldDirection,float size,Color color)
+        {
+            if(!triangle)
+            {
+                triangle=new Texture2D(24,24,TextureFormat.RGBA32,false){filterMode=FilterMode.Bilinear};
+                var colors=new Color[24*24];for(int y=0;y<24;y++)for(int x=0;x<24;x++)
+                    colors[y*24+x]=Mathf.Abs(x-11.5f)<(23-y)*.48f?Color.white:Color.clear;
+                triangle.SetPixels(colors);triangle.Apply();
+            }
+            Matrix4x4 before=GUI.matrix;Color old=GUI.color;
+            GUIUtility.RotateAroundPivot(Mathf.Atan2(worldDirection.x,worldDirection.y)*Mathf.Rad2Deg,center);
+            GUI.color=color;GUI.DrawTexture(new Rect(center.x-size/2,center.y-size/2,size,size),triangle);
+            GUI.color=old;GUI.matrix=before;
+        }
         void DrawMap(Rect r)
         {
-            Fill(r,new Color(.99f,.98f,.9f,.96f));float scale=Mathf.Min((r.width-22)/mapBounds.width,(r.height-22)/mapBounds.height);
-            Rect area=new Rect(r.center.x-mapBounds.width*scale*.5f,r.center.y-mapBounds.height*scale*.5f,mapBounds.width*scale,mapBounds.height*scale);
-            GUI.DrawTexture(area,mapTexture,ScaleMode.StretchToFill,true);
-            Func<Vector2,Vector2> point=p=>new Vector2(area.x+(p.x-mapBounds.x)*scale,area.yMax-(p.y-mapBounds.y)*scale);
-            foreach(var t in run.tasks)
+            Fill(r,new Color(.99f,.98f,.9f,.96f));
+            GUI.BeginGroup(r);
+            Rect inner=new Rect(10,10,r.width-20,r.height-32);
+            float scale=fullMap?Mathf.Min(inner.width/mapBounds.width,inner.height/mapBounds.height):inner.width/42f;
+            Vector2 center=fullMap?mapBounds.center:run.player;
+            Func<Vector2,Vector2> point=p=>inner.center+new Vector2(p.x-center.x,center.y-p.y)*scale;
+            Vector2 topLeft=point(new Vector2(mapBounds.xMin,mapBounds.yMax));
+            GUI.DrawTexture(new Rect(topLeft.x,topLeft.y,mapBounds.width*scale,mapBounds.height*scale),mapTexture,ScaleMode.StretchToFill,true);
+            Action<Vector2,string,float,bool> marker=(worldPosition,key,alpha,failed)=>
             {
-                if(run.stage==1&&t.id=="M1")continue;
-                Vector2 p=point(t.position);Icon(t.icon,new Rect(p.x-9,p.y-9,18,18),t.done?.35f:1);
+                Vector2 raw=point(worldPosition);Vector2 p=new Vector2(Mathf.Clamp(raw.x,inner.x+10,inner.xMax-10),Mathf.Clamp(raw.y,inner.y+10,inner.yMax-10));
+                if(raw!=p&&!fullMap)
+                {
+                    if(alpha<.5f)return; // Finished/failed tasks never keep directing the player off-screen.
+                    Triangle(p,new Vector2(raw.x-p.x,p.y-raw.y),12,ink);
+                    p+= (inner.center-p).normalized*16;
+                }
+                Icon(key,new Rect(p.x-9,p.y-9,18,18),alpha);
+                if(failed)GUI.Label(new Rect(p.x-10,p.y-12,20,24),"×",small);
+            };
+            foreach(var task in run.tasks)
+            {
+                if(run.stage==1&&task.id=="M1")continue;
+                marker(task.position,task.icon,task.done?.28f:task.state==TaskState.Failed?.25f:1,task.state==TaskState.Failed);
             }
-            Vector2 exit=point(run.map.exit);Icon("legacy-icons/exit",new Rect(exit.x-8,exit.y-8,16,16));
-            Vector2 heroPoint=point(run.player);Fill(new Rect(heroPoint.x-4,heroPoint.y-4,8,8),gold);
+            if(run.stage==2&&run.tasks[1].state==TaskState.Active)
+            {
+                FixtureV9 closest=null;float distance=float.MaxValue;
+                foreach(var f in run.fixtures)if(f.kind==FixtureKind.FileDesk&&!run.IsDelivered(f.index))
+                {float d=Vector2.Distance(run.player,f.position);if(d<distance){distance=d;closest=f;}}
+                if(closest!=null)
+                {
+                    // Quantise to a region: the desk is identified from its portrait in the world.
+                    Vector2 region=new Vector2(Mathf.Round(closest.position.x/8)*8,Mathf.Round(closest.position.y/8)*8);
+                    Vector2 raw=point(region),p=new Vector2(Mathf.Clamp(raw.x,inner.x+14,inner.xMax-14),Mathf.Clamp(raw.y,inner.y+14,inner.yMax-14));
+                    if(raw!=p){Triangle(p,new Vector2(raw.x-p.x,p.y-raw.y),14,ink);p+=(inner.center-p).normalized*20;}
+                    LeaderPortrait(new Rect(p.x-12,p.y-12,24,24),closest.index);
+                }
+            }
+            marker(run.map.exit,"legacy-icons/exit",1,false);
+            Triangle(point(run.player),run.facing,16,gold);
+            Fill(new Rect(0,r.height-22,r.width,22),cream);GUI.Label(new Rect(0,r.height-22,r.width,22),fullMap?"全图 · 北向固定 · TAB 收起":"附近道路 · 北向固定 · TAB 全图",small);
+            GUI.EndGroup();
+        }
+        int UnlockedStage()
+        {
+            int unlocked=Mathf.Clamp(PlayerPrefs.GetInt("V10Unlocked",0),0,2);
+            // Preserve successful progression from earlier builds, never derive unlocks from failure records.
+            for(int stage=0;stage<2;stage++)if(PlayerPrefs.GetInt("V9Best"+stage,0)>0)unlocked=Mathf.Max(unlocked,stage+1);
+            return unlocked;
         }
         void DrawModal()
         {
@@ -380,24 +512,42 @@ namespace EarlyRush.V9
             if(run.phase==RunPhase.Ready)
             {
                 Icon(stageIcons[run.stage],new Rect(587,150,106,100));GUI.Label(new Rect(380,259,520,50),names[run.stage],title);
-                GUI.Label(new Rect(380,322,520,60),"穿过街区与转角，准时抵达。\n碰撞推动物品，观察任务图标。",label);
-                GUI.Label(new Rect(380,400,520,70),"WASD 固定方向 · 空格冲刺\nR 救回附近物品 · Esc 暂停",small);
+                GUI.Label(new Rect(380,322,520,60),(run.stage==0?"步行出发，准时抵达地铁入口。":run.stage==1?"乘车后前往出站点。":"准时进入会议室参会区。")+"\n任务均可跳过，不影响前往终点。",label);
+                GUI.Label(new Rect(380,386,520,38),"WASD / 方向键 · R 救回物品 · Esc 暂停",small);
+                int unlocked=UnlockedStage();
+                for(int i=0;i<3;i++)
+                {
+                    bool available=i<=unlocked;GUI.enabled=available;
+                    if(Button(new Rect(390+i*170,430,160,48),stageIcons[i],available?(i+1)+" · "+new[]{"街道","地铁","早会"}[i]:"未解锁")){Load(i,seed);}
+                    GUI.enabled=true;
+                }
+                GUI.Label(new Rect(390,484,280,30),"地图种子 "+seed+" · 上限 "+(run.limit/60).ToString("0")+" 分钟",small);
+                if(Button(new Rect(700,482,190,36),"legacy-icons/retry","换种子"))Load(run.stage,seed+1);
                 if(Button(new Rect(485,525,310,68),"legacy-icons/play","出发"))run.Begin();
             }
             else if(run.phase==RunPhase.Paused)
             {
                 GUI.Label(new Rect(400,200,480,55),"暂停",title);GUI.Label(new Rect(400,275,480,45),"计时已停止",label);
-                if(Button(new Rect(470,360,340,65),"legacy-icons/play","继续"))run.Resume();if(Button(new Rect(470,450,340,65),"legacy-icons/retry","重试本场景"))Load(run.stage,seed);
+                if(Button(new Rect(470,350,340,60),"legacy-icons/play","继续"))run.Resume();
+                if(Button(new Rect(470,430,340,60),"legacy-icons/retry","同种子重试"))Load(run.stage,seed);
+                if(Button(new Rect(470,510,340,60),"legacy-icons/retry","换种子挑战"))Load(run.stage,seed+1);
             }
             else
             {
-                Icon(run.success?"result/on-time":"result/late",new Rect(565,145,150,135));GUI.Label(new Rect(400,285,480,50),run.success?"准时抵达":"迟到了，再试一次",title);
-                for(int i=0;i<3;i++)Icon("legacy-extras/star",new Rect(477+i*115,355,96,86),i<run.stars?1:.18f);
-                GUI.Label(new Rect(395,452,490,40),"任务 "+run.Completed+" / 3  ·  "+TimeSpan.FromSeconds(run.elapsed).ToString(@"mm\:ss"),label);
+                GUI.Label(new Rect(380,150,520,50),run.success?"准时抵达":"超时 · 挑战记录",title);
+                for(int i=0;i<3;i++)Icon("legacy-extras/star",new Rect(515+i*85,211,74,64),i<run.stars?1:.18f);
+                GUI.Label(new Rect(380,283,520,32),"耗时 "+TimeSpan.FromSeconds(run.elapsed).ToString(@"mm\:ss")+" · "+(run.success?"成功最高 "+PlayerPrefs.GetInt("V9Best"+run.stage,0)+" 星":"任务星仅记录，不解锁下一阶段"),small);
+                for(int i=0;i<run.tasks.Count;i++)
+                {
+                    var task=run.tasks[i];Icon(task.icon,new Rect(405,330+i*50,38,38));
+                    GUI.Label(new Rect(452,330+i*50,310,38),task.title,label);
+                    GUI.Label(new Rect(772,330+i*50,108,38),TaskResult(task),small);
+                }
                 if(Button(new Rect(395,530,225,65),"legacy-icons/retry","重试"))Load(run.stage,seed);
                 if(run.success&&Button(new Rect(650,530,230,65),"legacy-icons/play",run.stage<2?"下一场景":"再来一轮"))Load(run.stage<2?run.stage+1:0,seed);
+
             }
         }
-        void OnDestroy(){foreach(var o in owned)if(o)Destroy(o);if(mapTexture)Destroy(mapTexture);if(font)Destroy(font);if(world)Destroy(world.gameObject);if(cam)Destroy(cam.gameObject);}
+        void OnDestroy(){if(triangle)Destroy(triangle);foreach(var o in owned)if(o)Destroy(o);if(mapTexture)Destroy(mapTexture);if(font)Destroy(font);if(world)Destroy(world.gameObject);if(cam)Destroy(cam.gameObject);}
     }
 }
