@@ -4,444 +4,157 @@ using UnityEngine;
 
 namespace EarlyRush
 {
-    /// <summary>Resolution-independent, keyboard-friendly presentation for the commuter MVP.</summary>
+    // Icon-first presentation. Short labels are confined to tooltips and the first-run key guide.
+    // Timing, collision information and controls remain numeric/textual for legibility.
     public static class RushUI
     {
-        static readonly Color Ink = new Color32(26, 47, 62, 255);
-        static readonly Color Cream = new Color32(255, 249, 235, 255);
-        static readonly Color Orange = new Color32(255, 135, 55, 255);
-        static readonly Color Teal = new Color32(43, 190, 177, 255);
-        static readonly Color Red = new Color32(224, 83, 79, 255);
-        static readonly Color Muted = new Color32(112, 132, 140, 255);
-        static readonly string[] Titles = { "骑车赶地铁", "挤上早高峰", "抢最后的打卡" };
-        static readonly string[] Objectives = { "留意横穿，冲开纸箱或绕行", "让开下车人流，急刹前稳住", "避开侧门人流，稳住打卡 0.8 秒" };
+        static readonly Color Ink=new Color32(25,76,77,255), Cream=new Color32(255,250,231,255),
+            Teal=new Color32(47,190,173,255), Gold=new Color32(255,205,57,255), Red=new Color32(234,100,83,255);
+        static readonly Dictionary<string,GUIStyle> styles=new Dictionary<string,GUIStyle>();
         static Font font;
-        static Texture2D rounded, white, circle;
-        static GUIStyle panelStyle, blankButton;
-        static readonly Dictionary<string, GUIStyle> textStyles = new Dictionary<string, GUIStyle>();
-        static RushGame active;
-        static float width = 1280f;
-        static float height = 720f;
-        static float uiScale = 1f;
-
-        static void Init()
+        static RushGame game;
+        static float width,height;
+        static string tooltip;
+        static Rect R(float x,float y,float w,float h)=>new Rect((width-1280)*.5f+x,(height-720)*.5f+y,w,h);
+        public static void Draw(RushGame value)
         {
-            if (white != null) return;
-            font = Font.CreateDynamicFontFromOSFont(new[] { "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial" }, 26);
-            if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            white = Texture2D.whiteTexture;
-            rounded = new Texture2D(32, 32, TextureFormat.RGBA32, false);
-            circle = new Texture2D(64, 64, TextureFormat.RGBA32, false);
-            rounded.hideFlags = HideFlags.HideAndDontSave;
-            circle.hideFlags = HideFlags.HideAndDontSave;
-            rounded.wrapMode = TextureWrapMode.Clamp;
-            circle.wrapMode = TextureWrapMode.Clamp;
-            for (int y = 0; y < 32; y++)
-            for (int x = 0; x < 32; x++)
+            game=value;
+            if(!font)font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","Noto Sans CJK SC","Arial"},24);
+            if(!font)font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            Matrix4x4 old=GUI.matrix;Color oldColor=GUI.color;int oldDepth=GUI.depth;
+            float scale=Mathf.Max(.1f,Mathf.Min(Screen.width/1280f,Screen.height/720f));
+            width=Screen.width/scale;height=Screen.height/scale;GUI.matrix=Matrix4x4.Scale(new Vector3(scale,scale,1));GUI.depth=-20;tooltip=null;
+            switch(game.State)
             {
-                float px = Mathf.Max(0, Mathf.Abs(x - 15.5f) - 2f);
-                float py = Mathf.Max(0, Mathf.Abs(y - 15.5f) - 2f);
-                float a = Mathf.Clamp01(14f - Mathf.Sqrt(px * px + py * py));
-                rounded.SetPixel(x, y, new Color(1, 1, 1, a));
+                case RushState.Menu:Menu();break;
+                case RushState.Tutorial:Tutorial();break;
+                case RushState.Playing:Hud();break;
+                case RushState.Paused:Hud();Pause();break;
+                case RushState.Transition:Hud();Transition();break;
+                case RushState.Results:Results();break;
             }
-            rounded.Apply();
-            for (int y = 0; y < 64; y++)
-            for (int x = 0; x < 64; x++)
-                circle.SetPixel(x, y, new Color(1, 1, 1, Mathf.Clamp01(32f - Vector2.Distance(new Vector2(x, y), new Vector2(31.5f, 31.5f)))));
-            circle.Apply();
-            panelStyle = new GUIStyle();
-            panelStyle.normal.background = rounded;
-            panelStyle.border = new RectOffset(14, 14, 14, 14);
-            blankButton = new GUIStyle();
+            if(!string.IsNullOrEmpty(tooltip))
+            {Card(new Rect(width*.5f-245,height-42,490,30),Ink);Text(new Rect(width*.5f-238,height-42,476,30),tooltip,14,Cream);}
+            GUI.matrix=old;GUI.color=oldColor;GUI.depth=oldDepth;
         }
-
-        public static void Draw(RushGame game)
-        {
-            Init();
-            active = game;
-            Matrix4x4 previousMatrix = GUI.matrix;
-            Color previousColor = GUI.color;
-            int previousDepth = GUI.depth;
-            GUI.depth = -20;
-            uiScale = Mathf.Min(Screen.width / 1280f, Screen.height / 720f);
-            width = Screen.width / uiScale;
-            height = Screen.height / uiScale;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(uiScale, uiScale, 1));
-            GUI.color = Color.white;
-            switch (game.State)
-            {
-                case RushState.Menu: Menu(); break;
-                case RushState.Tutorial: Tutorial(); break;
-                case RushState.Playing: Hud(); break;
-                case RushState.Paused: Hud(); Pause(); break;
-                case RushState.Transition: Hud(); Transition(); break;
-                case RushState.Results: Results(); break;
-            }
-            GUI.matrix = previousMatrix;
-            GUI.color = previousColor;
-            GUI.depth = previousDepth;
-        }
-
-        static int Stage => Mathf.Clamp(active.Stage, 0, 2);
-        static float X(float x) => (width - 1280f) * .5f + x;
-        static float Y(float y) => (height - 720f) * .5f + y;
-        static Rect R(float x, float y, float w, float h) => new Rect(X(x), Y(y), w, h);
-
+        static string StageIcon(int stage)=>stage==0?"bike":stage==1?"train":"clock";
         static void Menu()
         {
-            Box(new Rect(0, 0, width, height), new Color(Ink.r, Ink.g, Ink.b, .26f), false);
-            Panel(R(62, 67, 518, 588), Cream);
-            Pill(R(94, 97, 156, 28), "三段通勤  /  v6", Ink, Cream, 12);
-            Text(R(90, 139, 440, 74), "早八冲刺", 62, Ink, true);
-            Text(R(96, 217, 410, 28), "E A R L Y   R U S H", 22, Teal, true);
-            Text(R(96, 268, 410, 44), "早餐可以等，打卡不能晚。", 24, Ink, true);
-            Text(R(96, 318, 410, 60), "路口横穿、反向人流、侧门涌出。\n看准预警，冲开纸箱，稳住打卡。", 20, Muted);
-            Box(R(96, 397, 410, 1), new Color(Ink.r, Ink.g, Ink.b, .13f), false);
-            if (Button(R(96, 412, 410, 50), "地铁单段练习  [C]", Teal, Ink, 20)) active.StartCoreTutorial();
-            if (Button(R(96, 482, 410, 64), "加长三段通勤    →", Orange, Ink, 25)) active.StartRun();
-            if (Button(R(96, 562, 126, 44), active.Muted ? "声音：关 [M]" : "声音：开 [M]", new Color32(233, 236, 222, 255), Ink, 13)) active.ToggleSound();
-            if (Button(R(232, 562, 138, 44), active.ScreenShakeEnabled ? "震屏：开" : "震屏：关", new Color32(233, 236, 222, 255), Ink, 14)) active.ToggleScreenShake();
-            if (Button(R(380, 562, 126, 44), "退出游戏", new Color32(233, 236, 222, 255), Ink, 15)) active.Quit();
-            Text(R(96, 617, 410, 18), "ENTER 开始    ·    WASD / 方向键操作", 12, Muted);
-
-            float routeX = 892;
-            Panel(R(routeX, 126, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
-            Icon(0, R(routeX + 17, 145, 48, 44), Orange);
-            Text(R(routeX + 80, 139, 204, 30), "01  骑车赶地铁", 20, Ink, true);
-            Text(R(routeX + 80, 172, 210, 23), "路口横穿 · 冲开纸箱", 14, Muted);
-            DashLine(R(routeX + 39, 218, 4, 34), Cream);
-            Panel(R(routeX, 262, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
-            Icon(1, R(routeX + 17, 281, 48, 44), Teal);
-            Text(R(routeX + 80, 275, 204, 30), "02  挤上早高峰", 20, Ink, true);
-            Text(R(routeX + 80, 308, 210, 23), "反向下车 · 急刹时稳住", 14, Muted);
-            DashLine(R(routeX + 39, 354, 4, 34), Cream);
-            Panel(R(routeX, 398, 316, 84), new Color(Cream.r, Cream.g, Cream.b, .96f));
-            Icon(2, R(routeX + 17, 417, 48, 44), Orange);
-            Text(R(routeX + 80, 411, 204, 30), "03  抢最后的打卡", 20, Ink, true);
-            Text(R(routeX + 80, 444, 210, 23), "侧门涌出 · 稳住打卡", 14, Muted);
-            Pill(R(914, 532, 270, 38), "迟到了也没关系，继续冲！", Ink, Cream, 16);
-            Text(R(924, 578, 250, 22), "单人 · 俯视角 · 三段连续挑战", 13, Cream, false, TextAnchor.MiddleCenter);
+            Scrim(.2f);Card(R(90,60,500,590),Cream);
+            Text(R(125,93,430,62),"早八冲刺",52,Ink,true);Text(R(125,158,430,30),"EARLY RUSH",23,Teal,true);
+            for(int i=0;i<3;i++){Icon(StageIcon(i),R(136+i*140,220,92,92));if(i<2)Text(R(230+i*140,242,40,40),"→",30,Teal);}
+            if(IconButton(R(148,355,384,108),"play","开始三段通勤 · ENTER",Gold))game.StartRun();
+            if(IconButton(R(148,482,80,72),"train","地铁练习 · C",Teal))game.StartCoreTutorial();
+            if(IconButton(R(246,482,80,72),"sound",game.Muted?"打开声音 · M":"关闭声音 · M",game.Muted?Color.gray:Teal))game.ToggleSound();
+            if(IconButton(R(344,482,80,72),"shake",game.ScreenShakeEnabled?"关闭震屏":"打开震屏",game.ScreenShakeEnabled?Teal:Color.gray))game.ToggleScreenShake();
+            if(IconButton(R(442,482,80,72),"exit","退出",Cream))game.Quit();
+            Text(R(136,583,408,30),"WASD  ·  SPACE  ·  SHIFT  ·  E",17,Ink);
+            Card(R(870,132,260,425),Cream);
+            for(int i=0;i<3;i++){Icon(StageIcon(i),R(945,155+i*128,110,100));if(i<2)Text(R(978,255+i*128,40,25),"↓",24,Teal);}
         }
-
         static void Tutorial()
         {
-            Scrim(.76f);
-            Text(R(0, 64, 1280, 28), active.CoreMode ? "地铁单段练习" : "加长三段通勤", 18, Teal, true, TextAnchor.MiddleCenter);
-            Text(R(0, 104, 1280, 64), "撞飞赶路，看准预警", 44, Cream, true, TextAnchor.MiddleCenter);
-            Text(R(140, 178, 1000, 26), active.CoreMode ?
-                "反向下车人流会挤占前路；事件至少预警 1.2 秒，急刹前按住 SHIFT。" :
-                "留意路口横穿、反向下车和侧门人流；事件至少预警 1.2 秒，急刹前稳住。", 17, Cream, false, TextAnchor.MiddleCenter);
-            TutorialCard(100, 0, "移动与转向", "W A S D", "或方向键  ↑ ↓ ← →", "骑车有惯性。\n提前转弯，松手减速。", Orange);
-            TutorialCard(466, 1, "冲刺撞飞", "SPACE", "撞上、回弹，再向前！", "冲刺能把通勤者撞飞。\n路上的纸箱也能冲开。", Teal);
-            TutorialCard(832, 2, "稳住免击飞", "SHIFT", "地面按住免击飞 · 移动变慢", active.CoreMode ?
-                "急刹前按住，避免失衡。\n松开稳住，再冲开人群。" :
-                "急刹前按住，避免失衡。\n终点按住 0.8 秒完成打卡。", Orange);
-            if (Button(R(435, 566, 410, 64), "出发！    ENTER  →", Orange, Ink, 25)) active.BeginPlay();
-            Text(R(140, 639, 1000, 25), "落地后短暂恢复，并有 1.2 秒免再击飞保护；右下角显示状态与倒计时。", 15, Cream, false, TextAnchor.MiddleCenter);
-            Text(R(140, 670, 1000, 24), active.CoreMode ?
-                "地铁单段练习  ·  沿青色目标前进  ·  超时仍可到达  ·  ESC 暂停" :
-                "寻找青色目标  ·  三段共用计时  ·  超时仍可完成打卡  ·  ESC 暂停", 14, Cream, false, TextAnchor.MiddleCenter);
+            Scrim(.7f);
+            string[] icons={"move","dash","shield","clock"};string[] keys={"W A S D","SPACE","SHIFT","E"};
+            string[] tips={"移动 / 转向","冲刺撞飞","稳住防撞","按住交互 / 打卡"};
+            for(int i=0;i<4;i++)
+            {
+                float x=110+i*275;Card(R(x,170,245,340),Cream);Icon(icons[i],R(x+48,200,150,150));
+                Text(R(x+12,363,221,55),keys[i],30,Ink,true);Text(R(x+12,431,221,38),tips[i],19,Ink);
+            }
+            if(IconButton(R(510,556,260,85),"play","出发 · ENTER",Gold))game.BeginPlay();
         }
-
-        static void TutorialCard(float x, int type, string title, string key, string caption, string detail, Color accent)
-        {
-            Panel(R(x, 214, 348, 306), Cream);
-            Circle(R(x + 144, 235, 60, 60), accent);
-            if (type == 0) Text(R(x + 144, 235, 60, 60), "↗", 34, Ink, true, TextAnchor.MiddleCenter);
-            if (type == 1) { Line(R(x + 157, 254, 32, 4), Ink); Line(R(x + 151, 265, 32, 4), Ink); Line(R(x + 162, 276, 21, 4), Ink); }
-            if (type == 2) { Box(R(x + 162, 249, 24, 30), Ink, true); Text(R(x + 162, 249, 24, 30), "✓", 21, Cream, true, TextAnchor.MiddleCenter); }
-            Text(R(x + 20, 309, 308, 32), title, 24, Ink, true, TextAnchor.MiddleCenter);
-            Pill(R(x + 91, 355, 166, 42), key, Ink, Cream, 21);
-            Text(R(x + 20, 407, 308, 26), caption, 15, Muted, false, TextAnchor.MiddleCenter);
-            Text(R(x + 26, 445, 296, 54), detail, 17, Ink, false, TextAnchor.MiddleCenter);
-        }
-
         static void Hud()
         {
-            bool late = active.TotalTime > active.TimeLimit;
-            Panel(new Rect(24, 20, 322, 92), Cream);
-            Pill(new Rect(40, 36, 54, 26), active.CoreMode ? "单段" : (Stage + 1).ToString("00") + " / 03", Teal, Ink, 12);
-            Text(new Rect(108, 30, 218, 38), Titles[Stage], 23, Ink, true);
-            Text(new Rect(40, 75, 286, 22), Objectives[Stage], 14, Muted);
-
-            Panel(new Rect(width * .5f - 159, 20, 318, 72), Ink);
-            if(active.CoreMode) Text(new Rect(width*.5f-139,35,278,29), "地铁单段练习",20,Cream,true,TextAnchor.MiddleCenter);
-            else for (int i = 0; i < 3; i++)
+            bool late=game.TotalTime>game.TimeLimit;
+            Card(new Rect(22,20,222,74),Cream);Icon(StageIcon(game.Stage),new Rect(32,26,62,62));
+            Text(new Rect(103,29,122,27),(game.Stage+1)+" / 3",23,Ink,true);
+            Progress(new Rect(105,67,114,8),game.StageProgress01,Teal);
+            Card(new Rect(width*.5f-156,20,312,66),Cream);
+            for(int i=0;i<3;i++)
+            {Icon(StageIcon(i),new Rect(width*.5f-140+i*103,25,54,54),i>game.Stage?.35f:1f);if(i<2)Text(new Rect(width*.5f-82+i*103,34,36,34),"→",25,Teal);}
+            Card(new Rect(width-278,20,176,74),late?Red:Cream);Icon("clock",new Rect(width-268,32,45,45));
+            Text(new Rect(width-222,29,112,49),(late?"+":"")+TimeText(Mathf.Abs(game.TimeLimit-game.TotalTime)),27,late?Cream:Ink,true);
+            if(IconButton(new Rect(width-84,20,62,62),"pause","暂停 · ESC",Teal))game.TogglePause();
+            Card(new Rect(22,height-106,215,84),Cream);Icon("move",new Rect(32,height-101,64,64));Text(new Rect(101,height-94,122,44),"WASD",23,Ink,true);
+            Card(new Rect(width-266,height-106,244,84),Cream);
+            Icon("dash",new Rect(width-258,height-100,61,61),game.PlayerAirborne||game.IsBracing?.4f:1);
+            Text(new Rect(width-195,height-99,91,32),"SPACE",17,Ink,true);Progress(new Rect(width-192,height-56,83,7),game.DashCooldown01,Gold);
+            Icon("shield",new Rect(width-95,height-98,55,55),game.IsBracing?1:.55f);Text(new Rect(width-96,height-47,56,16),"SHIFT",10,Ink,true);
+            if(game.World!=null)
             {
-                float x = width * .5f - 139 + i * 94;
-                Color c = i < Stage ? Teal : i == Stage ? Orange : new Color32(73, 94, 105, 255);
-                Circle(new Rect(x, 38, 29, 29), c);
-                Text(new Rect(x, 38, 29, 29), i < Stage ? "✓" : (i + 1).ToString(), 15, i <= Stage ? Ink : Cream, true, TextAnchor.MiddleCenter);
-                if (i < 2) Box(new Rect(x + 34, 51, 54, 3), i < Stage ? Teal : new Color32(73, 94, 105, 255), false);
+                Vector2 d=game.GoalViewport-new Vector2(.5f,.5f);string arrow=Mathf.Abs(d.x)>Mathf.Abs(d.y)?(d.x>0?"→":"←"):(d.y>0?"↑":"↓");
+                Text(new Rect(width*.5f-100,90,200,30),arrow+"  "+game.GoalDistance.ToString("F0")+" m",18,Ink,true);
             }
-            // Fit the goal cue inside the existing stage bar, leaving the playfield clear for warnings.
-            if (active.World != null)
-            {
-                Vector2 direction = active.GoalViewport - new Vector2(.5f, .5f);
-                string arrow = Mathf.Abs(direction.x) > Mathf.Abs(direction.y) ?
-                    (direction.x > 0 ? "→" : "←") : (direction.y > 0 ? "↑" : "↓");
-                Text(new Rect(width * .5f - 139, 68, 278, 20),
-                    arrow + " 目标 " + active.GoalDistance.ToString("F0") + " 米", 14, Cream, false, TextAnchor.MiddleCenter);
-            }
-
-            Panel(new Rect(width - 312, 20, 218, 92), late ? Red : Cream);
-            Text(new Rect(width - 296, 31, 188, 22), late ? "已迟到 · 继续打卡" : "距离迟到还有", 13, late ? Cream : Muted);
-            Text(new Rect(width - 296, 52, 188, 49), (late ? "+" : "") + TimeText(Mathf.Abs(active.TimeLimit - active.TotalTime)), 35, late ? Cream : Ink, true);
-            if (Button(new Rect(width - 78, 20, 54, 54), "Ⅱ", Ink, Cream, 26)) active.TogglePause();
-
-            // The unobtrusive route marker gives players distance without covering the scene.
-            Panel(new Rect(24, height - 86, 350, 62), Ink);
-            Text(new Rect(40, height - 79, 315, 22), "本段进度", 12, Cream);
-            Bar(new Rect(40, height - 48, 314, 6), Mathf.Clamp01(active.StageProgress01), Teal, new Color32(68, 87, 100, 255));
-            Text(new Rect(24, height - 118, 360, 24), "碰撞  " + active.Collisions + "     本段  " + TimeText(active.StageTime), 14, Ink, true);
-
-            Panel(new Rect(width - 356, height - 136, 332, 112), Cream);
-            string dash = active.PlayerAirborne ? "SPACE  腾空中 · 落地再冲刺" :
-                active.PlayerRecovering ? "SPACE  落地恢复中" :
-                active.IsBracing ? "SPACE  松开稳住后冲刺" :
-                active.IsDashing ? "SPACE  冲撞中！" :
-                active.DashCooldown01 < .99f ? "SPACE  冲刺恢复中" : "SPACE  冲刺撞飞";
-            Text(new Rect(width - 338, height - 127, 296, 26), dash, 16, Ink, true);
-            Bar(new Rect(width - 338, height - 94, 295, 6), Mathf.Clamp01(active.DashCooldown01), Orange, new Color32(221, 226, 214, 255));
-            bool protectedNow = active.PlayerProtectionRemaining > 0f;
-            string protection = (Mathf.Ceil(active.PlayerProtectionRemaining * 10f) / 10f).ToString("F1");
-            string response = active.PlayerAirborne ? "被撞飞了 · 等待落地" :
-                active.PlayerRecovering ? "落地恢复 · 保护 " + protection + " 秒" :
-                active.BraceSuccessRemaining > 0f ? "稳住成功！挡住冲撞  " + active.BraceBlocks + " 次" :
-                protectedNow ? "落地保护  " + protection + " 秒 · 免再击飞" :
-                "地面预警 → 侧移 / SHIFT 稳住";
-            Color responseColor = active.PlayerAirborne ? Red : active.PlayerRecovering || protectedNow || active.BraceSuccessRemaining > 0f ? Teal : Muted;
-            Text(new Rect(width - 338, height - 82, 296, 24), response, 14, responseColor, true);
-            string brace = active.PlayerAirborne || active.PlayerRecovering ? "SHIFT  回到地面后稳住" :
-                active.IsBracing ? "SHIFT  正在稳住 · 免击飞 / 减速" : "SHIFT  地面按住免击飞 · 移动变慢";
-            Text(new Rect(width - 338, height - 51, 296, 21), brace, 12, active.IsBracing ? Teal : Muted, active.IsBracing);
-            Text(new Rect(width * .5f - 230, height - 55, 460, 26), "WASD / 方向键  移动    ·    ESC  暂停", 14, Ink, true, TextAnchor.MiddleCenter);
+            if(game.Rain01>0){Icon("rain",new Rect(27,106,45,45));}
+            if(game.TerrainKind=="stairs"||game.TerrainKind=="escalator")Icon(game.TerrainKind,new Rect(78,106,45,45));
             JourneyHud();
         }
-
         static void JourneyHud()
         {
-            if (active.World == null) return;
-            bool warning = active.JourneyWarning;
-            bool clock = Stage == 2 && (active.GoalDistance <= 6f || active.ClockHold01 > 0f);
-            string title = active.JourneyTitle;
-            string hint = active.JourneyHint;
-            if (!warning && !clock && string.IsNullOrEmpty(title) && string.IsNullOrEmpty(hint)) return;
-
-            // Reserve the gap between the existing bottom panels and above the controls.
-            Rect card = new Rect(width * .5f - 250f, height - 160f, 500f, 76f);
-            if (active.GameCamera != null)
+            if(game.World==null)return;
+            if(game.JourneyWarning)
             {
-                Vector3 foot = active.GameCamera.WorldToViewportPoint(new Vector3(active.Position.x, .12f, active.Position.y));
-                if (foot.z > 0f)
-                {
-                    float bodyAbove = active.PlayerAirborne ? 130f : 76f;
-                    Rect playerArea = new Rect(foot.x * width - 50f, (1f - foot.y) * height - bodyAbove, 100f, bodyAbove + 46f);
-                    // At the map entrance the camera clamp leaves the player low on screen.
-                    // Move this card above the whole silhouette instead of hiding the player.
-                    if (card.Overlaps(playerArea)) card.y = Mathf.Max(128f, playerArea.yMin - card.height - 14f);
-                }
+                Rect r=new Rect(width*.5f-100,height-120,200,80);Card(r,Gold);Icon("shield",new Rect(r.x+10,r.y+8,60,60));
+                Text(new Rect(r.x+77,r.y+9,112,30),game.JourneyWarningRemaining.ToString("F1"),24,Ink,true);Text(new Rect(r.x+77,r.y+41,112,24),"SHIFT",17,Ink,true);
             }
-
-            Color accent = warning ? Orange : Teal;
-            Panel(card, Ink);
-            float statusWidth = warning ? 112f : clock ? 78f : 0f;
-            if (clock && !warning)
+            else if(game.Stage==2&&game.GoalDistance<7)
             {
-                title = "稳住打卡";
-                hint = "在青色区松开方向键，按住 SHIFT 0.8 秒";
+                Rect r=new Rect(width*.5f-94,height-120,188,80);Card(r,Cream);Icon("clock",new Rect(r.x+9,r.y+9,60,60));Text(new Rect(r.x+80,r.y+8,90,38),"E",30,Ink,true);
+                Progress(new Rect(r.x+78,r.y+58,95,8),game.ClockHold01,Teal);
             }
-            Text(new Rect(card.x + 16f, card.y + 7f, card.width - 32f - statusWidth, 26f), title, 18, Cream, true);
-            Text(new Rect(card.x + 16f, card.y + 35f, card.width - 32f, 23f), hint, 14, Cream);
-            if (warning)
+            if(!string.IsNullOrEmpty(game.ErrandKind))
             {
-                float remaining = Mathf.Max(0f, active.JourneyWarningRemaining);
-                string countdown = (Mathf.Ceil(remaining * 10f) / 10f).ToString("F1") + " 秒后";
-                Pill(new Rect(card.xMax - 112f, card.y + 7f, 96f, 26f), countdown, accent, Ink, 14);
-            }
-            else if (clock)
-            {
-                Pill(new Rect(card.xMax - 78f, card.y + 7f, 62f, 26f), "SHIFT", accent, Ink, 13);
-                Bar(new Rect(card.x + 16f, card.y + 65f, card.width - 32f, 5f), active.ClockHold01, accent, Muted);
+                Rect r=new Rect(22,167,123,114);Card(r,Cream);Icon(game.ErrandKind,new Rect(r.x+26,r.y+4,70,70));
+                if(game.ErrandPhase==2)Text(new Rect(r.x+10,r.y+77,103,27),"✓",25,Teal,true);
+                else{Text(new Rect(r.x+8,r.y+77,25,25),"E",19,Ink,true);Progress(new Rect(r.x+40,r.y+86,70,8),game.ErrandProgress01,Teal);}
             }
         }
-
         static void Pause()
         {
-            Scrim(.72f);
-            Panel(R(398, 116, 484, 492), Cream);
-            Pill(R(553, 145, 174, 28), "深呼吸，歇一会儿", Teal, Ink, 13);
-            Text(R(428, 193, 424, 60), "通勤暂停", 40, Ink, true, TextAnchor.MiddleCenter);
-            Text(R(428, 254, 424, 28), "计时已停下，准备好再继续。", 17, Muted, false, TextAnchor.MiddleCenter);
-            if (Button(R(440, 308, 400, 58), "继续赶路    ESC", Orange, Ink, 23)) active.TogglePause();
-            if (Button(R(440, 380, 192, 48), "重新出发  R", Ink, Cream, 17)) active.Restart();
-            if (Button(R(648, 380, 192, 48), active.Muted ? "声音：关  M" : "声音：开  M", Ink, Cream, 17)) active.ToggleSound();
-            if (Button(R(440, 442, 400, 48), active.ScreenShakeEnabled ? "轻微震屏：开" : "轻微震屏：关", new Color32(228, 234, 220, 255), Ink, 17)) active.ToggleScreenShake();
-            if (Button(R(440, 500, 400, 48), "返回主菜单", new Color32(228, 234, 220, 255), Ink, 17)) active.ToMenu();
-            Text(R(428, 570, 424, 24), "WASD 移动   ·   SPACE 冲刺   ·   SHIFT 稳住", 13, Muted, false, TextAnchor.MiddleCenter);
+            Scrim(.65f);Card(R(380,150,520,420),Cream);Icon("pause",R(591,172,98,98));
+            if(IconButton(R(435,304,410,94),"play","继续 · ESC",Gold))game.TogglePause();
+            if(IconButton(R(435,425,86,78),"retry","重新开始 · R",Teal))game.Restart();
+            if(IconButton(R(543,425,86,78),"sound","声音 · M",game.Muted?Color.gray:Teal))game.ToggleSound();
+            if(IconButton(R(651,425,86,78),"shake","震屏",game.ScreenShakeEnabled?Teal:Color.gray))game.ToggleScreenShake();
+            if(IconButton(R(759,425,86,78),"home","返回首页",Teal))game.ToMenu();
         }
-
         static void Transition()
         {
-            Scrim(.42f);
-            Panel(R(330, 244, 620, 222), Cream);
-            Pill(R(537, 269, 206, 31), "已抵达 · 继续赶路", Teal, Ink, 15);
-            Text(R(355, 318, 570, 50), "下一站，好运上班人！", 34, Ink, true, TextAnchor.MiddleCenter);
-            Text(R(355, 379, 570, 30), "通勤计时继续保留", 17, Muted, false, TextAnchor.MiddleCenter);
-            Bar(R(445, 432, 390, 5), 1f - Mathf.Clamp01(active.TransitionLeft / 1.55f), Orange, new Color32(225, 231, 219, 255));
+            Scrim(.35f);Card(R(370,248,540,206),Cream);Icon(StageIcon(game.Stage),R(440,270,120,115));Text(R(590,299,90,60),"→",48,Teal);
+            Icon(StageIcon(Mathf.Min(game.Stage+1,2)),R(720,270,120,115));Progress(R(420,422,440,8),1-Mathf.Clamp01(game.TransitionLeft/1.55f),Gold);
         }
-
         static void Results()
         {
-            bool ontime = active.TotalTime <= active.TimeLimit;
-            Scrim(.73f);
-            Panel(R(278, 45, 724, 632), Cream);
-            Pill(R(531, 69, 218, 29), ontime ? "通勤完成  /  ON TIME" : "通勤完成  /  MADE IT", ontime ? Teal : Orange, Ink, 13);
-            Text(R(308, 115, 664, 59), active.CoreMode ? "地铁练习完成！" : ontime ? "打卡成功，刚刚好！" : "迟到了，但没有放弃！", 38, Ink, true, TextAnchor.MiddleCenter);
-            Text(R(308, 178, 664, 27), ontime ? "今天的早八，被你拿捏了。" : "撞开人群，下一趟早一点到。", 18, Muted, false, TextAnchor.MiddleCenter);
-            StatCard(322, active.CoreMode ? "本段用时" : "总通勤时间", TimeText(active.TotalTime), ontime ? Teal : Orange);
-            StatCard(546, "全程碰撞", active.Collisions + " 次", Orange);
-            StatCard(770, ontime ? "提前到达" : "迟到时间", TimeText(Mathf.Abs(active.TimeLimit - active.TotalTime)), ontime ? Teal : Red);
-            Text(R(325, 343, 630, 25), active.CoreMode ? "地铁单段练习" : "通勤路线", 17, Ink, true);
-            for (int i = 0; i < 3; i++)
-            {
-                if(active.CoreMode && i!=1)continue;
-                float y = active.CoreMode ? 405 : 383 + i * 43;
-                if (i % 2 == 0) Box(R(322, y - 3, 636, 41), new Color32(238, 241, 226, 255), true);
-                Circle(R(337, y + 4, 24, 24), Teal);
-                Text(R(337, y + 4, 24, 24), (i + 1).ToString(), 13, Ink, true, TextAnchor.MiddleCenter);
-                Text(R(375, y, 270, 31), Titles[i], 17, Ink);
-                float time = active.SplitTimes != null && active.SplitTimes.Length > i ? active.SplitTimes[i] : 0;
-                int hits = active.SplitCollisions != null && active.SplitCollisions.Length > i ? active.SplitCollisions[i] : 0;
-                Text(R(664, y, 135, 31), TimeText(time), 18, Ink, true, TextAnchor.MiddleRight);
-                Text(R(817, y, 123, 31), hits + " 次碰撞", 15, Muted, false, TextAnchor.MiddleRight);
-            }
-            if (Button(R(322, 548, 354, 60), "再赶一次    R", Orange, Ink, 23)) active.Restart();
-            if (Button(R(694, 548, 264, 60), "返回主菜单", Ink, Cream, 20)) active.ToMenu();
-            Text(R(308, 632, 664, 22), "小提示：看地面预警，SHIFT 稳住免击飞，再松开冲刺。", 14, Muted, false, TextAnchor.MiddleCenter);
+            Scrim(.6f);Card(R(310,70,660,580),Cream);Icon("clock",R(570,91,140,126));
+            Text(R(335,215,610,50),game.TotalTime<=game.TimeLimit?"✓  "+TimeText(game.TotalTime):"+  "+TimeText(game.TotalTime-game.TimeLimit),37,game.TotalTime<=game.TimeLimit?Teal:Red,true);
+            for(int i=0;i<3;i++)
+            {if(game.CoreMode&&i!=1)continue;float y=294+i*62;Icon(StageIcon(i),R(420,y,48,48));Text(R(490,y,210,48),TimeText(game.SplitTimes[i]),24,Ink,true);Icon("dash",R(720,y,42,42));Text(R(774,y,80,48),game.SplitCollisions[i].ToString(),22,Ink);}
+            if(IconButton(R(410,521,214,83),"retry","再赶一次 · R",Gold))game.Restart();
+            if(IconButton(R(656,521,214,83),"home","返回首页",Teal))game.ToMenu();
         }
-
-        static void StatCard(float x, string caption, string value, Color accent)
+        static string TimeText(float t){t=Mathf.Max(0,t);return ((int)t/60).ToString("00")+":"+((int)t%60).ToString("00");}
+        static void Scrim(float alpha)=>Fill(new Rect(0,0,width,height),new Color(Ink.r,Ink.g,Ink.b,alpha));
+        static void Fill(Rect r,Color c){Color old=GUI.color;GUI.color=c;GUI.DrawTexture(r,Texture2D.whiteTexture);GUI.color=old;}
+        static void Card(Rect r,Color c)
         {
-            Box(R(x, 239, 188, 79), new Color32(235, 240, 225, 255), true);
-            Box(R(x + 14, 252, 4, 51), accent, true);
-            Text(R(x + 30, 247, 147, 22), caption, 13, Muted);
-            Text(R(x + 30, 271, 147, 36), value, 27, Ink, true);
+            Fill(new Rect(r.x+2,r.y+5,r.width,r.height),new Color(.08f,.2f,.2f,.15f));
+            // Panel geometry is functional UI, not placeholder illustration.
+            Fill(r,c);
         }
-
-        static string TimeText(float value)
+        static void Progress(Rect r,float value,Color c){Fill(r,new Color(.15f,.35f,.35f,.18f));if(value>0)Fill(new Rect(r.x,r.y,r.width*Mathf.Clamp01(value),r.height),c);}
+        static void Icon(string name,Rect r,float opacity=1)=>RushArt.DrawIcon(name,r,opacity);
+        static bool IconButton(Rect r,string name,string tip,Color color)
         {
-            value = Mathf.Max(0, value);
-            int minutes = (int)(value / 60f);
-            int seconds = (int)(value % 60f);
-            int tenths = (int)((value * 10f) % 10f);
-            return minutes.ToString("00") + ":" + seconds.ToString("00") + "." + tenths;
+            bool hover=r.Contains(Event.current.mousePosition);Card(r,hover?Color.Lerp(color,Color.white,.18f):color);
+            float s=Mathf.Min(r.width-16,r.height-16);Icon(name,new Rect(r.center.x-s*.5f,r.center.y-s*.5f,s,s));
+            if(hover)tooltip=tip;
+            return GUI.Button(r,GUIContent.none,GUIStyle.none);
         }
-
-        static void Scrim(float alpha) => Box(new Rect(0, 0, width, height), new Color(Ink.r, Ink.g, Ink.b, alpha), false);
-        static void Panel(Rect r, Color color)
+        static void Text(Rect r,string text,int size,Color c,bool bold=false)
         {
-            Box(new Rect(r.x + 2, r.y + 6, r.width, r.height), new Color(0, 0, 0, .12f), true);
-            Box(r, color, true);
-        }
-        static void Pill(Rect r, string text, Color background, Color foreground, int size)
-        {
-            Box(r, background, true);
-            Text(r, text, size, foreground, true, TextAnchor.MiddleCenter);
-        }
-        static void Box(Rect rect, Color color, bool round)
-        {
-            Color old = GUI.color;
-            GUI.color = color;
-            // Nine-slice borders cannot fit thin icon strokes and progress bars.
-            // Stretch the small texture inside their exact rectangle instead.
-            if (round && rect.width >= 28 && rect.height >= 28) GUI.Box(rect, GUIContent.none, panelStyle);
-            else if (round) GUI.DrawTexture(rect, rounded);
-            else GUI.DrawTexture(rect, white);
-            GUI.color = old;
-        }
-        static void Circle(Rect rect, Color color)
-        {
-            Color old = GUI.color;
-            GUI.color = color;
-            GUI.DrawTexture(rect, circle);
-            GUI.color = old;
-        }
-        static void Line(Rect r, Color color) => Box(r, color, true);
-        static void DashLine(Rect r, Color color)
-        {
-            for (int i = 0; i < 3; i++) Box(new Rect(r.x, r.y + 12 * i, r.width, 6), color, false);
-        }
-        static void Bar(Rect r, float amount, Color fill, Color track)
-        {
-            Box(r, track, true);
-            if (amount > .005f) Box(new Rect(r.x, r.y, Mathf.Max(r.height, r.width * Mathf.Clamp01(amount)), r.height), fill, true);
-        }
-        static GUIStyle Style(int size, bool bold, TextAnchor align)
-        {
-            string key = size + "/" + bold + "/" + (int)align;
-            if (!textStyles.TryGetValue(key, out GUIStyle style))
-            {
-                style = new GUIStyle();
-                style.font = font;
-                style.fontSize = size;
-                style.fontStyle = bold ? FontStyle.Bold : FontStyle.Normal;
-                style.alignment = align;
-                style.wordWrap = true;
-                style.richText = false;
-                style.padding = new RectOffset(0, 0, 0, 0);
-                style.normal.textColor = Color.white;
-                textStyles.Add(key, style);
-            }
-            return style;
-        }
-        static void Text(Rect r, string text, int size, Color color, bool bold = false, TextAnchor align = TextAnchor.MiddleLeft)
-        {
-            Color old = GUI.color;
-            GUI.color = color;
-            GUI.Label(r, text, Style(size, bold, align));
-            GUI.color = old;
-        }
-        static bool Button(Rect r, string text, Color background, Color foreground, int size)
-        {
-            bool hovered = r.Contains(Event.current.mousePosition);
-            Color fill = hovered ? Color.Lerp(background, Color.white, .13f) : background;
-            Box(new Rect(r.x, r.y + 3, r.width, r.height), new Color(0, 0, 0, .12f), true);
-            Box(r, fill, true);
-            Text(r, text, size, foreground, true, TextAnchor.MiddleCenter);
-            return GUI.Button(r, GUIContent.none, blankButton);
-        }
-
-        static void Icon(int icon, Rect r, Color accent)
-        {
-            if (icon == 0)
-            {
-                Circle(new Rect(r.x, r.y + 20, 23, 23), Ink);
-                Circle(new Rect(r.x + 29, r.y + 20, 23, 23), Ink);
-                Circle(new Rect(r.x + 5, r.y + 25, 13, 13), Cream);
-                Circle(new Rect(r.x + 34, r.y + 25, 13, 13), Cream);
-                Box(new Rect(r.x + 8, r.y + 16, 34, 5), accent, true);
-                Box(new Rect(r.x + 19, r.y + 6, 7, 27), accent, true);
-                Box(new Rect(r.x + 13, r.y + 3, 20, 5), Ink, true);
-                Box(new Rect(r.x + 37, r.y + 9, 6, 23), accent, true);
-            }
-            else if (icon == 1)
-            {
-                Box(new Rect(r.x + 4, r.y, 42, 41), accent, true);
-                Box(new Rect(r.x + 10, r.y + 8, 30, 17), Ink, true);
-                Box(new Rect(r.x + 23, r.y + 8, 4, 17), accent, false);
-                Circle(new Rect(r.x + 10, r.y + 30, 7, 7), Cream);
-                Circle(new Rect(r.x + 33, r.y + 30, 7, 7), Cream);
-                Box(new Rect(r.x + 9, r.y + 40, 6, 5), Ink, false);
-                Box(new Rect(r.x + 35, r.y + 40, 6, 5), Ink, false);
-            }
-            else
-            {
-                Circle(new Rect(r.x + 3, r.y + 1, 44, 44), accent);
-                Circle(new Rect(r.x + 8, r.y + 6, 34, 34), Cream);
-                Box(new Rect(r.x + 23, r.y + 11, 4, 17), Ink, true);
-                Box(new Rect(r.x + 23, r.y + 24, 14, 4), Ink, true);
-            }
+            string key=size+"/"+bold;if(!styles.TryGetValue(key,out var style)){style=new GUIStyle{font=font,fontSize=size,fontStyle=bold?FontStyle.Bold:FontStyle.Normal,alignment=TextAnchor.MiddleCenter,wordWrap=false};style.normal.textColor=Color.white;styles[key]=style;}
+            Color old=GUI.color;GUI.color=c;GUI.Label(r,text,style);GUI.color=old;
         }
     }
 }

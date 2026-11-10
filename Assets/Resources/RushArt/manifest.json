@@ -1,0 +1,866 @@
+{
+  "generator": "OpenAI built-in image_gen",
+  "date": "2026-11-10",
+  "style": "用户提供俯视车站参考：奶油白、薄荷青、金黄，圆角玩具质感",
+  "atlases": [
+    {
+      "file": "props.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "mode": "RGBA",
+      "sha256": "64181e3c9483ce9d10832e7cff9db05ccd078303ecabd5cb62411df69f14750f",
+      "sprites": [
+        {
+          "id": "tree",
+          "index": 0,
+          "rowFromTop": 0,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "planter",
+          "index": 1,
+          "rowFromTop": 0,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "bench",
+          "index": 2,
+          "rowFromTop": 0,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "lamp",
+          "index": 3,
+          "rowFromTop": 0,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "cone",
+          "index": 4,
+          "rowFromTop": 1,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "barrier",
+          "index": 5,
+          "rowFromTop": 1,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "column",
+          "index": 6,
+          "rowFromTop": 1,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "rail",
+          "index": 7,
+          "rowFromTop": 1,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "vending",
+          "index": 8,
+          "rowFromTop": 2,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "gate",
+          "index": 9,
+          "rowFromTop": 2,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "kiosk",
+          "index": 10,
+          "rowFromTop": 2,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "train",
+          "index": 11,
+          "rowFromTop": 2,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "desk",
+          "index": 12,
+          "rowFromTop": 3,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "sofa",
+          "index": 13,
+          "rowFromTop": 3,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "printer",
+          "index": 14,
+          "rowFromTop": 3,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "clockin",
+          "index": 15,
+          "rowFromTop": 3,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        }
+      ]
+    },
+    {
+      "file": "people.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "mode": "RGBA",
+      "sha256": "c512d7992bbe3ecdaa0a781f3d33df133bcc52caead041e152ea5d6dbc8ee950",
+      "sprites": [
+        {
+          "id": "player-walk-back",
+          "index": 0,
+          "rowFromTop": 0,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-walk-front",
+          "index": 1,
+          "rowFromTop": 0,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-bike-back",
+          "index": 2,
+          "rowFromTop": 0,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-bike-front",
+          "index": 3,
+          "rowFromTop": 0,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "blue-walk",
+          "index": 4,
+          "rowFromTop": 1,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "purple-walk",
+          "index": 5,
+          "rowFromTop": 1,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "green-walk",
+          "index": 6,
+          "rowFromTop": 1,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "gold-walk",
+          "index": 7,
+          "rowFromTop": 1,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "blue-bike",
+          "index": 8,
+          "rowFromTop": 2,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "purple-bike",
+          "index": 9,
+          "rowFromTop": 2,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "green-bike",
+          "index": 10,
+          "rowFromTop": 2,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "gold-bike",
+          "index": 11,
+          "rowFromTop": 2,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-walk-left",
+          "index": 12,
+          "rowFromTop": 3,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-walk-right",
+          "index": 13,
+          "rowFromTop": 3,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-bike-left",
+          "index": 14,
+          "rowFromTop": 3,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "player-bike-right",
+          "index": 15,
+          "rowFromTop": 3,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        }
+      ]
+    },
+    {
+      "file": "icons.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "mode": "RGBA",
+      "sha256": "8dcde2e92ca172c9459055be57c6899ec408d3e9679e6cc015f88a78feac1da9",
+      "sprites": [
+        {
+          "id": "bike",
+          "index": 0,
+          "rowFromTop": 0,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "train",
+          "index": 1,
+          "rowFromTop": 0,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "clock",
+          "index": 2,
+          "rowFromTop": 0,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "play",
+          "index": 3,
+          "rowFromTop": 0,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "pause",
+          "index": 4,
+          "rowFromTop": 1,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "retry",
+          "index": 5,
+          "rowFromTop": 1,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "home",
+          "index": 6,
+          "rowFromTop": 1,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "sound",
+          "index": 7,
+          "rowFromTop": 1,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "shake",
+          "index": 8,
+          "rowFromTop": 2,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "exit",
+          "index": 9,
+          "rowFromTop": 2,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "move",
+          "index": 10,
+          "rowFromTop": 2,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "dash",
+          "index": 11,
+          "rowFromTop": 2,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "shield",
+          "index": 12,
+          "rowFromTop": 3,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "rain",
+          "index": 13,
+          "rowFromTop": 3,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "stairs",
+          "index": 14,
+          "rowFromTop": 3,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "escalator",
+          "index": 15,
+          "rowFromTop": 3,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        }
+      ]
+    },
+    {
+      "file": "extras.png",
+      "width": 1254,
+      "height": 1254,
+      "columns": 4,
+      "rows": 4,
+      "mode": "RGBA",
+      "sha256": "5f6ee70731904ae86d45441452529a95b7b0f1d5e2c60d5e36b0e2911ed8e55b",
+      "sprites": [
+        {
+          "id": "coffee",
+          "index": 0,
+          "rowFromTop": 0,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "breakfast",
+          "index": 1,
+          "rowFromTop": 0,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "lost-item",
+          "index": 2,
+          "rowFromTop": 0,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "coffee-stall",
+          "index": 3,
+          "rowFromTop": 0,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            940.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "breakfast-stall",
+          "index": 4,
+          "rowFromTop": 1,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "stairs",
+          "index": 5,
+          "rowFromTop": 1,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "escalator",
+          "index": 6,
+          "rowFromTop": 1,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "boxes",
+          "index": 7,
+          "rowFromTop": 1,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            627.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "cream-tile",
+          "index": 8,
+          "rowFromTop": 2,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "road",
+          "index": 9,
+          "rowFromTop": 2,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "carpet",
+          "index": 10,
+          "rowFromTop": 2,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "office-door",
+          "index": 11,
+          "rowFromTop": 2,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            313.5,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "puddle",
+          "index": 12,
+          "rowFromTop": 3,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "arrow",
+          "index": 13,
+          "rowFromTop": 3,
+          "column": 1,
+          "unityRect": [
+            313.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "check",
+          "index": 14,
+          "rowFromTop": 3,
+          "column": 2,
+          "unityRect": [
+            627.0,
+            0.0,
+            313.5,
+            313.5
+          ]
+        },
+        {
+          "id": "star",
+          "index": 15,
+          "rowFromTop": 3,
+          "column": 3,
+          "unityRect": [
+            940.5,
+            0.0,
+            313.5,
+            313.5
+          ]
+        }
+      ]
+    },
+    {
+      "file": "floors.png",
+      "width": 2172,
+      "height": 724,
+      "columns": 3,
+      "rows": 1,
+      "mode": "RGB",
+      "sha256": "fd8acabf75f2bcb0848b847b64b4481b8c22879355b7072abd09df8f394296d6",
+      "sprites": [
+        {
+          "id": "cream-tile",
+          "index": 0,
+          "rowFromTop": 0,
+          "column": 0,
+          "unityRect": [
+            0.0,
+            0.0,
+            724.0,
+            724.0
+          ]
+        },
+        {
+          "id": "road",
+          "index": 1,
+          "rowFromTop": 0,
+          "column": 1,
+          "unityRect": [
+            724.0,
+            0.0,
+            724.0,
+            724.0
+          ]
+        },
+        {
+          "id": "carpet",
+          "index": 2,
+          "rowFromTop": 0,
+          "column": 2,
+          "unityRect": [
+            1448.0,
+            0.0,
+            724.0,
+            724.0
+          ]
+        }
+      ]
+    }
+  ]
+}

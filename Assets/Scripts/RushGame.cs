@@ -48,7 +48,8 @@ namespace EarlyRush
         public float GoalDistance => Vector2.Distance(position,new Vector2(world.goal.x,world.goal.z));
         Vector2 position, velocity, facing = Vector2.up;
         Vector2 moveInput;
-        bool braceInput, dashPressed, actionLocked = true;
+        bool braceInput, interactInput, dashPressed, actionLocked = true;
+        public bool QAInteract;
         float cooldown, dashLeft, stumbleLeft, stumbleProtectionLeft, continuousStumbleTime, impact, shake, collisionSoundCooldown;
         float transitionBeginTime;
         int stageStartCollisions;
@@ -249,7 +250,7 @@ namespace EarlyRush
             CurrentDashId=0;TotalLaunches=0;ChainLaunches=0;MaxObservedChainDepth=0;MaxObservedDashTargets=0;NormalContactCount=0;OrdinaryBlockedDistance=0;
             SplitTimes=new float[3];SplitCollisions=new int[3]; BuildStage(startStage);
         }
-        void LockActions(){actionLocked=true;dashPressed=false;braceInput=false;QADash=false;QABrace=false;moveInput=Vector2.zero;}
+        void LockActions(){actionLocked=true;dashPressed=false;braceInput=false;interactInput=false;QADash=false;QABrace=false;QAInteract=false;moveInput=Vector2.zero;}
         void BuildStage(int index)
         {
             long perfToken=RushPerformance.Begin(RushPerformance.Scope.BuildStage,index);
@@ -311,20 +312,21 @@ namespace EarlyRush
             if(Input.GetKeyDown(KeyCode.Return) && !actionLocked)
             {if(State==RushState.Menu)StartRun();else if(State==RushState.Tutorial)BeginPlay();else if(State==RushState.Results)Restart();}
             if(Input.GetKeyDown(KeyCode.R)&&(State==RushState.Paused||State==RushState.Results))Restart();
-            bool held=Input.GetKey(KeyCode.Space)||Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.Return);
-            if(actionLocked&&!held&&!QADash&&!QABrace)actionLocked=false;
+            bool held=Input.GetKey(KeyCode.Space)||Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.Return)||Input.GetKey(KeyCode.E);
+            if(actionLocked&&!held&&!QADash&&!QABrace&&!QAInteract)actionLocked=false;
             if(State==RushState.Playing)
             {
                 TotalTime+=Time.deltaTime;StageTime+=Time.deltaTime;
                 float frozen=impactFreezeLeft;impactFreezeLeft=Mathf.Max(0,impactFreezeLeft-Time.deltaTime);
                 TickImpactPresentation(Mathf.Max(0,Time.deltaTime-frozen));
-                if(QAInput){moveInput=Vector2.ClampMagnitude(QAMove,1);braceInput=!actionLocked&&QABrace;if(!actionLocked&&QADash)dashPressed=true;QADash=false;}
+                if(QAInput){moveInput=Vector2.ClampMagnitude(QAMove,1);braceInput=!actionLocked&&QABrace;interactInput=!actionLocked&&QAInteract;if(!actionLocked&&QADash)dashPressed=true;QADash=false;}
                 else
                 {
                     float x=(Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0);
                     float y=(Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0);
                     moveInput=Vector2.ClampMagnitude(new Vector2(x,y),1);
                     braceInput=!actionLocked&&(Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
+                    interactInput=!actionLocked&&Input.GetKey(KeyCode.E);
                     if(!actionLocked&&Input.GetKeyDown(KeyCode.Space))dashPressed=true;
                 }
             }
@@ -333,7 +335,7 @@ namespace EarlyRush
                 TransitionLeft=Mathf.Max(0,1.55f-(Time.unscaledTime-transitionBeginTime));
                 if(TransitionLeft<=0){BuildStage(Stage+1);State=RushState.Playing;Sound(tickClip);}
             }
-            else{moveInput=Vector2.zero;braceInput=false;dashPressed=false;}
+            else{moveInput=Vector2.zero;braceInput=false;interactInput=false;dashPressed=false;}
             if(State==RushState.Playing)
             {
                 impact=Mathf.MoveTowards(impact,0,Time.deltaTime*4);
@@ -393,7 +395,8 @@ namespace EarlyRush
             cooldown=Mathf.Max(0,cooldown-dt);dashLeft=Mathf.Max(0,dashLeft-dt);
             playerTickStart=position;
             TickCombat(dt);
-            IsBracing=braceInput&&!PlayerAirborne&&!PlayerRecovering;
+            bool interacting=interactInput&&CanInteractHere;
+            IsBracing=(braceInput||interacting)&&!PlayerAirborne&&!PlayerRecovering;
             // A global recovery window prevents a stream of new bodies from extending
             // one stumble indefinitely. Bracing cancels the stumble but keeps protection.
             stumbleProtectionLeft=Mathf.Max(0,stumbleProtectionLeft-dt);
@@ -413,17 +416,22 @@ namespace EarlyRush
                 Sound(dashClip);Log("dash");}
             dashPressed=false;IsDashing=dashLeft>0;
             TickJourney(dt);
+            TickDailyCommute(dt);
             if(PlayerAirborne||PlayerRecovering){dashLeft=0;IsDashing=false;SimulatePlayerImpact(dt);}
             else
             {
-            float speed=(Stage==0?6.1f:4.9f)*(IsBracing?.48f:IsStumbling?.60f:1f);
+            float speed=(Stage==0?6.1f:4.9f)*(IsBracing?.48f:IsStumbling?.60f:1f)*TerrainSpeedMultiplier;
+            Vector2 requestedMove=interacting?Vector2.zero:moveInput;
             if(IsDashing)velocity=facing*(Stage==0?13f:11.3f);
             else
             {
                 float acceleration=Stage==0?16f:29f;
                 if(moveInput.sqrMagnitude<.01f)acceleration=Stage==0?14f:34f;
                 if(IsBracing)acceleration=44f;
-                velocity=Vector2.MoveTowards(velocity,moveInput*speed,acceleration*dt);
+                if(Rain01>0&&!IsBracing)acceleration*=Mathf.Lerp(1f,.62f,Rain01);
+                Vector2 targetVelocity=requestedMove*speed;
+                if(TerrainKind=="escalator"&&!interacting)targetVelocity+=Vector2.up*.85f;
+                velocity=Vector2.MoveTowards(velocity,targetVelocity,acceleration*dt);
                 if(moveInput.sqrMagnitude>.04f)facing=moveInput.normalized;
             }
             MovePlayer(velocity*dt,true);
@@ -1027,6 +1035,7 @@ namespace EarlyRush
             if(Stage==2||CoreMode){State=RushState.Results;Log(TotalTime<=TimeLimit?"result_on_time":"result_late");}
             else{State=RushState.Transition;transitionBeginTime=Time.unscaledTime;TransitionLeft=1.55f;}
         }
+        void OnApplicationPause(bool paused){if(paused&&State==RushState.Playing)TogglePause();}
         void OnApplicationFocus(bool focus){if(!focus&&qa==null&&!impactQaMode&&!combatQaMode&&!coreQaMode&&!journeyQaMode&&State==RushState.Playing)TogglePause();}
         void OnGUI(){RushUI.Draw(this);}
         public void Log(string evt){Debug.Log("RUSH_EVENT "+evt+" stage="+Stage+" time="+TotalTime.ToString("F3")+" pos="+position+" collisions="+Collisions+" transitions="+TransitionCount);}

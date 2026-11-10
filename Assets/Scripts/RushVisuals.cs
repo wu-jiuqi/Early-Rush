@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EarlyRush
 {
-    // All meshes and materials are authored here; no external game assets are used.
+    // Generated raster characters with retained animation/collision contracts. Functional meshes remain for ground, rails and collision telegraphs.
     public static class RushVisuals
     {
         static readonly Dictionary<Color, Material> materials = new Dictionary<Color, Material>();
@@ -90,62 +90,18 @@ namespace EarlyRush
             var root=new GameObject(player?"Player • orange commuter":"Commuter").transform;root.SetParent(parent,false);
             var parts=root.gameObject.AddComponent<RushPersonParts>();parts.bike=bike;
             var rig=new GameObject("Soft body rig").transform;rig.SetParent(root,false);parts.rig=rig;
-            float h=bike?.18f:0;
-            var skin=new Color(.99f,.71f,.49f);
-            Box(rig,"Chunky jacket",new Vector3(0,.86f+h,0),new Vector3(.75f,.77f,.5f),color,.22f);
-            Primitive(rig,"Neck",PrimitiveType.Sphere,new Vector3(0,1.22f+h,0),new Vector3(.24f,.24f,.25f),skin);
-            Primitive(rig,"Round face",PrimitiveType.Sphere,new Vector3(0,1.52f+h,.035f),new Vector3(.76f,.73f,.67f),skin);
-            Primitive(rig,"Hair cap",PrimitiveType.Sphere,new Vector3(0,1.76f+h,-.04f),new Vector3(.79f,.42f,.67f),Ink);
-            Primitive(rig,"Hair fringe",PrimitiveType.Sphere,new Vector3(-.15f,1.69f+h,.27f),new Vector3(.37f,.20f,.15f),Ink);
-            for(int side=-1;side<=1;side+=2)
-            {
-                Primitive(rig,"Ear",PrimitiveType.Sphere,new Vector3(side*.37f,1.5f+h,.025f),new Vector3(.16f,.23f,.16f),skin);
-                Primitive(rig,"Bright eye",PrimitiveType.Sphere,new Vector3(side*.14f,1.54f+h,.341f),new Vector3(.065f,.085f,.042f),Ink);
-                Primitive(rig,"Blush",PrimitiveType.Sphere,new Vector3(side*.23f,1.42f+h,.326f),new Vector3(.1f,.05f,.025f),new Color(.94f,.4f,.29f));
-            }
-            Primitive(rig,"Button nose",PrimitiveType.Sphere,new Vector3(0,1.43f+h,.37f),new Vector3(.11f,.1f,.1f),skin);
             parts.legs=new Transform[2];parts.arms=new Transform[2];
             for(int i=0;i<2;i++)
             {
-                float side=i==0?-1:1;
-                var leg=new GameObject("Leg").transform;leg.SetParent(rig,false);leg.localPosition=new Vector3(side*.22f,.54f+h,0);parts.legs[i]=leg;
-                Box(leg,"Trouser",new Vector3(0,-.17f,0),new Vector3(.26f,.42f,.29f),Ink,.1f);
-                Box(leg,"Sneaker",new Vector3(0,-.39f,.08f),new Vector3(.3f,.19f,.43f),Cream,.08f);
-                var arm=new GameObject("Arm").transform;arm.SetParent(rig,false);arm.localPosition=new Vector3(side*.37f,1.09f+h,0);parts.arms[i]=arm;
-                Box(arm,"Sleeve",new Vector3(side*.055f,-.18f,0),new Vector3(.25f,.42f,.29f),color,.11f);
-                Primitive(arm,"Mitten",PrimitiveType.Sphere,new Vector3(side*.06f,-.40f,.01f),new Vector3(.24f,.25f,.26f),skin);
+                parts.legs[i]=new GameObject("Animation leg anchor").transform;parts.legs[i].SetParent(rig,false);
+                parts.arms[i]=new GameObject("Animation arm anchor").transform;parts.arms[i].SetParent(rig,false);
             }
-            if(player)
-            {
-                Box(rig,"Backpack",new Vector3(0,.93f,-.36f),new Vector3(.52f,.57f,.31f),new Color(.96f,.69f,.21f),.13f);
-                Box(rig,"Backpack pocket",new Vector3(0,.79f,-.54f),new Vector3(.34f,.22f,.08f),Orange,.04f);
-                Box(rig,"Backpack patch",new Vector3(0,1.06f,-.53f),new Vector3(.17f,.12f,.025f),Cream,.02f);
-                Ring(root,"Player ground marker",new Vector3(0,.16f,0),.58f,.035f,Orange);
-            }
-            else
-            {
-                Box(rig,"Commuter bag",new Vector3(.38f,.68f,-.14f),new Vector3(.3f,.4f,.27f),new Color(.33f,.25f,.23f),.08f);
-            }
-            if(bike)CreateBike(root,player?Teal:color);
+            string coat=color.b>color.r&&color.b>color.g?"blue":color.r>color.g&&color.b>color.g?"purple":color.g>color.r?"green":"gold";
+            string key=player?(bike?"player-bike-back":"player-walk-back"):coat+(bike?"-bike":"-walk");
+            var art=RushArt.Sprite(rig,key,new Vector3(0,bike?.9f:1f,0),bike?2.0f:1.75f,bike?2.4f:2.2f);
+            if(art){var face=art.gameObject.AddComponent<RushCharacterArt>();face.owner=root;face.player=player;face.bike=bike;}
+            if(player)Ring(root,"Player ground marker",new Vector3(0,.12f,0),.58f,.025f,Teal);
             return root;
-        }
-
-        static void CreateBike(Transform parent,Color color)
-        {
-            var root=new GameObject("City bicycle").transform;root.SetParent(parent,false);
-            for(int side=-1;side<=1;side+=2)
-            {
-                Vector3 c=new Vector3(0,.37f,side*.66f);
-                var wheel=Ring(root,"Rubber tyre",c,.34f,.055f,Ink);wheel.localRotation=Quaternion.Euler(0,0,90);
-                var rim=Ring(root,"Metal rim",c,.27f,.022f,Cream);rim.localRotation=Quaternion.Euler(0,0,90);
-                Rod(root,"Axle",c+Vector3.left*.13f,c+Vector3.right*.13f,.045f,Ink);
-                for(int i=0;i<4;i++){float a=i*Mathf.PI/4;Vector3 v=new Vector3(0,Mathf.Cos(a),Mathf.Sin(a))*.27f;Rod(root,"Spoke",c-v,c+v,.011f,Cream);}
-            }
-            Vector3 rear=new Vector3(0,.37f,-.66f),front=new Vector3(0,.37f,.66f),seat=new Vector3(0,.85f,-.25f),crank=new Vector3(0,.35f,-.05f),fork=new Vector3(0,.88f,.46f);
-            Rod(root,"Frame",rear,seat,.055f,color);Rod(root,"Frame",seat,crank,.055f,color);Rod(root,"Frame",crank,rear,.055f,color);Rod(root,"Frame",seat,fork,.055f,color);Rod(root,"Frame",crank,fork,.055f,color);Rod(root,"Front fork",fork,front,.045f,color);
-            Rod(root,"Stem",fork,new Vector3(0,1.12f,.52f),.04f,Ink);Rod(root,"Handlebar",new Vector3(-.43f,1.12f,.52f),new Vector3(.43f,1.12f,.52f),.045f,Ink);
-            Box(root,"Saddle",new Vector3(0,.93f,-.25f),new Vector3(.28f,.12f,.4f),Ink,.06f);
-            Primitive(root,"Headlight",PrimitiveType.Sphere,new Vector3(0,.93f,.66f),new Vector3(.16f,.15f,.13f),Cream);
         }
 
         public static Vector3 ImpactScale(float hitAge,float landingAge,float strength)
@@ -190,6 +146,29 @@ namespace EarlyRush
                 p.legs[i].localRotation=Quaternion.Euler(p.bike?(-25+stride*s*20):stride*s*29*speed,0,0);
                 p.arms[i].localRotation=Quaternion.Euler(p.bike?-60:brace?-25:-stride*s*24*speed,0,brace?s*18:0);
             }
+        }
+    }
+
+    // Keep generated front/back/side views readable while preserving bob, scale and launch spin.
+    public class RushCharacterArt:MonoBehaviour
+    {
+        public Transform owner;public bool player,bike;
+        SpriteRenderer rendererCache;
+        string lastKey;
+        void Awake(){rendererCache=GetComponent<SpriteRenderer>();}
+        void LateUpdate()
+        {
+            if(!owner||!rendererCache)return;
+            Vector3 direction=owner.forward;
+            if(player)
+            {
+                string view=Mathf.Abs(direction.x)>.65f?(direction.x<0?"left":"right"):direction.z<0?"front":"back";
+                string key="player-"+(bike?"bike-":"walk-")+view;
+                if(lastKey!=key){RushArt.SetSprite(rendererCache,key);lastKey=key;}
+            }
+            // Billboard yaw is independent of actor direction; launch pitch remains a screen-plane spin.
+            float tumble=Mathf.DeltaAngle(0,owner.eulerAngles.x);
+            transform.rotation=Quaternion.Euler(58.736f,0,0)*Quaternion.Euler(0,0,tumble);
         }
     }
 

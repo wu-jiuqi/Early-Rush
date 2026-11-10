@@ -1,0 +1,146 @@
+{
+  "scope": "Source/resource checks only; Unity build, Player, visuals and performance NOT verified",
+  "checks": [
+    {
+      "name": "props exists",
+      "passed": true
+    },
+    {
+      "name": "props minimum size",
+      "passed": true
+    },
+    {
+      "name": "props alpha",
+      "passed": true
+    },
+    {
+      "name": "people exists",
+      "passed": true
+    },
+    {
+      "name": "people minimum size",
+      "passed": true
+    },
+    {
+      "name": "people alpha",
+      "passed": true
+    },
+    {
+      "name": "icons exists",
+      "passed": true
+    },
+    {
+      "name": "icons minimum size",
+      "passed": true
+    },
+    {
+      "name": "icons alpha",
+      "passed": true
+    },
+    {
+      "name": "extras exists",
+      "passed": true
+    },
+    {
+      "name": "extras minimum size",
+      "passed": true
+    },
+    {
+      "name": "extras alpha",
+      "passed": true
+    },
+    {
+      "name": "floors exists",
+      "passed": true
+    },
+    {
+      "name": "floors minimum size",
+      "passed": true
+    },
+    {
+      "name": "BuildEarlyRush.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushArtImport.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushGame.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushImpactQA.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushDailyCommute.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushCombatV4.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushCombatQA.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushRouteHUD.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushCoreQA.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushArt.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushPerformance.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushQA.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushImpactFx.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushVisuals.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushWorld.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushJourney.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushUI.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "RushJourneyQA.cs metadata",
+      "passed": true
+    },
+    {
+      "name": "Independent v7 output",
+      "passed": true
+    },
+    {
+      "name": "Raster character creation",
+      "passed": true
+    },
+    {
+      "name": "Generated mesh cleanup",
+      "passed": true
+    }
+  ],
+  "passed": 35
+}

@@ -6,8 +6,9 @@ public static class BuildEarlyRush
 {
     public static void Build()
     {
+        RushArtImport.Validate();
         Directory.CreateDirectory("Assets/Resources");
-        foreach (string shaderName in new [] { "Standard", "Sprites/Default", "GUI/Text Shader", "Unlit/Color" })
+        foreach (string shaderName in new [] { "Standard", "Sprites/Default", "GUI/Text Shader", "Unlit/Color", "Unlit/Texture" })
         {
             var shader = Shader.Find(shaderName);
             if (shader == null) throw new System.Exception("Required shader missing: " + shaderName);
@@ -17,8 +18,8 @@ public static class BuildEarlyRush
         }
         AssetDatabase.SaveAssets();
         PlayerSettings.companyName = "Morning Club";
-        PlayerSettings.productName = "Early Rush v6";
-        PlayerSettings.bundleVersion = "0.6.0";
+        PlayerSettings.productName = "Early Rush v7";
+        PlayerSettings.bundleVersion = "0.7.0";
         PlayerSettings.defaultScreenWidth = 1280;
         PlayerSettings.defaultScreenHeight = 720;
         PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
@@ -37,7 +38,7 @@ public static class BuildEarlyRush
         Directory.CreateDirectory("Assets/Scenes");
         EditorSceneManager.SaveScene(scene, "Assets/Scenes/EarlyRush.unity");
         EditorBuildSettings.scenes = new []{new EditorBuildSettingsScene("Assets/Scenes/EarlyRush.unity", true)};
-        string output = Path.GetFullPath("../artifacts/EarlyRush-V6-Windows/EarlyRush.exe");
+        string output = Path.GetFullPath("../artifacts/EarlyRush-V7-Windows/EarlyRush.exe");
         Directory.CreateDirectory(Path.GetDirectoryName(output));
         var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new []{"Assets/Scenes/EarlyRush.unity"}, locationPathName=output, target=BuildTarget.StandaloneWindows64, options=BuildOptions.None });
         Debug.Log("EARLY_RUSH_BUILD: " + report.summary.result + " bytes=" + report.summary.totalSize);

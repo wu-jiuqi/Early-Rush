@@ -38,7 +38,7 @@ namespace EarlyRush
             public int groundPileSamples, groundPilePeak, allActivePilePeak;
             public float mapWidth, mapDepth, plannedDistance, actualDistance, gameSeconds;
             public float cameraSpanX, cameraSpanZ, minViewportX=1,maxViewportX,minViewportY=1,maxViewportY;
-            public float braceSeconds,dashSeconds,movingSeconds,commandedIdleSeconds,eventBraceSeconds,clockHoldSeconds;
+            public float braceSeconds,dashSeconds,movingSeconds,commandedIdleSeconds,eventBraceSeconds,clockHoldSeconds,clockEHeldMovementSeconds;
             public float maximumPositionSpeed,peakPlayerHeight,clockHoldPeak;
             public bool finite=true,inBounds=true,clearOfWalls=true,playerVisible=true,crowdFinite=true;
             public Frames frames=new Frames();
@@ -202,8 +202,9 @@ namespace EarlyRush
             report.checks.Add(new Check{name=name,passed=passed,evidence=evidence});if(!passed)report.failureCount++;
             Debug.Log("RUSH_JOURNEY_QA_CHECK "+(passed?"PASS ":"FAIL ")+name+" | "+evidence);
         }
-        void Input(Vector2 move,bool brace=false,bool dash=false)
-        {game.QAMove=Vector2.ClampMagnitude(move,1);game.QABrace=brace;game.QADash=dash;}
+        void Input(Vector2 move,bool brace=false,bool dash=false,bool interact=false)
+        {game.QAMove=Vector2.ClampMagnitude(move,1);game.QABrace=brace;game.QADash=dash;game.QAInteract=interact;}
+        void ClearInput()=>Input(Vector2.zero);
         IEnumerator WaitReal(float seconds)
         {float end=Time.realtimeSinceStartup+seconds;while(!finished&&Time.realtimeSinceStartup<end)yield return null;}
         IEnumerator WaitObserved(float seconds)
@@ -214,7 +215,7 @@ namespace EarlyRush
         }
         void RestartNatural()
         {
-            Input(Vector2.zero);loadingUntil=Time.frameCount+2;
+            ClearInput();loadingUntil=Time.frameCount+2;
             Debug.Log("RUSH_JOURNEY_LOAD_BEGIN frame="+Time.frameCount+" real="+Time.realtimeSinceStartup);
             game.Restart();
             Debug.Log("RUSH_JOURNEY_LOAD_END frame="+Time.frameCount+" real="+Time.realtimeSinceStartup);
@@ -225,10 +226,10 @@ namespace EarlyRush
             yield return WaitReal(.4f);
             CheckThat("Opens to menu",game.State==RushState.Menu,game.State.ToString());
             yield return Capture("menu");
-            game.StartRun();Input(Vector2.zero);yield return null;
+            game.StartRun();ClearInput();yield return null;
             CheckThat("Start opens ordinary tutorial",game.State==RushState.Tutorial,game.State.ToString());
             yield return Capture("tutorial");
-            game.BeginPlay();Input(Vector2.zero);yield return null;yield return null;
+            game.BeginPlay();ClearInput();yield return null;yield return null;
             CheckThat("Ordinary run starts at first natural spawn",game.Stage==0&&game.TransitionCount==0&&
                 Vector2.Distance(game.Position,new Vector2(game.World.spawn.x,game.World.spawn.z))<.05f,
                 "stage="+game.Stage+" position="+game.Position);
@@ -244,7 +245,7 @@ namespace EarlyRush
             foreach(var p in game.JourneyProbeSnapshot())clean&=p.phase==0&&!p.broken&&p.hits==0&&p.blocks==0;
             report.restartEventCovered=warned&&clean;
             CheckThat("Restart clears journey events and clock-in",clean,"active warning before restart="+warned);
-            Input(Vector2.zero);yield return WaitReal(.1f);
+            ClearInput();yield return WaitReal(.1f);
         }
         IEnumerator Traverse(string name)
         {
@@ -266,7 +267,7 @@ namespace EarlyRush
                 var probes=game.JourneyProbeSnapshot();
                 if(stage!=null&&game.Stage==stage.stage)Sample(probes);
                 if(game.State==RushState.Results)break;
-                if(game.State!=RushState.Playing){Input(Vector2.zero);yield return null;continue;}
+                if(game.State!=RushState.Playing){ClearInput();yield return null;continue;}
                 if(stage==null){yield return null;continue;}
                 Vector2 p=game.Position;
                 // Finish rendering a live warning before the pause check may cancel it.
@@ -299,7 +300,7 @@ namespace EarlyRush
                 if(lateWaiting)
                 {
                     run.lateWaitStayedInStage&=game.Stage==run.lateWaitStage&&game.TransitionCount==run.lateWaitStage;
-                    Input(Vector2.zero);
+                    ClearInput();
                     run.deliberateLateWaitSeconds=Mathf.Max(0,game.TotalTime-lateWaitStart);
                     if(game.TotalTime>=lateWaitEnd)
                     {
@@ -324,11 +325,16 @@ namespace EarlyRush
                     CheckThat(name+": waypoint progress watchdog",false,"8s without .25m progress; stage="+game.Stage+" waypoint="+waypoint+" position="+p);
                     break;
                 }
-                bool brace=false,dash=false;
+                bool brace=false,dash=false,interact=false;
                 bool atClock=game.Stage==2&&Vector2.Distance(p,new Vector2(game.World.goal.x,game.World.goal.z))<.9f;
                 if(atClock)
                 {
-                    move=Vector2.zero;brace=true;
+                    if(name=="risk")
+                    {
+                        // Real route arrival, no teleport: keep W held while E must brake automatically.
+                        move=Vector2.up;interact=true;brace=false;
+                    }
+                    else {move=Vector2.zero;brace=true;}
                     if(!clockShot&&game.ClockHold01>.25f&&!capturing){clockShot=true;StartCoroutine(Capture("clock-in-hold"));}
                 }
                 else if(!player.airborne&&!player.recovering)
@@ -368,11 +374,11 @@ namespace EarlyRush
                         (name!="safe"||!DashWouldBreakParcel(p,move,probes)))
                     {dash=true;lastDashRequest=game.TotalTime;}
                 }
-                if(player.airborne||player.recovering){move=Vector2.zero;brace=false;dash=false;}
-                Input(move,brace,dash);
+                if(player.airborne||player.recovering){move=Vector2.zero;brace=false;dash=false;interact=false;}
+                Input(move,brace,dash,interact);
                 yield return null;
             }
-            Input(Vector2.zero);
+            ClearInput();
             if(finished)yield break;
             if(stage!=null&&game.Stage==stage.stage)Sample(game.JourneyProbeSnapshot());
             if(stage!=null)FinalizeStage();
@@ -390,8 +396,10 @@ namespace EarlyRush
             foreach(var part in run.stages){run.actualDistance+=part.actualDistance;run.braceSeconds+=part.braceSeconds;run.dashSeconds+=part.dashSeconds;}
             CheckThat(name+": completes all three natural stages",run.reachedResults&&run.transitions==3&&run.stages.Count==3,
                 "state="+game.State+" transitions="+run.transitions+" real="+run.realSeconds+" budget="+RunLimit);
-            CheckThat(name+": final clock-in is earned by holding still with Shift",run.clockIns==1,
-                "clock-ins="+run.clockIns+" hold peak="+(run.stages.Count>2?run.stages[2].clockHoldPeak:0));
+            CheckThat(name+(name=="risk"?": final clock-in uses E while movement input remains held":": final clock-in retains stationary Shift compatibility"),
+                run.clockIns==1&&(name!="risk"||(run.stages.Count>2&&run.stages[2].clockEHeldMovementSeconds>.1f)),
+                "clock-ins="+run.clockIns+" hold peak="+(run.stages.Count>2?run.stages[2].clockHoldPeak:0)+
+                " E+movement progress seconds="+(run.stages.Count>2?run.stages[2].clockEHeldMovementSeconds:0));
             if(name=="risk")CheckThat("Risk journey finishes on time",run.onTime,"seconds="+run.totalSeconds+" deadline="+game.TimeLimit);
             if(name=="safe")CheckThat("Safe journey preserves the parcel obstacle",run.breaks==0,"actual parcel breaks="+run.breaks);
             if(name=="charge")CheckThat("Charge journey completes after natural deadline wait",
@@ -461,7 +469,11 @@ namespace EarlyRush
             if(game.QAMove.sqrMagnitude>.01f&&game.Velocity.sqrMagnitude>.09f)stage.movingSeconds+=dt;
             if(game.QAMove.sqrMagnitude<.01f)stage.commandedIdleSeconds+=dt;
             if(game.JourneyWarning&&game.IsBracing)stage.eventBraceSeconds+=dt;
-            if(game.Stage==2&&game.QABrace&&game.QAMove.sqrMagnitude<.01f&&game.ClockHold01>0)stage.clockHoldSeconds+=dt;
+            if(game.Stage==2&&game.ClockHold01>0)
+            {
+                if(game.QAInteract||(game.QABrace&&game.QAMove.sqrMagnitude<.01f))stage.clockHoldSeconds+=dt;
+                if(game.QAInteract&&!game.QABrace&&game.QAMove.sqrMagnitude>.5f)stage.clockEHeldMovementSeconds+=dt;
+            }
             stage.warnings=game.JourneyWarnings-baseWarnings;stage.eventHits=game.JourneyHits-baseHits;
             stage.eventBlocks=game.JourneyBlocks-baseBlocks;stage.breaks=game.JourneyBreaks-baseBreaks;stage.completed=game.JourneyCompleted-baseCompleted;
             stage.playerLaunches=player.launchCount-baseLaunches;stage.playerLands=player.landCount-baseLands;
@@ -607,7 +619,7 @@ namespace EarlyRush
         }
         IEnumerator PauseEvent()
         {
-            Input(Vector2.zero);var before=game.JourneyProbeSnapshot();int id=-1,activation=-1;
+            ClearInput();var before=game.JourneyProbeSnapshot();int id=-1,activation=-1;
             foreach(var p in before)if(p.phase==1){id=p.id;activation=p.activations;break;}
             foreach(var e in run.events)if(e.id==id&&e.activation==activation)e.cancelledByQaPause=true;
             game.TogglePause();yield return new WaitForEndOfFrame();
@@ -625,9 +637,9 @@ namespace EarlyRush
             CheckThat("Pause clears event warning and freezes world",clean&&frozen,"warning id="+id+" clean="+clean+" frozen="+frozen);
             report.warningPauseCovered=id>=0&&clean&&frozen;
             yield return Capture("event-paused");
-            game.TogglePause();Input(Vector2.zero,true,true);yield return WaitObserved(.08f);
-            CheckThat("Resume does not replay held actions",game.InputLocked&&!game.IsDashing&&!game.IsBracing,"locked="+game.InputLocked);
-            Input(Vector2.zero);yield return WaitObserved(.08f);
+            game.TogglePause();Input(Vector2.zero,true,true,true);yield return WaitObserved(.08f);
+            CheckThat("Resume does not replay held Space / Shift / E actions",game.InputLocked&&!game.IsDashing&&!game.IsBracing,"locked="+game.InputLocked);
+            ClearInput();yield return WaitObserved(.08f);
             float until=Time.realtimeSinceStartup+2f;bool reissued=false;float remaining=-1,duration=-1;
             while(!finished&&Time.realtimeSinceStartup<until&&!reissued)
             {
@@ -907,7 +919,7 @@ namespace EarlyRush
         }
         void Finish()
         {
-            if(finished)return;Input(Vector2.zero);
+            if(finished)return;ClearInput();
             RushPerformance.SetQaPhase("journey-finish");RushPerformance.Flush();
             report.perf.diagnosticsSaved=!RushPerformance.IsEnabled||RushPerformance.SaveSucceeded;
             CheckThat("Performance diagnostics saved",report.perf.diagnosticsSaved,"enabled="+RushPerformance.IsEnabled);

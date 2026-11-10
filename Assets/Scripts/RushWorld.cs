@@ -217,7 +217,7 @@ namespace EarlyRush
 
         public static WorldData Build(int stage)
         {
-            var w=new WorldData{root=new GameObject("Early Rush v6 district "+(stage+1)).transform,
+            var w=new WorldData{root=new GameObject("Early Rush v7 district "+(stage+1)).transform,
                 spawn=new Vector3(0,0,4),goal=new Vector3(0,0,194),goalHalfSize=new Vector2(2.6f,1.1f)};
             P(w,"Two connected districts",new Vector3(0,-.5f,100),new Vector3(41,.9f,201),Ink,.3f);
             P(w,"Continuous district ground",new Vector3(0,-.06f,100),new Vector3(40,.2f,200),stage==0?new Color(.80f,.84f,.70f):Cream,.03f);
@@ -238,6 +238,7 @@ namespace EarlyRush
             Goal(w,stage);
             ExitCanopy(w,stage);
             PopulateCommuters(w,stage);
+            RushArt.ApplyWorld(w,stage);
             return w;
         }
         static void Street(WorldData w,bool finalArea)
@@ -301,6 +302,18 @@ namespace EarlyRush
                 P(w,"Tactile guidance strip",new Vector3(s*13,.09f,44),new Vector3(.42f,.08f,85),Gold,.02f);
                 Solid(w,"Ticket machine",s*17,5,1.5f,1,2,Blue);
                 P(w,"Ticket screen",new Vector3(s*17,1.4f,4.47f),new Vector3(1,.65f,.07f),Ink,.05f);
+            }
+            if(!finalArea)
+            {
+                P(w,"Escalator traversable belt",new Vector3(12.5f,.11f,87),new Vector3(5,.06f,6),Teal,.03f);
+                P(w,"Stairs traversable flight",new Vector3(-12.5f,.11f,87),new Vector3(5,.06f,6),Cream,.03f);
+                for(int step=0;step<10;step++)
+                {
+                    P(w,"Escalator tread",new Vector3(12.5f,.16f,84.3f+step*.6f),new Vector3(4.6f,.025f,.10f),Gold,.005f);
+                    P(w,"Stair tread",new Vector3(-12.5f,.16f,84.3f+step*.6f),new Vector3(4.6f,.025f,.10f),Teal,.005f);
+                }
+                Arrow(w,new Vector3(12.5f,.19f,83),1.2f,Teal);
+                Arrow(w,new Vector3(-12.5f,.19f,83),1.2f,Teal);
             }
             Divider(w,22,-1,Blue);Divider(w,49,1,Blue);Divider(w,74,-1,Blue);
             for(int s=-1;s<=1;s+=2)
@@ -462,9 +475,7 @@ namespace EarlyRush
         static void RingUpright(WorldData w,Vector3 p,float r,Color c){var t=RushVisuals.Ring(w.root,"Clock rim",p,r,.045f,c);t.localRotation=Quaternion.Euler(90,0,0);}
         static void Label(WorldData w,string text,Vector3 p,float size,Color color,bool floor)
         {
-            var g=new GameObject("Sign "+text);g.transform.SetParent(w.root,false);g.transform.localPosition=p;if(floor)g.transform.rotation=Quaternion.Euler(90,0,0);
-            var tm=g.AddComponent<TextMesh>();tm.text=text;tm.anchor=TextAnchor.MiddleCenter;tm.alignment=TextAlignment.Center;tm.fontSize=64;tm.characterSize=size*.20f;tm.color=color;
-            tm.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");g.GetComponent<MeshRenderer>().sharedMaterial=tm.font.material;
+            RushArt.WorldSign(w,text,p,size,color,floor);
         }
     }
     public class RushGoalBob : MonoBehaviour

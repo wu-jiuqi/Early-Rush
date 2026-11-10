@@ -54,7 +54,7 @@ namespace EarlyRush
             }
         }
         public string JourneyTitle=>JourneyWarning?NextJourney.title:Stage==2&&GoalDistance<10?"站稳打卡":Stage==1&&StageProgress01<.57f?"先下后上":NextJourney!=null?NextJourney.title:"继续赶路";
-        public string JourneyHint=>JourneyWarning?NextJourney.hint:Stage==2&&GoalDistance<10?"进入青色打卡垫，松开方向键并按住 Shift 0.8 秒":Stage==1&&StageProgress01<.57f?"下车乘客逆向走来；从空档穿插，别堵在车门正中":NextJourney!=null?NextJourney.hint:"沿路线前往青色目的地";
+        public string JourneyHint=>JourneyWarning?NextJourney.hint:Stage==2&&GoalDistance<10?"进入打卡垫，按住 E 0.8 秒（自动刹停）":Stage==1&&StageProgress01<.57f?"下车乘客逆向走来；从空档穿插，别堵在车门正中":NextJourney!=null?NextJourney.hint:"沿路线前往青色目的地";
         public Vector2 JourneyTarget=>Stage==2&&GoalDistance<10?new Vector2(world.goal.x,world.goal.z):NextJourney!=null?NextJourney.area.center:new Vector2(world.goal.x,world.goal.z);
         public JourneyProbe[] JourneyProbeSnapshot()
         {
@@ -66,12 +66,14 @@ namespace EarlyRush
         void ResetJourneyRun()
         {
             JourneyWarnings=JourneyHits=JourneyBlocks=JourneyBreaks=JourneyCompleted=JourneyClockIns=JourneyCrowdLaunches=0;
+            ErrandCompleted=0;ErrandRewardSeconds=0;
             journeySerial=0;clockHold=0;journeyClocked=false;journeyAlighting.Clear();JourneyAlightingReleased=false;
         }
         float JourneyZ(float fraction)=>world.spawn.z+(world.goal.z-world.spawn.z)*fraction;
         void BuildJourney()
         {
             journeyEvents.Clear();journeyBursts.Clear();clockHold=0;journeyClocked=false;journeyAlighting.Clear();JourneyAlightingReleased=false;
+            BuildDailyCommute();
             if(Stage==0)
             {
                 AddJourney("road-crossing","横穿路口","看箭头：绕开橙色区域，或按 Shift 稳住",new Rect(-9,JourneyZ(.20f)-2.5f,18,5),Vector2.right,1.2f);
@@ -283,12 +285,13 @@ namespace EarlyRush
             {
                 Vector2 goal=new Vector2(world.goal.x,world.goal.z);
                 bool onPad=Mathf.Abs(position.x-goal.x)<world.goalHalfSize.x&&Mathf.Abs(position.y-goal.y)<world.goalHalfSize.y;
-                clockHold=onPad&&IsBracing&&!PlayerAirborne&&!PlayerRecovering&&velocity.magnitude<1.4f?Mathf.Min(.8f,clockHold+dt):0;
+                clockHold=onPad&&(interactInput||(IsBracing&&moveInput.sqrMagnitude<.01f))&&!PlayerAirborne&&!PlayerRecovering&&velocity.magnitude<1.4f?Mathf.Min(.8f,clockHold+dt):0;
                 if(clockHold>=.8f){journeyClocked=true;JourneyClockIns++;JourneyCompleted++;Sound(goalClip,.7f);}
             }
         }
         void PauseJourney()
         {
+            errandHold=0;interactInput=false;QAInteract=false;
             foreach(var e in journeyEvents)
             {
                 if(e.kind=="parcel-shortcut"){if(e.broken&&e.root)e.root.gameObject.SetActive(false);continue;}
