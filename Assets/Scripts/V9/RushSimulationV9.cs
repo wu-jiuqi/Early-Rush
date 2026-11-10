@@ -24,6 +24,7 @@ namespace EarlyRush.V9
         public float BeatPhase=>(float)((elapsed-beatOrigin)%config.beatPeriod/config.beatPeriod);
         public float Remaining=>Mathf.Max(0,(float)(limit-elapsed));
         public int Completed{get{int n=0;foreach(var t in tasks)if(t.done)n++;return n;}}
+        public bool IsDelivered(int leaderId)=>delivered.Contains(leaderId);
         public static int Score(bool onTime,int complete)=>(onTime?1:0)+(complete>=1?1:0)+(complete==3?1:0);
         HashSet<int> contacts=new HashSet<int>(),currentContacts=new HashSet<int>();
         readonly HashSet<int> delivered=new HashSet<int>();
@@ -32,9 +33,10 @@ namespace EarlyRush.V9
         public RunV9(int stage,int seed,ConfigV9 config=null)
         {
             this.stage=stage;this.seed=seed;this.config=config??new ConfigV9();
-            if(this.config.fileCount>5||this.config.chairCount>6||this.config.breakfastDuration<=0||this.config.greenDuration<=0||this.config.redDuration<=0||this.config.stageLimit<=0||this.config.walkSpeed<=0||this.config.bikeSpeed<=this.config.walkSpeed||this.config.beatPeriod<=0||this.config.fileCount<1||this.config.chairCount<1)throw new ArgumentException("Invalid V9 configuration");
+            if(stage<0||stage>2||this.config.fileCount>5||this.config.chairCount>6||!Positive(this.config.breakfastGameMinutes)||!Positive(this.config.gameMinutesPerRealSecond)||!Positive(this.config.deliveryDuration)||!Positive(this.config.greenDuration)||!Positive(this.config.redDuration)||!Positive(this.config.stageLimit)||!Positive(this.config.walkSpeed)||!Positive(this.config.bikeSpeed)||this.config.bikeSpeed<=this.config.walkSpeed||!Positive(this.config.beatPeriod)||!Positive(this.config.beatWindow)||this.config.beatWindow>this.config.beatPeriod||!Positive(this.config.stableDuration)||!Positive(this.config.stableSpeed)||this.config.capsuleGoal<1||this.config.capsulePenalty<0||this.config.breakfastTolerance<0||this.config.coffeeTolerance<0||this.config.fileCount<1||this.config.chairCount<1)throw new ArgumentException("Invalid V9 configuration");
             map=RushMapV9.Create(stage,seed);player=map.spawn;Setup();
         }
+        static bool Positive(double value)=>value>0&&!double.IsNaN(value)&&!double.IsInfinity(value);
         void Setup()
         {
             string[][] titles={new[]{"早餐保卫战","自行车修理店","翻面挑战"},new[]{"先下后上","扭蛋机","拖水渍"},new[]{"小心同事的咖啡","文件精准派送","办公椅归位"}};
@@ -45,7 +47,7 @@ namespace EarlyRush.V9
                 tasks[0].limit=config.breakfastTolerance;tasks[1].limit=2;tasks[2].limit=boards.Length;
                 AddFixture(FixtureKind.Breakfast,map.tasks[0].center,"stalls/breakfast-stall");
                 AddFixture(FixtureKind.Repair,map.tasks[1].target,"street/storefront");
-                for(int i=0;i<2;i++)AddBody(BodyKind.Wheel,map.tasks[1].start+Vector2.right*(i*3-1.5f),"legacy-icons/bike");
+                for(int i=0;i<2;i++)AddBody(BodyKind.Wheel,map.tasks[1].start+Vector2.right*(i*3-1.5f),"tasks/wheel");
                 for(int i=0;i<boards.Length;i++)AddFixture(FixtureKind.FlipBoard,map.tasks[2].center+new Vector2((i-2)*2,0),"ui/selection",i);
                 var random=new System.Random(seed);for(int i=0;i<9;i++)Flip(random.Next(boards.Length));
                 if(BoardsSolved())Flip(0);
@@ -54,7 +56,7 @@ namespace EarlyRush.V9
             {
                 tasks[1].limit=config.capsuleGoal;
                 AddFixture(FixtureKind.Capsule,map.tasks[1].center,"metro/vending");
-                AddBody(BodyKind.Cloth,map.tasks[2].start,"fx-decal/rain");
+                AddBody(BodyKind.Cloth,map.tasks[2].start,"tasks/cloth");
                 for(int patch=0;patch<3;patch++)for(int x=0;x<5;x++)for(int y=0;y<5;y++)
                     dirt.Add(new DirtV9{position=map.tasks[2].center+new Vector2((patch-1)*3+x*.3f- .6f,y*.3f-.6f)});
                 tasks[2].limit=dirt.Count;
@@ -93,7 +95,12 @@ namespace EarlyRush.V9
         public void Rescue(int bodyId)
         {
             if(phase!=RunPhase.Playing)return;
-            foreach(var b in bodies)if(b.id==bodyId&&!b.done){b.position=b.home;b.velocity=Vector2.zero;b.stable=0;Log("rescue",b.id);}
+            foreach(var b in bodies)if(b.id==bodyId&&!b.done)
+            {
+                // Reset transport evidence; the warp itself never pushes, cleans or parks an object.
+                b.position=b.home;b.velocity=Vector2.zero;b.stable=0;b.socket=-1;b.touched=false;b.pushed=0;
+                contacts.Remove(b.id);currentContacts.Remove(b.id);Log("rescue",b.id);
+            }
         }
         public Vector2 Resolve(Vector2 from,Vector2 delta,float radius)
         {
@@ -107,32 +114,49 @@ namespace EarlyRush.V9
             }
             return p;
         }
-        public bool TryDash()
-        {
-            if(phase!=RunPhase.Playing||energy<.55f)return false;
-            energy-=.55f;boost=.3f;Cue("dash");return true;
-        }
+        // Kept for old replay callers. V3 commuting has walking and earned cycling only.
+        public bool TryDash()=>false;
         public void Tick(float dt,Vector2 input)
         {
-            if(phase!=RunPhase.Playing||dt<=0||float.IsNaN(dt)||float.IsInfinity(dt))return;
+            if(phase!=RunPhase.Playing||dt<=0||float.IsNaN(dt)||float.IsInfinity(dt)||float.IsNaN(input.x)||float.IsNaN(input.y)||float.IsInfinity(input.x)||float.IsInfinity(input.y))return;
             // Long frames are consumed, not silently discarded. The host must pause on OS suspension.
-            double left=dt;while(left>1e-9&&phase==RunPhase.Playing){float step=(float)Math.Min(left,1.0/60);Step(step,Vector2.ClampMagnitude(input,1));left-=step;}
+            double left=dt;while(left>1e-9&&phase==RunPhase.Playing)
+            {
+                double step=Math.Min(left,1.0/60);
+                // Split at task deadlines so a later contact cannot invalidate an already eaten
+                // breakfast, and a delivery exactly at its deadline is processed before timeout.
+                if(stage==0&&tasks[0].state==TaskState.Active)step=BeforeDeadline(step,tasks[0].startedAt+config.breakfastDuration);
+                if(stage==2&&tasks[1].state==TaskState.Active)step=BeforeDeadline(step,tasks[1].startedAt+config.deliveryDuration);
+                float actual=(float)step;Step(actual,Vector2.ClampMagnitude(input,1));left-=actual;
+            }
         }
+        double BeforeDeadline(double step,double deadline){double remaining=deadline-elapsed;return remaining>1e-8?Math.Min(step,remaining):step;}
         void Step(float duration,Vector2 input)
         {
             float dt=(float)Math.Min(duration,Math.Max(0,limit-elapsed));
             if(dt<=0){EvaluateTasks(0);Finish(AtExit()&&elapsed<=limit);return;}
-            elapsed+=dt;currentContacts.Clear();energy=Mathf.Min(1,energy+dt*.15f);boost=Mathf.Max(0,boost-dt);
+            elapsed=Math.Min(limit,elapsed+dt);currentContacts.Clear();boost=0;energy=1;
+            UpdateCapsuleProximity();
             if(input.sqrMagnitude>.001f)facing=input.normalized;
-            velocity=Vector2.MoveTowards(velocity,input*(bicycle?config.bikeSpeed:config.walkSpeed)*(boost>0?1.6f:1f),dt*(bicycle?12:20));
+            velocity=Vector2.MoveTowards(velocity,input*(bicycle?config.bikeSpeed:config.walkSpeed),dt*(bicycle?12:20));
             Vector2 desired=player+velocity*dt,next=Resolve(player,velocity*dt,PlayerRadius);
             if(Vector2.Distance(desired,next)>.0001f)Contact(-1);
             if(stage==0)
             {
-                float line=map.signal.y;
+                float line=map.signal.y,south=line-PlayerRadius-.01f,north=line+5+PlayerRadius+.01f;
                 bool atCrossing=Mathf.Abs(next.x-map.signal.x)<map.corridorWidth*.5f+1;
-                if(atCrossing&&player.y<line&&next.y>=line){if(!SignalGreen&&!crossingPermit)next.y=line-.01f;else crossingPermit=true;}
-                if(player.y>line+5||player.y<line-1)crossingPermit=false;
+                if(player.y>=north||player.y<=south)crossingPermit=false;
+                if(atCrossing)
+                {
+                    bool enteringSouth=player.y<=south+.0001f&&next.y>south;
+                    bool enteringNorth=player.y>=north-.0001f&&next.y<north;
+                    if(enteringSouth||enteringNorth)
+                    {
+                        if(!SignalGreen&&!crossingPermit)next.y=enteringSouth?south:north;
+                        else crossingPermit=true;
+                    }
+                }
+                // A green-light entrant may clear the whole lane, in either direction, after red.
             }
             foreach(var f in fixtures)
             {
@@ -153,6 +177,7 @@ namespace EarlyRush.V9
             }
             foreach(var b in bodies)
             {
+                b.velocity=Vector2.zero;
                 if(b.done)continue;Vector2 d=b.position-next;float radius=b.radius+PlayerRadius;
                 if(d.sqrMagnitude<radius*radius)
                 {
@@ -160,7 +185,7 @@ namespace EarlyRush.V9
                     Vector2 movedTo=Resolve(b.position,n*Mathf.Min(.15f,radius-d.magnitude+.005f),b.radius);
                     bool obstructed=false;foreach(var other in bodies)if(other.id!=b.id&&!other.done&&Vector2.Distance(movedTo,other.position)<b.radius+other.radius)obstructed=true;
                     if(!obstructed)b.position=movedTo;
-                    float moved=Vector2.Distance(old,b.position);if(moved>.0001f){b.touched=true;b.pushed+=moved;Clean(old,b.position,b);}
+                    float moved=Vector2.Distance(old,b.position);b.velocity=(b.position-old)/dt;if(moved>.0001f){b.touched=true;b.pushed+=moved;Clean(old,b.position,b);}
                     if(Vector2.Distance(b.position,next)<radius-.02f)next=player;
                 }
             }
@@ -176,6 +201,16 @@ namespace EarlyRush.V9
         }
         bool StillNear(int id)
         {
+            if(id==-1)
+            {
+                foreach(var direction in new[]{Vector2.up,Vector2.down,Vector2.left,Vector2.right})
+                    if(!map.IsWalkable(player+direction*.08f,PlayerRadius))return true;
+                foreach(var r in solids)
+                {
+                    var nearest=new Vector2(Mathf.Clamp(player.x,r.xMin,r.xMax),Mathf.Clamp(player.y,r.yMin,r.yMax));
+                    if(Vector2.Distance(player,nearest)<PlayerRadius+.08f)return true;
+                }
+            }
             foreach(var f in fixtures)if(f.id==id)return Vector2.Distance(player,f.position)<f.radius+PlayerRadius+.08f;
             foreach(var b in bodies)if(b.id==id)return Vector2.Distance(player,b.position)<b.radius+PlayerRadius+.08f;
             foreach(var c in people)if(c.id==id&&!c.exited)return Vector2.Distance(player,c.position)<c.radius+PlayerRadius+.08f;
@@ -189,7 +224,7 @@ namespace EarlyRush.V9
             foreach(var c in people)if(c.id==id)
             {
                 if(stage==1&&c.kind==PersonKind.Alighting&&trainPhase==TrainPhase.Alighting&&tasks[0].state==TaskState.Active)SetState(0,TaskState.Failed);
-                if(stage==2&&c.kind==PersonKind.Coffee&&!c.spilled){c.spilled=true;tasks[0].count++;if(tasks[0].count>config.coffeeTolerance)SetState(0,TaskState.Failed);}
+                if(stage==2&&c.kind==PersonKind.Coffee&&!c.spilled&&tasks[0].state==TaskState.Active){c.spilled=true;tasks[0].count++;if(tasks[0].count>config.coffeeTolerance)SetState(0,TaskState.Failed);}
             }
             foreach(var f in fixtures)if(f.id==id)
             {
@@ -223,11 +258,11 @@ namespace EarlyRush.V9
             {
                 if(tasks[0].state==TaskState.NotStarted)
                 {pickupHold=Vector2.Distance(player,map.tasks[0].center)<1.3f?pickupHold+dt:0;if(pickupHold>=config.stableDuration)SetState(0,TaskState.Active);}
-                if(tasks[0].state==TaskState.Active){tasks[0].progress=Mathf.Clamp01((float)((elapsed-tasks[0].startedAt)/config.breakfastDuration));if(elapsed-tasks[0].startedAt>=config.breakfastDuration)SetState(0,TaskState.Complete);}
+                if(tasks[0].state==TaskState.Active){tasks[0].progress=Mathf.Clamp01((float)((elapsed-tasks[0].startedAt)/config.breakfastDuration));if(elapsed-tasks[0].startedAt>=config.breakfastDuration-1e-8)SetState(0,TaskState.Complete);}
                 int wheels=0;foreach(var b in bodies)if(b.kind==BodyKind.Wheel)
                 {
                     if(b.touched)SetState(1,TaskState.Active);
-                    b.stable=b.touched&&b.pushed>.2f&&Vector2.Distance(b.position,map.tasks[1].target)<2.2f?b.stable+dt:0;
+                    b.stable=b.touched&&b.pushed>.2f&&b.velocity.magnitude<=config.stableSpeed&&Vector2.Distance(b.position,map.tasks[1].target)<2.2f?b.stable+dt:0;
                     if(!b.done&&b.stable>=config.stableDuration){b.done=true;Log("wheel-stored",b.id);}if(b.done)wheels++;
                 }
                 tasks[1].count=wheels;if(wheels==2&&!tasks[1].done){SetState(1,TaskState.Complete);bicycle=true;Cue("bicycle");}
@@ -235,8 +270,7 @@ namespace EarlyRush.V9
             }
             else if(stage==1)
             {
-                bool near=Vector2.Distance(player,map.tasks[1].center)<4;
-                if(near&&!nearCapsule){beatOrigin=elapsed;Log("beat-restart");}nearCapsule=near;
+                UpdateCapsuleProximity();
                 if(tasks[1].count>=config.capsuleGoal)SetState(1,TaskState.Complete);
                 int clean=0;foreach(var p in dirt)if(p.cleaned)clean++;tasks[2].count=clean;tasks[2].progress=clean/(float)dirt.Count;
                 if(clean==dirt.Count)SetState(2,TaskState.Complete);
@@ -246,11 +280,11 @@ namespace EarlyRush.V9
                 if(tasks[1].state==TaskState.NotStarted){pickupHold=Vector2.Distance(player,map.tasks[1].start)<1.3f?pickupHold+dt:0;if(pickupHold>=config.stableDuration)SetState(1,TaskState.Active);}
                 if(tasks[1].state==TaskState.Active)
                 {
-                    foreach(var f in fixtures)if(f.kind==FixtureKind.FileDesk&&!delivered.Contains(f.index))
+                    foreach(var f in fixtures)if(f.kind==FixtureKind.FileDesk&&f.index>=0&&f.index<config.fileCount&&!delivered.Contains(f.index))
                     {
                         // Each held document is keyed by leader ID; a desk never consumes another leader's file.
                         if(Vector2.Distance(player,f.position)<1.2f)deskHold[f.index]=GetHold(f.index)+dt;else deskHold[f.index]=0;
-                        if(GetHold(f.index)>=config.stableDuration&&elapsed-tasks[1].startedAt<=config.deliveryDuration){delivered.Add(f.index);Log("delivered",f.index);}
+                        if(GetHold(f.index)+1e-6f>=config.stableDuration&&elapsed-tasks[1].startedAt<=config.deliveryDuration+1e-8){delivered.Add(f.index);Log("delivered",f.index);}
                     }
                     tasks[1].count=delivered.Count;
                     if(delivered.Count==config.fileCount)SetState(1,TaskState.Complete);else if(elapsed-tasks[1].startedAt>config.deliveryDuration)SetState(1,TaskState.Failed);
@@ -259,7 +293,7 @@ namespace EarlyRush.V9
                 {
                     if(b.done){parked++;continue;}if(b.touched)SetState(2,TaskState.Active);
                     FixtureV9 socket=null;foreach(var f in fixtures)if(f.kind==FixtureKind.ChairSocket&&!f.occupied&&Vector2.Distance(b.position,f.position)<.9f){socket=f;break;}
-                    if(socket==null||!b.touched||b.pushed<.2f){b.stable=0;b.socket=-1;continue;}
+                    if(socket==null||!b.touched||b.pushed<.2f||b.velocity.magnitude>config.stableSpeed){b.stable=0;b.socket=-1;continue;}
                     if(b.socket!=socket.id){b.socket=socket.id;b.stable=0;}b.stable+=dt;
                     if(b.stable>=config.stableDuration){socket.occupied=true;socket.occupant=b.id;b.done=true;b.position=socket.position;parked++;Log("chair-parked",b.id);}
                 }
@@ -267,6 +301,11 @@ namespace EarlyRush.V9
             }
         }
         readonly Dictionary<int,float> deskHold=new Dictionary<int,float>();
+        void UpdateCapsuleProximity()
+        {
+            if(stage!=1)return;bool near=Vector2.Distance(player,map.tasks[1].center)<4;
+            if(near&&!nearCapsule){beatOrigin=elapsed;Log("beat-restart");}nearCapsule=near;
+        }
         float GetHold(int id)=>deskHold.TryGetValue(id,out float value)?value:0;
         void UpdatePeople(float dt)
         {
@@ -275,8 +314,8 @@ namespace EarlyRush.V9
                 if(c.exited)continue;
                 Vector2 target=c.kind==PersonKind.Alighting?c.target:c.home+new Vector2(Mathf.Sin((float)elapsed*.35f+c.id),Mathf.Cos((float)elapsed*.24f+c.id))*.8f;
                 Vector2 old=c.position;c.position=Resolve(c.position,Vector2.ClampMagnitude(target-c.position,c.kind==PersonKind.Alighting?1.6f:.7f)*dt,c.radius);c.velocity=(c.position-old)/Mathf.Max(dt,.000001f);
-                if(c.kind==PersonKind.Alighting&&Vector2.Distance(c.position,c.target)<.3f)c.exited=true;
                 if(!c.exited&&Vector2.Distance(c.position,player)<c.radius+PlayerRadius)Contact(c.id);
+                if(c.kind==PersonKind.Alighting&&Vector2.Distance(c.position,c.target)<.3f)c.exited=true;
             }
         }
         void UpdateTrain(float dt)

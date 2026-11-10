@@ -31,7 +31,87 @@ namespace EarlyRush.V9
             var metro=new RunV9(1,42);metro.Begin();Vector2 cloth=metro.bodies[0].position;metro.Rescue(metro.bodies[0].id);
             Check(metro.bodies[0].position==cloth&&metro.tasks[2].count==0,"rescue cannot clean");
             ContactFixtures();
+            V3RuleRegressions();
             Debug.Log("V9_MODEL_ASSERTIONS count="+count);return count;
+        }
+        // Arranged local fixtures exercise event boundaries, not route or human timing acceptance.
+        static void V3RuleRegressions()
+        {
+            var config=new ConfigV9();
+            Check(config.stageLimit==420,"v3 seven-minute stage limit");
+            Check(Math.Abs(config.breakfastDuration-70)<1e-8,"game minutes convert to real seconds");
+            config.breakfastDuration=40;Check(Math.Abs(config.breakfastGameMinutes-2)<1e-8,"legacy duration setter preserves game clock units");
+            var walk=new RunV9(0,42);walk.Begin();Check(!walk.TryDash(),"commute has no dash");walk.Tick(.5f,Vector2.up);
+            Check(walk.velocity.magnitude<=walk.config.walkSpeed+.001f,"walking speed bounded");
+            var deadline=new RunV9(0,42,new ConfigV9{stageLimit=.01});deadline.Begin();
+            deadline.player=deadline.map.exit-Vector2.up*1.32f;deadline.velocity=Vector2.up*deadline.config.walkSpeed;deadline.Tick(.1f,Vector2.up);
+            Check(deadline.success&&deadline.stars==1&&Math.Abs(deadline.elapsed-.01)<1e-8,"exit exactly at deadline succeeds without optional tasks");
+            var late=new RunV9(0,42,new ConfigV9{stageLimit=.01});late.Begin();late.player=late.map.exit-Vector2.up*1.38f;late.Tick(.1f,Vector2.up);
+            Check(!late.success&&late.phase==RunPhase.Results&&Math.Abs(late.elapsed-.01)<1e-8,"event after deadline cannot arrive");
+            foreach(bool atDeadline in new[]{true,false})
+            {
+                var breakfast=new RunV9(0,42,new ConfigV9{breakfastDuration=.25,breakfastTolerance=0});breakfast.Begin();
+                breakfast.player=breakfast.map.tasks[0].center;breakfast.Tick(.42f,Vector2.zero);
+                FixtureV9 board=breakfast.fixtures.Find(f=>f.kind==FixtureKind.FlipBoard);
+                breakfast.elapsed=breakfast.tasks[0].startedAt+.24;
+                breakfast.player=board.position-Vector2.up*(board.radius+RunV9.PlayerRadius+(atDeadline?.02f:.05f));
+                breakfast.velocity=Vector2.up*breakfast.config.walkSpeed;breakfast.Tick(.02f,Vector2.up);
+                Check(breakfast.tasks[0].state==(atDeadline?TaskState.Failed:TaskState.Complete),atDeadline?"collision at breakfast deadline wins over completion":"collision after eating deadline is outside breakfast window");
+            }
+            var together=new RunV9(0,42,new ConfigV9{breakfastDuration=.25});together.Begin();together.player=together.map.tasks[0].center;together.Tick(.42f,Vector2.zero);
+            together.elapsed=together.tasks[0].startedAt+.24;together.config.stageLimit=together.elapsed+.01;
+            together.player=together.map.exit-Vector2.up*1.32f;together.velocity=Vector2.up*together.config.walkSpeed;together.Tick(.1f,Vector2.up);
+            Check(together.success&&together.tasks[0].done&&together.stars==2,"task at deadline enters ledger before stage stars");
+            foreach(bool exact in new[]{true,false})
+            {
+                var delivery=new RunV9(2,42,new ConfigV9{stableDuration=.2f,fileCount=1});delivery.Begin();
+                delivery.player=delivery.map.tasks[1].start;delivery.Tick(.25f,Vector2.zero);
+                var desk=delivery.fixtures.Find(f=>f.kind==FixtureKind.FileDesk);delivery.player=desk.position;delivery.Tick(.18f,Vector2.zero);
+                delivery.config.deliveryDuration=delivery.elapsed-delivery.tasks[1].startedAt+(exact?.02:.015);delivery.Tick(.04f,Vector2.zero);
+                Check(delivery.tasks[1].state==(exact?TaskState.Complete:TaskState.Failed),exact?"final file delivered exactly at task deadline":"late file cannot consume held document");
+                Check(delivery.IsDelivered(0)==exact,"delivery ledger follows timestamp acceptance");
+            }
+            var mismatched=new RunV9(2,42,new ConfigV9{fileCount=1});mismatched.Begin();mismatched.player=mismatched.map.tasks[1].start;mismatched.Tick(.5f,Vector2.zero);
+            var wrongDesk=mismatched.fixtures.Find(f=>f.kind==FixtureKind.FileDesk);wrongDesk.index=99;mismatched.player=wrongDesk.position;mismatched.Tick(.5f,Vector2.zero);
+            Check(mismatched.tasks[1].count==0&&!mismatched.IsDelivered(99)&&mismatched.tasks[1].state==TaskState.Active,"unmatched leader desk cannot consume or complete document");
+
+            var signal=new RunV9(0,42);signal.people.Clear();signal.Begin();signal.elapsed=signal.config.greenDuration+1;
+            signal.player=signal.map.signal-Vector2.up;signal.Tick(.5f,Vector2.up);
+            Check(signal.player.y<=signal.map.signal.y-RunV9.PlayerRadius,"red light stops full body from south");
+            signal.player=signal.map.signal+Vector2.up*6;signal.velocity=Vector2.zero;signal.Tick(.5f,Vector2.down);
+            Check(signal.player.y>=signal.map.signal.y+5+RunV9.PlayerRadius,"red light stops full body from north");
+            signal.elapsed=signal.config.greenDuration-.15;signal.player=signal.map.signal-Vector2.up*.6f;signal.velocity=Vector2.up*signal.config.walkSpeed;
+            signal.Tick(.5f,Vector2.up);Check(!signal.SignalGreen&&signal.player.y>signal.map.signal.y+.5f,"legal green entrant clears on red");
+
+            var wheel=new RunV9(0,42);wheel.Begin();var body=wheel.bodies[0];wheel.player=body.position-Vector2.up*1.1f;wheel.Tick(.3f,Vector2.up);
+            Check(body.touched,"stable fixture starts with genuine push");
+            body.position=wheel.map.tasks[1].target-Vector2.up*1.2f;wheel.player=body.position-Vector2.up*1.02f;wheel.velocity=Vector2.zero;
+            wheel.Tick(.5f,Vector2.up);Check(!body.done&&body.stable<.05f,"moving wheel cannot satisfy stable dwell");
+            wheel.Tick(.7f,Vector2.zero);Check(body.done,"wheel completes after physical rest in target");
+            Vector2 stored=body.position;wheel.Rescue(body.id);Check(body.position==stored&&body.done,"rescue cannot reset completed wheel");
+
+            var cloth=new RunV9(1,42);cloth.Begin();var rag=cloth.bodies[0];rag.position=cloth.dirt[0].position-Vector2.right*.3f;
+            cloth.player=rag.position-Vector2.right*1.17f;cloth.Tick(.3f,Vector2.right);int cleaned=cloth.dirt.FindAll(d=>d.cleaned).Count;
+            Check(cleaned>0,"real cloth sweep cleans effective cells");cloth.Rescue(rag.id);
+            Check(cloth.dirt.FindAll(d=>d.cleaned).Count==cleaned&&!rag.touched&&rag.pushed==0&&rag.socket==-1,"rescue preserves dirt ledger and resets push evidence");
+
+            var coffee=new RunV9(2,42,new ConfigV9{coffeeTolerance=0});coffee.Begin();var cups=coffee.people.FindAll(p=>p.kind==PersonKind.Coffee);
+            coffee.player=cups[0].position-Vector2.up*.95f;coffee.Tick(.2f,Vector2.up);int countAtFailure=coffee.tasks[0].count;
+            coffee.player=cups[1].position-Vector2.up*.95f;coffee.velocity=Vector2.zero;coffee.Tick(.2f,Vector2.up);
+            Check(coffee.tasks[0].state==TaskState.Failed&&coffee.tasks[0].count==countAtFailure,"failed coffee task freezes count for other cups");
+
+            var capsule=new RunV9(1,42);capsule.Begin();var machine=capsule.fixtures.Find(f=>f.kind==FixtureKind.Capsule);
+            capsule.player=machine.position-Vector2.up*3;capsule.Tick(.25f,Vector2.zero);float phase=capsule.BeatPhase;double elapsed=capsule.elapsed;
+            capsule.Pause();capsule.Tick(5,Vector2.up);Check(capsule.elapsed==elapsed&&capsule.BeatPhase==phase,"pause freezes capsule rhythm");capsule.Resume();
+            capsule.player=machine.position-Vector2.up*6;capsule.Tick(.1f,Vector2.zero);capsule.player=machine.position-Vector2.up*1.1f;capsule.Tick(1f/60,Vector2.up);
+            Check(capsule.BeatPhase<.03f&&capsule.tasks[1].count==0,"return resets beat before a fresh contact can score");
+
+            var metro=new RunV9(1,42);metro.Begin();metro.player=metro.map.platform+Vector2.left*3;metro.Tick(3.5f,Vector2.zero);
+            Check(metro.trainPhase==TrainPhase.Alighting&&metro.tasks[0].state==TaskState.Active,"waiting starts silent alighting window");
+            var passengers=metro.people.FindAll(p=>p.kind==PersonKind.Alighting);Check(passengers.Count>0,"train creates passengers");
+            foreach(var passenger in passengers)passenger.exited=true;var last=passengers[passengers.Count-1];last.exited=false;last.position=last.target;
+            metro.player=last.target;metro.Tick(1f/60,Vector2.zero);
+            Check(metro.tasks[0].state==TaskState.Failed,"last exiting passenger contact precedes window completion");
         }
         // Local mechanism fixtures may arrange the player near an interaction. These are NOT
         // traversal/timing evidence; task state and completion are still driven only by Tick events.
@@ -105,10 +185,10 @@ namespace EarlyRush.V9
             result.trace.AddRange(run.telemetry);return result;
         }
         /// <summary>Dedicated street mechanics route. Uses ordinary movement and push contact only.
-        /// Normal task thresholds; only the stage deadline is relaxed. Not a balance acceptance test.</summary>
-        public static ReplayResult ReplayStreetTasks(int seed)
+        /// Defaults to the shipped deadline. Diagnostic callers must explicitly supply any override.</summary>
+        public static ReplayResult ReplayStreetTasks(int seed,ConfigV9 config=null)
         {
-            var run=new RunV9(0,seed,new ConfigV9 { stageLimit=1600 });run.Begin();
+            var run=new RunV9(0,seed,config);run.Begin();
             var result=new ReplayResult{stage=0,seed=seed};
             if(!MoveTo(run,run.map.tasks[0].center,30,out string reason))return EndReplay(run,result,reason);
             for(int i=0;i<40;i++)run.Tick(1f/60,Vector2.zero);
@@ -141,10 +221,11 @@ namespace EarlyRush.V9
             foreach(var f in run.fixtures)if(f.kind==FixtureKind.FlipBoard&&(solution&(1<<f.index))!=0)
             {
                 if(!MoveTo(run,f.position-Vector2.up*2,30,out reason))return EndReplay(run,result,reason);
-                // A fresh forward touch followed by separation. Holding does not generate repeated flips.
-                for(int i=0;i<30;i++)run.Tick(1f/60,Vector2.up);
-                // Bike reversal includes braking time; retreat long enough to actually separate.
-                for(int i=0;i<60;i++)run.Tick(1f/60,Vector2.down);
+                // Detect a real new contact rather than assuming a fixed input duration reached it.
+                int before=ContactCount(run,f.id);double started=run.elapsed;
+                while(ContactCount(run,f.id)==before&&run.phase==RunPhase.Playing&&run.elapsed-started<3)run.Tick(1f/60,Vector2.up);
+                if(ContactCount(run,f.id)==before)return EndReplay(run,result,"Flip contact not reached id="+f.id);
+                if(!MoveTo(run,f.position-Vector2.up*2.5f,10,out reason))return EndReplay(run,result,reason);
             }
             if(!run.tasks[2].done)return EndReplay(run,result,"Flip input route failed to solve");
             if(!MoveTo(run,run.map.exit,30,out reason))return EndReplay(run,result,reason);
@@ -167,8 +248,14 @@ namespace EarlyRush.V9
             }
             // Finish at the actual fractional-coordinate target, not its rounded grid cell.
             double finalStart=run.elapsed;
-            while(Vector2.Distance(run.player,goal)>.08f&&run.phase==RunPhase.Playing)
-            {Vector2 delta=goal-run.player;run.Tick(1f/60,Vector2.ClampMagnitude(delta*2,1));if(run.elapsed-finalStart>5){reason="Precise approach blocked at "+run.player+" goal="+goal;return false;}}
+            while((Vector2.Distance(run.player,goal)>.06f||run.velocity.magnitude>.12f)&&run.phase==RunPhase.Playing)
+            {
+                // Braking is physical, especially on the bicycle. Merely crossing the target
+                // radius leaves lateral velocity that can hit the neighbouring flip board.
+                Vector2 delta=goal-run.player;float speed=run.bicycle?run.config.bikeSpeed:run.config.walkSpeed;
+                run.Tick(1f/60,Vector2.ClampMagnitude((delta*3-run.velocity*.8f)/speed,1));
+                if(run.elapsed-finalStart>10){reason="Precise approach blocked at "+run.player+" goal="+goal;return false;}
+            }
             run.Tick(.15f,Vector2.zero);return true;
         }
         static ReplayResult EndReplay(RunV9 run,ReplayResult result,string reason)
@@ -176,12 +263,12 @@ namespace EarlyRush.V9
             result.completed=run.Completed;result.taskStates=new[]{run.tasks[0].state.ToString(),run.tasks[1].state.ToString(),run.tasks[2].state.ToString()};
             result.success=run.success&&run.Completed==3;result.elapsed=run.elapsed;result.contacts=run.bumps;result.stoppedAt=run.player;result.reason=reason;result.trace.AddRange(run.telemetry);return result;
         }
-        public static ReplayResult ReplayAllTasks(int stage,int seed)
+        static int ContactCount(RunV9 run,int id){int result=0;foreach(var entry in run.telemetry)if(entry.type=="contact"&&entry.id==id)result++;return result;}
+        public static ReplayResult ReplayAllTasks(int stage,int seed,ConfigV9 config=null)
         {
-            if(stage==0)return ReplayStreetTasks(seed);
-            // Only the overall deadline is relaxed for diagnosis. Mechanism thresholds and timers
-            // retain ConfigV9 defaults; neither task state nor positions are assigned by this replay.
-            var run=new RunV9(stage,seed,new ConfigV9 { stageLimit=1600 });run.Begin();
+            if(stage==0)return ReplayStreetTasks(seed,config);
+            // Actual configured deadlines apply. Neither task state nor positions are assigned.
+            var run=new RunV9(stage,seed,config);run.Begin();
             var result=new ReplayResult{stage=stage,seed=seed};string reason;
             if(stage==1)
             {

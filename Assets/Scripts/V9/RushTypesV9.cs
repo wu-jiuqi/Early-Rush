@@ -11,10 +11,13 @@ namespace EarlyRush.V9
     public enum TrainPhase { Waiting, Alighting, Boarding, Riding, Arrived }
     [Serializable] public sealed class ConfigV9
     {
-        // Design starting values only, NOT a measured 7-10 minute experience.
-        public double stageLimit=720, breakfastDuration=70, deliveryDuration=200;
+        // V3 design starting values; route timing still needs human playtesting.
+        public double stageLimit=420, deliveryDuration=200;
+        public double breakfastGameMinutes=3.5, gameMinutesPerRealSecond=.05;
+        // Compatibility for existing diagnostic fixtures. Author new settings in game minutes.
+        public double breakfastDuration { get=>breakfastGameMinutes/gameMinutesPerRealSecond; set=>breakfastGameMinutes=value*gameMinutesPerRealSecond; }
         public int breakfastTolerance=8,coffeeTolerance=3,chairCount=5,fileCount=3;
-        public float walkSpeed=3.6f,bikeSpeed=5.3f,stableDuration=.4f;
+        public float walkSpeed=3.6f,bikeSpeed=5.3f,stableDuration=.4f,stableSpeed=.12f;
         public float greenDuration=12,redDuration=10,beatPeriod=1.5f,beatWindow=.35f;
         public int capsuleGoal=5,capsulePenalty=1;
     }
