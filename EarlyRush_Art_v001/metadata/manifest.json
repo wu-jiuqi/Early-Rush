@@ -1,0 +1,720 @@
+{
+  "schema": "early-rush-art-manifest-1",
+  "generatedAtUtc": "2026-11-10T16:44:25.4294826+00:00",
+  "configuration": "metadata/export-config.json",
+  "configurationSha256": "2004c28d31d46463871ce09edef70773107b09818504fc1afd6b658e765902be",
+  "assetCount": 16,
+  "assets": [
+    {
+      "id": "boy-down",
+      "sourceId": "CH-01",
+      "source": "source/generated/boy-down.png",
+      "sourceSha256": "5a14469f9b7e13d429abba603881dcfaf6489a25e2aee1d274f4ea6807dcdd22",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/boy-down.png",
+      "outputSha256": "56031c082dddfc9f5422b9f2d4aacbc26a23005793f44365aa680ba2a0df3352",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -110.07999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1424
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "boy-up",
+      "sourceId": "CH-01",
+      "source": "source/generated/boy-up.png",
+      "sourceSha256": "57dff2473805412eec589e5dc7c785bdc00466fee8a6d288778bc8ff42db1f3c",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/boy-up.png",
+      "outputSha256": "d51afdf84a50f5b3765f8bbc7e3f624dfdf391f635f82ace0e28d49028a22801",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -104.95999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1408
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "boy-left",
+      "sourceId": "CH-01",
+      "source": "source/generated/boy-left.png",
+      "sourceSha256": "e9bcaa1a6524b8d81c6e24d121fb39dae20a3a2405578a70bb020377f05d2cdb",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/boy-left.png",
+      "outputSha256": "1ad26edf94deffcb4bd0f78de2773598534ab42e941eb949b0f1d9acad21485f",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -102.39999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1400
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "boy-right",
+      "sourceId": "CH-01",
+      "source": "source/generated/boy-right.png",
+      "sourceSha256": "85d6eaac214ceba3c56b68b1631a50097cee6a96abfece506c96ddef7df82adb",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/boy-right.png",
+      "outputSha256": "d16e833d6c1111e242fbc19d8d3be36ecaed2768f28d120c4d5f31fbd7fa337a",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -102.39999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1400
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "man-down",
+      "sourceId": "NP-01",
+      "source": "source/generated/man-down.png",
+      "sourceSha256": "b330565b8577c8f5aee7a3b3075f4288ce46cda78584235db4b0684b9f08b89d",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/man-down.png",
+      "outputSha256": "4856455146a50dc18b319286ff1e2d44ae7918fd4bfeeb31e04f7a188a8a1090",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -110.07999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1424
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "man-up",
+      "sourceId": "NP-01",
+      "source": "source/generated/man-up.png",
+      "sourceSha256": "200da07dc606ab052135e3b6b49ae300f2e2f37a82346f4f15ec285d4419c7ce",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/man-up.png",
+      "outputSha256": "7aa56cd9d894c645f189b8eae30e340f115510613b2c08bbbe70cdf74bb0966a",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -106.24000000000001
+        ],
+        "sourceAnchorPx": [
+          512,
+          1412
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "man-left",
+      "sourceId": "NP-01",
+      "source": "source/generated/man-left.png",
+      "sourceSha256": "cbb5ea6ddec29d37c3b2947863b58893d4b63c8a54c80419a8c3217d0fbf1ce1",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/man-left.png",
+      "outputSha256": "802f9ed3127482be9f0abe2b86d47fd0fe6380a86d39ab61f7c01943d5fc71f4",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -102.39999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1400
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "man-right",
+      "sourceId": "NP-01",
+      "source": "source/generated/man-right.png",
+      "sourceSha256": "897d84b40f12945b2cef28fbe68a2150140b37de994592b187f66a7ab133a5d9",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/people/man-right.png",
+      "outputSha256": "ef1cbb91f1bfcc1b9f1ccd5dc5814bab82dd68b3a0b60978b82b5fff12c4d4fe",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -102.39999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1400
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "wheel",
+      "sourceId": "TS-03",
+      "source": "source/generated/wheel-v2.png",
+      "sourceSha256": "71b0eeaab74c0179b6f01cfbdb8afa5475f96184b4260eec80fbf108f677a9be",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/tasks/wheel.png",
+      "outputSha256": "e3af0d728019db4f293b4243c87a3b76107a894eb4cec2ab02296b9268346134",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.21,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.18,
+          0.18
+        ],
+        "offsetPx": [
+          15.86,
+          21.600000000000023
+        ],
+        "sourceAnchorPx": [
+          623,
+          1160
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "chair",
+      "sourceId": "TO-03",
+      "source": "source/generated/chair-v2.png",
+      "sourceSha256": "2d741f03475f2836bc658cf62bc6afcff5cfb858e890d35b4a2d5afd6e51abcb",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/tasks/chair.png",
+      "outputSha256": "e056380bfacdb7436f4537c1dd1ec8e5e3e37c5a784684d0bec60a6a73184642",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.492,
+        0.055
+      ],
+      "worldWidth": 1.21,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.205,
+          0.205
+        ],
+        "offsetPx": [
+          -2.5829999999999984,
+          -1.414999999999992
+        ],
+        "sourceAnchorPx": [
+          627,
+          1187
+        ],
+        "targetAnchorTopLeftPx": [
+          125.952,
+          241.92
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "cloth",
+      "sourceId": "TM-03",
+      "source": "source/generated/cloth.png",
+      "sourceSha256": "0d1fc2dfe02bebb68cf5c99d1638e261c12fbdc48ba1c6764ac15333e85ca86d",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/tasks/cloth.png",
+      "outputSha256": "959bef8fa93d9ef06f5cb11332b0a9448b533a9bbd5d3fd081c9b131fb662dbd",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.54,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.2,
+          0.2
+        ],
+        "offsetPx": [
+          3.3999999999999915,
+          12.799999999999983
+        ],
+        "sourceAnchorPx": [
+          623,
+          1088
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "asphalt",
+      "sourceId": "EN-01",
+      "source": "source/generated/asphalt.png",
+      "sourceSha256": "31440d680f5be4efdbd80c9b6fb3d64aedd3c03d9918698035f1501a96767700",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "outputSha256": "8123f0607f7220e76018ed4df3869cb86a6549cc8e7d70edc36eec7789dbfd85",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "floor",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "full-image-resize",
+        "scaleXY": [
+          0.4082934609250399,
+          0.4082934609250399
+        ],
+        "offsetPx": [
+          0,
+          0
+        ]
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "leader-01",
+      "sourceId": "TO-02",
+      "source": "source/generated/leader-01.png",
+      "sourceSha256": "e6891f5f7a57bc5c8a4f3bc208b1801e38e6241e2bb8263af0a51ca2fd6a9561",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "ui-source/portraits/leader-01.png",
+      "outputSha256": "d123a4a8bd2b0638caf9fe1068519aef6dfdf0631a33586000b90ad257f7beda",
+      "canvasPx": [
+        128,
+        128
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 0,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.105,
+          0.105
+        ],
+        "offsetPx": [
+          -0.8900000000000006,
+          -1.730000000000004
+        ],
+        "sourceAnchorPx": [
+          618,
+          626
+        ],
+        "targetAnchorTopLeftPx": [
+          64.0,
+          64.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "windup-000",
+      "sourceId": "NP-03",
+      "source": "source/generated/windup-000.png",
+      "sourceSha256": "6fd73ae1b683b4c65ed45531c920e233c136cc4051e02514c5606c8f165c0e77",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "animation-source/crowd/rusher/windup/down/000.png",
+      "outputSha256": "518ade7ddb879bc7cc254d76408beaded4e9627413c079d658cd24b0f34c6e1e",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -110.07999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1424
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "windup-001",
+      "sourceId": "NP-03",
+      "source": "source/generated/windup-001.png",
+      "sourceSha256": "56fe18f9b551230012acbfb9349e502c403304bb287da4af0f6f046734f699f1",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "animation-source/crowd/rusher/windup/down/001.png",
+      "outputSha256": "82ba6a13c0a6aa41c8d5b33be86ad02d1d044cea4f122ccffba0ae3b6a303149",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -110.07999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1424
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "windup-002",
+      "sourceId": "NP-03",
+      "source": "source/generated/windup-002.png",
+      "sourceSha256": "6a43a527eeba821cda2d4e7cfc4381fb0cba6d3e3d8fea6ecbeaff4889cc1f1c",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "animation-source/crowd/rusher/windup/down/002.png",
+      "outputSha256": "cedc8d8a558a37dbb13d4d5ec77a53a3c8e34265eae0beedfccb314a23c21037",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 1.05,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.32,
+          0.32
+        ],
+        "offsetPx": [
+          -35.84,
+          -110.07999999999998
+        ],
+        "sourceAnchorPx": [
+          512,
+          1424
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    }
+  ]
+}

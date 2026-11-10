@@ -1,0 +1,139 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-11-11",
+  "mode": "candidate sample generation",
+  "prompts": [
+    {
+      "id": "player-initial-rejected",
+      "prompt": "Use case: stylized-concept.\nAsset type: Early Rush production game sprite, ONE character, ONE frame, down-facing idle.\nCreate a clean charming rounded simplified 2.5D sprite of a young adult commuter protagonist. Camera locked at very high 75-degree overhead elevation looking down toward the north; NOT isometric, no diagonal camera, north-up XY world. Character faces south / image bottom: top of dark brown short tidy hair most visible, a little forehead/face under it, shoulders and feet clearly readable. Small adult proportions with slightly enlarged head. Coral orange lightweight jacket, cream shirt, muted deep teal trousers, cream sneakers. No bag or held object. Matte illustrated toy-like forms, restrained soft painted volume, clean readable silhouette, no heavy outlines, crisp production edges. Lighting fixed from image upper-left, only self shading, NO cast ground shadow (separate asset). Real transparent alpha background, not checkerboard.\nCanvas aspect 2:3, ideally exactly 256x384 pixels. Keep maximum silhouette horizontal span 76% of canvas; keep the midpoint BETWEEN the two feet's ground contact positions at x=50%, y=90% measured from TOP. Full character visible with clear transparent safety margins. Neutral symmetric planted idle, feet about shoulder width, arms relaxed. Keep consistent camera scale, body proportions and ground contact for subsequent four directions. No scene, no floor, no text, no logo, no grid, no border. This is the first style anchor for a cream / teal / yellow morning commuter game."
+    },
+    {
+      "id": "boy-down",
+      "prompt": "Use case: stylized-concept. Generate the final Early Rush down-facing idle game sprite using the supplied character as the identity and material reference. Keep exactly the same young adult commuter, dark brown hair, coral jacket, cream shirt, teal pants, ivory sneakers. CHANGE camera to near-top-down 75 degree elevation (15 degrees from vertical): much more top of head and shoulders visible, face mostly hidden by head, torso and legs strongly foreshortened. Current reference is too front-facing and tall. Compact overhead silhouette rather than a portrait. Camera fixed north-up, character faces image bottom, parallel projection. Single isolated full body, no cast ground shadow, no glow or halo, actual transparent alpha. Canvas 1024x1536, character compact 780px wide and roughly 850px tall, feet midpoint at (512,1382), large clear area above head is intentional and must be preserved. Smooth matte rounded toy illustration matching reference. No grid no labels no other items.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-435e11c5-8511-4a6b-89a3-5da9babf3bec.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "asphalt",
+      "prompt": "Use case: stylized-concept. Asset: ONE game ground material tile for Early Rush, exactly square 512x512 preferred, full bleed fully opaque. Straight perpendicular top-down flat texture, desaturated light blue gray asphalt with very subtle tiny aggregate speckles, soft matte illustrated finish suitable for a cream ivory / teal / yellow cheerful commuter game. Low contrast so coral player and teal props remain highly legible. Perfectly seamless repeating across both horizontal and vertical borders, uniform illumination and uniform detail distribution, no vignette, no perspective, no shadows, no objects, no road paint, no lines, no sidewalk, no text, no large distinctive stones or stains, no frame. It will be cut into 4x4 adjacent subtiles; the entire image must be one continuous material with NO visible grid.",
+      "transparent": false
+    },
+    {
+      "id": "wheel",
+      "prompt": "Use case: stylized-concept. Asset: Early Rush single pushable bicycle wheel game sprite, isolated on actual transparent alpha. Clean rounded toy-like 2.5D illustration, fixed north-up orthographic camera at 75 degrees overhead elevation. ONE intact slim black charcoal rubber bicycle tire with pale metal rim and six clearly separated cream metal spokes, a teal central hub. Upright freestanding wheel leaning only slightly, as a narrow elliptical silhouette viewed steeply from above; not a car tire, not a lying flat ring, not a full bike, no axle stand. Entire wheel visible. Upper-left fixed soft light, matte material, crisp silhouette, no cast ground shadow. Square 256x256 preferred; object horizontal span 72-80% of image, ground contact at (50%,90% from top), transparent safe margins. Palette charcoal teal ivory, no orange. No scene, no floor, no text, no glow, no checkerboard.",
+      "transparent": true
+    },
+    {
+      "id": "boy-up",
+      "prompt": "Use case: stylized-concept. Asset: ONE isolated Early Rush full body idle sprite. Use input as exact identity, camera elevation, framing, material and scale reference. Same adult male protagonist, dark brown side swept hair, coral orange jacket, cream shirt, dark teal trousers, cream sneakers, no bag. Camera remains fixed at 75 degree elevation above ground looking north, near-overhead parallel projection. Do not rotate camera. Rotate ONLY character in world to specified facing. Neutral planted stance, arms relaxed. Top of head very visible, body strongly foreshortened as reference. Light remains from image upper-left independent of facing. Same 1024x1536 transparent canvas; keep same top of head height and projected body size as reference; feet ground midpoint stays at x=512 y=1382. No floor shadow, text, glow, scene, extra objects, frame, grid or mirror-copy lighting. True alpha. Facing: NORTH / image TOP. Rear view: back of head, back panel of coral jacket; no face or chest visible. He is looking away from viewer.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-87d8f35a-53ed-41ff-98b7-95c1317d2d47.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "boy-left",
+      "prompt": "Use case: stylized-concept. Asset: ONE isolated Early Rush full body idle sprite. Use input as exact identity, camera elevation, framing, material and scale reference. Same adult male protagonist, dark brown side swept hair, coral orange jacket, cream shirt, dark teal trousers, cream sneakers, no bag. Camera remains fixed at 75 degree elevation above ground looking north, near-overhead parallel projection. Do not rotate camera. Rotate ONLY character in world to specified facing. Neutral planted stance, arms relaxed. Top of head very visible, body strongly foreshortened as reference. Light remains from image upper-left independent of facing. Same 1024x1536 transparent canvas; keep same top of head height and projected body size as reference; feet ground midpoint stays at x=512 y=1382. No floor shadow, text, glow, scene, extra objects, frame, grid or mirror-copy lighting. True alpha. Facing: WEST / image LEFT. True left-facing overhead profile: nose and toes point left, small part of left face visible; both feet planted. Match compact overhead view.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-87d8f35a-53ed-41ff-98b7-95c1317d2d47.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "boy-right",
+      "prompt": "Use case: stylized-concept. Asset: ONE isolated Early Rush full body idle sprite. Use input as exact identity, camera elevation, framing, material and scale reference. Same adult male protagonist, dark brown side swept hair, coral orange jacket, cream shirt, dark teal trousers, cream sneakers, no bag. Camera remains fixed at 75 degree elevation above ground looking north, near-overhead parallel projection. Do not rotate camera. Rotate ONLY character in world to specified facing. Neutral planted stance, arms relaxed. Top of head very visible, body strongly foreshortened as reference. Light remains from image upper-left independent of facing. Same 1024x1536 transparent canvas; keep same top of head height and projected body size as reference; feet ground midpoint stays at x=512 y=1382. No floor shadow, text, glow, scene, extra objects, frame, grid or mirror-copy lighting. True alpha. Facing: EAST / image RIGHT. True right-facing overhead profile: nose and toes point right, small part of right face visible; both feet planted. Light still upper LEFT, not mirrored.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-87d8f35a-53ed-41ff-98b7-95c1317d2d47.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "man-down",
+      "prompt": "Use case: stylized-concept. New Early Rush ordinary commuter NPC, ONE down-facing idle sprite. Input image is style, high 75-degree overhead camera and body framing reference only. A subtly stockier adult office commuter with short charcoal hair, muted teal collared overshirt over ivory shirt, slate trousers and dark teal shoes. No coral/orange clothing, no hand-held item or bag, no threat symbols. Friendly simple adult face mostly hidden beneath overhead head. Rounded matte toy illustration with restrained smooth shading, no heavy outlines. Fixed north-up parallel camera; face and toes toward image bottom. Neutral planted pose, full body. Same scale as reference, same large clear top margin, 1024x1536 canvas; feet ground midpoint at 512,1382. Upper-left light, no cast shadow, no halo. True alpha background, no text/grid/frame.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-87d8f35a-53ed-41ff-98b7-95c1317d2d47.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "man-up",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush commuter game sprite. Use supplied NPC as exact identity/costume/high 75-degree overhead camera/material/scale reference: stocky adult, short charcoal swept hair, muted teal collared short-sleeve button overshirt with small chest pocket over ivory shirt, slate trousers, dark teal cream-soled sneakers, no bag. Rotate ONLY character toward requested direction, camera fixed looking north from high above, NOT isometric. Maintain reference's compact overhead foreshortening, same head size, same shirt/buttons/pocket and shoe design. Same 1024x1536 transparent canvas, ground root midpoint at x512 y1382, clear top margin preserved. Neutral planted pose with relaxed hands. True transparent alpha, no floor shadow, no halo, no text, no grid, no scene. Light stays fixed from upper-left. Facing NORTH / image top, back of hair and back of shirt visible, no face/chest. Full body.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-9e39731f-1e7b-4f01-b68e-1296eda48875.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "man-left",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush commuter game sprite. Use supplied NPC as exact identity/costume/high 75-degree overhead camera/material/scale reference: stocky adult, short charcoal swept hair, muted teal collared short-sleeve button overshirt with small chest pocket over ivory shirt, slate trousers, dark teal cream-soled sneakers, no bag. Rotate ONLY character toward requested direction, camera fixed looking north from high above, NOT isometric. Maintain reference's compact overhead foreshortening, same head size, same shirt/buttons/pocket and shoe design. Same 1024x1536 transparent canvas, ground root midpoint at x512 y1382, clear top margin preserved. Neutral planted pose with relaxed hands. True transparent alpha, no floor shadow, no halo, no text, no grid, no scene. Light stays fixed from upper-left. Facing WEST / image left, exact side direction with nose/toes to the LEFT, not diagonal northwest. Top of head very visible, near arm relaxed, feet planted. Full body.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-9e39731f-1e7b-4f01-b68e-1296eda48875.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "man-right",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush commuter game sprite. Use supplied NPC as exact identity/costume/high 75-degree overhead camera/material/scale reference: stocky adult, short charcoal swept hair, muted teal collared short-sleeve button overshirt with small chest pocket over ivory shirt, slate trousers, dark teal cream-soled sneakers, no bag. Rotate ONLY character toward requested direction, camera fixed looking north from high above, NOT isometric. Maintain reference's compact overhead foreshortening, same head size, same shirt/buttons/pocket and shoe design. Same 1024x1536 transparent canvas, ground root midpoint at x512 y1382, clear top margin preserved. Neutral planted pose with relaxed hands. True transparent alpha, no floor shadow, no halo, no text, no grid, no scene. Light stays fixed from upper-left. Facing EAST / image right, exact side direction with nose/toes to the RIGHT, not diagonal northeast. Top of head very visible, near arm relaxed, feet planted. Do not mirror light. Full body.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-9e39731f-1e7b-4f01-b68e-1296eda48875.png"
+      ],
+      "transparent": true
+    },
+    {
+      "id": "windup-000",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush commuter game sprite. Use supplied NPC as exact identity/costume/high 75-degree overhead camera/material/scale reference: stocky adult, short charcoal swept hair, muted teal collared short-sleeve button overshirt with small chest pocket over ivory shirt, slate trousers, dark teal cream-soled sneakers, no bag. Rotate ONLY character toward requested direction, camera fixed looking north from high above, NOT isometric. Maintain reference's compact overhead foreshortening, same head size, same shirt/buttons/pocket and shoe design. Same 1024x1536 transparent canvas, ground root midpoint at x512 y1382, clear top margin preserved. Neutral planted pose with relaxed hands. True transparent alpha, no floor shadow, no halo, no text, no grid, no scene. Light stays fixed from upper-left. Facing DOWN / south. Animation windup anticipation pose 1 of 3, single frame. Keep costume and identity exact. Begin lowering center of mass: bend both knees slightly, feet stay planted shoulder width and root unchanged. Elbows bent and hands near ribs; one shoulder gently lowered toward image bottom as an intention to shoulder-bump, clear concentrated posture. This is initial preparation, NOT a punch, NOT contact, NO particles or directional ground markers, NO translation, NO motion blur. It is a sample of a new rusher behavior, not an M1 passenger.",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-9e39731f-1e7b-4f01-b68e-1296eda48875.png"
+      ],
+      "transparent": true
+    }
+  ],
+  "outputs": [
+    {
+      "id": "boy-down",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-87d8f35a-53ed-41ff-98b7-95c1317d2d47.png"
+    },
+    {
+      "id": "boy-up",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-536ef84e-ac0e-4fc8-9549-9c802b22a87c.png"
+    },
+    {
+      "id": "boy-left",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-aeee4178-1e4d-4788-aa20-74f64209ed6c.png"
+    },
+    {
+      "id": "boy-right",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-17363aaa-8da9-4d7a-baad-dc5e6c58e6e4.png"
+    },
+    {
+      "id": "man-down",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-9e39731f-1e7b-4f01-b68e-1296eda48875.png"
+    },
+    {
+      "id": "man-up",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-71beea77-ed7a-499b-ae18-ee2defbda84e.png"
+    },
+    {
+      "id": "man-left",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-97664fa5-fe0f-4c4e-a889-1f721c580550.png"
+    },
+    {
+      "id": "man-right",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-685b31ca-58ea-4604-b761-e18996af022e.png"
+    },
+    {
+      "id": "asphalt",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-24fd2c11-b2b6-4ad1-8561-7ce5b769b369.png"
+    },
+    {
+      "id": "wheel",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-971319f9-c993-426f-893f-f8632dcdac31.png"
+    },
+    {
+      "id": "windup-000",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-e2a816c3-9dbc-4c86-aa92-1696f889a896.png"
+    }
+  ]
+}

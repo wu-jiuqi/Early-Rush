@@ -1,0 +1,884 @@
+{
+  "schema": "early-rush-art-validation-1",
+  "generatedAtUtc": "2026-11-10T16:44:25.4294826+00:00",
+  "status": "technical-checks-passed",
+  "warningCount": 0,
+  "scope": "Dimensions, alpha bounds/corners/edges and hashes only. No assertion of art quality, anchor correctness, animation coherence, seamlessness or in-game acceptance.",
+  "boundsConvention": "Top-left origin, inclusive minimum, [x,y,width,height], threshold alpha >= 128.",
+  "assets": [
+    {
+      "id": "boy-down",
+      "source": "source/generated/boy-down.png",
+      "output": "runtime-static/V8Art/people/boy-down.png",
+      "sourceSha256": "5a14469f9b7e13d429abba603881dcfaf6489a25e2aee1d274f4ea6807dcdd22",
+      "outputSha256": "56031c082dddfc9f5422b9f2d4aacbc26a23005793f44365aa680ba2a0df3352",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1255299,
+        "alphaZeroRatio": 0.798098,
+        "alphaAtLeast128Count": 309125,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          219,
+          642,
+          585,
+          795
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 66058,
+        "alphaZeroRatio": 0.671977,
+        "alphaAtLeast128Count": 31649,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          34,
+          95,
+          187,
+          255
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "boy-up",
+      "source": "source/generated/boy-up.png",
+      "output": "runtime-static/V8Art/people/boy-up.png",
+      "sourceSha256": "57dff2473805412eec589e5dc7c785bdc00466fee8a6d288778bc8ff42db1f3c",
+      "outputSha256": "d51afdf84a50f5b3765f8bbc7e3f624dfdf391f635f82ace0e28d49028a22801",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1275829,
+        "alphaZeroRatio": 0.81115,
+        "alphaAtLeast128Count": 288269,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          243,
+          630,
+          538,
+          788
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 68170,
+        "alphaZeroRatio": 0.693461,
+        "alphaAtLeast128Count": 29514,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          42,
+          97,
+          172,
+          252
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "boy-left",
+      "source": "source/generated/boy-left.png",
+      "output": "runtime-static/V8Art/people/boy-left.png",
+      "sourceSha256": "e9bcaa1a6524b8d81c6e24d121fb39dae20a3a2405578a70bb020377f05d2cdb",
+      "outputSha256": "1ad26edf94deffcb4bd0f78de2773598534ab42e941eb949b0f1d9acad21485f",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1334735,
+        "alphaZeroRatio": 0.848602,
+        "alphaAtLeast128Count": 229935,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          275,
+          638,
+          454,
+          801
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 74217,
+        "alphaZeroRatio": 0.754974,
+        "alphaAtLeast128Count": 23540,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          52,
+          102,
+          145,
+          256
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "boy-right",
+      "source": "source/generated/boy-right.png",
+      "output": "runtime-static/V8Art/people/boy-right.png",
+      "sourceSha256": "85d6eaac214ceba3c56b68b1631a50097cee6a96abfece506c96ddef7df82adb",
+      "outputSha256": "d16e833d6c1111e242fbc19d8d3be36ecaed2768f28d120c4d5f31fbd7fa337a",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1344313,
+        "alphaZeroRatio": 0.854691,
+        "alphaAtLeast128Count": 219766,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          286,
+          641,
+          435,
+          795
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 75269,
+        "alphaZeroRatio": 0.765676,
+        "alphaAtLeast128Count": 22491,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          55,
+          103,
+          140,
+          254
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "man-down",
+      "source": "source/generated/man-down.png",
+      "output": "runtime-static/V8Art/people/man-down.png",
+      "sourceSha256": "b330565b8577c8f5aee7a3b3075f4288ce46cda78584235db4b0684b9f08b89d",
+      "outputSha256": "4856455146a50dc18b319286ff1e2d44ae7918fd4bfeeb31e04f7a188a8a1090",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1250729,
+        "alphaZeroRatio": 0.795192,
+        "alphaAtLeast128Count": 313236,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          214,
+          640,
+          591,
+          792
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 65584,
+        "alphaZeroRatio": 0.667155,
+        "alphaAtLeast128Count": 32064,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          32,
+          95,
+          190,
+          253
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "man-up",
+      "source": "source/generated/man-up.png",
+      "output": "runtime-static/V8Art/people/man-up.png",
+      "sourceSha256": "200da07dc606ab052135e3b6b49ae300f2e2f37a82346f4f15ec285d4419c7ce",
+      "outputSha256": "7aa56cd9d894c645f189b8eae30e340f115510613b2c08bbbe70cdf74bb0966a",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1269094,
+        "alphaZeroRatio": 0.806868,
+        "alphaAtLeast128Count": 294253,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          240,
+          633,
+          544,
+          791
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 67464,
+        "alphaZeroRatio": 0.686279,
+        "alphaAtLeast128Count": 30109,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          41,
+          96,
+          174,
+          253
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "man-left",
+      "source": "source/generated/man-left.png",
+      "output": "runtime-static/V8Art/people/man-left.png",
+      "sourceSha256": "cbb5ea6ddec29d37c3b2947863b58893d4b63c8a54c80419a8c3217d0fbf1ce1",
+      "outputSha256": "802f9ed3127482be9f0abe2b86d47fd0fe6380a86d39ab61f7c01943d5fc71f4",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1339619,
+        "alphaZeroRatio": 0.851707,
+        "alphaAtLeast128Count": 226379,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          316,
+          640,
+          402,
+          797
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 74606,
+        "alphaZeroRatio": 0.758931,
+        "alphaAtLeast128Count": 23173,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          65,
+          102,
+          129,
+          256
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "man-right",
+      "source": "source/generated/man-right.png",
+      "output": "runtime-static/V8Art/people/man-right.png",
+      "sourceSha256": "897d84b40f12945b2cef28fbe68a2150140b37de994592b187f66a7ab133a5d9",
+      "outputSha256": "ef1cbb91f1bfcc1b9f1ccd5dc5814bab82dd68b3a0b60978b82b5fff12c4d4fe",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1336952,
+        "alphaZeroRatio": 0.850011,
+        "alphaAtLeast128Count": 227681,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          300,
+          631,
+          405,
+          803
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 74477,
+        "alphaZeroRatio": 0.757619,
+        "alphaAtLeast128Count": 23302,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          60,
+          99,
+          129,
+          258
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "wheel",
+      "source": "source/generated/wheel-v2.png",
+      "output": "runtime-static/V8Art/tasks/wheel.png",
+      "sourceSha256": "71b0eeaab74c0179b6f01cfbdb8afa5475f96184b4260eec80fbf108f677a9be",
+      "outputSha256": "e3af0d728019db4f293b4243c87a3b76107a894eb4cec2ab02296b9268346134",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 1335273,
+        "alphaZeroRatio": 0.849132,
+        "alphaAtLeast128Count": 209652,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          84,
+          846,
+          1078,
+          318
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 58019,
+        "alphaZeroRatio": 0.8853,
+        "alphaAtLeast128Count": 6793,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          31,
+          174,
+          194,
+          57
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "chair",
+      "source": "source/generated/chair-v2.png",
+      "output": "runtime-static/V8Art/tasks/chair.png",
+      "sourceSha256": "2d741f03475f2836bc658cf62bc6afcff5cfb858e890d35b4a2d5afd6e51abcb",
+      "outputSha256": "e056380bfacdb7436f4537c1dd1ec8e5e3e37c5a784684d0bec60a6a73184642",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 925508,
+        "alphaZeroRatio": 0.588552,
+        "alphaAtLeast128Count": 624419,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          167,
+          132,
+          917,
+          1056
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 38483,
+        "alphaZeroRatio": 0.587204,
+        "alphaAtLeast128Count": 26237,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          31,
+          26,
+          188,
+          216
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "cloth",
+      "source": "source/generated/cloth.png",
+      "output": "runtime-static/V8Art/tasks/cloth.png",
+      "sourceSha256": "0d1fc2dfe02bebb68cf5c99d1638e261c12fbdc48ba1c6764ac15333e85ca86d",
+      "outputSha256": "959bef8fa93d9ef06f5cb11332b0a9448b533a9bbd5d3fd081c9b131fb662dbd",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 738737,
+        "alphaZeroRatio": 0.46978,
+        "alphaAtLeast128Count": 808066,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          140,
+          225,
+          965,
+          866
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 32248,
+        "alphaZeroRatio": 0.492065,
+        "alphaAtLeast128Count": 32338,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          31,
+          58,
+          193,
+          173
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "asphalt",
+      "source": "source/generated/asphalt.png",
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "sourceSha256": "31440d680f5be4efdbd80c9b6fb3d64aedd3c03d9918698035f1501a96767700",
+      "outputSha256": "8123f0607f7220e76018ed4df3869cb86a6549cc8e7d70edc36eec7789dbfd85",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 1572516,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 2.6093,
+          "topBottom": 3.0122,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 262144,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 2.6615,
+          "topBottom": 3.2005,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "warnings": []
+    },
+    {
+      "id": "leader-01",
+      "source": "source/generated/leader-01.png",
+      "output": "ui-source/portraits/leader-01.png",
+      "sourceSha256": "e6891f5f7a57bc5c8a4f3bc208b1801e38e6241e2bb8263af0a51ca2fd6a9561",
+      "outputSha256": "d123a4a8bd2b0638caf9fe1068519aef6dfdf0631a33586000b90ad257f7beda",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 664908,
+        "alphaZeroRatio": 0.422831,
+        "alphaAtLeast128Count": 892898,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          85,
+          86,
+          1066,
+          1080
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          128,
+          128
+        ],
+        "pixelCount": 16384,
+        "alphaZeroCount": 6327,
+        "alphaZeroRatio": 0.386169,
+        "alphaAtLeast128Count": 9846,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          8,
+          7,
+          112,
+          114
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "windup-000",
+      "source": "source/generated/windup-000.png",
+      "output": "animation-source/crowd/rusher/windup/down/000.png",
+      "sourceSha256": "6fd73ae1b683b4c65ed45531c920e233c136cc4051e02514c5606c8f165c0e77",
+      "outputSha256": "518ade7ddb879bc7cc254d76408beaded4e9627413c079d658cd24b0f34c6e1e",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1246270,
+        "alphaZeroRatio": 0.792357,
+        "alphaAtLeast128Count": 313459,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          190,
+          661,
+          626,
+          773
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 65170,
+        "alphaZeroRatio": 0.662944,
+        "alphaAtLeast128Count": 32085,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          25,
+          101,
+          200,
+          248
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "windup-001",
+      "source": "source/generated/windup-001.png",
+      "output": "animation-source/crowd/rusher/windup/down/001.png",
+      "sourceSha256": "56fe18f9b551230012acbfb9349e502c403304bb287da4af0f6f046734f699f1",
+      "outputSha256": "82ba6a13c0a6aa41c8d5b33be86ad02d1d044cea4f122ccffba0ae3b6a303149",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1271193,
+        "alphaZeroRatio": 0.808203,
+        "alphaAtLeast128Count": 289984,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          191,
+          707,
+          617,
+          727
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 67799,
+        "alphaZeroRatio": 0.689687,
+        "alphaAtLeast128Count": 29692,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          25,
+          116,
+          198,
+          233
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "windup-002",
+      "source": "source/generated/windup-002.png",
+      "output": "animation-source/crowd/rusher/windup/down/002.png",
+      "sourceSha256": "6a43a527eeba821cda2d4e7cfc4381fb0cba6d3e3d8fea6ecbeaff4889cc1f1c",
+      "outputSha256": "cedc8d8a558a37dbb13d4d5ec77a53a3c8e34265eae0beedfccb314a23c21037",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 1293261,
+        "alphaZeroRatio": 0.822233,
+        "alphaAtLeast128Count": 272221,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          219,
+          755,
+          608,
+          679
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 69878,
+        "alphaZeroRatio": 0.710836,
+        "alphaAtLeast128Count": 27861,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          34,
+          132,
+          194,
+          217
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-11-11",
+  "prompts": [
+    {
+      "id": "windup-001",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-e2a816c3-9dbc-4c86-aa92-1696f889a896.png"
+      ],
+      "prompt": "Use case: identity-preserve. Early Rush ONE animation frame. The input is the preceding anticipation frame. Preserve EXACT NPC identity, charcoal hair shape, muted teal button overshirt and chest pocket, ivory shirt, slate trousers, dark teal sneakers. Preserve fixed north-up 75-degree overhead camera, lighting from image upper-left, original 1024x1536 canvas, character scale and planted shoe positions, no root motion or camera rotation. Single full body, actual transparent alpha, no ground shadow or halo. Not a hit frame, no victim, no particles, no arrows, no text, no grid. Character faces image bottom. Change ONLY anticipation body posture as below. Middle windup pose, 2 of 3: lower hips more, bend knees, lean torso forward toward image bottom, pull elbows a little further back with hands near waist and lead right shoulder. Head moves slightly down in image by 35 pixels; feet unchanged. A clear second stage of shoulder-bump preparation; no fist-punch."
+    },
+    {
+      "id": "windup-002",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-e2a816c3-9dbc-4c86-aa92-1696f889a896.png"
+      ],
+      "prompt": "Use case: identity-preserve. Early Rush ONE animation frame. The input is the preceding anticipation frame. Preserve EXACT NPC identity, charcoal hair shape, muted teal button overshirt and chest pocket, ivory shirt, slate trousers, dark teal sneakers. Preserve fixed north-up 75-degree overhead camera, lighting from image upper-left, original 1024x1536 canvas, character scale and planted shoe positions, no root motion or camera rotation. Single full body, actual transparent alpha, no ground shadow or halo. Not a hit frame, no victim, no particles, no arrows, no text, no grid. Character faces image bottom. Change ONLY anticipation body posture as below. Fully charged windup pose, 3 of 3: deepest compact crouch, knees deeply bent, upper torso leaning distinctly forward toward image bottom and one shoulder leading, elbows tucked behind waist, fists still close to body. Head down 65 pixels from reference, shoes remain exactly planted. A strong readable tension pose before a shoulder shove, NOT launching yet. No motion blur."
+    },
+    {
+      "id": "wheel-v2",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\wheel.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Correct camera view of this SAME single bicycle wheel, preserving charcoal thin tire, ivory rim, six ivory spokes and teal hub. The wheel stands upright on the ground, its axis points north/south. View it from 75 degrees ABOVE the ground, camera near vertical looking down. Therefore the circular wheel projects as a very WIDE SHALLOW ellipse, about 3.5 to 1 width to height. See mostly the upper tread; all six spokes strongly compressed vertically. Current reference front view is incorrect. Absolutely NOT a round circle in the output. Parallel projection, wheel plane aligns across image horizontally, not diagonal. This is a tiny toy-style 2.5D high-overhead game prop, not a product catalog front view. Keep smooth rounded matte material and upper-left fixed soft light. Square canvas 1254x1254, ellipse width about950 pixels and height about300, contact point at center x627 y1129 with much clear space above; no cast ground shadow, no text, no background, true transparent alpha, no scene."
+    }
+  ],
+  "outputs": [
+    {
+      "id": "windup-001",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-2b0d4ff4-1047-4559-8688-45bdb5e86475.png"
+    },
+    {
+      "id": "windup-002",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-5d8af51b-8fcf-4091-b616-93803aa5af3c.png"
+    },
+    {
+      "id": "wheel-v2",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-e03aae18-38b9-4496-a62f-7d1cb8738ceb.png"
+    }
+  ]
+}

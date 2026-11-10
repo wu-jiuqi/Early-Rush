@@ -1,0 +1,56 @@
+{
+  "schema": "early-rush-generated-prompts-1",
+  "date": "2026-11-11",
+  "tool": "built-in image_gen.imagegen",
+  "transparentBackground": true,
+  "referenceRole": "Style reference only, not edit target",
+  "referenceImage": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-87d8f35a-53ed-41ff-98b7-95c1317d2d47.png",
+  "sourceType": "AI-generated single-layer RGBA PNG originals, not editable layered source",
+  "recommendedChairSource": "source/generated/chair-v2.png",
+  "revisions": [
+    {
+      "id": "chair-v2",
+      "prompt": "Use case: precise-object-edit. Input image is the EDIT TARGET, a teal office chair sprite. Produce a corrected version of exactly the same one teal rounded office chair, same five cream spokes, dark caster wheels, matte toy-illustration style, teal upholstery and cream metal, upper-left light. Change the camera to a MUCH HIGHER NEAR-TOP-DOWN ORTHOGRAPHIC VIEW: camera optical axis is only FIFTEEN DEGREES away from straight vertically downward, equivalent to 75 degrees above the ground plane. We should look mostly onto the horizontal seat top; the upright backrest is strongly foreshortened into a shallow crescent at the top of the silhouette, NOT a tall frontal cushion. The chair remains facing screen bottom. Render a broad compact silhouette with the five-spoke base seen from almost overhead beneath the seat. Square canvas, complete object, no crop; the silhouette should occupy about 75 percent of canvas WIDTH and no more than 78 percent of canvas HEIGHT, with front caster contact near 94.5 percent from top. Genuine transparent RGBA background. Opaque solid object surfaces, only edge antialiasing semitransparent; transparent empty margins must be completely empty and clean. NO speckles, colored edge debris, glow, ground shadow, floor, room, labels, text, frames or grid. Preserve the chair identity and all materials, change only camera/projection and required framing.",
+      "editTarget": "source/generated/chair.png",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c64a-7a61-7162-a99d-2fc403a5660b\\exec-8090c18c-5256-43d0-98bd-2eaf4620baee.png",
+      "localPath": "source/generated/chair-v2.png",
+      "reason": "Correct the first chair's camera from tall frontal projection to near-overhead projection; preserve first original non-destructively",
+      "status": "candidate-generated-not-runtime-integrated"
+    }
+  ],
+  "assets": [
+    {
+      "id": "chair",
+      "prompt": "Use case: stylized-concept. Asset type: one isolated 2.5D game prop sprite for Early Rush, intended technical export 256x256 PNG. Input image is STYLE REFERENCE ONLY: borrow the simple rounded matte toy-illustration rendering, soft internal shading and approachable proportions, do not include the person. Generate exactly ONE teal padded office swivel chair, viewed from a very high 75 degree above-ground orthographic camera, screen north fixed, chair front faces toward bottom of image. Clear broad rounded teal seat and backrest, simple armrests, cream painted metal five-spoke base with small dark caster wheels; unmistakably a movable office chair. Square canvas, full object uncropped with transparent safety margin, maximum silhouette width approximately 75 percent of the canvas. Frontmost caster ground-contact at y=94.5 percent from top, visual root near x=49.2 percent. Consistent lighting comes from upper left; shade the object itself softly. Genuine transparent RGBA background, crisp clean antialiased silhouette, NO floor, NO ground shadow, NO glow, NO halo, no environment, no second chair, no text, no numbers, no border, no grid, no sprite sheet. Near-overhead orthographic look, never a diamond-isometric layout. Palette subdued rich teal, cream and charcoal, readable at 128px.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c64a-7a61-7162-a99d-2fc403a5660b\\exec-236a8d91-6e04-4397-8e95-7759e3d642d5.png",
+      "localPath": "source/generated/chair.png",
+      "status": "candidate-generated-not-runtime-integrated",
+      "targetCanvas": [
+        256,
+        256
+      ]
+    },
+    {
+      "id": "cloth",
+      "prompt": "Use case: stylized-concept. Asset type: one isolated 2.5D game prop sprite for Early Rush, intended technical export 256x256 PNG. Input image is STYLE REFERENCE ONLY: borrow simple rounded matte toy-illustration rendering, restrained soft internal shading, do not include the person. Generate exactly ONE thick folded soft teal cleaning CLOTH with a thin cream stitched hem. The cloth must visibly be pliable woven fabric with two or three folded layers, a loose softly curled cloth corner, gentle fabric creases, and compressed soft edges. NOT a sponge, not a block of foam, not a brush, not a cleaning trolley. View from a very high 75 degree above-ground orthographic camera, fixed screen north, rectangular folded textile mostly aligned with screen axes; no diamond-isometric layout. Square canvas, complete uncropped cloth, maximum silhouette width about 75 percent of canvas; lower ground-contact edge centered near x=50 percent, y=90 percent from top, leaving clear transparency below. Upper-left fixed light, soft shading only on cloth. Genuine transparent RGBA background and clean antialiased contour. NO ground plane, NO cast ground shadow, NO glow, NO halo, NO water puddle, no text, no symbols, no frame, no grid, no sprite sheet. Keep silhouette and fabric thickness readable at 128px.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c64a-7a61-7162-a99d-2fc403a5660b\\exec-c05c86c4-2de8-4979-9e32-bdd99471f973.png",
+      "localPath": "source/generated/cloth.png",
+      "status": "candidate-generated-not-runtime-integrated",
+      "targetCanvas": [
+        256,
+        256
+      ]
+    },
+    {
+      "id": "leader-01",
+      "prompt": "Use case: stylized-concept. Asset type: UI leader portrait icon for Early Rush, intended technical export 128x128 PNG. Input image is STYLE REFERENCE ONLY for the rounded matte toy-illustration rendering and warm restrained palette; do NOT copy the child or overhead camera. Create ONE fictional middle-aged office leader with short tidy gray hair, round dark glasses, a calm friendly expression, dark teal suit jacket and cream shirt. Frontal head-and-shoulders portrait with clear symmetrical identity features, simple rounded shapes and restrained soft shading, fixed upper-left light. Place portrait within one simple warm cream circular backing disc. Square canvas with genuine transparent corners outside the disc, full disc visible with 8 percent padding, clean silhouette; the shoulders sit within the disc. High quality at small icon size, recognizable at 24,32,48 px. No text, letters, labels, symbols, rank badges, gradient background outside circle, glow, outer shadow, watermark, grid, or multiple views. This portrait will be reused identically on a file sticker and workstation.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c64a-7a61-7162-a99d-2fc403a5660b\\exec-524700d2-1fb4-4deb-987e-26208da0e6d8.png",
+      "localPath": "source/generated/leader-01.png",
+      "status": "candidate-generated-not-runtime-integrated",
+      "targetCanvas": [
+        128,
+        128
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "early-rush-animation-1",
+  "assetId": "crowd.rusher.windup.down.sample",
+  "sourceId": "NP-03",
+  "files": [
+    "000.png",
+    "001.png",
+    "002.png"
+  ],
+  "canvasPx": [
+    256,
+    384
+  ],
+  "pivotNormalizedBottomLeft": [
+    0.5,
+    0.1
+  ],
+  "worldWidth": 1.05,
+  "fps": null,
+  "previewFps": 6,
+  "loop": false,
+  "rootMotion": false,
+  "clock": "gameplay",
+  "sampling": "normalized-windup-progress",
+  "sampleProgress": [
+    0,
+    0.5,
+    1
+  ],
+  "holdLastFrame": true,
+  "entryPose": "ordinary down-facing idle; transition blending not authored",
+  "exitPose": "charge / cancel / recover supplied by future production",
+  "interruptions": "behavior-state controlled; no committed gameplay windows",
+  "handAttachmentPoints": null,
+  "visualEvents": [],
+  "integrationStatus": "B candidate; no runtime mapping installed by this batch",
+  "reviewNotes": [
+    "Three independently generated poses; inspect continuity before production.",
+    "Character scale shared with ordinary NPC; no auto trimming.",
+    "Preview fps is review-only and must not determine the gameplay windup duration.",
+    "Ground shadow and warning direction marker are separate future assets.",
+    "This is a rusher sample, not a dedicated M1 passenger cue."
+  ]
+}

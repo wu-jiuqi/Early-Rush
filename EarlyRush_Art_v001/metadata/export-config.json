@@ -1,0 +1,359 @@
+{
+  "schema": "early-rush-art-export-1",
+  "date": "2026-11-11",
+  "note": "Candidate frames only. Manual approximate ground anchors require in-engine review. All character frames share scale=0.32; no per-frame trimming or repainting.",
+  "assets": [
+    {
+      "id": "boy-down",
+      "source": "source/generated/boy-down.png",
+      "output": "runtime-static/V8Art/people/boy-down.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1424
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "CH-01",
+      "integration": "A"
+    },
+    {
+      "id": "boy-up",
+      "source": "source/generated/boy-up.png",
+      "output": "runtime-static/V8Art/people/boy-up.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1408
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "CH-01",
+      "integration": "A"
+    },
+    {
+      "id": "boy-left",
+      "source": "source/generated/boy-left.png",
+      "output": "runtime-static/V8Art/people/boy-left.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1400
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "CH-01",
+      "integration": "A"
+    },
+    {
+      "id": "boy-right",
+      "source": "source/generated/boy-right.png",
+      "output": "runtime-static/V8Art/people/boy-right.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1400
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "CH-01",
+      "integration": "A"
+    },
+    {
+      "id": "man-down",
+      "source": "source/generated/man-down.png",
+      "output": "runtime-static/V8Art/people/man-down.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1424
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-01",
+      "integration": "A"
+    },
+    {
+      "id": "man-up",
+      "source": "source/generated/man-up.png",
+      "output": "runtime-static/V8Art/people/man-up.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1412
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-01",
+      "integration": "A"
+    },
+    {
+      "id": "man-left",
+      "source": "source/generated/man-left.png",
+      "output": "runtime-static/V8Art/people/man-left.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1400
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-01",
+      "integration": "A"
+    },
+    {
+      "id": "man-right",
+      "source": "source/generated/man-right.png",
+      "output": "runtime-static/V8Art/people/man-right.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1400
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-01",
+      "integration": "A"
+    },
+    {
+      "id": "wheel",
+      "source": "source/generated/wheel-v2.png",
+      "output": "runtime-static/V8Art/tasks/wheel.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        623,
+        1160
+      ],
+      "scale": 0.18,
+      "kind": "sprite",
+      "worldWidth": 1.21,
+      "sourceId": "TS-03",
+      "integration": "A"
+    },
+    {
+      "id": "chair",
+      "source": "source/generated/chair-v2.png",
+      "output": "runtime-static/V8Art/tasks/chair.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.492,
+        0.055
+      ],
+      "sourceAnchorPx": [
+        627,
+        1187
+      ],
+      "scale": 0.205,
+      "kind": "sprite",
+      "worldWidth": 1.21,
+      "sourceId": "TO-03",
+      "integration": "A"
+    },
+    {
+      "id": "cloth",
+      "source": "source/generated/cloth.png",
+      "output": "runtime-static/V8Art/tasks/cloth.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        623,
+        1088
+      ],
+      "scale": 0.2,
+      "kind": "sprite",
+      "worldWidth": 1.54,
+      "sourceId": "TM-03",
+      "integration": "A"
+    },
+    {
+      "id": "asphalt",
+      "source": "source/generated/asphalt.png",
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-01",
+      "integration": "A"
+    },
+    {
+      "id": "leader-01",
+      "source": "source/generated/leader-01.png",
+      "output": "ui-source/portraits/leader-01.png",
+      "canvasPx": [
+        128,
+        128
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        618,
+        626
+      ],
+      "scale": 0.105,
+      "kind": "sprite",
+      "worldWidth": 0,
+      "sourceId": "TO-02",
+      "integration": "B"
+    },
+    {
+      "id": "windup-000",
+      "source": "source/generated/windup-000.png",
+      "output": "animation-source/crowd/rusher/windup/down/000.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1424
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-03",
+      "integration": "B"
+    },
+    {
+      "id": "windup-001",
+      "source": "source/generated/windup-001.png",
+      "output": "animation-source/crowd/rusher/windup/down/001.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1424
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-03",
+      "integration": "B"
+    },
+    {
+      "id": "windup-002",
+      "source": "source/generated/windup-002.png",
+      "output": "animation-source/crowd/rusher/windup/down/002.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1424
+      ],
+      "scale": 0.32,
+      "kind": "sprite",
+      "worldWidth": 1.05,
+      "sourceId": "NP-03",
+      "integration": "B"
+    }
+  ]
+}
