@@ -1,0 +1,31 @@
+Early Rush V12 final acceptance
+UTC: 2026-11-10T17:55:17.6059810Z
+Default deadline: 420 seconds; seed: 91026; population: 760 / 900 / 700; coffee <= 40.
+Evidence: full model/mechanism checks plus metro/office routes from V12-首次加密回放记录.txt; street routes from V12-街道最终复验.txt after a test-driver-only correction.
+The first full replay detected a stale flip solution in the bicycle input driver. The original failure is retained; game rules and crowd were not changed to obtain the follow-up result.
+
+Model/map: 956 checks passed
+Action mechanisms (controlled fixtures): 43 checks passed
+Independent pedestrian mechanisms: 9686 checks passed
+Player dash impact mechanisms: 25 checks passed
+Coffee pedestrian mechanisms: 312 checks passed
+Camera numeric regression: 6 checks passed
+Map seed=91026 stage=0: 1 checks passed
+Map seed=91026 stage=1: 1 checks passed
+Map seed=91026 stage=2: 1 checks passed
+
+Density stage=0 population=760 radius=8 denseMean=46.44 calmMean=3.30 samplePeak=70 taskWorkspaceActors=0 fixedHotspotViewportCounts=118/118/118/122
+Density stage=1 population=900 radius=8 denseMean=55.44 calmMean=4.40 samplePeak=81 taskWorkspaceActors=0 fixedHotspotViewportCounts=139/141/141/142
+Density stage=2 population=700 radius=8 denseMean=42.63 calmMean=3.75 samplePeak=66 taskWorkspaceActors=0 fixedHotspotViewportCounts=116/111/104/107
+
+mainline stage=0 seed=91026 success=True seconds=153.72 contacts=70 reason=Input replay finished; not human timing evidence
+all-tasks stage=0 seed=91026 success=True seconds=229.33 contacts=82 completed=3 states=Complete|Complete|Complete reason=Street input route finished; not timing acceptance
+mainline stage=1 seed=91026 success=True seconds=163.07 v11Seconds=172.35 deltaSeconds=-9.28 contacts=28 npcWindups=1 npcCharges=0 braceBlocks=0 cancelled=1 stopped=(-12.28, 319.00) reason=Input replay finished; not human timing evidence
+all-tasks stage=1 seed=91026 success=True seconds=223.88 v11Seconds=231.97 deltaSeconds=-8.09 contacts=39 npcWindups=1 npcCharges=0 braceBlocks=0 cancelled=1 completed=3 states=Complete|Complete|Complete stopped=(-12.29, 319.00) reason=All-task machine input route ended; inspect task states, not human timing acceptance
+mainline stage=2 seed=91026 success=True seconds=167.12 v11Seconds=168.28 deltaSeconds=-1.16 contacts=59 npcWindups=5 npcCharges=1 braceBlocks=1 cancelled=4 stopped=(0.73, 321.10) reason=Input replay finished; not human timing evidence
+all-tasks stage=2 seed=91026 success=True seconds=219.77 v11Seconds=228.15 deltaSeconds=-8.38 contacts=80 npcWindups=3 npcCharges=0 braceBlocks=0 cancelled=3 completed=3 states=Complete|Complete|Complete stopped=(0.71, 321.00) reason=All-task machine input route ended; inspect task states, not human timing acceptance
+
+Runtime Player: 40 checks passed, 0 errors; see V12-运行检查.json (actual generated populations and separate controlled action fixtures).
+60-second fixed-view density and flow: V12-高峰密度持续观察.txt; coffee follow-up: V12-咖啡人流持续观察.txt.
+Assertions include repeated checks over individual actors and map seeds; they are not independent test-case counts. Input replays prove these machine-driven routes only, not human difficulty or FPS.
+Passed: True

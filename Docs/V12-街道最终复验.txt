@@ -1,0 +1,6 @@
+Early Rush V12 street follow-up
+UTC: 2026-11-10T17:51:42.5185322Z
+Scope: focused stage=0 replay with default population and unchanged 420-second deadline. Other-stage evidence remains in validation.txt.
+mainline stage=0 seed=91026 success=True seconds=153.72 contacts=70 reason=Input replay finished; not human timing evidence
+all-tasks stage=0 seed=91026 success=True seconds=229.33 contacts=82 completed=3 states=Complete|Complete|Complete reason=Street input route finished; not timing acceptance
+Passed: True

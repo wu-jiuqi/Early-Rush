@@ -1,0 +1,26 @@
+Early Rush V12 validation
+UTC: 2026-11-10T17:40:57.4140055Z
+Scope: complete model, actions, independent pedestrian AI, camera and default-deadline input routes
+Default stage deadline: 420 seconds.
+Model/map: 956 checks passed
+Action mechanisms (controlled fixtures): 43 checks passed
+Independent pedestrian mechanisms: 9686 checks passed
+Player dash impact mechanisms: 25 checks passed
+Coffee pedestrian mechanisms: 312 checks passed
+Camera numeric regression: 6 checks passed
+Density stage=0 population=760 radius=8 denseMean=46.44 calmMean=3.30 samplePeak=70 taskWorkspaceActors=0 fixedHotspotViewportCounts=118/118/118/122
+Map seed=91026 stage=0: 1 checks passed
+mainline stage=0 seed=91026 success=True seconds=153.72 v11Seconds=166.72 deltaSeconds=-13.00 contacts=70 npcWindups=3 npcCharges=0 braceBlocks=0 cancelled=3 stopped=(3.75, 316.00) reason=Input replay finished; not human timing evidence
+all-tasks stage=0 seed=91026 success=False seconds=186.30 v11Seconds=207.38 deltaSeconds=-21.08 contacts=40 npcWindups=0 npcCharges=0 braceBlocks=0 cancelled=0 completed=2 states=Complete|Complete|Active stopped=(-38.02, 211.55) reason=Flip input route failed to solve
+Density stage=1 population=900 radius=8 denseMean=55.44 calmMean=4.40 samplePeak=81 taskWorkspaceActors=0 fixedHotspotViewportCounts=139/141/141/142
+Map seed=91026 stage=1: 1 checks passed
+mainline stage=1 seed=91026 success=True seconds=163.07 v11Seconds=172.35 deltaSeconds=-9.28 contacts=28 npcWindups=1 npcCharges=0 braceBlocks=0 cancelled=1 stopped=(-12.28, 319.00) reason=Input replay finished; not human timing evidence
+all-tasks stage=1 seed=91026 success=True seconds=223.88 v11Seconds=231.97 deltaSeconds=-8.09 contacts=39 npcWindups=1 npcCharges=0 braceBlocks=0 cancelled=1 completed=3 states=Complete|Complete|Complete stopped=(-12.29, 319.00) reason=All-task machine input route ended; inspect task states, not human timing acceptance
+Density stage=2 population=700 radius=8 denseMean=42.63 calmMean=3.75 samplePeak=66 taskWorkspaceActors=0 fixedHotspotViewportCounts=116/111/104/107
+Map seed=91026 stage=2: 1 checks passed
+mainline stage=2 seed=91026 success=True seconds=167.12 v11Seconds=168.28 deltaSeconds=-1.16 contacts=59 npcWindups=5 npcCharges=1 braceBlocks=1 cancelled=4 stopped=(0.73, 321.10) reason=Input replay finished; not human timing evidence
+all-tasks stage=2 seed=91026 success=True seconds=219.77 v11Seconds=228.15 deltaSeconds=-8.38 contacts=80 npcWindups=3 npcCharges=0 braceBlocks=0 cancelled=3 completed=3 states=Complete|Complete|Complete stopped=(0.71, 321.00) reason=All-task machine input route ended; inspect task states, not human timing acceptance
+V11 comparison source: Docs/V11-验证结果.txt, published values rounded to 0.01 seconds.
+Controlled fixtures verify individual mechanics. Input routes verify achievable machine-driven routes only; neither is human playtesting or a general human encounter-rate estimate. Reported action counts are observed within these machine-driven routes.
+Wall-clock seconds: 572.14
+Passed: False
