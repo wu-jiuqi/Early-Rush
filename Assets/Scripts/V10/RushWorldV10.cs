@@ -8,6 +8,8 @@ namespace EarlyRush.V10
     [Serializable] public sealed class ArtEntryV10
     {
         public string id,resourcePath,status;public float pivotX=.5f,pivotY=.1f;
+        // Optional Unity bottom-left pixel crop. Pivot is normalized within this crop; collision remains map-owned.
+        public float rectX,rectY,rectWidth,rectHeight;
     }
     [Serializable] public sealed class ArtManifestV10 {public ArtEntryV10[] entries;}
     /// <summary>Component composition only. Never uses a chapter concept image as gameplay ground.</summary>
@@ -30,9 +32,11 @@ namespace EarlyRush.V10
         {
             if(sprites.TryGetValue(key,out var found))return found;
             if(!entries.TryGetValue(key,out var entry))throw new InvalidOperationException("Unregistered V10 art: "+key);
-            if(entry.status=="pending")throw new InvalidOperationException("Pending generated art: "+key);
+            if(entry.status=="pending"||entry.status=="needs-rework")throw new InvalidOperationException("Pending generated art: "+key);
             var texture=Resources.Load<Texture2D>(entry.resourcePath);if(!texture)throw new InvalidOperationException("Missing bitmap "+entry.resourcePath);
-            var sprite=Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(entry.pivotX,entry.pivotY),100,0,SpriteMeshType.FullRect);
+            var rect=entry.rectWidth>0&&entry.rectHeight>0?new Rect(entry.rectX,entry.rectY,entry.rectWidth,entry.rectHeight):new Rect(0,0,texture.width,texture.height);
+            if(rect.xMin<0||rect.yMin<0||rect.xMax>texture.width||rect.yMax>texture.height)throw new InvalidOperationException("Invalid sprite crop: "+key);
+            var sprite=Sprite.Create(texture,rect,new Vector2(entry.pivotX,entry.pivotY),100,0,SpriteMeshType.FullRect);
             sprite.name=key;sprites.Add(key,sprite);owned.Add(sprite);return sprite;
         }
         public SpriteRenderer Place(string key,Vector2 contact,float width,int? layer=null)
@@ -45,7 +49,7 @@ namespace EarlyRush.V10
         Tile[] Material(string key)
         {
             if(tiles.TryGetValue(key,out var found))return found;
-            var texture=Resolve(key).texture;int w=texture.width/4,h=texture.height/4;var result=new Tile[16];
+            var texture=Resolve(key).texture;float w=texture.width/4f,h=texture.height/4f;var result=new Tile[16];
             for(int y=0;y<4;y++)for(int x=0;x<4;x++)
             {
                 var sprite=Sprite.Create(texture,new Rect(x*w,y*h,w,h),Vector2.one*.5f,w,0,SpriteMeshType.FullRect);owned.Add(sprite);
