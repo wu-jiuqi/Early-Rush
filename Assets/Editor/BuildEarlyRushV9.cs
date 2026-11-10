@@ -43,7 +43,10 @@ public static class BuildEarlyRushV9
         if(!all)throw new Exception("V9 all-task diagnostic failed: inspect per-stage results and actual input trace.");
     }
     [MenuItem("Early Rush/V9/Validate and Build Windows Review")]
-    public static void Build()
+    public static void Build(){BuildTo("Builds/EarlyRush-V9-Review");}
+    [MenuItem("Early Rush/V9/Build Separate Panorama Review")]
+    public static void BuildPanorama(){BuildTo("Builds/EarlyRush-V9-PanoramaReview");}
+    static void BuildTo(string destination)
     {
         Validate();
         foreach(string name in new[]{"Sprites/Default","Unlit/Texture","GUI/Text Shader"})
@@ -59,7 +62,7 @@ public static class BuildEarlyRushV9
         PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64,new[]{UnityEngine.Rendering.GraphicsDeviceType.Direct3D11});
         var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);new GameObject("Early Rush V9 Review").AddComponent<RushPlayV9>();
         Directory.CreateDirectory("Assets/Scenes");EditorSceneManager.SaveScene(scene,"Assets/Scenes/EarlyRushV9.unity");AssetDatabase.SaveAssets();
-        string output=Path.GetFullPath("Builds/EarlyRush-V9-Review/EarlyRush.exe");Directory.CreateDirectory(Path.GetDirectoryName(output));
+        string output=Path.GetFullPath(Path.Combine(destination,"EarlyRush.exe"));Directory.CreateDirectory(Path.GetDirectoryName(output));
         // Do not change the legacy V8 build-scene list. This invocation owns only its explicit V9 scene.
         var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/Scenes/EarlyRushV9.unity"},locationPathName=output,target=BuildTarget.StandaloneWindows64,options=BuildOptions.Development});
         Debug.Log("V9_BUILD_RESULT "+result.summary.result);

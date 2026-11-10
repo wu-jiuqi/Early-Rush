@@ -152,7 +152,12 @@ namespace EarlyRush.V9
         }
         static bool MoveTo(RunV9 run,Vector2 goal,double waypointBudget,out string reason)
         {
-            reason=null;var path=NavigationPath(run,goal);if(path==null){reason="No path to "+goal;return false;}
+            reason=null;var path=NavigationPath(run,goal);
+            // A moving crowd is not a disconnected map. Replan briefly rather than treating one
+            // occupancy snapshot as permanent topology; this consumes real simulation time.
+            for(int retry=0;path==null&&retry<8&&run.phase==RunPhase.Playing;retry++)
+            {run.Tick(.5f,Vector2.zero);path=NavigationPath(run,goal);}
+            if(path==null){reason="No navigation path to "+goal+" staticReachable="+(FindPath(run.map,run.player,goal)!=null)+" goalClear="+run.map.IsWalkable(goal,RunV9.PlayerRadius);return false;}
             foreach(var p in path)
             {
                 double start=run.elapsed;
@@ -191,9 +196,14 @@ namespace EarlyRush.V9
                     for(int i=0;i<25;i++)run.Tick(1f/60,Vector2.down);
                 }
                 if(!run.tasks[1].done)return EndReplay(run,result,"Capsule replay exhausted 30 real contact attempts");
-                if(!MoveTo(run,run.map.platform+new Vector2(-5,-1),20,out reason))return EndReplay(run,result,reason);
-                // Enter the normal waiting side within the registration radius, away from exit rays.
-                if(!MoveTo(run,run.map.platform+new Vector2(-3.3f,1),20,out reason))return EndReplay(run,result,reason);
+                // Register in the lower-left waiting area before the passenger fan reaches it.
+                // The old (-3.3,+1) direct route crossed the left passenger ray after doors opened.
+                if(!MoveTo(run,run.map.platform+new Vector2(-3,-2),20,out reason))return EndReplay(run,result,reason);
+                run.Tick(.5f,Vector2.zero);
+                // Move outside that fan first, then go up its left side. No diagonal crossing.
+                if(!MoveTo(run,run.map.platform+new Vector2(-4,-2),20,out reason))return EndReplay(run,result,reason);
+                if(!MoveTo(run,run.map.platform+new Vector2(-4,1),20,out reason))return EndReplay(run,result,reason);
+                if(!MoveTo(run,run.map.platform+new Vector2(-3.7f,.8f),20,out reason))return EndReplay(run,result,reason);
                 double began=run.elapsed;while(run.trainPhase!=TrainPhase.Boarding&&run.phase==RunPhase.Playing&&run.elapsed-began<40)run.Tick(1f/60,Vector2.zero);
                 if(run.trainPhase!=TrainPhase.Boarding)return EndReplay(run,result,"Train did not finish alighting");
                 if(!MoveTo(run,run.map.trainDoor,20,out reason))return EndReplay(run,result,reason);
@@ -269,7 +279,9 @@ namespace EarlyRush.V9
                 var cell=queue.Dequeue();if(cell==end)break;
                 foreach(var delta in directions)
                 {
-                    var next=cell+delta;if(previous.ContainsKey(next)||!map.IsWalkable(next,.55f))continue;
+                    var next=cell+delta;// Use the actual player footprint. A .55 clearance at integer centres removed
+                    // the usable outer row of every 7-wide lane, falsely sealing crowd passages.
+                    if(previous.ContainsKey(next)||!map.IsWalkable(next,RunV9.PlayerRadius+.01f))continue;
                     Vector2 p=next;bool blocked=false;
                     foreach(var f in run.fixtures)if((f.kind==FixtureKind.FlipBoard||f.kind==FixtureKind.Capsule)&&Vector2.Distance(p,f.position)<f.radius+RunV9.PlayerRadius+.1f)blocked=true;
                     foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(p,b.position)<b.radius+RunV9.PlayerRadius+.12f)blocked=true;

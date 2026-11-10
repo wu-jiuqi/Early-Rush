@@ -13,7 +13,7 @@ namespace EarlyRush.V9
         readonly List<SpriteRenderer> people=new List<SpriteRenderer>(), bodies=new List<SpriteRenderer>(), fixtures=new List<SpriteRenderer>(), dirt=new List<SpriteRenderer>(), decor=new List<SpriteRenderer>();
         readonly List<UnityEngine.Object> owned=new List<UnityEngine.Object>();
         readonly Dictionary<string,Tile[]> tileSets=new Dictionary<string,Tile[]>();
-        Vector3 cameraVelocity;Vector2 cameraAnchor;int seed=91026;bool fullMap,help,qa,recorded;int selected=-1;
+        Vector3 cameraVelocity;Vector2 cameraAnchor;int seed=91026;bool fullMap,help,qa,panorama,recorded;int selected=-1;
         Font font;GUIStyle label,small,title;Texture2D mapTexture;
         Rect mapBounds;Color ink=new Color(.08f,.23f,.25f),cream=new Color(.99f,.97f,.9f),gold=new Color(1,.8f,.2f);
         string[] names={"早高峰 · 街道","换乘 · 地铁","上班 · 公司"};
@@ -25,8 +25,9 @@ namespace EarlyRush.V9
             cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.39f,.6f,.53f);cam.nearClipPlane=.1f;cam.farClipPlane=80;
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
-            qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
-            if(qa){Application.runInBackground=true;StartCoroutine(CaptureReview());}
+            panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
+            qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
+            if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
         public void Load(int stage,int nextSeed)
         {
@@ -36,6 +37,37 @@ namespace EarlyRush.V9
             seed=nextSeed;selected=-1;recorded=false;run=new RunV9(stage,seed);BuildWorld();
             cameraAnchor=run.player;cameraVelocity=Vector3.zero;cam.transform.position=new Vector3(run.player.x,run.player.y,-30);
             Debug.Log("V9_PRESENTATION_READY stage="+stage+" cells="+run.map.cells.Count+" seed="+seed);
+        }
+        System.Collections.IEnumerator CapturePanoramas()
+        {
+            string output=System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath,"../QA/panoramas"));
+            System.IO.Directory.CreateDirectory(output);
+            System.IO.File.WriteAllText(System.IO.Path.Combine(output,"README.txt"),"Three complete chapter maps from the actual Unity BuildWorld scene and Camera.Render. World-only, no HUD. Static inspection, not gameplay evidence. Seed 91026. Uniform aspect ratio, no stretching; render size capped to device texture limit.");
+            for(int stage=0;stage<3;stage++)
+            {
+                Load(stage,91026);yield return null;yield return null;RenderFrame();
+                var bounds=new Bounds(new Vector3(mapBounds.center.x,mapBounds.center.y,0),new Vector3(mapBounds.width,mapBounds.height,1));
+                foreach(var renderer in world.GetComponentsInChildren<Renderer>())if(renderer.enabled)bounds.Encapsulate(renderer.bounds);
+                bounds.Expand(new Vector3(4,4,0));foreach(var sr in decor)if(sr)sr.color=Color.white;
+                int maximum=Mathf.Min(12000,SystemInfo.maxTextureSize);
+                float density=Mathf.Min(Mathf.Min(4000,maximum)/bounds.size.x,maximum/bounds.size.y);
+                int width=Mathf.Max(1,Mathf.FloorToInt(bounds.size.x*density)),height=Mathf.Max(1,Mathf.FloorToInt(bounds.size.y*density));
+                cam.aspect=width/(float)height;cam.orthographicSize=Mathf.Max(bounds.extents.y,bounds.extents.x/cam.aspect);
+                cam.transform.position=new Vector3(bounds.center.x,bounds.center.y,-30);
+                var rt=new RenderTexture(width,height,24){antiAliasing=1};var previous=RenderTexture.active;
+                var tex=new Texture2D(width,height,TextureFormat.RGB24,false);
+                try
+                {
+                    if(!rt.Create())throw new InvalidOperationException("Panorama RenderTexture creation failed "+width+"x"+height);
+                    cam.targetTexture=rt;cam.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,width,height),0,0);tex.Apply();
+                    System.IO.File.WriteAllBytes(System.IO.Path.Combine(output,"stage-"+stage+"-complete-map.png"),tex.EncodeToPNG());
+                    System.IO.File.WriteAllText(System.IO.Path.Combine(output,"layout-stage-"+stage+".json"),run.map.ToPreviewJson());
+                    Debug.Log("V9_PANORAMA stage="+stage+" size="+width+"x"+height+" bounds="+bounds);
+                }
+                finally{cam.targetTexture=null;RenderTexture.active=previous;rt.Release();Destroy(rt);Destroy(tex);}
+                yield return null;
+            }
+            Debug.Log("V9_PANORAMAS_COMPLETE "+output);Application.Quit();
         }
         System.Collections.IEnumerator CaptureReview()
         {
