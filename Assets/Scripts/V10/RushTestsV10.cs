@@ -32,7 +32,27 @@ namespace EarlyRush.V10
             var metro=new RunV10(1,42);metro.Begin();Vector2 cloth=metro.bodies[0].position;metro.Rescue(metro.bodies[0].id);
             Check(metro.bodies[0].position==cloth&&metro.tasks[2].count==0,"rescue cannot clean");
             ContactFixtures();
+            WallContactFixture();
             Debug.Log("V10_MODEL_ASSERTIONS count="+count);return count;
+        }
+        static void WallContactFixture()
+        {
+            // Isolated contact fixture, not traversal/timing evidence. Position setup is explicit.
+            var run=new RunV10(0,42);run.Begin();
+            Vector2 wall=Vector2.zero;bool found=false;
+            foreach(var cell in run.map.cells)
+            {
+                Vector2 p=cell;
+                if(run.map.IsWalkable(p,RunV10.PlayerRadius)&&!run.map.cells.Contains(cell+Vector2Int.right)
+                    &&run.map.IsWalkable(p-Vector2.right*2,RunV10.PlayerRadius)) {wall=p;found=true;break;}
+            }
+            Check(found,"wall contact fixture position exists");
+            run.people.Clear();run.bodies.Clear();run.fixtures.Clear();run.player=wall;
+            int contacts=run.bumps;run.Tick(.4f,Vector2.right);Check(run.bumps==contacts+1,"first wall impact counts");
+            run.Tick(.2f,Vector2.zero);run.Tick(.3f,Vector2.right);
+            Check(run.bumps==contacts+1,"near-wall stop/repress is same contact");
+            run.Tick(.6f,Vector2.left);run.Tick(.8f,Vector2.right);
+            Check(run.bumps==contacts+2,"leave clearance then hit wall counts again");
         }
         // Local mechanism fixtures may arrange the player near an interaction. These are NOT
         // traversal/timing evidence; task state and completion are still driven only by Tick events.
@@ -147,7 +167,7 @@ namespace EarlyRush.V10
                 foreach(var f in run.fixtures)if(f.kind==FixtureKind.FlipBoard&&(solution&(1<<f.index))!=0){chosen=f;break;}
                 if(chosen==null)break;
                 // Traverse below the entire bank, never diagonally between neighbouring boards.
-                Vector2 lane=new Vector2(run.player.x,chosen.position.y-4);
+                Vector2 lane=run.map.tasks[2].center-Vector2.up*4;
                 if(!MoveTo(run,lane,30,out reason)||!MoveTo(run,chosen.position-Vector2.up*4,30,out reason))return EndReplay(run,result,reason);
                 var before=(bool[])run.boards.Clone();double approach=run.elapsed;bool changed=false;
                 while(!changed&&run.elapsed-approach<3&&!run.tasks[2].done)
@@ -176,7 +196,7 @@ namespace EarlyRush.V10
             {
                 double start=run.elapsed;
                 while(Vector2.Distance(run.player,p)>.25f&&run.phase==RunPhase.Playing)
-                {run.Tick(1f/60,(p-run.player).normalized);if(run.elapsed-start>waypointBudget){reason="Blocked at "+run.player+" waypoint="+p;return false;}}
+                {run.Tick(1f/60,Vector2.ClampMagnitude((p-run.player)*2,1));if(run.elapsed-start>waypointBudget){reason="Blocked at "+run.player+" waypoint="+p;return false;}}
                 if(run.phase!=RunPhase.Playing)return run.success;
             }
             // Finish at the actual fractional-coordinate target, not its rounded grid cell.

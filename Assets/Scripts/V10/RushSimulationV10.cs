@@ -186,6 +186,19 @@ namespace EarlyRush.V10
         }
         bool StillNear(int id)
         {
+            // Wall contact uses the same physical separation hysteresis as bodies/fixtures.
+            // A single free integration substep while sliding around a corner is not a new hit.
+            if(id==-1)
+            {
+                float clearance=PlayerRadius+.08f;
+                if(!map.IsWalkable(player,clearance))return true;
+                foreach(var r in solids)
+                {
+                    Vector2 q=new Vector2(Mathf.Clamp(player.x,r.xMin,r.xMax),Mathf.Clamp(player.y,r.yMin,r.yMax));
+                    if(Vector2.Distance(player,q)<clearance)return true;
+                }
+                return false;
+            }
             foreach(var f in fixtures)if(f.id==id)return Vector2.Distance(player,f.position)<f.radius+PlayerRadius+.08f;
             foreach(var b in bodies)if(b.id==id)return Vector2.Distance(player,b.position)<b.radius+PlayerRadius+.08f;
             foreach(var c in people)if(c.id==id&&!c.exited)return Vector2.Distance(player,c.position)<c.radius+PlayerRadius+.08f;
