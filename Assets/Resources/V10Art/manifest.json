@@ -1,0 +1,1124 @@
+{
+  "entries": [
+    {
+      "id": "bike-feedback/bike-down",
+      "resourcePath": "V8Art/bike-feedback/bike-down",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/bike-left",
+      "resourcePath": "V8Art/bike-feedback/bike-left",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/bike-right",
+      "resourcePath": "V8Art/bike-feedback/bike-right",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/bike-up",
+      "resourcePath": "V8Art/bike-feedback/bike-up",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/brace",
+      "resourcePath": "V8Art/bike-feedback/brace",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/checkin",
+      "resourcePath": "V8Art/bike-feedback/checkin",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/hit",
+      "resourcePath": "V8Art/bike-feedback/hit",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "bike-feedback/recover",
+      "resourcePath": "V8Art/bike-feedback/recover",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "corrections/crosswalk-flat",
+      "resourcePath": "V8Art/corrections/crosswalk-flat",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "corrections/grab-pole-short",
+      "resourcePath": "V8Art/corrections/grab-pole-short",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "corrections/lamp-overhead",
+      "resourcePath": "V8Art/corrections/lamp-overhead",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "floors-v3/asphalt",
+      "resourcePath": "V8Art/floors-v3/asphalt",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "floors-v3/carpet",
+      "resourcePath": "V8Art/floors-v3/carpet",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "floors-v3/ceramic",
+      "resourcePath": "V8Art/floors-v3/ceramic",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/arrows",
+      "resourcePath": "V8Art/fx-decal/arrows",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/bike-rack",
+      "resourcePath": "V8Art/fx-decal/bike-rack",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/bin",
+      "resourcePath": "V8Art/fx-decal/bin",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/caution",
+      "resourcePath": "V8Art/fx-decal/caution",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/crosswalk",
+      "resourcePath": "V8Art/fx-decal/crosswalk",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/curb-corner",
+      "resourcePath": "V8Art/fx-decal/curb-corner",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/curb-h",
+      "resourcePath": "V8Art/fx-decal/curb-h",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/curb-v",
+      "resourcePath": "V8Art/fx-decal/curb-v",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/dust",
+      "resourcePath": "V8Art/fx-decal/dust",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/impact",
+      "resourcePath": "V8Art/fx-decal/impact",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/rain",
+      "resourcePath": "V8Art/fx-decal/rain",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/ripple",
+      "resourcePath": "V8Art/fx-decal/ripple",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/speed",
+      "resourcePath": "V8Art/fx-decal/speed",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/task-marker",
+      "resourcePath": "V8Art/fx-decal/task-marker",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/umbrella",
+      "resourcePath": "V8Art/fx-decal/umbrella",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "fx-decal/wall",
+      "resourcePath": "V8Art/fx-decal/wall",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-extras/breakfast",
+      "resourcePath": "V8Art/legacy-extras/breakfast",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-extras/check",
+      "resourcePath": "V8Art/legacy-extras/check",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-extras/coffee",
+      "resourcePath": "V8Art/legacy-extras/coffee",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-extras/parcel",
+      "resourcePath": "V8Art/legacy-extras/parcel",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-extras/star",
+      "resourcePath": "V8Art/legacy-extras/star",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-floors/floor-office",
+      "resourcePath": "V8Art/legacy-floors/floor-office",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-floors/floor-road",
+      "resourcePath": "V8Art/legacy-floors/floor-road",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-floors/floor-tile",
+      "resourcePath": "V8Art/legacy-floors/floor-tile",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/bike",
+      "resourcePath": "V8Art/legacy-icons/bike",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/clock",
+      "resourcePath": "V8Art/legacy-icons/clock",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/dash",
+      "resourcePath": "V8Art/legacy-icons/dash",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/escalator",
+      "resourcePath": "V8Art/legacy-icons/escalator",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/exit",
+      "resourcePath": "V8Art/legacy-icons/exit",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/home",
+      "resourcePath": "V8Art/legacy-icons/home",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/move",
+      "resourcePath": "V8Art/legacy-icons/move",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/pause",
+      "resourcePath": "V8Art/legacy-icons/pause",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/play",
+      "resourcePath": "V8Art/legacy-icons/play",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/rain",
+      "resourcePath": "V8Art/legacy-icons/rain",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/retry",
+      "resourcePath": "V8Art/legacy-icons/retry",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/shake",
+      "resourcePath": "V8Art/legacy-icons/shake",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/shield",
+      "resourcePath": "V8Art/legacy-icons/shield",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/sound",
+      "resourcePath": "V8Art/legacy-icons/sound",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/stairs",
+      "resourcePath": "V8Art/legacy-icons/stairs",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "legacy-icons/train",
+      "resourcePath": "V8Art/legacy-icons/train",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/carriage-bench",
+      "resourcePath": "V8Art/metro/carriage-bench",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/carriage-corner",
+      "resourcePath": "V8Art/metro/carriage-corner",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/connection-passage",
+      "resourcePath": "V8Art/metro/connection-passage",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/escalator",
+      "resourcePath": "V8Art/metro/escalator",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/exit-marker",
+      "resourcePath": "V8Art/metro/exit-marker",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/gate",
+      "resourcePath": "V8Art/metro/gate",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/grab-pole",
+      "resourcePath": "V8Art/metro/grab-pole",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/kiosk",
+      "resourcePath": "V8Art/metro/kiosk",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/pillar",
+      "resourcePath": "V8Art/metro/pillar",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/platform-bench",
+      "resourcePath": "V8Art/metro/platform-bench",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/stairs",
+      "resourcePath": "V8Art/metro/stairs",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/tactile-strip",
+      "resourcePath": "V8Art/metro/tactile-strip",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/train-closed",
+      "resourcePath": "V8Art/metro/train-closed",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/train-open",
+      "resourcePath": "V8Art/metro/train-open",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/vending",
+      "resourcePath": "V8Art/metro/vending",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "metro/window-wall",
+      "resourcePath": "V8Art/metro/window-wall",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/checkin",
+      "resourcePath": "V8Art/office/checkin",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/clock-mat",
+      "resourcePath": "V8Art/office/clock-mat",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/coffee-counter",
+      "resourcePath": "V8Art/office/coffee-counter",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/corner-partition",
+      "resourcePath": "V8Art/office/corner-partition",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/desk-chair",
+      "resourcePath": "V8Art/office/desk-chair",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/door-closed",
+      "resourcePath": "V8Art/office/door-closed",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/door-open",
+      "resourcePath": "V8Art/office/door-open",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/filing-cabinet",
+      "resourcePath": "V8Art/office/filing-cabinet",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/meeting-table",
+      "resourcePath": "V8Art/office/meeting-table",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/parcel-cart",
+      "resourcePath": "V8Art/office/parcel-cart",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/partition",
+      "resourcePath": "V8Art/office/partition",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/plant",
+      "resourcePath": "V8Art/office/plant",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/printer",
+      "resourcePath": "V8Art/office/printer",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/reception",
+      "resourcePath": "V8Art/office/reception",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "office/sofa",
+      "resourcePath": "V8Art/office/sofa",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/boy-down",
+      "resourcePath": "V8Art/people/boy-down",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/boy-left",
+      "resourcePath": "V8Art/people/boy-left",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/boy-right",
+      "resourcePath": "V8Art/people/boy-right",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/boy-up",
+      "resourcePath": "V8Art/people/boy-up",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/elder-down",
+      "resourcePath": "V8Art/people/elder-down",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/elder-left",
+      "resourcePath": "V8Art/people/elder-left",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/elder-right",
+      "resourcePath": "V8Art/people/elder-right",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/elder-up",
+      "resourcePath": "V8Art/people/elder-up",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/man-down",
+      "resourcePath": "V8Art/people/man-down",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/man-left",
+      "resourcePath": "V8Art/people/man-left",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/man-right",
+      "resourcePath": "V8Art/people/man-right",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/man-up",
+      "resourcePath": "V8Art/people/man-up",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/woman-down",
+      "resourcePath": "V8Art/people/woman-down",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/woman-left",
+      "resourcePath": "V8Art/people/woman-left",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/woman-right",
+      "resourcePath": "V8Art/people/woman-right",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "people/woman-up",
+      "resourcePath": "V8Art/people/woman-up",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "result/errands",
+      "resourcePath": "V8Art/result/errands",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "result/late",
+      "resourcePath": "V8Art/result/late",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "result/on-time",
+      "resourcePath": "V8Art/result/on-time",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "result/trophy",
+      "resourcePath": "V8Art/result/trophy",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "stalls/breakfast-stall",
+      "resourcePath": "V8Art/stalls/breakfast-stall",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "stalls/coffee-stall",
+      "resourcePath": "V8Art/stalls/coffee-stall",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "stalls/printer",
+      "resourcePath": "V8Art/stalls/printer",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "stalls/reception-desk",
+      "resourcePath": "V8Art/stalls/reception-desk",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/barrier",
+      "resourcePath": "V8Art/street/barrier",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/bench",
+      "resourcePath": "V8Art/street/bench",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/bicycle-rack",
+      "resourcePath": "V8Art/street/bicycle-rack",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/bike-parking-marker",
+      "resourcePath": "V8Art/street/bike-parking-marker",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/bollard",
+      "resourcePath": "V8Art/street/bollard",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/boxes",
+      "resourcePath": "V8Art/street/boxes",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/bush-planter",
+      "resourcePath": "V8Art/street/bush-planter",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/cone",
+      "resourcePath": "V8Art/street/cone",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/curb-corner",
+      "resourcePath": "V8Art/street/curb-corner",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/curb-horizontal",
+      "resourcePath": "V8Art/street/curb-horizontal",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/lamp",
+      "resourcePath": "V8Art/street/lamp",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/long-planter",
+      "resourcePath": "V8Art/street/long-planter",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/rail",
+      "resourcePath": "V8Art/street/rail",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/station-doorway",
+      "resourcePath": "V8Art/street/station-doorway",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/storefront",
+      "resourcePath": "V8Art/street/storefront",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "street/trash",
+      "resourcePath": "V8Art/street/trash",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "tasks/backpack",
+      "resourcePath": "V8Art/tasks/backpack",
+      "pivotX": 0.5,
+      "pivotY": 0.04,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "tasks/chair",
+      "resourcePath": "V8Art/tasks/chair",
+      "pivotX": 0.492,
+      "pivotY": 0.055,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/gold-disabled",
+      "resourcePath": "V8Art/ui/gold-disabled",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/gold-hover",
+      "resourcePath": "V8Art/ui/gold-hover",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/gold-normal",
+      "resourcePath": "V8Art/ui/gold-normal",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/gold-pressed",
+      "resourcePath": "V8Art/ui/gold-pressed",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/hud",
+      "resourcePath": "V8Art/ui/hud",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/panel",
+      "resourcePath": "V8Art/ui/panel",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/progress-empty",
+      "resourcePath": "V8Art/ui/progress-empty",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/progress-full",
+      "resourcePath": "V8Art/ui/progress-full",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/selection",
+      "resourcePath": "V8Art/ui/selection",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/speech",
+      "resourcePath": "V8Art/ui/speech",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/teal-disabled",
+      "resourcePath": "V8Art/ui/teal-disabled",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/teal-hover",
+      "resourcePath": "V8Art/ui/teal-hover",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/teal-normal",
+      "resourcePath": "V8Art/ui/teal-normal",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/teal-pressed",
+      "resourcePath": "V8Art/ui/teal-pressed",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/thought",
+      "resourcePath": "V8Art/ui/thought",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "ui/tooltip",
+      "resourcePath": "V8Art/ui/tooltip",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "asphalt",
+      "resourcePath": "V8Art/floors-v3/asphalt",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "tile",
+      "resourcePath": "V8Art/floors-v3/ceramic",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "carpet",
+      "resourcePath": "V8Art/floors-v3/carpet",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "legacy-reuse-not-v10-approved"
+    },
+    {
+      "id": "common/floor-cream-tile",
+      "resourcePath": "V10Art/common/floor-cream-tile",
+      "pivotX": 0.5,
+      "pivotY": 0.5,
+      "status": "pending"
+    },
+    {
+      "id": "street/floor-asphalt",
+      "resourcePath": "V10Art/street/floor-asphalt",
+      "pivotX": 0.5,
+      "pivotY": 0.5,
+      "status": "pending"
+    },
+    {
+      "id": "office/floor-bluegray-carpet",
+      "resourcePath": "V10Art/office/floor-bluegray-carpet",
+      "pivotX": 0.5,
+      "pivotY": 0.5,
+      "status": "pending"
+    },
+    {
+      "id": "metro/train-car-open",
+      "resourcePath": "V10Art/metro/train-car-open",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "metro/gate-bank",
+      "resourcePath": "V10Art/metro/gate-bank",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "metro/glass-divider",
+      "resourcePath": "V10Art/metro/glass-divider",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "office/glass-divider",
+      "resourcePath": "V10Art/office/glass-divider",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "office/storage-divider",
+      "resourcePath": "V10Art/office/storage-divider",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "street/breakfast-shop",
+      "resourcePath": "V10Art/street/breakfast-shop",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "street/repair-shop",
+      "resourcePath": "V10Art/street/repair-shop",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "street/flip-board",
+      "resourcePath": "V10Art/street/flip-board",
+      "pivotX": 0.5,
+      "pivotY": 0,
+      "status": "pending"
+    },
+    {
+      "id": "carriage",
+      "resourcePath": "V8Art/floors-v3/ceramic",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "temporary-explicit-alias-not-v10-approved"
+    },
+    {
+      "id": "street/planter",
+      "resourcePath": "V8Art/street/bush-planter",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "temporary-explicit-alias-not-v10-approved"
+    },
+    {
+      "id": "metro/bench",
+      "resourcePath": "V8Art/metro/platform-bench",
+      "pivotX": 0.5,
+      "pivotY": 0.1,
+      "status": "temporary-explicit-alias-not-v10-approved"
+    }
+  ]
+}
