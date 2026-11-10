@@ -22,8 +22,10 @@ namespace EarlyRush.V8
             value = Resources.Load<Texture2D>("V8Art/" + key);
             if (!value)
             {
-                if (missing.Add(key)) Debug.LogError("EARLY_RUSH_V8_MISSING_ART V8Art/" + key);
-                return null;
+                // A clean source checkout includes a complete, deterministic greybox fallback.
+                // Real Resources/V8Art textures always take precedence when artists add them.
+                if (missing.Add(key)) Debug.Log("EARLY_RUSH_PLACEHOLDER V8Art/" + key);
+                value = EarlyRush.V9.RushPlaceholderArt.Create(key);
             }
             textures[key] = value;
             return value;
