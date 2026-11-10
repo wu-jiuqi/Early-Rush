@@ -26,6 +26,22 @@ public static class BuildEarlyRushV9
         File.WriteAllText(Path.Combine(output,"model-route-validation.txt"),summary.ToString());
         if(!all)throw new Exception("V9 mainline input replay failed; inspect QA trace before build.");
     }
+    [MenuItem("Early Rush/V9/Replay All Tasks (Diagnostic)")]
+    public static void ReplayAllTasks()
+    {
+        string output=Path.GetFullPath("Builds/EarlyRush-V9-Review/QA/all-tasks");Directory.CreateDirectory(output);
+        var summary=new System.Text.StringBuilder("Pure input diagnostic replay. Relaxed stage deadline; not timing/balance acceptance.\n");bool all=true;
+        for(int stage=0;stage<3;stage++)
+        {
+            var result=RushTestsV9.ReplayAllTasks(stage,91026);
+            string line="stage="+stage+" success="+result.success+" completed="+result.completed+" elapsed="+result.elapsed+" stopped="+result.stoppedAt+" reason="+result.reason+" states="+string.Join("|",result.taskStates)+" scope="+result.validationScope;
+            summary.AppendLine(line);Debug.Log("V9_ALL_TASKS_REPLAY "+line);all&=result.success;
+            var trace=new System.Text.StringBuilder("time,type,id,x,y\n");foreach(var t in result.trace)trace.AppendLine(string.Join(",",t.time.ToString(System.Globalization.CultureInfo.InvariantCulture),t.type,t.id,t.position.x.ToString(System.Globalization.CultureInfo.InvariantCulture),t.position.y.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+            File.WriteAllText(Path.Combine(output,"stage-"+stage+".csv"),trace.ToString());
+        }
+        File.WriteAllText(Path.Combine(output,"results.txt"),summary.ToString());
+        if(!all)throw new Exception("V9 all-task diagnostic failed: inspect per-stage results and actual input trace.");
+    }
     [MenuItem("Early Rush/V9/Validate and Build Windows Review")]
     public static void Build()
     {

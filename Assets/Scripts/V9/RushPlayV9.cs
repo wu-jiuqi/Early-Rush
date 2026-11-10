@@ -21,7 +21,7 @@ namespace EarlyRush.V9
         void Awake()
         {
             Application.targetFrameRate=60;QualitySettings.vSyncCount=1;
-            cam=new GameObject("V9 Fixed North Camera").AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=10;
+            cam=new GameObject("V9 Fixed North Camera").AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=7.5f;
             cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.39f,.6f,.53f);cam.nearClipPlane=.1f;cam.farClipPlane=80;
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
@@ -109,7 +109,7 @@ namespace EarlyRush.V9
             var border=new HashSet<Vector2Int>();Vector2Int[] dirs={Vector2Int.up,Vector2Int.down,Vector2Int.left,Vector2Int.right};
             foreach(var c in run.map.cells)foreach(var d in dirs)if(!run.map.cells.Contains(c+d))for(int n=1;n<=8;n++)if(!run.map.cells.Contains(c+d*n))border.Add(c+d*n);
             LayTiles(grid,"Environment Tilemap",border,"floors-v3/ceramic",ArtV8.FloorOrder-1,run.stage==0?new Color(.92f,1,.93f):run.stage==1?new Color(.8f,.94f,.94f):new Color(.95f,.9f,.8f));
-            DressBorders();
+            DressBorders();DressTaskGround();
             if(run.stage==0)ArtV8.Create(world,"corrections/crosswalk-flat",run.map.signal,run.map.corridorWidth*.85f,ArtV8.GroundMarkOrder+1);
             for(float s=8;s<run.map.PathLength-4;s+=14)
             {
@@ -134,6 +134,34 @@ namespace EarlyRush.V9
             else train=null;
             hero=ArtV8.Create(world,run.stage==0?"bike-feedback/bike-up":"people/boy-up",run.player,run.stage==0?1.25f:1.05f);
             SyncEntities();CreateMapTexture();
+        }
+        void GroundDetail(string key,Vector2 position,float width,float rotation=0)
+        {
+            var sr=ArtV8.Create(world,key,position,width,ArtV8.GroundMarkOrder);
+            sr.transform.rotation=Quaternion.Euler(0,0,rotation);
+        }
+        void DressTaskGround()
+        {
+            // Flat environmental markings organize the task rooms. Physical furnishings are
+            // generated exclusively by map.structures so art and traversability share one source.
+            if(run.stage==0)
+            {
+                var breakfast=run.map.tasks[0].center;
+                for(int i=0;i<3;i++)GroundDetail("fx-decal/arrows",breakfast+new Vector2(0,-3-i*2),.65f);
+                var repair=run.map.tasks[1];GroundDetail("street/bike-parking-marker",repair.target+Vector2.down*2,3.5f);
+                for(int side=-1;side<=1;side+=2)GroundDetail("street/curb-horizontal",run.map.tasks[2].center+Vector2.up*side*3.5f,11);
+            }
+            else if(run.stage==1)
+            {
+                // Ordinary station architecture, not a hidden M1 task hint or warning.
+                for(int x=-6;x<=6;x+=3)GroundDetail("metro/tactile-strip",run.map.trainDoor+new Vector2(x,-2.3f),3);
+                for(int i=0;i<3;i++)GroundDetail("fx-decal/arrows",run.map.tasks[1].center+new Vector2(0,-3-i*2),.6f);
+            }
+            else
+            {
+                GroundDetail("office/clock-mat",run.map.tasks[0].center+Vector2.down*5,3);
+                GroundDetail("office/clock-mat",run.map.tasks[1].start+Vector2.down*2,2.6f);
+            }
         }
         void DressBorders()
         {

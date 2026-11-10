@@ -66,7 +66,7 @@ namespace EarlyRush.V9
         }
         public sealed class ReplayResult
         {
-            public bool success;public int stage,seed;public double elapsed;public int contacts;public Vector2 stoppedAt;public string reason;
+            public bool success;public int stage,seed,completed;public string[] taskStates;public string validationScope="machine-input mechanism replay, not human timing acceptance";public double elapsed;public int contacts;public Vector2 stoppedAt;public string reason;
             public readonly List<TelemetryV9> trace=new List<TelemetryV9>();
         }
         /// <summary>Follows generated cells via BFS, driving Tick at 60Hz. Never edits player/task/body state.
@@ -105,10 +105,10 @@ namespace EarlyRush.V9
             result.trace.AddRange(run.telemetry);return result;
         }
         /// <summary>Dedicated street mechanics route. Uses ordinary movement and push contact only.
-        /// High breakfast tolerance isolates the mechanics from navigation quality; not a balance test.</summary>
+        /// Normal task thresholds; only the stage deadline is relaxed. Not a balance acceptance test.</summary>
         public static ReplayResult ReplayStreetTasks(int seed)
         {
-            var run=new RunV9(0,seed,new ConfigV9 { stageLimit=1600,breakfastTolerance=1000 });run.Begin();
+            var run=new RunV9(0,seed,new ConfigV9 { stageLimit=1600 });run.Begin();
             var result=new ReplayResult{stage=0,seed=seed};
             if(!MoveTo(run,run.map.tasks[0].center,30,out string reason))return EndReplay(run,result,reason);
             for(int i=0;i<40;i++)run.Tick(1f/60,Vector2.zero);
@@ -151,7 +151,7 @@ namespace EarlyRush.V9
         }
         static bool MoveTo(RunV9 run,Vector2 goal,double waypointBudget,out string reason)
         {
-            reason=null;var path=FindPath(run.map,run.player,goal);if(path==null){reason="No path to "+goal;return false;}
+            reason=null;var path=NavigationPath(run,goal);if(path==null){reason="No path to "+goal;return false;}
             foreach(var p in path)
             {
                 double start=run.elapsed;
@@ -159,11 +159,129 @@ namespace EarlyRush.V9
                 {run.Tick(1f/60,(p-run.player).normalized);if(run.elapsed-start>waypointBudget){reason="Blocked at "+run.player+" waypoint="+p;return false;}}
                 if(run.phase!=RunPhase.Playing)return run.success;
             }
-            return true;
+            // Finish at the actual fractional-coordinate target, not its rounded grid cell.
+            double finalStart=run.elapsed;
+            while(Vector2.Distance(run.player,goal)>.08f&&run.phase==RunPhase.Playing)
+            {Vector2 delta=goal-run.player;run.Tick(1f/60,Vector2.ClampMagnitude(delta*2,1));if(run.elapsed-finalStart>5){reason="Precise approach blocked at "+run.player+" goal="+goal;return false;}}
+            run.Tick(.15f,Vector2.zero);return true;
         }
         static ReplayResult EndReplay(RunV9 run,ReplayResult result,string reason)
         {
+            result.completed=run.Completed;result.taskStates=new[]{run.tasks[0].state.ToString(),run.tasks[1].state.ToString(),run.tasks[2].state.ToString()};
             result.success=run.success&&run.Completed==3;result.elapsed=run.elapsed;result.contacts=run.bumps;result.stoppedAt=run.player;result.reason=reason;result.trace.AddRange(run.telemetry);return result;
+        }
+        public static ReplayResult ReplayAllTasks(int stage,int seed)
+        {
+            if(stage==0)return ReplayStreetTasks(seed);
+            // Only the overall deadline is relaxed for diagnosis. Mechanism thresholds and timers
+            // retain ConfigV9 defaults; neither task state nor positions are assigned by this replay.
+            var run=new RunV9(stage,seed,new ConfigV9 { stageLimit=1600 });run.Begin();
+            var result=new ReplayResult{stage=stage,seed=seed};string reason;
+            if(stage==1)
+            {
+                FixtureV9 machine=null;foreach(var f in run.fixtures)if(f.kind==FixtureKind.Capsule)machine=f;
+                for(int tries=0;tries<30&&!run.tasks[1].done;tries++)
+                {
+                    if(!MoveTo(run,machine.position-Vector2.up*1.6f,20,out reason))return EndReplay(run,result,reason);
+                    // Read the visible beat phase, wait for a fresh safe approach window, then touch.
+                    double waitStart=run.elapsed;
+                    while((run.BeatPhase<.28f||run.BeatPhase>.32f)&&run.elapsed-waitStart<3)run.Tick(1f/60,Vector2.zero);
+                    for(int i=0;i<30;i++)run.Tick(1f/60,Vector2.up);
+                    for(int i=0;i<25;i++)run.Tick(1f/60,Vector2.down);
+                }
+                if(!run.tasks[1].done)return EndReplay(run,result,"Capsule replay exhausted 30 real contact attempts");
+                if(!MoveTo(run,run.map.platform+new Vector2(-5,-1),20,out reason))return EndReplay(run,result,reason);
+                // Enter the normal waiting side within the registration radius, away from exit rays.
+                if(!MoveTo(run,run.map.platform+new Vector2(-3.3f,1),20,out reason))return EndReplay(run,result,reason);
+                double began=run.elapsed;while(run.trainPhase!=TrainPhase.Boarding&&run.phase==RunPhase.Playing&&run.elapsed-began<40)run.Tick(1f/60,Vector2.zero);
+                if(run.trainPhase!=TrainPhase.Boarding)return EndReplay(run,result,"Train did not finish alighting");
+                if(!MoveTo(run,run.map.trainDoor,20,out reason))return EndReplay(run,result,reason);
+                for(int i=0;i<90;i++)run.Tick(1f/60,Vector2.zero);
+                if(!run.tasks[0].done)return EndReplay(run,result,"Waiting/boarding task failed on actual passenger contact or registration");
+                BodyV9 cloth=run.bodies[0];Vector2 center=run.map.tasks[2].center;
+                Vector2[] sweep={center+new Vector2(-4,-.3f),center+new Vector2(4,-.3f),center+new Vector2(4,.3f),center+new Vector2(-4,.3f)};
+                foreach(var target in sweep)if(!PushTo(run,cloth,target,.12f,90,out reason))return EndReplay(run,result,reason);
+                // Chase any unclean effective-area cells left by imperfect physical steering.
+                for(int pass=0;pass<12&&!run.tasks[2].done;pass++)
+                {
+                    DirtV9 remaining=null;float nearest=float.MaxValue;
+                    foreach(var patch in run.dirt)if(!patch.cleaned&&Vector2.Distance(patch.position,cloth.position)<nearest){remaining=patch;nearest=Vector2.Distance(patch.position,cloth.position);}
+                    if(remaining!=null&&!PushTo(run,cloth,remaining.position,.12f,45,out reason))return EndReplay(run,result,reason);
+                }
+                if(!run.tasks[2].done)return EndReplay(run,result,"Cloth sweep still has unclean cells="+(run.tasks[2].limit-run.tasks[2].count));
+            }
+            else
+            {
+                if(!MoveTo(run,run.map.tasks[1].start,20,out reason))return EndReplay(run,result,reason);
+                run.Tick(.5f,Vector2.zero);
+                foreach(var desk in run.fixtures)if(desk.kind==FixtureKind.FileDesk)
+                {if(!MoveTo(run,desk.position,20,out reason))return EndReplay(run,result,reason);run.Tick(.5f,Vector2.zero);}
+                if(!run.tasks[1].done)return EndReplay(run,result,"File delivery failed/timed out using actual movement");
+                // Clear front row first, matching the far sockets so later chairs retain access.
+                var order=new List<BodyV9>(run.bodies);order.Sort((a,b)=>b.position.y.CompareTo(a.position.y));
+                foreach(var chair in order)
+                {
+                    FixtureV9 selected=null;float best=float.MaxValue;
+                    foreach(var socket in run.fixtures)if(socket.kind==FixtureKind.ChairSocket&&!socket.occupied)
+                    {
+                        float score=Mathf.Abs(socket.position.x-chair.position.x)*20-socket.position.y;
+                        if(score<best){best=score;selected=socket;}
+                    }
+                    if(selected==null)return EndReplay(run,result,"No free chair socket");
+                    if(!PushTo(run,chair,selected.position,.3f,90,out reason))return EndReplay(run,result,reason);
+                    run.Tick(.6f,Vector2.zero);
+                    if(!chair.done)return EndReplay(run,result,"Chair did not stabilize in free socket id="+chair.id);
+                }
+                if(!run.tasks[2].done)return EndReplay(run,result,"Chairs incomplete");
+            }
+            if(!MoveTo(run,run.map.exit,20,out reason))return EndReplay(run,result,reason);
+            return EndReplay(run,result,"All-task machine input route ended; inspect task states, not human timing acceptance");
+        }
+        static bool PushTo(RunV9 run,BodyV9 body,Vector2 target,float tolerance,double seconds,out string reason)
+        {
+            reason=null;double start=run.elapsed;Vector2 previous=body.position;double progressAt=run.elapsed;
+            while(!body.done&&Vector2.Distance(body.position,target)>tolerance&&run.phase==RunPhase.Playing)
+            {
+                Vector2 direction=(target-body.position).normalized;
+                Vector2 behind=body.position-direction*(body.radius+RunV9.PlayerRadius+.45f);
+                if(!MoveTo(run,behind,15,out reason))return false;
+                for(int i=0;i<120&&!body.done&&Vector2.Distance(body.position,target)>tolerance;i++)
+                {
+                    direction=(target-body.position).normalized;Vector2 fromBody=run.player-body.position;
+                    if(Vector2.Dot(fromBody,direction)>.05f)break;
+                    Vector2 lateral=fromBody-direction*Vector2.Dot(fromBody,direction);
+                    if(lateral.magnitude>.65f)break;
+                    run.Tick(1f/60,Vector2.ClampMagnitude(direction*Mathf.Clamp(Vector2.Distance(body.position,target)*2,.15f,1)-lateral*1.5f,1));
+                }
+                if(Vector2.Distance(previous,body.position)>.1f){previous=body.position;progressAt=run.elapsed;}
+                if(run.elapsed-start>seconds||run.elapsed-progressAt>15){reason="Push stalled id="+body.id+" at="+body.position+" target="+target;return false;}
+            }
+            run.Tick(.15f,Vector2.zero);return run.phase==RunPhase.Playing||run.success;
+        }
+        static List<Vector2> NavigationPath(RunV9 run,Vector2 goal)
+        {
+            var map=run.map;Vector2Int root=MapData.Cell(run.player),end=MapData.Cell(goal);
+            var queue=new Queue<Vector2Int>();var previous=new Dictionary<Vector2Int,Vector2Int>();queue.Enqueue(root);previous[root]=root;
+            Vector2Int[] directions={Vector2Int.up,Vector2Int.right,Vector2Int.down,Vector2Int.left};
+            while(queue.Count>0)
+            {
+                var cell=queue.Dequeue();if(cell==end)break;
+                foreach(var delta in directions)
+                {
+                    var next=cell+delta;if(previous.ContainsKey(next)||!map.IsWalkable(next,.55f))continue;
+                    Vector2 p=next;bool blocked=false;
+                    foreach(var f in run.fixtures)if((f.kind==FixtureKind.FlipBoard||f.kind==FixtureKind.Capsule)&&Vector2.Distance(p,f.position)<f.radius+RunV9.PlayerRadius+.1f)blocked=true;
+                    foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(p,b.position)<b.radius+RunV9.PlayerRadius+.12f)blocked=true;
+                    foreach(var c in run.people)
+                    {
+                        if(c.kind==PersonKind.Coffee&&!c.spilled&&Vector2.Distance(p,c.home)<2)blocked=true;
+                        if(run.stage==0&&run.tasks[0].state==TaskState.Active&&Vector2.Distance(p,c.position)<1.25f)blocked=true;
+                    }
+                    if(blocked&&next!=end)continue;previous[next]=cell;queue.Enqueue(next);
+                }
+            }
+            if(!previous.ContainsKey(end))return null;
+            var result=new List<Vector2>();for(var at=end;at!=root;at=previous[at])result.Add(at);result.Reverse();return result;
         }
         public static List<Vector2> FindPath(MapData map,Vector2 start,Vector2 goal)
         {
