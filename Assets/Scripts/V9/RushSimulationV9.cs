@@ -4,7 +4,7 @@ using UnityEngine;
 namespace EarlyRush.V9
 {
     /// <summary>Input-driven simulation. No Unity objects, frame clock, rewards or renderer writes.</summary>
-    public sealed class RunV9
+    public sealed partial class RunV9
     {
         public const float PlayerRadius=.46f;
         public readonly int stage,seed;public readonly ConfigV9 config;public readonly MapData map;
@@ -34,7 +34,7 @@ namespace EarlyRush.V9
         {
             this.stage=stage;this.seed=seed;this.config=config??new ConfigV9();
             if(stage<0||stage>2||this.config.fileCount>5||this.config.chairCount>6||!Positive(this.config.breakfastGameMinutes)||!Positive(this.config.gameMinutesPerRealSecond)||!Positive(this.config.deliveryDuration)||!Positive(this.config.greenDuration)||!Positive(this.config.redDuration)||!Positive(this.config.stageLimit)||!Positive(this.config.walkSpeed)||!Positive(this.config.bikeSpeed)||this.config.bikeSpeed<=this.config.walkSpeed||!Positive(this.config.beatPeriod)||!Positive(this.config.beatWindow)||this.config.beatWindow>this.config.beatPeriod||!Positive(this.config.stableDuration)||!Positive(this.config.stableSpeed)||this.config.capsuleGoal<1||this.config.capsulePenalty<0||this.config.breakfastTolerance<0||this.config.coffeeTolerance<0||this.config.fileCount<1||this.config.chairCount<1)throw new ArgumentException("Invalid V9 configuration");
-            map=RushMapV9.Create(stage,seed);player=map.spawn;Setup();
+            ValidateActionConfiguration();map=RushMapV9.Create(stage,seed);player=map.spawn;Setup();
         }
         static bool Positive(double value)=>value>0&&!double.IsNaN(value)&&!double.IsInfinity(value);
         void Setup()
@@ -74,18 +74,16 @@ namespace EarlyRush.V9
                     AddBody(BodyKind.Chair,p-Vector2.up*4,"tasks/chair");
                 }
             }
-            // Crossings have safe sides. Special passengers are spawned only by the train lifecycle.
-            for(float s=18;s<map.PathLength-15;s+=11)
-            {
-                Vector2 p=map.PointAtDistance(s);bool reserved=false;
-                foreach(var t in map.tasks)if(Vector2.Distance(p,t.center)<12)reserved=true;
-                if(stage==1&&Vector2.Distance(p,map.platform)<20)reserved=true;
-                if(!reserved)for(int j=0;j<3;j++)AddPerson(p+Vector2.right*(j-1)*1.6f,stage==2&&((int)s+j)%4==0?PersonKind.Coffee:PersonKind.Ordinary);
-            }
+            SetupCrowd();
         }
         void AddFixture(FixtureKind kind,Vector2 p,string art,int index=0){fixtures.Add(new FixtureV9{id=1000+fixtures.Count,index=index,kind=kind,position=p,art=art});}
         void AddBody(BodyKind kind,Vector2 p,string art){bodies.Add(new BodyV9{id=2000+bodies.Count,kind=kind,position=p,home=p,art=art,radius=kind==BodyKind.Cloth?.7f:.55f});}
-        void AddPerson(Vector2 p,PersonKind kind){if(map.IsWalkable(p,.5f))people.Add(new PersonV9{id=3000+people.Count,kind=kind,position=p,home=p,target=p,art=kind==PersonKind.Coffee?"people/woman":"people/man"});}
+        PersonV9 AddPerson(Vector2 p,PersonKind kind)
+        {
+            if(!map.IsWalkable(p,.5f))return null;
+            var person=new PersonV9{id=3000+people.Count,kind=kind,position=p,home=p,target=p,art=kind==PersonKind.Coffee?"people/woman":"people/man"};
+            people.Add(person);return person;
+        }
         void Log(string type,int id=-1){telemetry.Add(new TelemetryV9{time=elapsed,type=type,id=id,position=player});}
         void Cue(string kind){Log(kind);onCue?.Invoke(kind);}
         public void Begin(){if(phase==RunPhase.Ready){phase=RunPhase.Playing;Log("begin");}}
@@ -114,8 +112,6 @@ namespace EarlyRush.V9
             }
             return p;
         }
-        // Kept for old replay callers. V3 commuting has walking and earned cycling only.
-        public bool TryDash()=>false;
         public void Tick(float dt,Vector2 input)
         {
             if(phase!=RunPhase.Playing||dt<=0||float.IsNaN(dt)||float.IsInfinity(dt)||float.IsNaN(input.x)||float.IsNaN(input.y)||float.IsInfinity(input.x)||float.IsInfinity(input.y))return;
@@ -138,7 +134,7 @@ namespace EarlyRush.V9
             elapsed=Math.Min(limit,elapsed+dt);currentContacts.Clear();boost=0;energy=1;
             UpdateCapsuleProximity();
             if(input.sqrMagnitude>.001f)facing=input.normalized;
-            velocity=Vector2.MoveTowards(velocity,input*(bicycle?config.bikeSpeed:config.walkSpeed),dt*(bicycle?12:20));
+            StepPlayerActions(dt,input);
             Vector2 desired=player+velocity*dt,next=Resolve(player,velocity*dt,PlayerRadius);
             if(Vector2.Distance(desired,next)>.0001f)Contact(-1);
             if(stage==0)
@@ -170,8 +166,8 @@ namespace EarlyRush.V9
                 if(c.exited)continue;Vector2 d=c.position-next;float radius=c.radius+PlayerRadius;
                 if(d.sqrMagnitude<radius*radius)
                 {
-                    Contact(c.id);Vector2 n=d.sqrMagnitude>.00001f?d.normalized:facing;
-                    c.position=Resolve(c.position,n*(radius-d.magnitude+.01f),c.radius);
+                    Contact(c.id);HandleNpcActionContact(c);Vector2 n=d.sqrMagnitude>.00001f?d.normalized:facing;
+                    c.position=c.kind==PersonKind.Alighting?Resolve(c.position,n*(radius-d.magnitude+.01f),c.radius):MoveCrowdPerson(c,n*(radius-d.magnitude+.01f));
                     if(Vector2.Distance(c.position,next)<radius-.02f)next=player;
                 }
             }
@@ -309,14 +305,7 @@ namespace EarlyRush.V9
         float GetHold(int id)=>deskHold.TryGetValue(id,out float value)?value:0;
         void UpdatePeople(float dt)
         {
-            foreach(var c in people)
-            {
-                if(c.exited)continue;
-                Vector2 target=c.kind==PersonKind.Alighting?c.target:c.home+new Vector2(Mathf.Sin((float)elapsed*.35f+c.id),Mathf.Cos((float)elapsed*.24f+c.id))*.8f;
-                Vector2 old=c.position;c.position=Resolve(c.position,Vector2.ClampMagnitude(target-c.position,c.kind==PersonKind.Alighting?1.6f:.7f)*dt,c.radius);c.velocity=(c.position-old)/Mathf.Max(dt,.000001f);
-                if(!c.exited&&Vector2.Distance(c.position,player)<c.radius+PlayerRadius)Contact(c.id);
-                if(c.kind==PersonKind.Alighting&&Vector2.Distance(c.position,c.target)<.3f)c.exited=true;
-            }
+            UpdateCrowdPeople(dt);
         }
         void UpdateTrain(float dt)
         {
@@ -329,7 +318,12 @@ namespace EarlyRush.V9
                 if(trainApproaching&&elapsed-trainStarted>=3)
                 {
                     trainPhase=TrainPhase.Alighting;trainStarted=elapsed;if(waitingRegistered)SetState(0,TaskState.Active);
-                    for(int i=0;i<6;i++){AddPerson(map.trainDoor+new Vector2((i%2-.5f)*1.1f,-i/2f),PersonKind.Alighting);var c=people[people.Count-1];c.target=map.platform+new Vector2((i%2==0?-1:1)*4,-4);}
+                    for(int i=0;i<6;i++)
+                    {
+                        var c=AddPerson(map.trainDoor+new Vector2((i%2-.5f)*1.1f,-i/2f),PersonKind.Alighting);
+                        if(c!=null)c.target=map.platform+new Vector2((i%2==0?-1:1)*4,-4);
+                        else Log("invalid-alighting-spawn",i);
+                    }
                     Log("train-open");
                 }
             }

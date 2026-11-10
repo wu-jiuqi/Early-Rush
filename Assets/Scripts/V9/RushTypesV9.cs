@@ -9,7 +9,7 @@ namespace EarlyRush.V9
     public enum PersonKind { Ordinary, Alighting, Coffee }
     public enum FixtureKind { Breakfast, Repair, FlipBoard, Capsule, FilePickup, FileDesk, ChairSocket }
     public enum TrainPhase { Waiting, Alighting, Boarding, Riding, Arrived }
-    [Serializable] public sealed class ConfigV9
+    [Serializable] public sealed partial class ConfigV9
     {
         // V3 design starting values; route timing still needs human playtesting.
         public double stageLimit=420, deliveryDuration=200;
@@ -31,7 +31,7 @@ namespace EarlyRush.V9
         public int id;public BodyKind kind;public Vector2 position,home,velocity;public float radius=.55f,pushed,stable;
         public bool touched,done;public int socket=-1;public string art;
     }
-    public sealed class PersonV9
+    public sealed partial class PersonV9
     {
         public int id;public PersonKind kind;public Vector2 position,home,target,velocity;public float radius=.45f;
         public bool spilled,exited;public string art="people/man";

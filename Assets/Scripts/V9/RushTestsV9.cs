@@ -41,7 +41,7 @@ namespace EarlyRush.V9
             Check(config.stageLimit==420,"v3 seven-minute stage limit");
             Check(Math.Abs(config.breakfastDuration-70)<1e-8,"game minutes convert to real seconds");
             config.breakfastDuration=40;Check(Math.Abs(config.breakfastGameMinutes-2)<1e-8,"legacy duration setter preserves game clock units");
-            var walk=new RunV9(0,42);walk.Begin();Check(!walk.TryDash(),"commute has no dash");walk.Tick(.5f,Vector2.up);
+            var walk=new RunV9(0,42);Check(!walk.TryDash(),"ready phase cannot dash");walk.Begin();walk.Tick(.5f,Vector2.up);
             Check(walk.velocity.magnitude<=walk.config.walkSpeed+.001f,"walking speed bounded");
             var deadline=new RunV9(0,42,new ConfigV9{stageLimit=.01});deadline.Begin();
             deadline.player=deadline.map.exit-Vector2.up*1.32f;deadline.velocity=Vector2.up*deadline.config.walkSpeed;deadline.Tick(.1f,Vector2.up);
@@ -160,19 +160,8 @@ namespace EarlyRush.V9
             goals.Add(run.map.exit);
             foreach(var goal in goals)
             {
-                var path=FindPath(run.map,run.player,goal);
-                if(path==null){result.reason="No clearance path";break;}
-                foreach(var point in path)
-                {
-                    double start=run.elapsed;Vector2 origin=run.player;
-                    while(Vector2.Distance(run.player,point)>.25f&&run.phase==RunPhase.Playing)
-                    {
-                        run.Tick(1f/60,(point-run.player).normalized);
-                        if(run.elapsed-start>20){result.reason="Waypoint blocked: "+point+" origin="+origin;break;}
-                    }
-                    if(result.reason!=null||run.phase!=RunPhase.Playing)break;
-                }
-                if(result.reason!=null||run.phase!=RunPhase.Playing)break;
+                if(!MoveTo(run,goal,20,out string navigationReason)){result.reason=navigationReason;break;}
+                if(run.phase!=RunPhase.Playing)break;
                 if(stage==1&&goal==goals[0])
                 {
                     double wait=run.elapsed;while(run.trainPhase!=TrainPhase.Boarding&&run.phase==RunPhase.Playing&&run.elapsed-wait<40)run.Tick(1f/60,Vector2.zero);
@@ -231,32 +220,61 @@ namespace EarlyRush.V9
             if(!MoveTo(run,run.map.exit,30,out reason))return EndReplay(run,result,reason);
             return EndReplay(run,result,"Street input route finished; not timing acceptance");
         }
+        static bool CrowdRisk(RunV9 run,PersonV9 person)
+        {
+            return !person.exited&&((person.kind==PersonKind.Coffee&&!person.spilled)||person.kind==PersonKind.Alighting||
+                (run.stage==0&&run.tasks[0].state==TaskState.Active));
+        }
+        static void NavigationTick(RunV9 run,Vector2 input)
+        {
+            // React only to a currently visible tell. This is the same Shift input as human play.
+            bool brace=false;
+            foreach(var person in run.people)
+            {
+                if(person.exited||person.kind==PersonKind.Alighting||
+                    (person.actionPhase!=NpcActionPhase.Windup&&person.actionPhase!=NpcActionPhase.Charging)||
+                    Vector2.Distance(person.position,run.player)>10)continue;
+                Vector2 delta=person.position-run.player;bool visible=true;
+                for(float distance=.5f;distance<delta.magnitude;distance+=.5f)
+                    if(!run.map.IsWalkable(run.player+delta.normalized*distance,.05f)){visible=false;break;}
+                if(visible){brace=true;break;}
+            }
+            run.SetBracing(brace);run.Tick(1f/60,input);
+        }
         static bool MoveTo(RunV9 run,Vector2 goal,double waypointBudget,out string reason)
         {
-            reason=null;var path=NavigationPath(run,goal);
-            // A moving crowd is not a disconnected map. Replan briefly rather than treating one
-            // occupancy snapshot as permanent topology; this consumes real simulation time.
-            for(int retry=0;path==null&&retry<8&&run.phase==RunPhase.Playing;retry++)
-            {run.Tick(.5f,Vector2.zero);path=NavigationPath(run,goal);}
-            if(path==null){reason="No navigation path to "+goal+" staticReachable="+(FindPath(run.map,run.player,goal)!=null)+" goalClear="+run.map.IsWalkable(goal,RunV9.PlayerRadius);return false;}
-            foreach(var p in path)
+            reason=null;List<Vector2> path=null;int pointIndex=0;
+            double replanAt=run.elapsed,progressAt=run.elapsed;Vector2 progressPosition=run.player;
+            while(Vector2.Distance(run.player,goal)>.35f&&run.phase==RunPhase.Playing)
             {
-                double start=run.elapsed;
-                while(Vector2.Distance(run.player,p)>.25f&&run.phase==RunPhase.Playing)
-                {run.Tick(1f/60,(p-run.player).normalized);if(run.elapsed-start>waypointBudget){reason="Blocked at "+run.player+" waypoint="+p;return false;}}
-                if(run.phase!=RunPhase.Playing)return run.success;
+                if(path==null||pointIndex>=path.Count||run.elapsed>=replanAt)
+                {
+                    path=NavigationPath(run,goal);pointIndex=0;replanAt=run.elapsed+1;
+                    if(path==null)
+                    {
+                        // A moving body is not a disconnected map. Wait briefly using real simulation time.
+                        for(int wait=0;wait<15&&run.phase==RunPhase.Playing;wait++)NavigationTick(run,Vector2.zero);
+                        if(run.elapsed-progressAt>waypointBudget){reason="No dynamic clearance to "+goal+" at "+run.player;return false;}
+                        continue;
+                    }
+                    if(path.Count==0)break; // Same grid cell: finish the fractional approach below.
+                }
+                while(pointIndex<path.Count&&Vector2.Distance(run.player,path[pointIndex])<=.25f)pointIndex++;
+                if(pointIndex>=path.Count){path=null;continue;}
+                Vector2 point=path[pointIndex];NavigationTick(run,(point-run.player).normalized);
+                if(Vector2.Distance(run.player,progressPosition)>.4f){progressPosition=run.player;progressAt=run.elapsed;}
+                if(run.elapsed-progressAt>waypointBudget){reason="Blocked at "+run.player+" waypoint="+point;return false;}
             }
-            // Finish at the actual fractional-coordinate target, not its rounded grid cell.
+            if(run.phase!=RunPhase.Playing)return run.success;
+            // Fractional target and bicycle braking are handled by physical input, never assignment.
             double finalStart=run.elapsed;
             while((Vector2.Distance(run.player,goal)>.06f||run.velocity.magnitude>.12f)&&run.phase==RunPhase.Playing)
             {
-                // Braking is physical, especially on the bicycle. Merely crossing the target
-                // radius leaves lateral velocity that can hit the neighbouring flip board.
                 Vector2 delta=goal-run.player;float speed=run.bicycle?run.config.bikeSpeed:run.config.walkSpeed;
-                run.Tick(1f/60,Vector2.ClampMagnitude((delta*3-run.velocity*.8f)/speed,1));
+                NavigationTick(run,Vector2.ClampMagnitude((delta*3-run.velocity*.8f)/speed,1));
                 if(run.elapsed-finalStart>10){reason="Precise approach blocked at "+run.player+" goal="+goal;return false;}
             }
-            run.Tick(.15f,Vector2.zero);return true;
+            run.SetBracing(false);run.Tick(.15f,Vector2.zero);return run.phase==RunPhase.Playing||run.success;
         }
         static ReplayResult EndReplay(RunV9 run,ReplayResult result,string reason)
         {
@@ -273,14 +291,14 @@ namespace EarlyRush.V9
             if(stage==1)
             {
                 FixtureV9 machine=null;foreach(var f in run.fixtures)if(f.kind==FixtureKind.Capsule)machine=f;
-                for(int tries=0;tries<30&&!run.tasks[1].done;tries++)
+                for(int tries=0;tries<30&&!run.tasks[1].done&&run.phase==RunPhase.Playing;tries++)
                 {
                     if(!MoveTo(run,machine.position-Vector2.up*1.6f,20,out reason))return EndReplay(run,result,reason);
                     // Read the visible beat phase, wait for a fresh safe approach window, then touch.
                     double waitStart=run.elapsed;
-                    while((run.BeatPhase<.28f||run.BeatPhase>.32f)&&run.elapsed-waitStart<3)run.Tick(1f/60,Vector2.zero);
-                    for(int i=0;i<30;i++)run.Tick(1f/60,Vector2.up);
-                    for(int i=0;i<25;i++)run.Tick(1f/60,Vector2.down);
+                    while((run.BeatPhase<.28f||run.BeatPhase>.32f)&&run.elapsed-waitStart<3&&run.phase==RunPhase.Playing)run.Tick(1f/60,Vector2.zero);
+                    for(int i=0;i<30&&run.phase==RunPhase.Playing;i++)run.Tick(1f/60,Vector2.up);
+                    for(int i=0;i<25&&run.phase==RunPhase.Playing;i++)run.Tick(1f/60,Vector2.down);
                 }
                 if(!run.tasks[1].done)return EndReplay(run,result,"Capsule replay exhausted 30 real contact attempts");
                 // Register in the lower-left waiting area before the passenger fan reaches it.
@@ -343,7 +361,7 @@ namespace EarlyRush.V9
                 Vector2 direction=(target-body.position).normalized;
                 Vector2 behind=body.position-direction*(body.radius+RunV9.PlayerRadius+.45f);
                 if(!MoveTo(run,behind,15,out reason))return false;
-                for(int i=0;i<120&&!body.done&&Vector2.Distance(body.position,target)>tolerance;i++)
+                for(int i=0;i<120&&!body.done&&Vector2.Distance(body.position,target)>tolerance&&run.phase==RunPhase.Playing;i++)
                 {
                     direction=(target-body.position).normalized;Vector2 fromBody=run.player-body.position;
                     if(Vector2.Dot(fromBody,direction)>.05f)break;
@@ -356,9 +374,19 @@ namespace EarlyRush.V9
             }
             run.Tick(.15f,Vector2.zero);return run.phase==RunPhase.Playing||run.success;
         }
+        struct AvoidanceSnapshot
+        {
+            public Vector2 position,predicted;public float radiusSquared;
+        }
         static List<Vector2> NavigationPath(RunV9 run,Vector2 goal)
         {
             var map=run.map;Vector2Int root=MapData.Cell(run.player),end=MapData.Cell(goal);
+            var nearbyRisk=new List<AvoidanceSnapshot>();
+            foreach(var person in run.people)if(CrowdRisk(run,person)&&(person.position-run.player).sqrMagnitude<81)
+            {
+                float margin=person.radius+RunV9.PlayerRadius+.3f;
+                nearbyRisk.Add(new AvoidanceSnapshot{position=person.position,predicted=person.position+Vector2.ClampMagnitude(person.velocity*.3f,.6f),radiusSquared=margin*margin});
+            }
             var queue=new Queue<Vector2Int>();var previous=new Dictionary<Vector2Int,Vector2Int>();queue.Enqueue(root);previous[root]=root;
             Vector2Int[] directions={Vector2Int.up,Vector2Int.right,Vector2Int.down,Vector2Int.left};
             while(queue.Count>0)
@@ -372,10 +400,11 @@ namespace EarlyRush.V9
                     Vector2 p=next;bool blocked=false;
                     foreach(var f in run.fixtures)if((f.kind==FixtureKind.FlipBoard||f.kind==FixtureKind.Capsule)&&Vector2.Distance(p,f.position)<f.radius+RunV9.PlayerRadius+.1f)blocked=true;
                     foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(p,b.position)<b.radius+RunV9.PlayerRadius+.12f)blocked=true;
-                    foreach(var c in run.people)
+                    // Only nearby, current occupancy enters this short-lived plan. Home positions
+                    // describe spawning, not invisible permanent walls. Replan after one second.
+                    foreach(var c in nearbyRisk)
                     {
-                        if(c.kind==PersonKind.Coffee&&!c.spilled&&Vector2.Distance(p,c.home)<2)blocked=true;
-                        if(run.stage==0&&run.tasks[0].state==TaskState.Active&&Vector2.Distance(p,c.position)<1.25f)blocked=true;
+                        if((p-c.position).sqrMagnitude<c.radiusSquared||(p-c.predicted).sqrMagnitude<c.radiusSquared){blocked=true;break;}
                     }
                     if(blocked&&next!=end)continue;previous[next]=cell;queue.Enqueue(next);
                 }
