@@ -44,14 +44,18 @@ namespace EarlyRush.V10
             {
                 Vector2 p=cell;
                 if(run.map.IsWalkable(p,RunV10.PlayerRadius)&&!run.map.cells.Contains(cell+Vector2Int.right)
-                    &&run.map.IsWalkable(p-Vector2.right*2,RunV10.PlayerRadius)) {wall=p;found=true;break;}
+                    &&run.map.IsWalkable(p-Vector2.right*2,RunV10.PlayerRadius)
+                    &&run.map.IsWalkable(p-Vector2.right+Vector2.up,RunV10.PlayerRadius+.08f)
+                    &&run.map.IsWalkable(p-Vector2.right-Vector2.up,RunV10.PlayerRadius+.08f)) {wall=p;found=true;break;}
             }
             Check(found,"wall contact fixture position exists");
             run.people.Clear();run.bodies.Clear();run.fixtures.Clear();run.player=wall;
             int contacts=run.bumps;run.Tick(.4f,Vector2.right);Check(run.bumps==contacts+1,"first wall impact counts");
             run.Tick(.2f,Vector2.zero);run.Tick(.3f,Vector2.right);
             Check(run.bumps==contacts+1,"near-wall stop/repress is same contact");
-            run.Tick(.6f,Vector2.left);run.Tick(.8f,Vector2.right);
+            run.Tick(.6f,Vector2.left);
+            Check(run.map.IsWalkable(run.player,RunV10.PlayerRadius+.08f),"wall fixture physically separated from ALL walls");
+            run.Tick(.8f,Vector2.right);
             Check(run.bumps==contacts+2,"leave clearance then hit wall counts again");
         }
         // Local mechanism fixtures may arrange the player near an interaction. These are NOT
