@@ -120,7 +120,7 @@ namespace EarlyRush.V10
                 Vector2[] slots={new Vector2(-8,-3),new Vector2(8,3),new Vector2(-8,3),new Vector2(8,-3)};
                 for(int i=0;i<group.Length;i++)Place(m,region.center+slots[i],group[i],new Vector2(2.5f,2.5f),3.5f,region.kind+"-furniture");
             }
-            m.geometry.signal=m.route[5];m.geometry.platform=m.tasks[0].center;m.geometry.trainDoor=m.geometry.platform+Vector2.up*6;
+            m.geometry.signal=(m.route[4]+m.route[5])*.5f;m.geometry.platform=m.tasks[0].center;m.geometry.trainDoor=m.geometry.platform+Vector2.right*8;
             if(stage==1)
             {
                 // The sole connection between waiting and arrival graphs passes through the

@@ -20,7 +20,7 @@ namespace EarlyRush.V10
         readonly List<SpriteRenderer> structures=new List<SpriteRenderer>();
         public MapData geometry {get;private set;}
         public const int FloorOrder=-30000,GroundOrder=-29000;
-        public static int Sort(float y)=>Mathf.Clamp(-Mathf.RoundToInt(y*100),-28000,28000);
+        public static int Sort(float y)=>Mathf.Clamp(-Mathf.RoundToInt(y*20),-28000,28000);
         void ReadManifest()
         {
             var json=Resources.Load<TextAsset>("V10Art/manifest");if(!json)throw new InvalidOperationException("V10 art manifest missing");
