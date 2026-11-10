@@ -1,0 +1,775 @@
+{
+  "schema": "early-rush-art-export-1",
+  "batch": "v002-map-art",
+  "layout": "Existing V11 seed 91026 snapshots; no level or collision edits.",
+  "assets": [
+    {
+      "id": "floor-asphalt",
+      "source": "source/generated/common/asphalt.png",
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-01",
+      "integration": "A"
+    },
+    {
+      "id": "floor-ceramic",
+      "source": "source/generated/common/ceramic.png",
+      "output": "runtime-static/V8Art/floors-v3/ceramic.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-02",
+      "integration": "A"
+    },
+    {
+      "id": "floor-carpet",
+      "source": "source/generated/common/carpet.png",
+      "output": "runtime-static/V8Art/floors-v3/carpet.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-03",
+      "integration": "A"
+    },
+    {
+      "id": "floor-floor-tile",
+      "source": "source/generated/common/floor-tile.png",
+      "output": "runtime-static/V8Art/legacy-floors/floor-tile.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-02",
+      "integration": "A"
+    },
+    {
+      "id": "floor-sidewalk",
+      "source": "source/generated/common/sidewalk.png",
+      "output": "environment-source/floors-v3/sidewalk.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-04",
+      "integration": "B"
+    },
+    {
+      "id": "breakfast-stall",
+      "source": "source/generated/common/breakfast-stall.png",
+      "output": "runtime-static/V8Art/stalls/breakfast-stall.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        888,
+        833
+      ],
+      "scale": 0.36,
+      "kind": "sprite",
+      "worldWidth": 2.6,
+      "sourceId": "TS-01",
+      "integration": "A"
+    },
+    {
+      "id": "ground-arrows",
+      "source": "source/generated/common/arrows.png",
+      "output": "environment-source/fx-decal/arrows.png",
+      "canvasPx": [
+        128,
+        128
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        645
+      ],
+      "scale": 0.12,
+      "kind": "sprite",
+      "worldWidth": 0.55,
+      "sourceId": "UI-06",
+      "integration": "B"
+    },
+    {
+      "id": "neutral-selection",
+      "source": "source/generated/common/selection.png",
+      "output": "environment-source/ui/selection.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.2,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "UI-06",
+      "integration": "B"
+    },
+    {
+      "id": "street-storefront",
+      "source": "source/generated/street/storefront-v2.png",
+      "output": "runtime-static/V8Art/street/storefront.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1178
+      ],
+      "scale": 0.38,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-08",
+      "integration": "A",
+      "resourceKey": "street/storefront",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-station-doorway",
+      "source": "source/generated/street/station-doorway-v2.png",
+      "output": "runtime-static/V8Art/street/station-doorway.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        737
+      ],
+      "scale": 0.53,
+      "kind": "sprite",
+      "worldWidth": 4,
+      "sourceId": "EN-08",
+      "integration": "A",
+      "resourceKey": "street/station-doorway",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-bench",
+      "source": "source/generated/street/bench.png",
+      "output": "runtime-static/V8Art/street/bench.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        805
+      ],
+      "scale": 0.3,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/bench",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-bush-planter",
+      "source": "source/generated/street/bush-planter.png",
+      "output": "runtime-static/V8Art/street/bush-planter.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        785
+      ],
+      "scale": 0.31,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/bush-planter",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-long-planter",
+      "source": "source/generated/street/long-planter.png",
+      "output": "runtime-static/V8Art/street/long-planter.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        744
+      ],
+      "scale": 0.29,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/long-planter",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-bicycle-rack",
+      "source": "source/generated/street/bicycle-rack-v2.png",
+      "output": "runtime-static/V8Art/street/bicycle-rack.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        695
+      ],
+      "scale": 0.27,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/bicycle-rack",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-boxes",
+      "source": "source/generated/street/boxes.png",
+      "output": "runtime-static/V8Art/street/boxes.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1066
+      ],
+      "scale": 0.21,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/boxes",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-curb-horizontal",
+      "source": "source/generated/street/curb-horizontal.png",
+      "output": "environment-source/street/curb-horizontal.png",
+      "canvasPx": [
+        512,
+        64
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        1087,
+        361.5
+      ],
+      "scale": 0.2,
+      "kind": "sprite",
+      "worldWidth": 11,
+      "sourceId": "EN-05",
+      "integration": "B",
+      "resourceKey": "street/curb-horizontal",
+      "notes": "Existing key currently receives generic bottom pivot; this ground-centred export requires pivot mapping before runtime use."
+    },
+    {
+      "id": "corrections-crosswalk-flat",
+      "source": "source/generated/street/crosswalk-flat.png",
+      "output": "environment-source/corrections/crosswalk-flat.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        680.5
+      ],
+      "scale": 0.38,
+      "kind": "sprite",
+      "worldWidth": 7.65,
+      "sourceId": "EN-06",
+      "integration": "B",
+      "resourceKey": "corrections/crosswalk-flat",
+      "notes": "Existing key currently receives generic bottom pivot; this ground-centred export requires pivot mapping before runtime use."
+    },
+    {
+      "id": "street-bike-parking-marker",
+      "source": "source/generated/street/bike-parking-marker.png",
+      "output": "environment-source/street/bike-parking-marker.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        621.5,
+        652.5
+      ],
+      "scale": 0.187,
+      "kind": "sprite",
+      "worldWidth": 3.5,
+      "sourceId": "TS-03",
+      "integration": "B",
+      "resourceKey": "street/bike-parking-marker",
+      "notes": "Existing key currently receives generic bottom pivot; this ground-centred export requires pivot mapping before runtime use."
+    },
+    {
+      "id": "metro-train-closed",
+      "source": "source/generated/metro/train-closed.png",
+      "output": "runtime-static/V8Art/metro/train-closed.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        788
+      ],
+      "scale": 0.58,
+      "kind": "sprite",
+      "worldWidth": 7,
+      "sourceId": "EN-10",
+      "integration": "A"
+    },
+    {
+      "id": "metro-train-open",
+      "source": "source/generated/metro/train-open.png",
+      "output": "runtime-static/V8Art/metro/train-open.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        788
+      ],
+      "scale": 0.58,
+      "kind": "sprite",
+      "worldWidth": 7,
+      "sourceId": "EN-10",
+      "integration": "A"
+    },
+    {
+      "id": "metro-tactile-strip",
+      "source": "source/generated/metro/tactile-strip.png",
+      "output": "environment-source/metro/tactile-strip.png",
+      "canvasPx": [
+        512,
+        64
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        887.5,
+        440
+      ],
+      "scale": 0.333,
+      "kind": "sprite",
+      "worldWidth": 3,
+      "sourceId": "EN-12",
+      "integration": "B"
+    },
+    {
+      "id": "metro-exit-marker",
+      "source": "source/generated/metro/exit-marker.png",
+      "output": "runtime-static/V8Art/metro/exit-marker.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1129
+      ],
+      "scale": 0.4,
+      "kind": "sprite",
+      "worldWidth": 4,
+      "sourceId": "EN-13",
+      "integration": "A"
+    },
+    {
+      "id": "metro-platform-bench",
+      "source": "source/generated/metro/platform-bench.png",
+      "output": "runtime-static/V8Art/metro/platform-bench.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        813
+      ],
+      "scale": 0.275,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-kiosk",
+      "source": "source/generated/metro/kiosk.png",
+      "output": "runtime-static/V8Art/metro/kiosk.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1124
+      ],
+      "scale": 0.4,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-pillar",
+      "source": "source/generated/metro/pillar.png",
+      "output": "runtime-static/V8Art/metro/pillar.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1390
+      ],
+      "scale": 0.29,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-escalator",
+      "source": "source/generated/metro/escalator.png",
+      "output": "runtime-static/V8Art/metro/escalator.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1162
+      ],
+      "scale": 0.41,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-vending",
+      "source": "source/generated/metro/vending-v2.png",
+      "output": "runtime-static/V8Art/metro/vending.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        678,
+        1066
+      ],
+      "scale": 0.44,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "TM-02",
+      "integration": "A"
+    },
+    {
+      "id": "office-filing-cabinet",
+      "source": "source/generated/office/filing-cabinet-v2.png",
+      "output": "runtime-static/V8Art/office/filing-cabinet.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1148
+      ],
+      "scale": 0.38,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-15",
+      "integration": "A"
+    },
+    {
+      "id": "office-desk-chair",
+      "source": "source/generated/office/desk-chair-v2.png",
+      "output": "runtime-static/V8Art/office/desk-chair.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        886,
+        784
+      ],
+      "scale": 0.34,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-15",
+      "integration": "A"
+    },
+    {
+      "id": "office-meeting-table",
+      "source": "source/generated/office/meeting-table.png",
+      "output": "runtime-static/V8Art/office/meeting-table.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        885,
+        782
+      ],
+      "scale": 0.52,
+      "kind": "sprite",
+      "worldWidth": 5,
+      "sourceId": "EN-16",
+      "integration": "A"
+    },
+    {
+      "id": "office-reception",
+      "source": "source/generated/office/reception.png",
+      "output": "runtime-static/V8Art/office/reception.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        882,
+        724
+      ],
+      "scale": 0.27,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-17",
+      "integration": "A"
+    },
+    {
+      "id": "office-sofa",
+      "source": "source/generated/office/sofa.png",
+      "output": "runtime-static/V8Art/office/sofa.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        886,
+        817
+      ],
+      "scale": 0.285,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-17",
+      "integration": "A"
+    },
+    {
+      "id": "office-plant",
+      "source": "source/generated/office/plant.png",
+      "output": "runtime-static/V8Art/office/plant.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1200
+      ],
+      "scale": 0.185,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-17",
+      "integration": "A"
+    },
+    {
+      "id": "office-clock-mat",
+      "source": "source/generated/office/clock-mat.png",
+      "output": "environment-source/office/clock-mat.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        887,
+        443
+      ],
+      "scale": 0.3,
+      "kind": "sprite",
+      "worldWidth": 3,
+      "sourceId": "EN-17",
+      "integration": "B"
+    }
+  ]
+}

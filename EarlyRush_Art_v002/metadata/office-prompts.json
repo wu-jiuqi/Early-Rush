@@ -1,0 +1,162 @@
+{
+  "schema": "early-rush-imagegen-prompts-1",
+  "date": "2026-11-11",
+  "tool": "built-in image_gen",
+  "category": "office",
+  "sourceMode": "single-layer generated PNG; not editable layered master",
+  "prompts": [
+    {
+      "id": "filing-cabinet",
+      "prompt": "Use case: stylized-concept. Asset: ONE isolated game environment sprite for Early Rush. Input images are STYLE AND CAMERA references only: match rounded matte toy illustration, clean simple shapes, cream ivory and muted teal with tiny warm-yellow accents. Do not include the reference chair or person. Fixed orthographic north-up world, camera elevation 75 degrees above ground, almost top-down looking north; prominent horizontal top surfaces and heavily foreshortened vertical faces, no diagonal isometric rotation. Object front faces the bottom of image and long edges stay parallel to image horizontal. Soft fixed upper-left lighting and only self shading. True transparent alpha background. Entire object complete with clear transparent safe margins. No floor patch, no cast ground shadow, no glow, no text or logos, no people, no labels, no frame, no grid. Subject: a low wide office filing cabinet, only about waist height, cream rounded shell with muted teal inset shelves. Two open filing cubbies with six chunky upright document binders in restrained teal/ivory/pale-yellow, no text on spines, plus two shallow closed drawers below. Top surface should be visually broad from overhead, simple clean uncluttered top. No portrait sticker or task marker. Square 1254x1254 canvas. Cabinet body about 75% of canvas width, contact midpoint of base at x50%, y90% from TOP.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\boy-down.png"
+      ]
+    },
+    {
+      "id": "desk-chair",
+      "prompt": "Use case: stylized-concept. Asset: ONE isolated game environment sprite for Early Rush. Input images are STYLE AND CAMERA references only: match rounded matte toy illustration, clean simple shapes, cream ivory and muted teal with tiny warm-yellow accents. Do not include the reference chair or person. Fixed orthographic north-up world, camera elevation 75 degrees above ground, almost top-down looking north; prominent horizontal top surfaces and heavily foreshortened vertical faces, no diagonal isometric rotation. Object front faces the bottom of image and long edges stay parallel to image horizontal. Soft fixed upper-left lighting and only self shading. True transparent alpha background. Entire object complete with clear transparent safe margins. No floor patch, no cast ground shadow, no glow, no text or logos, no people, no labels, no frame, no grid. Subject: one EMPTY office workstation with a wide shallow pale-wood ivory rounded desktop, a compact teal monitor toward back/top, ivory keyboard in front of monitor and a small cream folder stack at the side. Four short cream desk legs just visible under the table. Absolutely NO chair of any kind, no stool, no portrait sticker, no delivery zone, no mouse pointer or screen text. Monitor screen blank dark teal. Show a large readable desktop area from near-overhead. Landscape 2:1 canvas preferred 1536x768. Object full silhouette occupies about 78% of width and at most 78% height, base ground contact midpoint x50%, y90% from TOP. Keep table axis horizontal.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\boy-down.png"
+      ]
+    },
+    {
+      "id": "meeting-table",
+      "prompt": "Use case: stylized-concept. Asset: ONE isolated game environment sprite for Early Rush. Input images are STYLE AND CAMERA references only: match rounded matte toy illustration, clean simple shapes, cream ivory and muted teal with tiny warm-yellow accents. Do not include the reference chair or person. Fixed orthographic north-up world, camera elevation 75 degrees above ground, almost top-down looking north; prominent horizontal top surfaces and heavily foreshortened vertical faces, no diagonal isometric rotation. Object front faces the bottom of image and long edges stay parallel to image horizontal. Soft fixed upper-left lighting and only self shading. True transparent alpha background. Entire object complete with clear transparent safe margins. No floor patch, no cast ground shadow, no glow, no text or logos, no people, no labels, no frame, no grid. Subject: a long horizontal office conference table, rounded rectangle cream pale-wood tabletop on two short inset teal pedestal supports. Very high overhead view makes tabletop dominant; long side parallel to image horizontal, table width about 2.5 times projected height. Two tiny closed teal notebooks on tabletop at opposite ends, otherwise clean open tabletop. NO chairs, no people, no cup, no computer, no goal circle or meeting marker. Landscape 2:1 canvas preferred 1536x768. Full table occupies about 78% of canvas width, base ground contact midpoint x50%, y90% from TOP.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png",
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\boy-down.png"
+      ]
+    },
+    {
+      "id": "reception",
+      "prompt": "Use case: stylized-concept. ONE Early Rush game environment sprite. Reference image is style/camera reference only, do not reproduce a chair. Rounded smooth matte toy illustration, cream ivory and muted teal, sparse warm yellow details, clean silhouette, no heavy outline. Orthographic high-overhead camera at 75 degrees ABOVE GROUND (15 degrees from vertical), fixed north-up, no diagonal isometric. Top surfaces dominate, vertical front faces compressed; frontal direction image bottom. Left upper fixed soft light, self shading only. True transparent alpha, no floor, no cast ground shadow, no halo, no text/logo, no people, no border/grid. Complete object within transparent safe margins. A low wide shallow office reception counter, one continuous rounded ivory body with muted teal front panel and thin pale-wood upper counter surface. A small flat dark-teal monitor sits on back edge of countertop. No keyboard needed, no signs, no reception lettering, no portrait. Very broad top surface; front panel no taller than 1/4 of top-surface depth in projection. Wide horizontal 2:1 landscape canvas about1536x768. Object width about78% canvas, projected height at most72% canvas, contact midpoint x50% y90% from top.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "sofa",
+      "prompt": "Use case: stylized-concept. ONE Early Rush game environment sprite. Reference image is style/camera reference only, do not reproduce a chair. Rounded smooth matte toy illustration, cream ivory and muted teal, sparse warm yellow details, clean silhouette, no heavy outline. Orthographic high-overhead camera at 75 degrees ABOVE GROUND (15 degrees from vertical), fixed north-up, no diagonal isometric. Top surfaces dominate, vertical front faces compressed; frontal direction image bottom. Left upper fixed soft light, self shading only. True transparent alpha, no floor, no cast ground shadow, no halo, no text/logo, no people, no border/grid. Complete object within transparent safe margins. One muted teal two-seat office waiting sofa with two soft seat cushions, rounded armrests, a low back and four very short cream feet. View so steeply from above that BOTH seat tops are clearly visible and the sofa back is a short band across upper edge; not a frontal product view. Wide horizontal sofa, no pillows or extra furniture. 2:1 landscape canvas about1536x768. Object width about78% canvas, projected height at most72% canvas, contact midpoint x50% y90% from top.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "plant",
+      "prompt": "Use case: stylized-concept. ONE Early Rush game environment sprite. Reference image is style/camera reference only, do not reproduce a chair. Rounded smooth matte toy illustration, cream ivory and muted teal, sparse warm yellow details, clean silhouette, no heavy outline. Orthographic high-overhead camera at 75 degrees ABOVE GROUND (15 degrees from vertical), fixed north-up, no diagonal isometric. Top surfaces dominate, vertical front faces compressed; frontal direction image bottom. Left upper fixed soft light, self shading only. True transparent alpha, no floor, no cast ground shadow, no halo, no text/logo, no people, no border/grid. Complete object within transparent safe margins. One small low indoor potted plant, cream rounded ceramic pot holding exactly five broad chunky organic green leaves, varied muted teal/sage tones. Top rim and soil visible from steep overhead view. Compact broad plant rather than a tall stalk, simple lush silhouette, no flowers. Square1254 canvas. Width about76% canvas; plant including pot fully visible, pot base contact x50% y90% from top.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "clock-mat",
+      "prompt": "Use case: stylized-concept. ONE Early Rush floor decal sprite: a plain neutral office doormat. Exact perpendicular top-down orthographic view, horizontal rounded rectangle, woven cream interior with a muted teal rounded fabric border, subtle low contrast fabric texture, no icon/pattern/text/clock/timecard symbol whatsoever. Very thin mat, no elevation or visible sidewall, no perspective, no diagonal rotation. A clean matte illustrated game prop in matching cream teal toy-like style. Object is about2.4 times as wide as tall. Landscape2:1 canvas about1536x768, centered at exact image center, width80% and ample transparent margins all four sides. Actual alpha transparency background, no floor, no cast shadow, no halo, no checkerboard, no labels.",
+      "references": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "desk-chair-v2",
+      "ref": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-ad1947fe-bad0-46c8-8cae-25490abd3838.png",
+      "prompt": "Use case: precise-object-edit. Correct ONLY the camera and monitor height of this exact Early Rush workstation. Preserve ivory/pale wood rounded desk, teal monitor with blank dark screen, cream keyboard and small folder holder; NO chair, no people, no portrait, no task marker. The current view is too front-facing. Raise camera to 80-degree elevation above ground, near vertical looking down, fixed north-up parallel projection, long table axis perfectly horizontal. Tabletop should dominate, vertical legs almost completely hidden. Make the monitor HALF the current physical height, like a shallow wide screen viewed steeply from above, so it no longer creates a tall silhouette. The complete workstation projected silhouette should have width at least2.25 times height. Keep all object detail at a simple readable scale; same matte rounded toy style and upper-left light. Transparent alpha background, no floor shadow, no glow, no text. Landscape2:1 canvas, whole silhouette occupies78%width, at most72%height, ground contact point at x50% y90% from top. No part clipped.",
+      "references": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-ad1947fe-bad0-46c8-8cae-25490abd3838.png"
+      ]
+    },
+    {
+      "id": "filing-cabinet-v2",
+      "ref": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-370a9bbc-b2a7-4f33-bbea-81c43b087851.png",
+      "prompt": "Use case: precise-object-edit. Correct ONLY camera and cabinet height of this same Early Rush low filing cabinet. Keep cream rounded shell, teal open cubbies with exactly six chunky cream/teal/yellow binders, two shallow drawers, no text or portrait. Raise camera to 80-degree elevation from ground, near-top-down parallel projection, long horizontal cabinet axis, not isometric. Cabinet should be genuinely LOW, about knee-height; top surface occupies at least70% of its projected vertical area while front shelves/drawers are compressed into the bottom30%. Current reference is too frontal and tall. Keep every detail simple, matte rounded toy illustration, upper-left light. Entire object on real transparent alpha, no ground, no cast shadow, no glow. Square canvas1254, about78% canvas width, base ground contact at x50% y90% from top, transparent safe margins.",
+      "references": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-370a9bbc-b2a7-4f33-bbea-81c43b087851.png"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "filing-cabinet",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-370a9bbc-b2a7-4f33-bbea-81c43b087851.png",
+      "packagePath": "source/generated/office/filing-cabinet.png"
+    },
+    {
+      "id": "desk-chair",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-ad1947fe-bad0-46c8-8cae-25490abd3838.png",
+      "packagePath": "source/generated/office/desk-chair.png"
+    },
+    {
+      "id": "meeting-table",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-23d7508d-e1b6-4c03-809f-12149b6708d8.png",
+      "packagePath": "source/generated/office/meeting-table.png"
+    },
+    {
+      "id": "reception",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-a4878fba-599b-43a4-bbcc-811fa5b9e112.png",
+      "packagePath": "source/generated/office/reception.png"
+    },
+    {
+      "id": "sofa",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-7d3caa0a-0f99-4a81-adf9-b3f497a3deaf.png",
+      "packagePath": "source/generated/office/sofa.png"
+    },
+    {
+      "id": "plant",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-4a07bb5f-c944-471b-9353-e01ba161c7c3.png",
+      "packagePath": "source/generated/office/plant.png"
+    },
+    {
+      "id": "clock-mat",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-5a284b77-5649-4f7c-ad65-957cddf1387e.png",
+      "packagePath": "source/generated/office/clock-mat.png"
+    },
+    {
+      "id": "desk-chair-v2",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-dd102e1b-7c64-4f62-b01e-9587f651bdc6.png",
+      "packagePath": "source/generated/office/desk-chair-v2.png"
+    },
+    {
+      "id": "filing-cabinet-v2",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c666-7f50-7fb1-97e9-83ac7dd43584\\exec-51ebdd0c-0186-4f50-911c-e65f208ce4ab.png",
+      "packagePath": "source/generated/office/filing-cabinet-v2.png"
+    }
+  ],
+  "selectedSources": [
+    {
+      "id": "filing-cabinet",
+      "source": "source/generated/office/filing-cabinet-v2.png"
+    },
+    {
+      "id": "desk-chair",
+      "source": "source/generated/office/desk-chair-v2.png"
+    },
+    {
+      "id": "meeting-table",
+      "source": "source/generated/office/meeting-table.png"
+    },
+    {
+      "id": "reception",
+      "source": "source/generated/office/reception.png"
+    },
+    {
+      "id": "sofa",
+      "source": "source/generated/office/sofa.png"
+    },
+    {
+      "id": "plant",
+      "source": "source/generated/office/plant.png"
+    },
+    {
+      "id": "clock-mat",
+      "source": "source/generated/office/clock-mat.png"
+    }
+  ],
+  "reviewNotes": [
+    "Filing cabinet and workstation v2 selected after raising the camera; v1 preserved only for provenance.",
+    "Workstation intentionally contains no chair despite the legacy desk-chair resource key.",
+    "Meeting table contains no chairs, people, or goal markers.",
+    "Clock mat is a neutral floor decal with a center pivot; requires a loader pivot mapping and is marked B.",
+    "All generated assets were inspected as complete isolated objects with no text. Technical export and in-engine checks remain pending.",
+    "Source alpha can contain very low-alpha hidden colors; inspect proper alpha compositing without threshold cleanup."
+  ]
+}

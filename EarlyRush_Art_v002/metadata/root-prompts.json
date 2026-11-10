@@ -1,0 +1,77 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-11-11",
+  "prompts": [
+    {
+      "id": "ceramic",
+      "prompt": "Use case: stylized-concept. Asset: ONE continuous tileable ground texture for the Early Rush top-down 2.5D game. Square 512x512 requested (high resolution source also acceptable). Strictly perpendicular top-down flat orthographic plane, opaque edge-to-edge, no perspective or isometric diamond, no object, no border, no vignette, no shadow, no text or arrows. Seamless in both axes. Uniform soft matte low-contrast material; bright morning cream/teal game palette, tiny gentle detail so characters stand out. This image represents 4x4 world units and will be sliced into 16 adjacent pieces, not an icon atlas. Metro concourse ceramic floor: warm pale ivory ceramic tiles in an exact regular four-by-four square grid, straight perfectly axis-aligned narrow soft beige grout at quarter/half/three-quarter positions. Outer boundaries must match the same grid continuously when repeated; no visible outer frame. Glaze very subtle, no reflections or specular patches. Very low contrast seams, softly rounded tiny tile bevels, no dirt or distinctive stains."
+    },
+    {
+      "id": "carpet",
+      "prompt": "Use case: stylized-concept. Asset: ONE continuous tileable ground texture for the Early Rush top-down 2.5D game. Square 512x512 requested (high resolution source also acceptable). Strictly perpendicular top-down flat orthographic plane, opaque edge-to-edge, no perspective or isometric diamond, no object, no border, no vignette, no shadow, no text or arrows. Seamless in both axes. Uniform soft matte low-contrast material; bright morning cream/teal game palette, tiny gentle detail so characters stand out. This image represents 4x4 world units and will be sliced into 16 adjacent pieces, not an icon atlas. Office carpet: desaturated pale sage teal woven carpet, tiny soft low-frequency heathered fibres. One uniform field, no grid or panels, no motif, no large color patches. Elegant muted color significantly lighter and less saturated than teal office furniture. No directional lighting gradient, perfect repeating surface."
+    },
+    {
+      "id": "sidewalk",
+      "prompt": "Use case: stylized-concept. Asset: ONE continuous tileable ground texture for the Early Rush top-down 2.5D game. Square 512x512 requested (high resolution source also acceptable). Strictly perpendicular top-down flat orthographic plane, opaque edge-to-edge, no perspective or isometric diamond, no object, no border, no vignette, no shadow, no text or arrows. Seamless in both axes. Uniform soft matte low-contrast material; bright morning cream/teal game palette, tiny gentle detail so characters stand out. This image represents 4x4 world units and will be sliced into 16 adjacent pieces, not an icon atlas. Street sidewalk paving: warm cream-gray fine concrete pavers, an exact regular two-by-two broad square slab grid, tiny subtle pores. Narrow straight soft beige grout at half horizontal/vertical. No edge curb, no road markings, no manhole, no drains, no cobblestones, no harsh gritty texture. Clearly warmer/lighter than blue-gray asphalt. Match seamless grid spacing at opposite edges."
+    },
+    {
+      "id": "floor-tile",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-8ce1c57c-7efa-4391-9de0-9e49e72889cc.png"
+      ],
+      "transparent": false,
+      "prompt": "Use case: precise-object-edit. This is the primary Early Rush metro ceramic tile texture. Make the auxiliary ceramic variation by changing ONLY the tile field color to a very pale cool mint ivory; keep the identical exact 4x4 grout grid, every grout line position/width, texture scale, material finish, canvas size and edge alignment. No new pattern, no objects or text, no perspective, no stains. Full-bleed opaque seamless ground texture. Tile surface should remain very light and low contrast, only subtly cooler than reference. Do not shift any grout geometry."
+    },
+    {
+      "id": "breakfast-stall",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. ONE standalone breakfast cart kiosk sprite for Early Rush. Fixed north-up orthographic camera at very high 75 degree elevation: mostly see canopy top, counter and steamer lids, little vertical front. NOT diagonal isometric. Small friendly rounded cream and muted teal wheeled cart, shallow light yellow fabric canopy, simple bamboo steamer with two buns on a short counter, tidy compact layout. No people, letters, price labels, logos, task symbols or ground plane. Fully visible single asset on true transparent alpha, upper-left soft fixed light, no cast ground shadow. Matte toy-like painted style with clean silhouette, no glossy realism. Landscape 1024x512 preferred; full cart projected silhouette compact and wide with 12% transparent margins; ground contact of base at x50% y90% from top. Keep canopy low so player is not hidden by a giant roof."
+    },
+    {
+      "id": "arrows",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Single simple world-floor navigation arrow decal for Early Rush, true alpha transparency. Exactly one short thick upward arrow pointing to image TOP, straight perpendicular top-down flat orthographic view. Warm pale yellow fill, very thin cream edge, softly rounded tip and shaft corners, matte clean shape. No plate, shadow, glow, texture tile, background, circle, text, bevel or 3D perspective. Square image, arrow centered horizontally and vertically with 15% margin. This is a reusable floor mark, no people or scene."
+    },
+    {
+      "id": "selection",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Single neutral reusable selection/goal floor outline for Early Rush. True transparent alpha. Straight top-down flat outline of a softly rounded rectangle close to a square, four modest open corners with a little gap in each side, pale desaturated ivory-yellow border only, fully transparent interior. Thin clean matte line, readable but subtle. Centered square canvas with 12% margins. No checkmark, no star, no arrow, no text, no task icon, no glow, no shadow, no filled tile or perspective. It must be a neutral frame shared by tasks and destinations, no success state baked in."
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ceramic",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-8ce1c57c-7efa-4391-9de0-9e49e72889cc.png"
+    },
+    {
+      "id": "carpet",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-602512f8-031f-4f85-882d-211ca2d69c0f.png"
+    },
+    {
+      "id": "sidewalk",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-be353b66-efad-4819-b3cf-cfa9306426dc.png"
+    },
+    {
+      "id": "floor-tile",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-ce8444e7-497b-4ce5-bd25-1f6ea0869c5a.png"
+    },
+    {
+      "id": "breakfast-stall",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-f7fae245-ea85-493d-9b7b-163f2e326164.png"
+    },
+    {
+      "id": "arrows",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-3f069c6a-1de7-4113-ba5e-5a844e4bfee2.png"
+    },
+    {
+      "id": "selection",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c649-5c2e-7693-b54e-6b64713b9687\\exec-a99f9465-7266-4cf5-ab29-18bd379d0743.png"
+    }
+  ],
+  "reused": [
+    {
+      "id": "asphalt",
+      "from": "../EarlyRush_Art_v001/source/generated/asphalt.png"
+    }
+  ]
+}

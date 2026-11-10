@@ -1,0 +1,147 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-11-11",
+  "countDeliverables": 9,
+  "countSources": 10,
+  "selectedRevision": "vending-v2",
+  "selectedRevisionReason": "Original machine was too front-facing; v2 shows much more of its top and a shorter front base.",
+  "prompts": [
+    {
+      "id": "train-closed",
+      "prompt": "Use case: stylized-concept. Asset for Early Rush, a cheerful commuter game. The input image is MATERIAL, COLOR and rounded-shape style reference ONLY, do not include the chair. ONE independent environment prop, actual transparent alpha background. Rounded simplified toy-like matte 2.5D raster illustration, cream ivory and muted teal with small warm yellow accents, gentle fixed upper-left light and self shading, no heavy outlines. Fixed north-up orthographic camera looking steeply down from 75 degrees above the ground. Show LARGE top surfaces and strongly foreshortened vertical sides, NOT front elevation, NOT diagonal isometric. The main front faces image bottom; horizontal edges parallel image X axis. No ground plane, no floor tiles, no cast floor shadow, no glow, no person, no lettering, numbers, brand, logo, label or watermark. Complete object with transparent safety margins. A short broad side section of a metro railway carriage, horizontally across a landscape 2:1 canvas. Cream curved roof dominates because of very high viewpoint. Lower side has one centered CLOSED double sliding door, flanked by exactly one dark teal window on each side. Thin muted teal band along carriage. No rails, platform, passengers or locomotive nose. Both side ends neatly rounded, whole carriage section visible. Door center x50%, lowest underbody contact line near y90%. Object occupies about80% canvas width and65% height. Need later open-door variant at identical framing. Prefer 2048x1024.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "kiosk",
+      "prompt": "Use case: stylized-concept. Asset for Early Rush, a cheerful commuter game. The input image is MATERIAL, COLOR and rounded-shape style reference ONLY, do not include the chair. ONE independent environment prop, actual transparent alpha background. Rounded simplified toy-like matte 2.5D raster illustration, cream ivory and muted teal with small warm yellow accents, gentle fixed upper-left light and self shading, no heavy outlines. Fixed north-up orthographic camera looking steeply down from 75 degrees above the ground. Show LARGE top surfaces and strongly foreshortened vertical sides, NOT front elevation, NOT diagonal isometric. The main front faces image bottom; horizontal edges parallel image X axis. No ground plane, no floor tiles, no cast floor shadow, no glow, no person, no lettering, numbers, brand, logo, label or watermark. Complete object with transparent safety margins. A compact unmanned station service / ticket kiosk: squat cream rectangular counter base with teal trim, wide teal roof cap, small dark teal inset service window and a little blank cream counter shelf. Minimal structural geometry, no vending products, no gacha balls, no signage or letters. High overhead view prominently shows roof and counter top. Square canvas, prop about75% of width and70% of height, bottom ground contact x50% y90%.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "pillar",
+      "prompt": "Use case: stylized-concept. Asset for Early Rush, a cheerful commuter game. The input image is MATERIAL, COLOR and rounded-shape style reference ONLY, do not include the chair. ONE independent environment prop, actual transparent alpha background. Rounded simplified toy-like matte 2.5D raster illustration, cream ivory and muted teal with small warm yellow accents, gentle fixed upper-left light and self shading, no heavy outlines. Fixed north-up orthographic camera looking steeply down from 75 degrees above the ground. Show LARGE top surfaces and strongly foreshortened vertical sides, NOT front elevation, NOT diagonal isometric. The main front faces image bottom; horizontal edges parallel image X axis. No ground plane, no floor tiles, no cast floor shadow, no glow, no person, no lettering, numbers, brand, logo, label or watermark. Complete object with transparent safety margins. ONE short thick cylindrical station pillar, cream ivory body, low muted teal ring around base and one thin yellow safety ring. A large round flat cream top clearly visible in high overhead projection. Short squat column, height about1.5 times diameter, not a tall monument, no ornate capital. Portrait 2:3 canvas, object occupies about70% of width, bottom ground contact x50% y90%.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "platform-bench",
+      "prompt": "Use case: stylized-concept. Asset for Early Rush, a cheerful commuter game. The input image is MATERIAL, COLOR and rounded-shape style reference ONLY, do not include the chair. ONE independent environment prop, actual transparent alpha background. Rounded simplified toy-like matte 2.5D raster illustration, cream ivory and muted teal with small warm yellow accents, gentle fixed upper-left light and self shading, no heavy outlines. Fixed north-up orthographic camera looking steeply down from 75 degrees above the ground. Show LARGE top surfaces and strongly foreshortened vertical sides, NOT front elevation, NOT diagonal isometric. The main front faces image bottom; horizontal edges parallel image X axis. No ground plane, no floor tiles, no cast floor shadow, no glow, no person, no lettering, numbers, brand, logo, label or watermark. Complete object with transparent safety margins. ONE compact three-seat station bench, a continuous teal rounded molded seat with a low backrest, two cream pedestal legs and restrained yellow end caps. Wide horizontal bench, sitting direction image bottom. Very high overhead view, top seat dominates, backrest foreshortened. No floor or shadow. Landscape2:1 canvas, width about78%, full bench fits with bottom feet ground contact at x50% y90%.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "train-open",
+      "refs": [
+        "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-56a68ac8-a3f2-44e4-8184-49c0572a5e8e.png"
+      ],
+      "prompt": "Use case: precise-object-edit. Input is the exact CLOSED metro carriage sprite to edit. Change ONLY the central double sliding doors: retract left leaf to left and right leaf to right, revealing an open dark teal interior doorway with a short cream threshold. Door opening remains perfectly centered at same x coordinate and same ground level. Preserve identical image dimensions, transparency, silhouette, every carriage edge, roof, rooftop vent, two side windows, lights, horizontal color stripe, camera angle, scale, framing and fixed lighting. No people, platform, text, arrows, glow or outside floor. Do not resize, zoom or recenter the carriage. Actual alpha preserved. The result must alternate with the input without the train body jumping."
+    },
+    {
+      "id": "tactile-strip",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ],
+      "prompt": "Use case: stylized-concept. ONE Early Rush floor decal, a straight horizontal golden-yellow tactile guidance strip. Direct perpendicular top-down view with absolutely NO perspective, not isometric. The strip is about8 times wider than it is tall, one horizontal row of subtly embossed parallel longitudinal bars in a matte rounded toy illustration finish, soft upper-left relief only. No supporting pavement, no border tile, no arrows, no text. Both ends square-cut so it can repeat. Actual transparent alpha everywhere outside the thin yellow strip. Landscape2:1 canvas with much empty transparency above and below; the strip centered at x50%,y50%, occupies80% width and20% image height, total strip aspect8:1. It will later be exported to512x64, so keep top/bottom edges straight and all detail within the thin strip."
+    },
+    {
+      "id": "exit-marker",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ],
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush environment game prop. Reference image is color/material style reference only, do NOT include its chair. Rounded simplified matte toy 2.5D raster illustration, cream ivory, muted teal and restrained golden-yellow accents. Fixed north-up orthographic camera, very high 75-degree elevation from ground, large top surfaces visible and vertical sides strongly foreshortened. Not diagonal/isometric. Main front faces image bottom. Fixed upper-left soft lighting. Transparent alpha background, no cast ground shadow, no glow, no scene/floor platform, no person, no text, letters, numbers or logo. Complete object with clear margins and ground contact near x50%,y90%. A freestanding open metro station EXIT portal: two squat cream-and-teal side posts connected by a shallow teal horizontal lintel. Clear wide walk-through gap between posts must be actual transparent alpha, with no door leaf, no wall, no dark painted rectangle or floor filling the opening. No train or ticket gates. On top of lintel a compact cream plaque containing ONE simple dark teal running-person exit pictogram, NO words. Thick rounded corners, ordinary station architecture, no special task arrow. Square canvas, structure occupies about78% width and72% height. Keep the central gap open down to the bottom canvas with transparent background."
+    },
+    {
+      "id": "escalator",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ],
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush environment game prop. Reference image is color/material style reference only, do NOT include its chair. Rounded simplified matte toy 2.5D raster illustration, cream ivory, muted teal and restrained golden-yellow accents. Fixed north-up orthographic camera, very high 75-degree elevation from ground, large top surfaces visible and vertical sides strongly foreshortened. Not diagonal/isometric. Main front faces image bottom. Fixed upper-left soft lighting. Transparent alpha background, no cast ground shadow, no glow, no scene/floor platform, no person, no text, letters, numbers or logo. Complete object with clear margins and ground contact near x50%,y90%. ONE compact station escalator module pointing north/south along image vertical axis, lower landing at image bottom. Short straight metal staircase with six broad visible cream steps and dark teal side panels, smooth teal handrails and small yellow safety lips. Viewed very steeply from above so entire step run and rail tops visible; strong foreshortening of step risers. No paired escalator, no people, no landing floor extension, no building. Square canvas, complete escalator about65% width and75%height, entry contact at x50%,y90%."
+    },
+    {
+      "id": "vending",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush capsule toy machine game sprite, actual transparent alpha. Reference chair image is material/color style only, no chair in result. Rounded simplified matte toy-like 2.5D illustration matching cream ivory, muted teal and small warm yellow accents. Fixed north-up orthographic camera at very high75-degree elevation from ground: see prominent top and shortened front, not diagonal isometric, front faces image bottom. A compact capsule dispenser with a squat cream base, teal trim and top cap, a clear rounded globe full of a few pastel yellow/ivory/teal capsules, one small plain teal turning handle and one low dark dispense opening. Machine stands on fixed flat plinth, no casters. No glowing timing light, no arrows, no coins, no printed text or numerals, no scene, no floor, no person, no cast shadow, no halo. Entire object, square canvas, about72% canvas width and76%height, bottom ground contact centered near90% canvas height. Smooth clean silhouette, upper-left light.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v001\\source\\generated\\chair-v2.png"
+      ]
+    },
+    {
+      "id": "vending-v2",
+      "prompt": "Use case: precise-object-edit. Input is a capsule machine sprite to correct for a high-overhead game camera. Keep same recognizable cream and muted-teal capsule machine, same colors, capsules, crank, dispensing opening and smooth toy material. Change camera to MUCH HIGHER overhead elevation,75 degrees from the ground, with stronger vertical foreshortening. The big teal circular lid must occupy the upper HALF of the visible machine, globe appears as a short squat band below it and ivory base as a very shallow lower band. See almost straight down, not front product view. Overall projected silhouette roughly as wide as tall, about900 pixels wide and850 pixels tall on1254x1254 square canvas. Center in canvas with base contact at627,1129. Keep complete object with margin. Main front faces image bottom. No floor, shadow, halo, scene, text or person. True transparent alpha. Preserve color and material identity, only correct camera and resulting geometry.",
+      "refs": [
+        "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v002\\source\\generated\\metro\\vending.png"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "train-closed",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-56a68ac8-a3f2-44e4-8184-49c0572a5e8e.png"
+    },
+    {
+      "id": "train-open",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-3cb5a7b8-b5dd-4eb8-a732-30a708e4998b.png"
+    },
+    {
+      "id": "tactile-strip",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-19cc2c91-81aa-4ac9-ba64-5c87cc769ae4.png"
+    },
+    {
+      "id": "exit-marker",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-3f59560b-c6b8-4e15-9266-80682cdf9961.png"
+    },
+    {
+      "id": "platform-bench",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-8d52427c-81e7-40fe-a2b4-17fbfa1b9e4f.png"
+    },
+    {
+      "id": "kiosk",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-61901327-926c-4e72-bc5f-0ee72df16fd6.png"
+    },
+    {
+      "id": "pillar",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-7a5fff09-e140-4dd5-a81d-d8657e82489a.png"
+    },
+    {
+      "id": "escalator",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-e0f83f46-2b2d-44f2-86a2-67757f2018f2.png"
+    },
+    {
+      "id": "vending",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-b828b494-849b-49b9-a5d6-f16275882ef9.png"
+    },
+    {
+      "id": "vending-v2",
+      "path": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-fced-78b0-abb5-388039ac77dd\\exec-2c57c4c7-20ae-4020-9e44-a872bd2e2b1a.png"
+    }
+  ],
+  "inspection": {
+    "trainSourceSizePx": [
+      1774,
+      887
+    ],
+    "trainClosedAlpha128BoxXYXY": [
+      178,
+      147,
+      1588,
+      788
+    ],
+    "trainOpenAlpha128BoxXYXY": [
+      177,
+      147,
+      1590,
+      789
+    ],
+    "exitCenterAlpha": 0,
+    "alphaNote": "All source corner samples are zero; unassociated RGB in low-alpha outer pixels must be evaluated with proper compositing.",
+    "limitations": [
+      "No in-game integration performed.",
+      "No separate train door leaf or capsule timing-light layers authored.",
+      "No task arrows, success balloons or hidden M1 warning cues."
+    ]
+  }
+}

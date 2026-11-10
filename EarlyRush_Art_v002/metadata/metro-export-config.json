@@ -1,0 +1,213 @@
+{
+  "schema": "early-rush-art-export-1",
+  "date": "2026-11-11",
+  "scope": "metro environment static candidates",
+  "notes": [
+    "Nine candidate deliverables, ten generated source PNGs; vending-v2 is selected over vending first draft.",
+    "Train open and closed share exactly the same sourceAnchorPx and scale; source alpha>=128 bounds differ only by 1–2 px.",
+    "Tactile strip has an existing art key but is authored with center pivot. It remains B / environment-source until a ground pivot mapping is added; current generic .1 loader would shift it.",
+    "Escalator and capsule machine preserve their natural narrow aspect, below the general 70–85% subject width recommendation; no nonuniform stretching.",
+    "World widths are preview defaults. Runtime structure/fixture width must still come from existing map data.",
+    "Source anchors are manually estimated and require in-engine validation. Upper-left lighting and high overhead camera are visual targets, not calibrated 3D projections."
+  ],
+  "assets": [
+    {
+      "id": "metro-train-closed",
+      "source": "source/generated/metro/train-closed.png",
+      "output": "runtime-static/V8Art/metro/train-closed.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        788
+      ],
+      "scale": 0.58,
+      "kind": "sprite",
+      "worldWidth": 7,
+      "sourceId": "EN-10",
+      "integration": "A"
+    },
+    {
+      "id": "metro-train-open",
+      "source": "source/generated/metro/train-open.png",
+      "output": "runtime-static/V8Art/metro/train-open.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        788
+      ],
+      "scale": 0.58,
+      "kind": "sprite",
+      "worldWidth": 7,
+      "sourceId": "EN-10",
+      "integration": "A"
+    },
+    {
+      "id": "metro-tactile-strip",
+      "source": "source/generated/metro/tactile-strip.png",
+      "output": "environment-source/metro/tactile-strip.png",
+      "canvasPx": [
+        512,
+        64
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        887.5,
+        440
+      ],
+      "scale": 0.333,
+      "kind": "sprite",
+      "worldWidth": 3,
+      "sourceId": "EN-12",
+      "integration": "B"
+    },
+    {
+      "id": "metro-exit-marker",
+      "source": "source/generated/metro/exit-marker.png",
+      "output": "runtime-static/V8Art/metro/exit-marker.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1129
+      ],
+      "scale": 0.4,
+      "kind": "sprite",
+      "worldWidth": 4,
+      "sourceId": "EN-13",
+      "integration": "A"
+    },
+    {
+      "id": "metro-platform-bench",
+      "source": "source/generated/metro/platform-bench.png",
+      "output": "runtime-static/V8Art/metro/platform-bench.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        813
+      ],
+      "scale": 0.275,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-kiosk",
+      "source": "source/generated/metro/kiosk.png",
+      "output": "runtime-static/V8Art/metro/kiosk.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1124
+      ],
+      "scale": 0.4,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-pillar",
+      "source": "source/generated/metro/pillar.png",
+      "output": "runtime-static/V8Art/metro/pillar.png",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        512,
+        1390
+      ],
+      "scale": 0.29,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-escalator",
+      "source": "source/generated/metro/escalator.png",
+      "output": "runtime-static/V8Art/metro/escalator.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1162
+      ],
+      "scale": 0.41,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-14",
+      "integration": "A"
+    },
+    {
+      "id": "metro-vending",
+      "source": "source/generated/metro/vending-v2.png",
+      "output": "runtime-static/V8Art/metro/vending.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        678,
+        1066
+      ],
+      "scale": 0.44,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "TM-02",
+      "integration": "A"
+    }
+  ]
+}

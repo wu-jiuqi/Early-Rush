@@ -1,0 +1,26 @@
+[
+  {
+    "stage": 0,
+    "seed": 91026,
+    "cells": 10824,
+    "structures": 16,
+    "derivedBorderDecor": 259,
+    "previewOnly": true
+  },
+  {
+    "stage": 1,
+    "seed": 91026,
+    "cells": 11988,
+    "structures": 16,
+    "derivedBorderDecor": 249,
+    "previewOnly": true
+  },
+  {
+    "stage": 2,
+    "seed": 91026,
+    "cells": 10714,
+    "structures": 16,
+    "derivedBorderDecor": 264,
+    "previewOnly": true
+  }
+]

@@ -1,0 +1,1494 @@
+{
+  "schema": "early-rush-art-manifest-1",
+  "generatedAtUtc": "2026-11-10T17:16:59.1206263+00:00",
+  "configuration": "metadata/export-config.json",
+  "configurationSha256": "fea70f8bb0abdd685b4dfb7b058e591b85fcd78fa85b9530e3c1e02dd18e70fd",
+  "assetCount": 34,
+  "assets": [
+    {
+      "id": "floor-asphalt",
+      "sourceId": "EN-01",
+      "source": "source/generated/common/asphalt.png",
+      "sourceSha256": "31440d680f5be4efdbd80c9b6fb3d64aedd3c03d9918698035f1501a96767700",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "outputSha256": "8123f0607f7220e76018ed4df3869cb86a6549cc8e7d70edc36eec7789dbfd85",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "floor",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "full-image-resize",
+        "scaleXY": [
+          0.4082934609250399,
+          0.4082934609250399
+        ],
+        "offsetPx": [
+          0,
+          0
+        ]
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "floor-ceramic",
+      "sourceId": "EN-02",
+      "source": "source/generated/common/ceramic.png",
+      "sourceSha256": "990430219206074d9657f66b3cf6df398695843d2b391ff8c5730757b33e0813",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/floors-v3/ceramic.png",
+      "outputSha256": "7886b2a2ac7a71a8958db17425bb8af0696ad48eac807885a0a6ff17c9baac02",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "floor",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "full-image-resize",
+        "scaleXY": [
+          0.4082934609250399,
+          0.4082934609250399
+        ],
+        "offsetPx": [
+          0,
+          0
+        ]
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "floor-carpet",
+      "sourceId": "EN-03",
+      "source": "source/generated/common/carpet.png",
+      "sourceSha256": "339afc019264fe65fc3d9ff58b6b18e62ee94d55122625b9f0ed127f24ea89b8",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/floors-v3/carpet.png",
+      "outputSha256": "500459168a8e3536b552e2d508870525aaa877c26beff1081be81246ee0ea090",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "floor",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "full-image-resize",
+        "scaleXY": [
+          0.4082934609250399,
+          0.4082934609250399
+        ],
+        "offsetPx": [
+          0,
+          0
+        ]
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "floor-floor-tile",
+      "sourceId": "EN-02",
+      "source": "source/generated/common/floor-tile.png",
+      "sourceSha256": "87711cc5fca0b5e88d2653ee337de61647ad4b2d02ebe836d575755720d3c86d",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/legacy-floors/floor-tile.png",
+      "outputSha256": "faec5f0d95cc01dafc66e040cc05951ad2af3e0d332137992cfc7f9c3212bb7a",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "floor",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "full-image-resize",
+        "scaleXY": [
+          0.4082934609250399,
+          0.4082934609250399
+        ],
+        "offsetPx": [
+          0,
+          0
+        ]
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "floor-sidewalk",
+      "sourceId": "EN-04",
+      "source": "source/generated/common/sidewalk.png",
+      "sourceSha256": "376d6a6b885a41ce40973be476291bcce08dfb87e3fd6436db44002309f9882a",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "environment-source/floors-v3/sidewalk.png",
+      "outputSha256": "5eff40770791d29d29417b62906b431639b87694c01ca7ebc0998fc15a0ca3c1",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "floor",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "full-image-resize",
+        "scaleXY": [
+          0.4082934609250399,
+          0.4082934609250399
+        ],
+        "offsetPx": [
+          0,
+          0
+        ]
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "breakfast-stall",
+      "sourceId": "TS-01",
+      "source": "source/generated/common/breakfast-stall.png",
+      "sourceSha256": "d850ae72c5510383faff99df47de03f29cd045702873efb4b3ddf9fbd33c8be4",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/stalls/breakfast-stall.png",
+      "outputSha256": "e44040f220a28b7d616cdb7ca43be205227520a135887a0110baafdaedb3e5f2",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 2.6,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.36,
+          0.36
+        ],
+        "offsetPx": [
+          -63.68000000000001,
+          160.92000000000002
+        ],
+        "sourceAnchorPx": [
+          888,
+          833
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "ground-arrows",
+      "sourceId": "UI-06",
+      "source": "source/generated/common/arrows.png",
+      "sourceSha256": "125e886f45c2a87f4e768ef18994fbd777e0c7f66442bb460a3004ca67f96b5b",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "environment-source/fx-decal/arrows.png",
+      "outputSha256": "d431bc339306b27974da92d8e80d5ace044109c76df17d1b7d7a5279a015b1d8",
+      "canvasPx": [
+        128,
+        128
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 0.55,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.12,
+          0.12
+        ],
+        "offsetPx": [
+          -11.239999999999995,
+          -13.399999999999991
+        ],
+        "sourceAnchorPx": [
+          627,
+          645
+        ],
+        "targetAnchorTopLeftPx": [
+          64.0,
+          64.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "neutral-selection",
+      "sourceId": "UI-06",
+      "source": "source/generated/common/selection.png",
+      "sourceSha256": "f182a736c37609eaa4b39b152cf7a268de0730b074f905ea6e13e316b953bc14",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "environment-source/ui/selection.png",
+      "outputSha256": "de3d42158e1ea2eb65aeb1502d36f5e3e20a3f24d80ae7aab8d0f9f22f88ec13",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.2,
+          0.2
+        ],
+        "offsetPx": [
+          2.5999999999999943,
+          2.5999999999999943
+        ],
+        "sourceAnchorPx": [
+          627,
+          627
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          128.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-storefront",
+      "sourceId": "EN-08",
+      "source": "source/generated/street/storefront-v2.png",
+      "sourceSha256": "3d05aebd0adeafd5e11292fa02af69224d11d21cd804c102748da665d9ebd0b1",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/street/storefront.png",
+      "outputSha256": "93ef4f671051237edf2981ddb5ee0cb70bb7d1579bb94024c7c6891af0184e07",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.38,
+          0.38
+        ],
+        "offsetPx": [
+          17.74000000000001,
+          13.160000000000025
+        ],
+        "sourceAnchorPx": [
+          627,
+          1178
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-station-doorway",
+      "sourceId": "EN-08",
+      "source": "source/generated/street/station-doorway-v2.png",
+      "sourceSha256": "b58f4d3082f3a7899df584cc33dbba3aaa4b0cb7be241307bbb298ec7ac6c86d",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/street/station-doorway.png",
+      "outputSha256": "011db3ae120320f9d0fa45260feda2adb805d1fbe7164507ee35c9f44233ec4d",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.53,
+          0.53
+        ],
+        "offsetPx": [
+          41.889999999999986,
+          70.19
+        ],
+        "sourceAnchorPx": [
+          887,
+          737
+        ],
+        "targetAnchorTopLeftPx": [
+          512.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-bench",
+      "sourceId": "EN-09",
+      "source": "source/generated/street/bench.png",
+      "sourceSha256": "7db5354670744bd6f179c32f965bf2e06842bb37c4c25adf80adb01136b31b2c",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/street/bench.png",
+      "outputSha256": "daf1f103a65239bf2875620fd9c0be0c24296f10e0637397c11bfa396399f1bb",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.3,
+          0.3
+        ],
+        "offsetPx": [
+          -10.099999999999966,
+          -11.099999999999994
+        ],
+        "sourceAnchorPx": [
+          887,
+          805
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-bush-planter",
+      "sourceId": "EN-09",
+      "source": "source/generated/street/bush-planter.png",
+      "sourceSha256": "d989a15659af59352dc52ca68135b28b611b1c316b0d31a7dfcd6ddb48213624",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/street/bush-planter.png",
+      "outputSha256": "42a88d4ea1060a207ad78becbd147032a63e594bb9a5a0de0eb4b0eb53fd2b22",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.31,
+          0.31
+        ],
+        "offsetPx": [
+          -18.96999999999997,
+          -12.949999999999989
+        ],
+        "sourceAnchorPx": [
+          887,
+          785
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-long-planter",
+      "sourceId": "EN-09",
+      "source": "source/generated/street/long-planter.png",
+      "sourceSha256": "58950fe062485db676e9ce07c0e463c5f94ef2ecd91bb6fe8c333197ef341bf9",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/street/long-planter.png",
+      "outputSha256": "56271e9fb145618ea48a59f8c083e13efaf7f7d2b5912655d1333b6b2dfa1c30",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.29,
+          0.29
+        ],
+        "offsetPx": [
+          -1.2299999999999613,
+          14.640000000000015
+        ],
+        "sourceAnchorPx": [
+          887,
+          744
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-bicycle-rack",
+      "sourceId": "EN-09",
+      "source": "source/generated/street/bicycle-rack-v2.png",
+      "sourceSha256": "987c6c09824d07c414382ad6426f029dd3aeab42b02d8a65787527491ed23725",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/street/bicycle-rack.png",
+      "outputSha256": "9547b1da2de8385c0098991263da00a359e083552ec03e52f14aa071c8a9e206",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.27,
+          0.27
+        ],
+        "offsetPx": [
+          16.50999999999999,
+          42.75
+        ],
+        "sourceAnchorPx": [
+          887,
+          695
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-boxes",
+      "sourceId": "EN-09",
+      "source": "source/generated/street/boxes.png",
+      "sourceSha256": "029cb4c45fc06f5700958a1ed4ba803dd93079a38b399a98e22aabc93867b042",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/street/boxes.png",
+      "outputSha256": "a2c87640af467f8344cce0158417ff4c2824c4db01ebcc8eb59dee16ffa6df64",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.21,
+          0.21
+        ],
+        "offsetPx": [
+          -3.6699999999999875,
+          6.5400000000000205
+        ],
+        "sourceAnchorPx": [
+          627,
+          1066
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-curb-horizontal",
+      "sourceId": "EN-05",
+      "source": "source/generated/street/curb-horizontal.png",
+      "sourceSha256": "45f002b0e4ae8a415927d75e2dd6a5779aaee6f328926f468f31b2576267eeaa",
+      "sourceCanvasPx": [
+        2172,
+        724
+      ],
+      "output": "environment-source/street/curb-horizontal.png",
+      "outputSha256": "d83acf97783b2ec82574f6dbc0115e9ea283cebaf2279a7c07d680f74b268640",
+      "canvasPx": [
+        512,
+        64
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 11,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.2,
+          0.2
+        ],
+        "offsetPx": [
+          38.599999999999994,
+          -40.3
+        ],
+        "sourceAnchorPx": [
+          1087,
+          361.5
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          32.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "corrections-crosswalk-flat",
+      "sourceId": "EN-06",
+      "source": "source/generated/street/crosswalk-flat.png",
+      "sourceSha256": "436c54d2d8e289a69abd7701557bcec49a2e415e0bd1b55e6b04325ec0634c82",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "environment-source/corrections/crosswalk-flat.png",
+      "outputSha256": "895790b01216483e407a34317082ca6dc8a67757f7125b06a76e885712aced50",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 7.65,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.38,
+          0.38
+        ],
+        "offsetPx": [
+          17.74000000000001,
+          -2.589999999999975
+        ],
+        "sourceAnchorPx": [
+          627,
+          680.5
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          256.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "street-bike-parking-marker",
+      "sourceId": "TS-03",
+      "source": "source/generated/street/bike-parking-marker.png",
+      "sourceSha256": "808a36225fe108e923bc2ef2183a6bdec962e64fd32d09519dda22f0ad3f36fa",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "environment-source/street/bike-parking-marker.png",
+      "outputSha256": "99c2a0c53750f6f7dc102e68fe794fb71a118b1bb9577ad8b89ef07294a63de8",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 3.5,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.187,
+          0.187
+        ],
+        "offsetPx": [
+          11.779499999999999,
+          5.982500000000002
+        ],
+        "sourceAnchorPx": [
+          621.5,
+          652.5
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          128.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-train-closed",
+      "sourceId": "EN-10",
+      "source": "source/generated/metro/train-closed.png",
+      "sourceSha256": "fe3eec77dfd5a35ace0dc38ea4bf42307ea3952c10b09864ee7d70abd321e4ef",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/metro/train-closed.png",
+      "outputSha256": "d8587a278c8ea5f531d129c5551f469e0fd00a4af07f86c324c04ad4d94990da",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 7,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.58,
+          0.58
+        ],
+        "offsetPx": [
+          -2.4599999999999227,
+          3.7600000000000477
+        ],
+        "sourceAnchorPx": [
+          887,
+          788
+        ],
+        "targetAnchorTopLeftPx": [
+          512.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-train-open",
+      "sourceId": "EN-10",
+      "source": "source/generated/metro/train-open.png",
+      "sourceSha256": "efd27464468c5e4c8e680be62696ef34d89ae855fa09934218669ebd32069f9e",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/metro/train-open.png",
+      "outputSha256": "2b142b5ce1d1828fa6c9ff67c931ccdea4382d7cdbef133d9687715253ef57b6",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 7,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.58,
+          0.58
+        ],
+        "offsetPx": [
+          -2.4599999999999227,
+          3.7600000000000477
+        ],
+        "sourceAnchorPx": [
+          887,
+          788
+        ],
+        "targetAnchorTopLeftPx": [
+          512.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-tactile-strip",
+      "sourceId": "EN-12",
+      "source": "source/generated/metro/tactile-strip.png",
+      "sourceSha256": "35166cc3889dcdc6dd08395f5885e473022bfbb63c47854e9c00adb40796e2b9",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "environment-source/metro/tactile-strip.png",
+      "outputSha256": "33cfa05a225601821270444e38bfbfd3f128df3511260cac54a8a3f14e2a3925",
+      "canvasPx": [
+        512,
+        64
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 3,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.333,
+          0.333
+        ],
+        "offsetPx": [
+          -39.53750000000002,
+          -114.52000000000001
+        ],
+        "sourceAnchorPx": [
+          887.5,
+          440
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          32.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-exit-marker",
+      "sourceId": "EN-13",
+      "source": "source/generated/metro/exit-marker.png",
+      "sourceSha256": "c06f7586d28d1eef90074c0ac8f765b7a5ac59fe50d67cd99267df42addad706",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/metro/exit-marker.png",
+      "outputSha256": "1f3d04b661b1c952ca457b2fb10c964f469423e9b62424eceb2d054ad220f28f",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 4,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.4,
+          0.4
+        ],
+        "offsetPx": [
+          5.199999999999989,
+          9.199999999999989
+        ],
+        "sourceAnchorPx": [
+          627,
+          1129
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-platform-bench",
+      "sourceId": "EN-14",
+      "source": "source/generated/metro/platform-bench.png",
+      "sourceSha256": "421da0f4ba931853edcd046d39d127288a0e7c61fd64c2823bd08768ddc8a4e8",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/metro/platform-bench.png",
+      "outputSha256": "1974487155508a9d524347a60bdf96a5b9a6d0506b52a08613c124449c785739",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.275,
+          0.275
+        ],
+        "offsetPx": [
+          12.074999999999989,
+          6.824999999999989
+        ],
+        "sourceAnchorPx": [
+          887,
+          813
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-kiosk",
+      "sourceId": "EN-14",
+      "source": "source/generated/metro/kiosk.png",
+      "sourceSha256": "49bde11627e86be2011d68d64b8fe2ff4742788c30686bac4a1e09de66a79ff9",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/metro/kiosk.png",
+      "outputSha256": "295e991fc741cd009e84518a7cd259984e4e96aedca6a8dbfb1e12e67b3274d7",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.4,
+          0.4
+        ],
+        "offsetPx": [
+          5.199999999999989,
+          11.199999999999989
+        ],
+        "sourceAnchorPx": [
+          627,
+          1124
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-pillar",
+      "sourceId": "EN-14",
+      "source": "source/generated/metro/pillar.png",
+      "sourceSha256": "b74a63049b4a5a66b987897215a2eb77c84baa1fd47477b48e8fc1bc51306ad5",
+      "sourceCanvasPx": [
+        1024,
+        1536
+      ],
+      "output": "runtime-static/V8Art/metro/pillar.png",
+      "outputSha256": "59a38eccfb08f6e4edda0e69a227b1bd21ae855604121605b0c878b954f940cb",
+      "canvasPx": [
+        256,
+        384
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.29,
+          0.29
+        ],
+        "offsetPx": [
+          -20.47999999999999,
+          -57.49999999999994
+        ],
+        "sourceAnchorPx": [
+          512,
+          1390
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          345.6
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-escalator",
+      "sourceId": "EN-14",
+      "source": "source/generated/metro/escalator.png",
+      "sourceSha256": "b3be1ac7e7908875d5cf290b90cc8c2219e435993609fa73b31c2345583334cb",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/metro/escalator.png",
+      "outputSha256": "cea29446aded6244c4d0c100ec5814d6007528698396eb7340b4b5279e658be3",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.41,
+          0.41
+        ],
+        "offsetPx": [
+          -1.0699999999999932,
+          -15.619999999999948
+        ],
+        "sourceAnchorPx": [
+          627,
+          1162
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "metro-vending",
+      "sourceId": "TM-02",
+      "source": "source/generated/metro/vending-v2.png",
+      "sourceSha256": "3d9ee7bf583b40713859c1581137bf07d85794454a8d2caa397f0550fdad47be",
+      "sourceCanvasPx": [
+        1356,
+        1159
+      ],
+      "output": "runtime-static/V8Art/metro/vending.png",
+      "outputSha256": "a1c6522a3db7d74d680ff60aad8ff02bed9fd4d2b9835f1795dd880f3bbd743d",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.44,
+          0.44
+        ],
+        "offsetPx": [
+          -42.31999999999999,
+          -8.240000000000009
+        ],
+        "sourceAnchorPx": [
+          678,
+          1066
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-filing-cabinet",
+      "sourceId": "EN-15",
+      "source": "source/generated/office/filing-cabinet-v2.png",
+      "sourceSha256": "79b42be0e9f78fa94879a0ecc0e7141fc8a2d97f25fc63656466d374bb6707d8",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/office/filing-cabinet.png",
+      "outputSha256": "d233fe55341f19cca9d64c1560e4189a97a442a38c3693b1d0c8c82363c08726",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.38,
+          0.38
+        ],
+        "offsetPx": [
+          17.74000000000001,
+          24.560000000000002
+        ],
+        "sourceAnchorPx": [
+          627,
+          1148
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-desk-chair",
+      "sourceId": "EN-15",
+      "source": "source/generated/office/desk-chair-v2.png",
+      "sourceSha256": "c352b010fb8de512a5d9a7dca62edb5029bc549d2472680555b6981ba95fe08a",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/office/desk-chair.png",
+      "outputSha256": "70f9d6a439017d196c5724e124153fe990fdc055549a83a22c8e1a990c3df56d",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.34,
+          0.34
+        ],
+        "offsetPx": [
+          -45.24000000000001,
+          -36.16
+        ],
+        "sourceAnchorPx": [
+          886,
+          784
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-meeting-table",
+      "sourceId": "EN-16",
+      "source": "source/generated/office/meeting-table.png",
+      "sourceSha256": "39760702fb8b1804b51e28457ae27344b7f229adc46edfa1fc0a0e0fd4fa4a1d",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/office/meeting-table.png",
+      "outputSha256": "348742fa82693d33393bfaf9f6c6c6937e68715eaae3fbc2fbb1e746550e23f3",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 5,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.52,
+          0.52
+        ],
+        "offsetPx": [
+          51.80000000000001,
+          54.160000000000025
+        ],
+        "sourceAnchorPx": [
+          885,
+          782
+        ],
+        "targetAnchorTopLeftPx": [
+          512.0,
+          460.8
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-reception",
+      "sourceId": "EN-17",
+      "source": "source/generated/office/reception.png",
+      "sourceSha256": "945a284918ed7a693023bdbe9450896c01beabd3079913aff03d61d2ebf1b53d",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/office/reception.png",
+      "outputSha256": "6c010c2f7c687131e9b017ee99383eabd7e967161b446cd6a1ff2b9270cd202a",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.27,
+          0.27
+        ],
+        "offsetPx": [
+          17.859999999999985,
+          34.91999999999999
+        ],
+        "sourceAnchorPx": [
+          882,
+          724
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-sofa",
+      "sourceId": "EN-17",
+      "source": "source/generated/office/sofa.png",
+      "sourceSha256": "b314712e34c507967f58c7c080214ad42562d81b505befedb87bfcde40842de7",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "runtime-static/V8Art/office/sofa.png",
+      "outputSha256": "76e690c9c1509fa2cc004a526dcbc3c95ce0b0109d2a7211230eaa1e1264aa54",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.285,
+          0.285
+        ],
+        "offsetPx": [
+          3.490000000000009,
+          -2.4449999999999648
+        ],
+        "sourceAnchorPx": [
+          886,
+          817
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-plant",
+      "sourceId": "EN-17",
+      "source": "source/generated/office/plant.png",
+      "sourceSha256": "2d15cf3c89b5c36efb57c368f340fad7bc820b9e4443bb4d6e1f9140394132fc",
+      "sourceCanvasPx": [
+        1254,
+        1254
+      ],
+      "output": "runtime-static/V8Art/office/plant.png",
+      "outputSha256": "533f62c1a4591742edce6036af60407da79db31d0816d925d8eb25beae200cc4",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "A",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "worldWidth": 3.2,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.185,
+          0.185
+        ],
+        "offsetPx": [
+          12.004999999999995,
+          8.400000000000006
+        ],
+        "sourceAnchorPx": [
+          627,
+          1200
+        ],
+        "targetAnchorTopLeftPx": [
+          128.0,
+          230.4
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    },
+    {
+      "id": "office-clock-mat",
+      "sourceId": "EN-17",
+      "source": "source/generated/office/clock-mat.png",
+      "sourceSha256": "14eba01dcf0b0e1c679dbdb58821acb54ea32142af83b3ea087a49e512133693",
+      "sourceCanvasPx": [
+        1774,
+        887
+      ],
+      "output": "environment-source/office/clock-mat.png",
+      "outputSha256": "369d274c3d87f770625a8df05882e19149e785ddc8ef14699cac4212801d28fe",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "kind": "sprite",
+      "integration": "B",
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "worldWidth": 3,
+      "transform": {
+        "mode": "uniform-scale-and-anchor-translation",
+        "scaleXY": [
+          0.3,
+          0.3
+        ],
+        "offsetPx": [
+          -10.099999999999966,
+          -4.900000000000006
+        ],
+        "sourceAnchorPx": [
+          887,
+          443
+        ],
+        "targetAnchorTopLeftPx": [
+          256.0,
+          128.0
+        ],
+        "automaticTrim": false
+      },
+      "alphaEncoding": "straight RGBA; PNG; no alpha cleanup or background removal",
+      "acceptance": "candidate; technical export only; visual and in-game acceptance pending"
+    }
+  ]
+}

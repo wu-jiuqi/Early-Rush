@@ -1,0 +1,159 @@
+{
+  "schema": "early-rush-art-export-1",
+  "assets": [
+    {
+      "id": "office-filing-cabinet",
+      "source": "source/generated/office/filing-cabinet-v2.png",
+      "output": "runtime-static/V8Art/office/filing-cabinet.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1148
+      ],
+      "scale": 0.38,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-15",
+      "integration": "A"
+    },
+    {
+      "id": "office-desk-chair",
+      "source": "source/generated/office/desk-chair-v2.png",
+      "output": "runtime-static/V8Art/office/desk-chair.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        886,
+        784
+      ],
+      "scale": 0.34,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-15",
+      "integration": "A"
+    },
+    {
+      "id": "office-meeting-table",
+      "source": "source/generated/office/meeting-table.png",
+      "output": "runtime-static/V8Art/office/meeting-table.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        885,
+        782
+      ],
+      "scale": 0.52,
+      "kind": "sprite",
+      "worldWidth": 5,
+      "sourceId": "EN-16",
+      "integration": "A"
+    },
+    {
+      "id": "office-reception",
+      "source": "source/generated/office/reception.png",
+      "output": "runtime-static/V8Art/office/reception.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        882,
+        724
+      ],
+      "scale": 0.27,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-17",
+      "integration": "A"
+    },
+    {
+      "id": "office-sofa",
+      "source": "source/generated/office/sofa.png",
+      "output": "runtime-static/V8Art/office/sofa.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        886,
+        817
+      ],
+      "scale": 0.285,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-17",
+      "integration": "A"
+    },
+    {
+      "id": "office-plant",
+      "source": "source/generated/office/plant.png",
+      "output": "runtime-static/V8Art/office/plant.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1200
+      ],
+      "scale": 0.185,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-17",
+      "integration": "A"
+    },
+    {
+      "id": "office-clock-mat",
+      "source": "source/generated/office/clock-mat.png",
+      "output": "environment-source/office/clock-mat.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        887,
+        443
+      ],
+      "scale": 0.3,
+      "kind": "sprite",
+      "worldWidth": 3,
+      "sourceId": "EN-17",
+      "integration": "B"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "early-rush-layout-provenance-1",
+  "date": "2026-11-11",
+  "seed": 91026,
+  "source": "Builds/EarlyRush-V11/QA/layout-stage-{0,1,2}.json",
+  "snapshotSchema": "early-rush-v9-map-2",
+  "frozenFiles": ["layouts/layout-stage-0.json", "layouts/layout-stage-1.json", "layouts/layout-stage-2.json"],
+  "scope": "Existing cells, routes, zones, structures and task locations. No new level generation.",
+  "previewLimitations": [
+    "Offline System.Drawing assembly, not a Unity screenshot or gameplay test.",
+    "Border decoration is derived with the existing placement policy and candidate full-canvas extents.",
+    "Dynamic people, movable task objects, signal UI and gameplay progress are not replayed; the train uses a fixed open-door display.",
+    "Only selected fixed task fixtures are included. The outer eight-cell ceramic environment floor is replaced by a cream review background.",
+    "Centre-pivot decal candidates preview their intended mapping; the current runtime loader requires a pivot update.",
+    "Overview route and task labels are review overlays, never part of exported art."
+  ]
+}

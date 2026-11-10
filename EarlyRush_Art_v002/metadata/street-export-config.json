@@ -1,0 +1,247 @@
+{
+  "schema": "early-rush-art-export-1",
+  "date": "2026-11-11",
+  "batch": "v002-street",
+  "assets": [
+    {
+      "id": "street-storefront",
+      "source": "source/generated/street/storefront-v2.png",
+      "output": "runtime-static/V8Art/street/storefront.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1178
+      ],
+      "scale": 0.38,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-08",
+      "integration": "A",
+      "resourceKey": "street/storefront",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-station-doorway",
+      "source": "source/generated/street/station-doorway-v2.png",
+      "output": "runtime-static/V8Art/street/station-doorway.png",
+      "canvasPx": [
+        1024,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        737
+      ],
+      "scale": 0.53,
+      "kind": "sprite",
+      "worldWidth": 4,
+      "sourceId": "EN-08",
+      "integration": "A",
+      "resourceKey": "street/station-doorway",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-bench",
+      "source": "source/generated/street/bench.png",
+      "output": "runtime-static/V8Art/street/bench.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        805
+      ],
+      "scale": 0.3,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/bench",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-bush-planter",
+      "source": "source/generated/street/bush-planter.png",
+      "output": "runtime-static/V8Art/street/bush-planter.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        785
+      ],
+      "scale": 0.31,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/bush-planter",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-long-planter",
+      "source": "source/generated/street/long-planter.png",
+      "output": "runtime-static/V8Art/street/long-planter.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        744
+      ],
+      "scale": 0.29,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/long-planter",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-bicycle-rack",
+      "source": "source/generated/street/bicycle-rack-v2.png",
+      "output": "runtime-static/V8Art/street/bicycle-rack.png",
+      "canvasPx": [
+        512,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        887,
+        695
+      ],
+      "scale": 0.27,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/bicycle-rack",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-boxes",
+      "source": "source/generated/street/boxes.png",
+      "output": "runtime-static/V8Art/street/boxes.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        627,
+        1066
+      ],
+      "scale": 0.21,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "EN-09",
+      "integration": "A",
+      "resourceKey": "street/boxes",
+      "notes": "Candidate static sprite; manually estimated ground point, in-engine scale and occlusion review pending."
+    },
+    {
+      "id": "street-curb-horizontal",
+      "source": "source/generated/street/curb-horizontal.png",
+      "output": "environment-source/street/curb-horizontal.png",
+      "canvasPx": [
+        512,
+        64
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        1087,
+        361.5
+      ],
+      "scale": 0.2,
+      "kind": "sprite",
+      "worldWidth": 11,
+      "sourceId": "EN-05",
+      "integration": "B",
+      "resourceKey": "street/curb-horizontal",
+      "notes": "Existing key currently receives generic bottom pivot; this ground-centred export requires pivot mapping before runtime use."
+    },
+    {
+      "id": "corrections-crosswalk-flat",
+      "source": "source/generated/street/crosswalk-flat.png",
+      "output": "environment-source/corrections/crosswalk-flat.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        680.5
+      ],
+      "scale": 0.38,
+      "kind": "sprite",
+      "worldWidth": 7.65,
+      "sourceId": "EN-06",
+      "integration": "B",
+      "resourceKey": "corrections/crosswalk-flat",
+      "notes": "Existing key currently receives generic bottom pivot; this ground-centred export requires pivot mapping before runtime use."
+    },
+    {
+      "id": "street-bike-parking-marker",
+      "source": "source/generated/street/bike-parking-marker.png",
+      "output": "environment-source/street/bike-parking-marker.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        621.5,
+        652.5
+      ],
+      "scale": 0.187,
+      "kind": "sprite",
+      "worldWidth": 3.5,
+      "sourceId": "TS-03",
+      "integration": "B",
+      "resourceKey": "street/bike-parking-marker",
+      "notes": "Existing key currently receives generic bottom pivot; this ground-centred export requires pivot mapping before runtime use."
+    }
+  ]
+}

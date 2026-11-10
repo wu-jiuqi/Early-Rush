@@ -1,0 +1,132 @@
+{
+  "schema": "early-rush-imagegen-prompts-1",
+  "date": "2026-11-11",
+  "tool": "built-in image_gen",
+  "mode": "independent asset generation and three camera-view revisions",
+  "referenceImages": [
+    "../EarlyRush_Art_v001/source/generated/chair-v2.png"
+  ],
+  "primaryPrompts": [
+    {
+      "id": "storefront",
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated environment sprite for Early Rush, game-ready. Input image is a MATERIAL AND COLOR STYLE REFERENCE ONLY; do not reproduce the chair. Rounded simplified matte toy-like 2.5D illustration, cream ivory structures with muted teal, restrained warm yellow accents. Camera fixed north-up orthographic at 75-degree overhead elevation (15 degrees from vertical), aligned horizontal X and vertical Y edges, NOT diagonal isometric. Show broad top surfaces and strongly foreshortened vertical surfaces. Soft light from image upper-left, self-shading only, no cast ground shadow. Entire single object with transparent safe margins, actual alpha background, no floor plane, no environment scene, no people, no text, logos, labels, grids or decorative floating shapes. Subject: one compact single-story street shop exterior module, closed cream-and-teal facade and broad flat gently rounded ivory rooftop, shallow teal awning, one display window and one visibly CLOSED opaque teal service door on the front toward image bottom. No readable merchandise or signage, no food, no repair symbol. The CLOSED door must not look like a traversable opening. Compact block silhouette seen mostly from above. Square canvas, object about 78% canvas width; front base contact midpoint at (50%,90% from top). Intended export 512x512.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-baddf663-eaff-4e3f-a9a4-9639020f5674.png"
+    },
+    {
+      "id": "station-doorway",
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated environment sprite for Early Rush, game-ready. Input image is a MATERIAL AND COLOR STYLE REFERENCE ONLY; do not reproduce the chair. Rounded simplified matte toy-like 2.5D illustration, cream ivory structures with muted teal, restrained warm yellow accents. Camera fixed north-up orthographic at 75-degree overhead elevation (15 degrees from vertical), aligned horizontal X and vertical Y edges, NOT diagonal isometric. Show broad top surfaces and strongly foreshortened vertical surfaces. Soft light from image upper-left, self-shading only, no cast ground shadow. Entire single object with transparent safe margins, actual alpha background, no floor plane, no environment scene, no people, no text, logos, labels, grids or decorative floating shapes. Subject: one wide, low subway entrance portal module. Two sturdy cream side piers with teal inner trims and a short horizontal cream lintel, subtle yellow strip inset on each pier. The central passage MUST remain actual transparent alpha all the way down to the ground: no doors, no glass, no stairs, no floor slab, no dark filled backdrop. Front faces image bottom; top of lintel broad and visible. Horizontal 2:1 canvas, intended 1024x512. Entire portal has width roughly 80% canvas and height 65%; base contact midpoint (50%,90% from top). No transit logo or sign. It will sit at an existing map exit so passage should read as open and unobstructed.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-3504aac4-da2c-4d52-9706-bb946873bce4.png"
+    },
+    {
+      "id": "bench",
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated environment sprite for Early Rush, game-ready. Input image is a MATERIAL AND COLOR STYLE REFERENCE ONLY; do not reproduce the chair. Rounded simplified matte toy-like 2.5D illustration, cream ivory structures with muted teal, restrained warm yellow accents. Camera fixed north-up orthographic at 75-degree overhead elevation (15 degrees from vertical), aligned horizontal X and vertical Y edges, NOT diagonal isometric. Show broad top surfaces and strongly foreshortened vertical surfaces. Soft light from image upper-left, self-shading only, no cast ground shadow. Entire single object with transparent safe margins, actual alpha background, no floor plane, no environment scene, no people, no text, logos, labels, grids or decorative floating shapes. Subject: one empty small street bench, pale honey wood rounded seat slats, low teal backrest, two cream supports with muted teal feet. Horizontal long axis exactly image left-right, seat faces image bottom. High overhead: large seat/top surfaces, low foreshortened backrest, no tall frontal view. No cushions or extra items. Horizontal 2:1 canvas, intended 512x256. Body width 78% of image; feet ground midpoint at (50%,90% from top); full object with comfortable transparent margin.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-5cc47a4b-1523-42fe-bef1-0b1768d17c04.png"
+    },
+    {
+      "id": "bush-planter",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush environment game sprite on real transparent alpha background. Input is only matte rounded toy illustration material/color reference, not an object to copy. Fixed north-up orthographic camera at 75 degrees above ground, nearly vertical view: broad top surfaces, strongly compressed sides. No diagonal isometric skew; long edges exactly horizontal. Rounded simplified forms, cream ivory and muted teal with a little gentle yellow, soft upper-left light fixed in world. Self shading only, no cast ground shadow or glow, no scene, no floor, no people, letters, logos, border, grid, or floating decoration. Intended horizontal 512x256 export in 2:1 canvas. Object occupies ~78% canvas width, ground base midpoint at (50%,90% from top), entirely visible with safe margins. Subject: one compact low rectangular cream ceramic planter with two or three joined rounded small teal-green shrub clumps. Healthy but restrained desaturated foliage, clearly larger visible top foliage than front planter wall. Simple leaf texture at medium scale, no flowers, no single tall tree. Empty transparent surrounds, not a landscape strip.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-3e84cc6f-1a35-44ff-837a-28ff409367f0.png"
+    },
+    {
+      "id": "long-planter",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush environment game sprite on real transparent alpha background. Input is only matte rounded toy illustration material/color reference, not an object to copy. Fixed north-up orthographic camera at 75 degrees above ground, nearly vertical view: broad top surfaces, strongly compressed sides. No diagonal isometric skew; long edges exactly horizontal. Rounded simplified forms, cream ivory and muted teal with a little gentle yellow, soft upper-left light fixed in world. Self shading only, no cast ground shadow or glow, no scene, no floor, no people, letters, logos, border, grid, or floating decoration. Intended horizontal 512x256 export in 2:1 canvas. Object occupies ~78% canvas width, ground base midpoint at (50%,90% from top), entirely visible with safe margins. Subject: one LONG narrow low cream rectangular street planting trough, teal lower trim, containing a simple continuous row of four low rounded desaturated green shrubs. Horizontal width about four times the physical front-to-back depth. Viewed steeply from above, foliage forms the majority of silhouette; minimal visible planter wall. No flowers, no tall plants, no scene.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-b3a5b73d-37c3-4ce4-835f-162cb6c4a30c.png"
+    },
+    {
+      "id": "bicycle-rack",
+      "prompt": "Use case: stylized-concept. ONE isolated Early Rush environment game sprite on real transparent alpha background. Input is only matte rounded toy illustration material/color reference, not an object to copy. Fixed north-up orthographic camera at 75 degrees above ground, nearly vertical view: broad top surfaces, strongly compressed sides. No diagonal isometric skew; long edges exactly horizontal. Rounded simplified forms, cream ivory and muted teal with a little gentle yellow, soft upper-left light fixed in world. Self shading only, no cast ground shadow or glow, no scene, no floor, no people, letters, logos, border, grid, or floating decoration. Intended horizontal 512x256 export in 2:1 canvas. Object occupies ~78% canvas width, ground base midpoint at (50%,90% from top), entirely visible with safe margins. Subject: one EMPTY low street bicycle rack with three evenly spaced rounded inverted-U loops, muted teal tubular metal, on two short ivory horizontal base rails. Racks align along image left-right. All holes between loops must be truly transparent. Camera high overhead, see top curves and base mounts. No bicycles, no wheel, no locks, no signs, no people. Keep simple, sturdy, readable silhouette.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-38a28ec2-e399-449c-af9b-adca30e305dc.png"
+    },
+    {
+      "id": "boxes",
+      "prompt": "Use case: stylized-concept. ONE isolated small stack of THREE closed cardboard delivery boxes for Early Rush. Input is material/style reference only, do not draw a chair. Rounded matte simplified toy 2.5D illustration with warm pale kraft cardboard, ivory packing tape and muted teal edge accents, no labels, letters or logos. Two low rectangular boxes side by side, smaller closed box offset on top; no loose objects. Fixed north-up parallel camera very high at 75 degrees above ground, see mostly the square top faces and compressed side walls; not diagonal isometric. All box long edges align horizontal/vertical in image, no diagonal diamonds. Soft upper-left light, self shading only, NO cast ground shadow, no floor, transparent alpha backdrop. Square canvas for final 256x256, full stack at 75-80% canvas width, base ground midpoint near (50%,90% from top), clean safe margins.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-3fc4ed4c-19ee-4a0a-8e2e-0def4c12d2f5.png"
+    },
+    {
+      "id": "curb-horizontal",
+      "prompt": "Use case: stylized-concept. ONE seamless horizontal straight curb module for Early Rush. Actual transparent alpha everywhere outside curb. Camera nearly vertical top-down orthographic, north-up, not isometric. A continuous very low cream ivory concrete curb strip running left-right, tiny soft bevel, subtle pale teal front lip and occasional fine narrow vertical joins between blocks. Matte rounded simplified toy finish matching input MATERIAL reference; no chair. Low contrast, upper-left light, no cast shadow. Strip physical width is 12 times its visible height. Transparent wide landscape canvas, object centered, whole strip visible; intended export512x64. Do not add a road, sidewalk slab, bushes, end post, rounded road island, or any scene. No text or markings. Keep both ends cut straight for concatenation; upper and lower edges straight and parallel.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-420e2ef4-0012-4888-9c11-3fef61d3e6b8.png"
+    },
+    {
+      "id": "crosswalk-flat",
+      "prompt": "Use case: stylized-concept. ONE flat road paint decal sprite for Early Rush: exactly SIX evenly spaced long horizontal ivory-white bars, stacked vertically, forming one compact rectangular zebra crossing. Pure perpendicular top-down view, flat 2D painted material, not tilted, not isometric, no thickness or bevel, no shadow. Each bar has straight squared ends with only tiny softness at corners; all bars same width and height, even transparent gaps. Subtle matte slightly weathered paint within bars, no visible cracks or debris. Transparent alpha background including between all bars, ABSOLUTELY no gray/black asphalt slab, sidewalk, road border, car, person, arrow, signal or text. Square canvas for512x512; entire group centered and occupies 78% width and 70% height; clear alpha margins. One decal, not separate thumbnails.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-9fd3c34f-0bfc-4230-be2d-b85c31f5b181.png"
+    },
+    {
+      "id": "bike-parking-marker",
+      "prompt": "Use case: stylized-concept. ONE flat pavement paint symbol for Early Rush: a simple clean warm-yellow BICYCLE silhouette/icon with two open circular wheels, triangular bicycle frame, handlebar and saddle. Single coherent recognisable standard bicycle symbol, facing RIGHT. Pure top-down flat 2D decal, no perspective, thickness, bevel, cast shadow or glow. Matte lightly textured yellow road paint. Actual transparent alpha everywhere outside the symbol and inside wheel holes. Square256x256 intended output, symbol centered, 78% canvas width, safe margins. NO letter P, no text, no border, no parking bay rectangle, no road slab, no actual 3D bicycle, no people. Must remain readable at small game size.",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-2c2b06e8-bcf5-4621-9620-b3fc715b5f82.png"
+    }
+  ],
+  "revisions": [
+    {
+      "id": "storefront-v2",
+      "prompt": "Use case: precise-object-edit. Correct ONLY camera projection of this SAME Early Rush shop sprite. Preserve all materials, ivory rooftop, teal trim and striped teal awning, yellow tiny accents, closed opaque teal door, window; no text, no new elements. Camera much steeper, 75 degrees ABOVE ground / 15 degrees from vertical, orthographic north-up. The large roof must dominate about 75% of the visible building height; the front facade including door/window must be strongly squashed by perspective to about 25% of visible height. Do not merely crop the reference. No diagonal isometric rotation. Entire compact building, same centered square canvas, real alpha background, no floor or drop shadow, upper-left light. No glow. Front base remains lower in image and roof extends upward.",
+      "ref": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v002\\source\\generated\\street\\storefront.png",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-b3438aa2-9114-4e2f-938c-c240a8b713ae.png"
+    },
+    {
+      "id": "station-doorway-v2",
+      "prompt": "Use case: precise-object-edit. Correct camera projection of the SAME cream and teal subway entry portal. The reference is too frontal; use near-overhead 75-degree elevation orthographic fixed north-up. Make top surfaces of the thick lintel and two side piers broad and clearly visible. Strongly foreshorten the vertical facade / legs; the opening becomes a wide shallow U-shaped passage in projection. Do not close the passage: central opening must remain actual transparent alpha from beneath lintel through bottom edge. Preserve cream/teal/yellow materials, no text, no sign, no doors, no floor, no stairs, no shadows, no extra objects. Entire horizontal sprite with safe margins. Same landscape 2:1 canvas, upper-left light. It is a low map entrance architecture piece seen from high above, not a front-view elevation drawing.",
+      "ref": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v002\\source\\generated\\street\\station-doorway.png",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-0adbb818-25e9-47c8-ab5d-79f1800825b3.png"
+    },
+    {
+      "id": "bicycle-rack-v2",
+      "prompt": "Use case: precise-object-edit. Change ONLY projection of the same empty three-loop bicycle rack to the Early Rush game's very steep 75-degree overhead orthographic camera. Reference upright loops are too tall/frontal. Each vertical U-shaped loop must appear heavily compressed vertically into a low shallow arc as seen from above. Show mostly upper surfaces of the cream base rails and teal loop tubing. Overall rack width stays same but visible total height should be about one-third of width. Align long rails exactly left-right, no diagonal/isometric skew. Keep three hoops, two ivory base rails, muted teal matte rounded material, upper-left light. All holes true transparent alpha, no floor, no bike, no cast shadow, no labels, no glow, complete safe margins. Landscape2:1 canvas.",
+      "ref": "D:\\AI NAS\\Early-Rush\\EarlyRush_Art_v002\\source\\generated\\street\\bicycle-rack.png",
+      "originalPath": "C:\\Users\\30114\\.codex\\generated_images\\01a1c668-7aeb-7222-87a6-f8d29186702e\\exec-9ca37ac4-2c7e-4c77-be20-22ebda3efae2.png"
+    }
+  ],
+  "selectedSources": [
+    {
+      "id": "street-storefront",
+      "source": "source/generated/street/storefront-v2.png"
+    },
+    {
+      "id": "street-station-doorway",
+      "source": "source/generated/street/station-doorway-v2.png"
+    },
+    {
+      "id": "street-bench",
+      "source": "source/generated/street/bench.png"
+    },
+    {
+      "id": "street-bush-planter",
+      "source": "source/generated/street/bush-planter.png"
+    },
+    {
+      "id": "street-long-planter",
+      "source": "source/generated/street/long-planter.png"
+    },
+    {
+      "id": "street-bicycle-rack",
+      "source": "source/generated/street/bicycle-rack-v2.png"
+    },
+    {
+      "id": "street-boxes",
+      "source": "source/generated/street/boxes.png"
+    },
+    {
+      "id": "street-curb-horizontal",
+      "source": "source/generated/street/curb-horizontal.png"
+    },
+    {
+      "id": "corrections-crosswalk-flat",
+      "source": "source/generated/street/crosswalk-flat.png"
+    },
+    {
+      "id": "street-bike-parking-marker",
+      "source": "source/generated/street/bike-parking-marker.png"
+    }
+  ],
+  "reviewNotes": [
+    "All 10 requested independent assets generated with actual alpha.",
+    "Storefront, doorway and bicycle rack v2 selected after correcting overly frontal original projection.",
+    "Source-over review of bicycle marker and crosswalk on dark teal confirmed transparent holes/gaps without broad halo; QA composite removed from generated-source directory.",
+    "Some very-low-alpha hidden RGB colours persist from generation; inspect with correct alpha blending.",
+    "The portal opening is transparent; lintel still occludes as one sprite and may need foreground separation if used above walkable routes.",
+    "No PSD/KRA layers supplied; all source files are original raster PNG.",
+    "Ground pieces intentionally class B because current common runtime pivot is not centre."
+  ]
+}

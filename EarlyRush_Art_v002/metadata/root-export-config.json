@@ -1,0 +1,180 @@
+{
+  "assets": [
+    {
+      "id": "floor-asphalt",
+      "source": "source/generated/common/asphalt.png",
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-01",
+      "integration": "A"
+    },
+    {
+      "id": "floor-ceramic",
+      "source": "source/generated/common/ceramic.png",
+      "output": "runtime-static/V8Art/floors-v3/ceramic.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-02",
+      "integration": "A"
+    },
+    {
+      "id": "floor-carpet",
+      "source": "source/generated/common/carpet.png",
+      "output": "runtime-static/V8Art/floors-v3/carpet.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-03",
+      "integration": "A"
+    },
+    {
+      "id": "floor-floor-tile",
+      "source": "source/generated/common/floor-tile.png",
+      "output": "runtime-static/V8Art/legacy-floors/floor-tile.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-02",
+      "integration": "A"
+    },
+    {
+      "id": "floor-sidewalk",
+      "source": "source/generated/common/sidewalk.png",
+      "output": "environment-source/floors-v3/sidewalk.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.4082934609250399,
+      "kind": "floor",
+      "worldWidth": 4,
+      "sourceId": "EN-04",
+      "integration": "B"
+    },
+    {
+      "id": "breakfast-stall",
+      "source": "source/generated/common/breakfast-stall.png",
+      "output": "runtime-static/V8Art/stalls/breakfast-stall.png",
+      "canvasPx": [
+        512,
+        512
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.1
+      ],
+      "sourceAnchorPx": [
+        888,
+        833
+      ],
+      "scale": 0.36,
+      "kind": "sprite",
+      "worldWidth": 2.6,
+      "sourceId": "TS-01",
+      "integration": "A"
+    },
+    {
+      "id": "ground-arrows",
+      "source": "source/generated/common/arrows.png",
+      "output": "environment-source/fx-decal/arrows.png",
+      "canvasPx": [
+        128,
+        128
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        645
+      ],
+      "scale": 0.12,
+      "kind": "sprite",
+      "worldWidth": 0.55,
+      "sourceId": "UI-06",
+      "integration": "B"
+    },
+    {
+      "id": "neutral-selection",
+      "source": "source/generated/common/selection.png",
+      "output": "environment-source/ui/selection.png",
+      "canvasPx": [
+        256,
+        256
+      ],
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.5
+      ],
+      "sourceAnchorPx": [
+        627,
+        627
+      ],
+      "scale": 0.2,
+      "kind": "sprite",
+      "worldWidth": 3.2,
+      "sourceId": "UI-06",
+      "integration": "B"
+    }
+  ]
+}

@@ -1,0 +1,1896 @@
+{
+  "schema": "early-rush-art-validation-1",
+  "generatedAtUtc": "2026-11-10T17:16:59.1206263+00:00",
+  "status": "technical-checks-passed",
+  "warningCount": 0,
+  "scope": "Dimensions, alpha bounds/corners/edges and hashes only. No assertion of art quality, anchor correctness, animation coherence, seamlessness or in-game acceptance.",
+  "boundsConvention": "Top-left origin, inclusive minimum, [x,y,width,height], threshold alpha >= 128.",
+  "assets": [
+    {
+      "id": "floor-asphalt",
+      "source": "source/generated/common/asphalt.png",
+      "output": "runtime-static/V8Art/floors-v3/asphalt.png",
+      "sourceSha256": "31440d680f5be4efdbd80c9b6fb3d64aedd3c03d9918698035f1501a96767700",
+      "outputSha256": "8123f0607f7220e76018ed4df3869cb86a6549cc8e7d70edc36eec7789dbfd85",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 1572516,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 2.6093,
+          "topBottom": 3.0122,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 262144,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 2.6615,
+          "topBottom": 3.2005,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "warnings": []
+    },
+    {
+      "id": "floor-ceramic",
+      "source": "source/generated/common/ceramic.png",
+      "output": "runtime-static/V8Art/floors-v3/ceramic.png",
+      "sourceSha256": "990430219206074d9657f66b3cf6df398695843d2b391ff8c5730757b33e0813",
+      "outputSha256": "7886b2a2ac7a71a8958db17425bb8af0696ad48eac807885a0a6ff17c9baac02",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 1572516,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 3.6786,
+          "topBottom": 6.1614,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 262144,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 3.793,
+          "topBottom": 1.6471,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "warnings": []
+    },
+    {
+      "id": "floor-carpet",
+      "source": "source/generated/common/carpet.png",
+      "output": "runtime-static/V8Art/floors-v3/carpet.png",
+      "sourceSha256": "339afc019264fe65fc3d9ff58b6b18e62ee94d55122625b9f0ed127f24ea89b8",
+      "outputSha256": "500459168a8e3536b552e2d508870525aaa877c26beff1081be81246ee0ea090",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 1572516,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 8.9947,
+          "topBottom": 9.4099,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 262144,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 7.8581,
+          "topBottom": 9.2572,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "warnings": []
+    },
+    {
+      "id": "floor-floor-tile",
+      "source": "source/generated/common/floor-tile.png",
+      "output": "runtime-static/V8Art/legacy-floors/floor-tile.png",
+      "sourceSha256": "87711cc5fca0b5e88d2653ee337de61647ad4b2d02ebe836d575755720d3c86d",
+      "outputSha256": "faec5f0d95cc01dafc66e040cc05951ad2af3e0d332137992cfc7f9c3212bb7a",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 1572516,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 3.8721,
+          "topBottom": 2.491,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 262144,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 4.4759,
+          "topBottom": 7.5384,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "warnings": []
+    },
+    {
+      "id": "floor-sidewalk",
+      "source": "source/generated/common/sidewalk.png",
+      "output": "environment-source/floors-v3/sidewalk.png",
+      "sourceSha256": "376d6a6b885a41ce40973be476291bcce08dfb87e3fd6436db44002309f9882a",
+      "outputSha256": "5eff40770791d29d29417b62906b431639b87694c01ca7ebc0998fc15a0ca3c1",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 1572516,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          1254,
+          1254
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 2.6465,
+          "topBottom": 8.2108,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 0,
+        "alphaZeroRatio": 0.0,
+        "alphaAtLeast128Count": 262144,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          0,
+          0,
+          512,
+          512
+        ],
+        "edgeAlphaMax": 255,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "borderMeanAbsoluteRgbDifference0To255": {
+          "leftRight": 3.2852,
+          "topBottom": 7.9668,
+          "interpretation": "Border statistics only; not proof of seamless tiling. Inspect a repeated preview and the game."
+        }
+      },
+      "warnings": []
+    },
+    {
+      "id": "breakfast-stall",
+      "source": "source/generated/common/breakfast-stall.png",
+      "output": "runtime-static/V8Art/stalls/breakfast-stall.png",
+      "sourceSha256": "d850ae72c5510383faff99df47de03f29cd045702873efb4b3ddf9fbd33c8be4",
+      "outputSha256": "e44040f220a28b7d616cdb7ca43be205227520a135887a0110baafdaedb3e5f2",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 925857,
+        "alphaZeroRatio": 0.588392,
+        "alphaAtLeast128Count": 621685,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          373,
+          79,
+          1028,
+          757
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 179689,
+        "alphaZeroRatio": 0.685459,
+        "alphaAtLeast128Count": 80641,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          70,
+          189,
+          370,
+          273
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "ground-arrows",
+      "source": "source/generated/common/arrows.png",
+      "output": "environment-source/fx-decal/arrows.png",
+      "sourceSha256": "125e886f45c2a87f4e768ef18994fbd777e0c7f66442bb460a3004ca67f96b5b",
+      "outputSha256": "d431bc339306b27974da92d8e80d5ace044109c76df17d1b7d7a5279a015b1d8",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 1252387,
+        "alphaZeroRatio": 0.796422,
+        "alphaAtLeast128Count": 305287,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          275,
+          210,
+          702,
+          861
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          128,
+          128
+        ],
+        "pixelCount": 16384,
+        "alphaZeroCount": 11786,
+        "alphaZeroRatio": 0.71936,
+        "alphaAtLeast128Count": 4437,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          22,
+          12,
+          84,
+          103
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "neutral-selection",
+      "source": "source/generated/common/selection.png",
+      "output": "environment-source/ui/selection.png",
+      "sourceSha256": "f182a736c37609eaa4b39b152cf7a268de0730b074f905ea6e13e316b953bc14",
+      "outputSha256": "de3d42158e1ea2eb65aeb1502d36f5e3e20a3f24d80ae7aab8d0f9f22f88ec13",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 934575,
+        "alphaZeroRatio": 0.594318,
+        "alphaAtLeast128Count": 48731,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          133,
+          150,
+          988,
+          960
+        ],
+        "edgeAlphaMax": 2,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 41265,
+        "alphaZeroRatio": 0.629654,
+        "alphaAtLeast128Count": 1918,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          30,
+          33,
+          198,
+          192
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-storefront",
+      "source": "source/generated/street/storefront-v2.png",
+      "output": "runtime-static/V8Art/street/storefront.png",
+      "sourceSha256": "3d05aebd0adeafd5e11292fa02af69224d11d21cd804c102748da665d9ebd0b1",
+      "outputSha256": "93ef4f671051237edf2981ddb5ee0cb70bb7d1579bb94024c7c6891af0184e07",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 526778,
+        "alphaZeroRatio": 0.334991,
+        "alphaAtLeast128Count": 1019468,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          140,
+          92,
+          968,
+          1087
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 112027,
+        "alphaZeroRatio": 0.427349,
+        "alphaAtLeast128Count": 147054,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          71,
+          48,
+          368,
+          413
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-station-doorway",
+      "source": "source/generated/street/station-doorway-v2.png",
+      "output": "runtime-static/V8Art/street/station-doorway.png",
+      "sourceSha256": "b58f4d3082f3a7899df584cc33dbba3aaa4b0cb7be241307bbb298ec7ac6c86d",
+      "outputSha256": "011db3ae120320f9d0fa45260feda2adb805d1fbe7164507ee35c9f44233ec4d",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 789727,
+        "alphaZeroRatio": 0.50188,
+        "alphaAtLeast128Count": 730695,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          120,
+          124,
+          1533,
+          613
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          1024,
+          512
+        ],
+        "pixelCount": 524288,
+        "alphaZeroCount": 305935,
+        "alphaZeroRatio": 0.583525,
+        "alphaAtLeast128Count": 205129,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          106,
+          136,
+          812,
+          325
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-bench",
+      "source": "source/generated/street/bench.png",
+      "output": "runtime-static/V8Art/street/bench.png",
+      "sourceSha256": "7db5354670744bd6f179c32f965bf2e06842bb37c4c25adf80adb01136b31b2c",
+      "outputSha256": "daf1f103a65239bf2875620fd9c0be0c24296f10e0637397c11bfa396399f1bb",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 850035,
+        "alphaZeroRatio": 0.540206,
+        "alphaAtLeast128Count": 705693,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          223,
+          148,
+          1327,
+          659
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 66780,
+        "alphaZeroRatio": 0.509491,
+        "alphaAtLeast128Count": 63660,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          57,
+          33,
+          398,
+          198
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-bush-planter",
+      "source": "source/generated/street/bush-planter.png",
+      "output": "runtime-static/V8Art/street/bush-planter.png",
+      "sourceSha256": "d989a15659af59352dc52ca68135b28b611b1c316b0d31a7dfcd6ddb48213624",
+      "outputSha256": "42a88d4ea1060a207ad78becbd147032a63e594bb9a5a0de0eb4b0eb53fd2b22",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 908852,
+        "alphaZeroRatio": 0.577585,
+        "alphaAtLeast128Count": 640177,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          279,
+          109,
+          1214,
+          676
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 68104,
+        "alphaZeroRatio": 0.519592,
+        "alphaAtLeast128Count": 61527,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          68,
+          21,
+          376,
+          209
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-long-planter",
+      "source": "source/generated/street/long-planter.png",
+      "output": "runtime-static/V8Art/street/long-planter.png",
+      "sourceSha256": "58950fe062485db676e9ce07c0e463c5f94ef2ecd91bb6fe8c333197ef341bf9",
+      "outputSha256": "56271e9fb145618ea48a59f8c083e13efaf7f7d2b5912655d1333b6b2dfa1c30",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 1100002,
+        "alphaZeroRatio": 0.699063,
+        "alphaAtLeast128Count": 450538,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          186,
+          389,
+          1401,
+          355
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 91769,
+        "alphaZeroRatio": 0.700142,
+        "alphaAtLeast128Count": 37739,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          53,
+          127,
+          406,
+          103
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-bicycle-rack",
+      "source": "source/generated/street/bicycle-rack-v2.png",
+      "output": "runtime-static/V8Art/street/bicycle-rack.png",
+      "sourceSha256": "987c6c09824d07c414382ad6426f029dd3aeab42b02d8a65787527491ed23725",
+      "outputSha256": "9547b1da2de8385c0098991263da00a359e083552ec03e52f14aa071c8a9e206",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 1168204,
+        "alphaZeroRatio": 0.742406,
+        "alphaAtLeast128Count": 340670,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          145,
+          396,
+          1485,
+          299
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 102883,
+        "alphaZeroRatio": 0.784935,
+        "alphaAtLeast128Count": 24496,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          56,
+          150,
+          400,
+          80
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-boxes",
+      "source": "source/generated/street/boxes.png",
+      "output": "runtime-static/V8Art/street/boxes.png",
+      "sourceSha256": "029cb4c45fc06f5700958a1ed4ba803dd93079a38b399a98e22aabc93867b042",
+      "outputSha256": "a2c87640af467f8344cce0158417ff4c2824c4db01ebcc8eb59dee16ffa6df64",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 935425,
+        "alphaZeroRatio": 0.594859,
+        "alphaAtLeast128Count": 619419,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          163,
+          275,
+          925,
+          791
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 37649,
+        "alphaZeroRatio": 0.574478,
+        "alphaAtLeast128Count": 27278,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          30,
+          64,
+          194,
+          166
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-curb-horizontal",
+      "source": "source/generated/street/curb-horizontal.png",
+      "output": "environment-source/street/curb-horizontal.png",
+      "sourceSha256": "45f002b0e4ae8a415927d75e2dd6a5779aaee6f328926f468f31b2576267eeaa",
+      "outputSha256": "d83acf97783b2ec82574f6dbc0115e9ea283cebaf2279a7c07d680f74b268640",
+      "sourceImage": {
+        "canvasPx": [
+          2172,
+          724
+        ],
+        "pixelCount": 1572528,
+        "alphaZeroCount": 1408812,
+        "alphaZeroRatio": 0.89589,
+        "alphaAtLeast128Count": 146048,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          42,
+          326,
+          2090,
+          71
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          64
+        ],
+        "pixelCount": 32768,
+        "alphaZeroCount": 26078,
+        "alphaZeroRatio": 0.795837,
+        "alphaAtLeast128Count": 5841,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          48,
+          25,
+          418,
+          14
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "corrections-crosswalk-flat",
+      "source": "source/generated/street/crosswalk-flat.png",
+      "output": "environment-source/corrections/crosswalk-flat.png",
+      "sourceSha256": "436c54d2d8e289a69abd7701557bcec49a2e415e0bd1b55e6b04325ec0634c82",
+      "outputSha256": "895790b01216483e407a34317082ca6dc8a67757f7125b06a76e885712aced50",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 751015,
+        "alphaZeroRatio": 0.477588,
+        "alphaAtLeast128Count": 655913,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          98,
+          271,
+          1058,
+          819
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 148414,
+        "alphaZeroRatio": 0.566154,
+        "alphaAtLeast128Count": 94640,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          55,
+          100,
+          403,
+          311
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "street-bike-parking-marker",
+      "source": "source/generated/street/bike-parking-marker.png",
+      "output": "environment-source/street/bike-parking-marker.png",
+      "sourceSha256": "808a36225fe108e923bc2ef2183a6bdec962e64fd32d09519dda22f0ad3f36fa",
+      "outputSha256": "99c2a0c53750f6f7dc102e68fe794fb71a118b1bb9577ad8b89ef07294a63de8",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 827771,
+        "alphaZeroRatio": 0.526399,
+        "alphaAtLeast128Count": 232957,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          86,
+          319,
+          1071,
+          667
+        ],
+        "edgeAlphaMax": 46,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 40780,
+        "alphaZeroRatio": 0.622253,
+        "alphaAtLeast128Count": 8156,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          28,
+          66,
+          201,
+          124
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-train-closed",
+      "source": "source/generated/metro/train-closed.png",
+      "output": "runtime-static/V8Art/metro/train-closed.png",
+      "sourceSha256": "fe3eec77dfd5a35ace0dc38ea4bf42307ea3952c10b09864ee7d70abd321e4ef",
+      "outputSha256": "d8587a278c8ea5f531d129c5551f469e0fd00a4af07f86c324c04ad4d94990da",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 696832,
+        "alphaZeroRatio": 0.442844,
+        "alphaAtLeast128Count": 859174,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          178,
+          147,
+          1410,
+          641
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          1024,
+          512
+        ],
+        "pixelCount": 524288,
+        "alphaZeroCount": 230757,
+        "alphaZeroRatio": 0.440134,
+        "alphaAtLeast128Count": 289228,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          102,
+          89,
+          818,
+          372
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-train-open",
+      "source": "source/generated/metro/train-open.png",
+      "output": "runtime-static/V8Art/metro/train-open.png",
+      "sourceSha256": "efd27464468c5e4c8e680be62696ef34d89ae855fa09934218669ebd32069f9e",
+      "outputSha256": "2b142b5ce1d1828fa6c9ff67c931ccdea4382d7cdbef133d9687715253ef57b6",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 664985,
+        "alphaZeroRatio": 0.422605,
+        "alphaAtLeast128Count": 861179,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          177,
+          147,
+          1413,
+          642
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          1024,
+          512
+        ],
+        "pixelCount": 524288,
+        "alphaZeroCount": 220284,
+        "alphaZeroRatio": 0.420158,
+        "alphaAtLeast128Count": 289492,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          101,
+          89,
+          820,
+          372
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-tactile-strip",
+      "source": "source/generated/metro/tactile-strip.png",
+      "output": "environment-source/metro/tactile-strip.png",
+      "sourceSha256": "35166cc3889dcdc6dd08395f5885e473022bfbb63c47854e9c00adb40796e2b9",
+      "outputSha256": "33cfa05a225601821270444e38bfbfd3f128df3511260cac54a8a3f14e2a3925",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 1307240,
+        "alphaZeroRatio": 0.830765,
+        "alphaAtLeast128Count": 248016,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          140,
+          357,
+          1495,
+          166
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          64
+        ],
+        "pixelCount": 32768,
+        "alphaZeroCount": 4110,
+        "alphaZeroRatio": 0.125427,
+        "alphaAtLeast128Count": 27884,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          6,
+          4,
+          498,
+          56
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-exit-marker",
+      "source": "source/generated/metro/exit-marker.png",
+      "output": "runtime-static/V8Art/metro/exit-marker.png",
+      "sourceSha256": "c06f7586d28d1eef90074c0ac8f765b7a5ac59fe50d67cd99267df42addad706",
+      "outputSha256": "1f3d04b661b1c952ca457b2fb10c964f469423e9b62424eceb2d054ad220f28f",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 982283,
+        "alphaZeroRatio": 0.624657,
+        "alphaAtLeast128Count": 520120,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          123,
+          173,
+          1004,
+          958
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 169495,
+        "alphaZeroRatio": 0.646572,
+        "alphaAtLeast128Count": 83202,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          54,
+          78,
+          402,
+          384
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-platform-bench",
+      "source": "source/generated/metro/platform-bench.png",
+      "output": "runtime-static/V8Art/metro/platform-bench.png",
+      "sourceSha256": "421da0f4ba931853edcd046d39d127288a0e7c61fd64c2823bd08768ddc8a4e8",
+      "outputSha256": "1974487155508a9d524347a60bdf96a5b9a6d0506b52a08613c124449c785739",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 767665,
+        "alphaZeroRatio": 0.487859,
+        "alphaAtLeast128Count": 778742,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          138,
+          159,
+          1492,
+          656
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 70720,
+        "alphaZeroRatio": 0.539551,
+        "alphaAtLeast128Count": 58790,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          50,
+          51,
+          410,
+          180
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-kiosk",
+      "source": "source/generated/metro/kiosk.png",
+      "output": "runtime-static/V8Art/metro/kiosk.png",
+      "sourceSha256": "49bde11627e86be2011d68d64b8fe2ff4742788c30686bac4a1e09de66a79ff9",
+      "outputSha256": "295e991fc741cd009e84518a7cd259984e4e96aedca6a8dbfb1e12e67b3274d7",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 775178,
+        "alphaZeroRatio": 0.492954,
+        "alphaAtLeast128Count": 777585,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          127,
+          214,
+          998,
+          912
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 135356,
+        "alphaZeroRatio": 0.516342,
+        "alphaAtLeast128Count": 124436,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          55,
+          97,
+          400,
+          365
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-pillar",
+      "source": "source/generated/metro/pillar.png",
+      "output": "runtime-static/V8Art/metro/pillar.png",
+      "sourceSha256": "b74a63049b4a5a66b987897215a2eb77c84baa1fd47477b48e8fc1bc51306ad5",
+      "outputSha256": "59a38eccfb08f6e4edda0e69a227b1bd21ae855604121605b0c878b954f940cb",
+      "sourceImage": {
+        "canvasPx": [
+          1024,
+          1536
+        ],
+        "pixelCount": 1572864,
+        "alphaZeroCount": 991047,
+        "alphaZeroRatio": 0.630091,
+        "alphaAtLeast128Count": 566407,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          159,
+          281,
+          688,
+          1112
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          384
+        ],
+        "pixelCount": 98304,
+        "alphaZeroCount": 49831,
+        "alphaZeroRatio": 0.506907,
+        "alphaAtLeast128Count": 47618,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          26,
+          24,
+          199,
+          322
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-escalator",
+      "source": "source/generated/metro/escalator.png",
+      "output": "runtime-static/V8Art/metro/escalator.png",
+      "sourceSha256": "b3be1ac7e7908875d5cf290b90cc8c2219e435993609fa73b31c2345583334cb",
+      "outputSha256": "cea29446aded6244c4d0c100ec5814d6007528698396eb7340b4b5279e658be3",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 1015301,
+        "alphaZeroRatio": 0.645654,
+        "alphaAtLeast128Count": 543849,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          318,
+          140,
+          616,
+          1024
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 169154,
+        "alphaZeroRatio": 0.645271,
+        "alphaAtLeast128Count": 91450,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          129,
+          42,
+          253,
+          419
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "metro-vending",
+      "source": "source/generated/metro/vending-v2.png",
+      "output": "runtime-static/V8Art/metro/vending.png",
+      "sourceSha256": "3d9ee7bf583b40713859c1581137bf07d85794454a8d2caa397f0550fdad47be",
+      "outputSha256": "a1c6522a3db7d74d680ff60aad8ff02bed9fd4d2b9835f1795dd880f3bbd743d",
+      "sourceImage": {
+        "canvasPx": [
+          1356,
+          1159
+        ],
+        "pixelCount": 1571604,
+        "alphaZeroCount": 1001997,
+        "alphaZeroRatio": 0.637563,
+        "alphaAtLeast128Count": 547097,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          324,
+          123,
+          695,
+          945
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 152806,
+        "alphaZeroRatio": 0.582909,
+        "alphaAtLeast128Count": 105905,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          101,
+          46,
+          306,
+          416
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-filing-cabinet",
+      "source": "source/generated/office/filing-cabinet-v2.png",
+      "output": "runtime-static/V8Art/office/filing-cabinet.png",
+      "sourceSha256": "79b42be0e9f78fa94879a0ecc0e7141fc8a2d97f25fc63656466d374bb6707d8",
+      "outputSha256": "d233fe55341f19cca9d64c1560e4189a97a442a38c3693b1d0c8c82363c08726",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 721709,
+        "alphaZeroRatio": 0.458952,
+        "alphaAtLeast128Count": 833629,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          88,
+          327,
+          1078,
+          823
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          512
+        ],
+        "pixelCount": 262144,
+        "alphaZeroCount": 140151,
+        "alphaZeroRatio": 0.534634,
+        "alphaAtLeast128Count": 120361,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          52,
+          149,
+          409,
+          312
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-desk-chair",
+      "source": "source/generated/office/desk-chair-v2.png",
+      "output": "runtime-static/V8Art/office/desk-chair.png",
+      "sourceSha256": "c352b010fb8de512a5d9a7dca62edb5029bc549d2472680555b6981ba95fe08a",
+      "outputSha256": "70f9d6a439017d196c5724e124153fe990fdc055549a83a22c8e1a990c3df56d",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 873640,
+        "alphaZeroRatio": 0.555207,
+        "alphaAtLeast128Count": 688133,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          278,
+          205,
+          1213,
+          581
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 50595,
+        "alphaZeroRatio": 0.386009,
+        "alphaAtLeast128Count": 79330,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          50,
+          34,
+          412,
+          197
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-meeting-table",
+      "source": "source/generated/office/meeting-table.png",
+      "output": "runtime-static/V8Art/office/meeting-table.png",
+      "sourceSha256": "39760702fb8b1804b51e28457ae27344b7f229adc46edfa1fc0a0e0fd4fa4a1d",
+      "outputSha256": "348742fa82693d33393bfaf9f6c6c6937e68715eaae3fbc2fbb1e746550e23f3",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 745131,
+        "alphaZeroRatio": 0.473539,
+        "alphaAtLeast128Count": 813281,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          100,
+          195,
+          1571,
+          590
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          1024,
+          512
+        ],
+        "pixelCount": 524288,
+        "alphaZeroCount": 302068,
+        "alphaZeroRatio": 0.576149,
+        "alphaAtLeast128Count": 220296,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          104,
+          155,
+          817,
+          307
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-reception",
+      "source": "source/generated/office/reception.png",
+      "output": "runtime-static/V8Art/office/reception.png",
+      "sourceSha256": "945a284918ed7a693023bdbe9450896c01beabd3079913aff03d61d2ebf1b53d",
+      "outputSha256": "6c010c2f7c687131e9b017ee99383eabd7e967161b446cd6a1ff2b9270cd202a",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 882451,
+        "alphaZeroRatio": 0.560807,
+        "alphaAtLeast128Count": 680118,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          125,
+          190,
+          1513,
+          536
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 80743,
+        "alphaZeroRatio": 0.61602,
+        "alphaAtLeast128Count": 49681,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          52,
+          86,
+          408,
+          145
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-sofa",
+      "source": "source/generated/office/sofa.png",
+      "output": "runtime-static/V8Art/office/sofa.png",
+      "sourceSha256": "b314712e34c507967f58c7c080214ad42562d81b505befedb87bfcde40842de7",
+      "outputSha256": "76e690c9c1509fa2cc004a526dcbc3c95ce0b0109d2a7211230eaa1e1264aa54",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 662703,
+        "alphaZeroRatio": 0.421155,
+        "alphaAtLeast128Count": 874250,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          178,
+          116,
+          1416,
+          704
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 57772,
+        "alphaZeroRatio": 0.440765,
+        "alphaAtLeast128Count": 71021,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          54,
+          31,
+          404,
+          200
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-plant",
+      "source": "source/generated/office/plant.png",
+      "output": "runtime-static/V8Art/office/plant.png",
+      "sourceSha256": "2d15cf3c89b5c36efb57c368f340fad7bc820b9e4443bb4d6e1f9140394132fc",
+      "outputSha256": "533f62c1a4591742edce6036af60407da79db31d0816d925d8eb25beae200cc4",
+      "sourceImage": {
+        "canvasPx": [
+          1254,
+          1254
+        ],
+        "pixelCount": 1572516,
+        "alphaZeroCount": 832494,
+        "alphaZeroRatio": 0.529403,
+        "alphaAtLeast128Count": 719336,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          108,
+          96,
+          986,
+          1108
+        ],
+        "edgeAlphaMax": 2,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          256,
+          256
+        ],
+        "pixelCount": 65536,
+        "alphaZeroCount": 40284,
+        "alphaZeroRatio": 0.614685,
+        "alphaAtLeast128Count": 24611,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          32,
+          26,
+          182,
+          205
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "id": "office-clock-mat",
+      "source": "source/generated/office/clock-mat.png",
+      "output": "environment-source/office/clock-mat.png",
+      "sourceSha256": "14eba01dcf0b0e1c679dbdb58821acb54ea32142af83b3ea087a49e512133693",
+      "outputSha256": "369d274c3d87f770625a8df05882e19149e785ddc8ef14699cac4212801d28fe",
+      "sourceImage": {
+        "canvasPx": [
+          1774,
+          887
+        ],
+        "pixelCount": 1573538,
+        "alphaZeroCount": 905159,
+        "alphaZeroRatio": 0.575238,
+        "alphaAtLeast128Count": 650630,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          200,
+          202,
+          1374,
+          482
+        ],
+        "edgeAlphaMax": 1,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "exportedImage": {
+        "canvasPx": [
+          512,
+          256
+        ],
+        "pixelCount": 131072,
+        "alphaZeroCount": 71457,
+        "alphaZeroRatio": 0.545174,
+        "alphaAtLeast128Count": 58350,
+        "alphaAtLeast128BoundsTopLeftXYWH": [
+          50,
+          56,
+          412,
+          144
+        ],
+        "edgeAlphaMax": 0,
+        "cornerAlphaTopLeftTopRightBottomLeftBottomRight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "warnings": []
+    }
+  ]
+}
