@@ -1,0 +1,21 @@
+Early Rush V11 validation
+UTC: 2026-11-10T16:42:44.5420274Z
+Scope: complete model, action, crowd, camera and default-deadline input routes
+Default stage deadline: 420 seconds.
+Model/map: 956 checks passed
+Action mechanisms (controlled fixtures): 43 checks passed
+Crowd mechanisms: 11930 checks passed
+Camera numeric regression: 6 checks passed
+Map seed=91026 stage=0: 1 checks passed
+mainline stage=0 seed=91026 success=True seconds=166.72 v10Seconds=155.02 deltaSeconds=+11.70 contacts=23 stopped=(3.75, 316.00) reason=Input replay finished; not human timing evidence
+all-tasks stage=0 seed=91026 success=True seconds=207.38 v10Seconds=195.83 deltaSeconds=+11.55 contacts=38 completed=3 states=Complete|Complete|Complete stopped=(3.78, 316.38) reason=Street input route finished; not timing acceptance
+Map seed=91026 stage=1: 1 checks passed
+mainline stage=1 seed=91026 success=True seconds=172.35 v10Seconds=164.98 deltaSeconds=+7.37 contacts=25 stopped=(-12.28, 319.00) reason=Input replay finished; not human timing evidence
+all-tasks stage=1 seed=91026 success=True seconds=231.97 v10Seconds=224.90 deltaSeconds=+7.07 contacts=36 completed=3 states=Complete|Complete|Complete stopped=(-12.28, 319.00) reason=All-task machine input route ended; inspect task states, not human timing acceptance
+Map seed=91026 stage=2: 1 checks passed
+mainline stage=2 seed=91026 success=True seconds=168.28 v10Seconds=157.95 deltaSeconds=+10.33 contacts=16 stopped=(0.76, 321.00) reason=Input replay finished; not human timing evidence
+all-tasks stage=2 seed=91026 success=True seconds=228.15 v10Seconds=224.92 deltaSeconds=+3.23 contacts=43 completed=3 states=Complete|Complete|Complete stopped=(0.75, 321.00) reason=All-task machine input route ended; inspect task states, not human timing acceptance
+V10 comparison source: Docs/V10-验证结果.txt, published values rounded to 0.01 seconds.
+Controlled fixtures verify individual mechanics. Input routes verify achievable machine-driven routes only; neither is human playtesting or observed natural attack frequency.
+Wall-clock seconds: 107.64
+Passed: True

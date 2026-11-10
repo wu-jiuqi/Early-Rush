@@ -1,0 +1,205 @@
+{
+    "version": "v11-player-runtime-1",
+    "utc": "2026-11-10T16:45:03.1283095Z",
+    "device": "Intel(R) Iris(R) Xe Graphics",
+    "unity": "6000.0.26f1",
+    "scope": "Generated-population local input samples and isolated controlled action fixtures; no complete-route or human-playtest claim. Player observer/fixture initial positions are explicitly arranged, then all motion and actions use Tick/public inputs.",
+    "passed": true,
+    "wallSeconds": 11.242356300354004,
+    "checks": [
+        {
+            "name": "Generated crowd is visible stage=0",
+            "evidence": "active=258 visiblePeak=23",
+            "passed": true
+        },
+        {
+            "name": "Generated crowd actually moves stage=0",
+            "evidence": "movingPeople=256 totalMeters=621.3562",
+            "passed": true
+        },
+        {
+            "name": "Local input stays in walkable area stage=0",
+            "evidence": "(20.51, 123.00)",
+            "passed": true
+        },
+        {
+            "name": "Generated crowd is visible stage=1",
+            "evidence": "active=298 visiblePeak=26",
+            "passed": true
+        },
+        {
+            "name": "Generated crowd actually moves stage=1",
+            "evidence": "movingPeople=284 totalMeters=689.1261",
+            "passed": true
+        },
+        {
+            "name": "Local input stays in walkable area stage=1",
+            "evidence": "(32.49, 64.00)",
+            "passed": true
+        },
+        {
+            "name": "Generated crowd is visible stage=2",
+            "evidence": "active=244 visiblePeak=22",
+            "passed": true
+        },
+        {
+            "name": "Generated crowd actually moves stage=2",
+            "evidence": "movingPeople=240 totalMeters=569.4696",
+            "passed": true
+        },
+        {
+            "name": "Local input stays in walkable area stage=2",
+            "evidence": "(45.51, 130.00)",
+            "passed": true
+        },
+        {
+            "name": "Dash accepts a real public input",
+            "evidence": "isolated local fixture at spawn",
+            "passed": true
+        },
+        {
+            "name": "Dash has observed increased displacement",
+            "evidence": "distance=0.82",
+            "passed": true
+        },
+        {
+            "name": "Steady stance cancels dash",
+            "evidence": "public SetBracing(true), then real Tick",
+            "passed": true
+        },
+        {
+            "name": "Pause freezes actual runtime simulation and follow camera",
+            "evidence": "three rendered frames and a rejected five-second Tick",
+            "passed": true
+        },
+        {
+            "name": "fixture-unbraced-knockback observes windup before an actual charge",
+            "evidence": "charges=1 windup=True",
+            "passed": true
+        },
+        {
+            "name": "fixture-unbraced-knockback observed outcome",
+            "evidence": "blocks=0 launches=1 peakHeight=0.4198008",
+            "passed": true
+        },
+        {
+            "name": "fixture-unbraced-knockback captured the observed outcome",
+            "evidence": "No attack-result or task-state assignment is used",
+            "passed": true
+        },
+        {
+            "name": "fixture-unbraced-knockback leaves bounded recovery",
+            "evidence": "height=0",
+            "passed": true
+        },
+        {
+            "name": "fixture-brace-block observes windup before an actual charge",
+            "evidence": "charges=1 windup=True",
+            "passed": true
+        },
+        {
+            "name": "fixture-brace-block observed outcome",
+            "evidence": "blocks=1 launches=0 peakHeight=0",
+            "passed": true
+        },
+        {
+            "name": "fixture-brace-block captured the observed outcome",
+            "evidence": "No attack-result or task-state assignment is used",
+            "passed": true
+        },
+        {
+            "name": "fixture-brace-block leaves bounded recovery",
+            "evidence": "height=0",
+            "passed": true
+        }
+    ],
+    "samples": [
+        {
+            "name": "population-stage-0",
+            "scope": "Generated population, arranged local observer start, two seconds of real movement input; not a stage playthrough",
+            "stage": 0,
+            "population": 258,
+            "visiblePeak": 23,
+            "movingPeople": 256,
+            "charges": 0,
+            "launches": 0,
+            "blocks": 0,
+            "elapsed": 2.0000001043081285,
+            "movementMeters": 621.356201171875,
+            "playerDistance": 2.4903221130371095,
+            "peakHeight": 0.0
+        },
+        {
+            "name": "population-stage-1",
+            "scope": "Generated population, arranged local observer start, two seconds of real movement input; not a stage playthrough",
+            "stage": 1,
+            "population": 298,
+            "visiblePeak": 26,
+            "movingPeople": 284,
+            "charges": 0,
+            "launches": 0,
+            "blocks": 0,
+            "elapsed": 2.0000001043081285,
+            "movementMeters": 689.1260986328125,
+            "playerDistance": 2.490324020385742,
+            "peakHeight": 0.0
+        },
+        {
+            "name": "population-stage-2",
+            "scope": "Generated population, arranged local observer start, two seconds of real movement input; not a stage playthrough",
+            "stage": 2,
+            "population": 244,
+            "visiblePeak": 22,
+            "movingPeople": 240,
+            "charges": 0,
+            "launches": 0,
+            "blocks": 0,
+            "elapsed": 2.0000001043081285,
+            "movementMeters": 569.4696044921875,
+            "playerDistance": 2.4903221130371095,
+            "peakHeight": 0.0
+        },
+        {
+            "name": "fixture-unbraced-knockback",
+            "scope": "Controlled fixture: generated actors hidden, one ordinary attacker and player arranged on a verified lane; attack state develops only via Tick",
+            "stage": 0,
+            "population": 1,
+            "visiblePeak": 0,
+            "movingPeople": 0,
+            "charges": 1,
+            "launches": 1,
+            "blocks": 0,
+            "elapsed": 1.8833334315568209,
+            "movementMeters": 0.0,
+            "playerDistance": 0.9058818817138672,
+            "peakHeight": 0.4198007881641388
+        },
+        {
+            "name": "fixture-brace-block",
+            "scope": "Controlled fixture: generated actors hidden, one ordinary attacker and player arranged on a verified lane; attack state develops only via Tick",
+            "stage": 0,
+            "population": 1,
+            "visiblePeak": 0,
+            "movingPeople": 0,
+            "charges": 1,
+            "launches": 0,
+            "blocks": 1,
+            "elapsed": 1.5333334133028985,
+            "movementMeters": 0.0,
+            "playerDistance": 0.0,
+            "peakHeight": 0.0
+        }
+    ],
+    "screenshots": [
+        "population-stage-0-local-input.png",
+        "population-stage-1-local-input.png",
+        "population-stage-2-local-input.png",
+        "fixture-player-dash.png",
+        "fixture-player-brace.png",
+        "fixture-unbraced-npc-windup.png",
+        "fixture-player-knockback.png",
+        "fixture-braced-npc-windup.png",
+        "fixture-brace-block.png"
+    ],
+    "errors": []
+}

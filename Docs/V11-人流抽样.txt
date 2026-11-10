@@ -1,0 +1,9 @@
+V11_CROWD seed=91026 stage=0 count=258 forward=133 counter=121 attackers=32 peakVisible=24 moved10s=256
+V11_CROWD seed=91026 stage=1 count=298 forward=149 counter=135 attackers=35 peakVisible=27 moved10s=284
+V11_CROWD seed=91026 stage=2 count=244 forward=127 counter=113 attackers=26 peakVisible=23 moved10s=240
+V11_CROWD seed=91027 stage=0 count=241 forward=122 counter=111 attackers=29 peakVisible=24 moved10s=235
+V11_CROWD seed=91027 stage=1 count=291 forward=147 counter=134 attackers=35 peakVisible=27 moved10s=281
+V11_CROWD seed=91027 stage=2 count=227 forward=117 counter=105 attackers=25 peakVisible=23 moved10s=222
+V11_CROWD seed=91028 stage=0 count=242 forward=124 counter=111 attackers=28 peakVisible=24 moved10s=237
+V11_CROWD seed=91028 stage=1 count=290 forward=144 counter=135 attackers=35 peakVisible=27 moved10s=279
+V11_CROWD seed=91028 stage=2 count=238 forward=122 counter=112 attackers=25 peakVisible=23 moved10s=234

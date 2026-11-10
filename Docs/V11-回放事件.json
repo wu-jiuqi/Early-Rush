@@ -1,0 +1,56 @@
+[
+  {
+    "Replay": "all-tasks-stage-0",
+    "Windup": 20,
+    "Charge": 19,
+    "BraceBlock": 4,
+    "Cancel": 1,
+    "Launch": 0,
+    "Dash": 0
+  },
+  {
+    "Replay": "all-tasks-stage-1",
+    "Windup": 13,
+    "Charge": 13,
+    "BraceBlock": 1,
+    "Cancel": 0,
+    "Launch": 0,
+    "Dash": 0
+  },
+  {
+    "Replay": "all-tasks-stage-2",
+    "Windup": 16,
+    "Charge": 16,
+    "BraceBlock": 5,
+    "Cancel": 1,
+    "Launch": 0,
+    "Dash": 0
+  },
+  {
+    "Replay": "mainline-stage-0",
+    "Windup": 22,
+    "Charge": 22,
+    "BraceBlock": 8,
+    "Cancel": 0,
+    "Launch": 0,
+    "Dash": 0
+  },
+  {
+    "Replay": "mainline-stage-1",
+    "Windup": 15,
+    "Charge": 15,
+    "BraceBlock": 3,
+    "Cancel": 0,
+    "Launch": 0,
+    "Dash": 0
+  },
+  {
+    "Replay": "mainline-stage-2",
+    "Windup": 16,
+    "Charge": 16,
+    "BraceBlock": 3,
+    "Cancel": 0,
+    "Launch": 0,
+    "Dash": 0
+  }
+]
