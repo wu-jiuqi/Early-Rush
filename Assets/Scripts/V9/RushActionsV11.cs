@@ -11,7 +11,7 @@ namespace EarlyRush.V9
         public float braceSpeedMultiplier=.44f;
         public float npcWindupDuration=.65f,npcChargeDuration=.42f,npcRecoveryDuration=.85f;
         public float npcChargeSpeed=6.5f,npcChargeCooldown=6f,npcChargeRange=4.8f;
-        public float playerKnockbackDuration=.34f,playerKnockbackSpeed=5.6f,playerHopHeight=.42f;
+        public float playerKnockbackDuration=.4f,playerKnockbackSpeed=6.7f,playerHopHeight=1f;
         public float hitProtectionDuration=1.1f,npcGlobalGap=1.35f;
     }
 
@@ -27,7 +27,7 @@ namespace EarlyRush.V9
     /// <summary>Input actions share the simulation clock and existing ground collision pipeline.</summary>
     public sealed partial class RunV9
     {
-        float dashLeft,dashCooldownLeft,knockbackLeft,hitProtectionLeft,braceFlashLeft,npcGlobalGapLeft;
+        float dashLeft,dashCooldownLeft,knockbackLeft,hitProtectionLeft,braceFlashLeft,npcGlobalGapLeft,playerLandingLeft;
         Vector2 dashDirection,knockbackDirection;
         bool braceHeld;
         public bool IsDashing=>dashLeft>0;
@@ -37,6 +37,8 @@ namespace EarlyRush.V9
         public float DashReady01=>Mathf.Clamp01(1-dashCooldownLeft/config.dashCooldown);
         public float BraceFeedback01=>Mathf.Clamp01(braceFlashLeft/.28f);
         public float HitProtection01=>Mathf.Clamp01(hitProtectionLeft/config.hitProtectionDuration);
+        public float PlayerFlightProgress01=>IsAirborne?Mathf.Clamp01(1-knockbackLeft/config.playerKnockbackDuration):1;
+        public float PlayerLandingFeedback01=>Mathf.Clamp01(playerLandingLeft/.18f);
         public int PlayerLaunchCount { get; private set; }
         public int BraceBlockCount { get; private set; }
         public int NpcChargeCount { get; private set; }
@@ -60,7 +62,7 @@ namespace EarlyRush.V9
             dashDirection=input.sqrMagnitude>.001f?input.normalized:facing.normalized;
             if(dashDirection.sqrMagnitude<.001f)dashDirection=Vector2.up;
             facing=dashDirection;dashLeft=config.dashDuration;dashCooldownLeft=config.dashCooldown;
-            Cue("dash");return true;
+            BeginDashImpact();Cue("dash");return true;
         }
 
         public void SetBracing(bool held)
@@ -79,13 +81,14 @@ namespace EarlyRush.V9
             hitProtectionLeft=Mathf.Max(0,hitProtectionLeft-dt);
             braceFlashLeft=Mathf.Max(0,braceFlashLeft-dt);
             npcGlobalGapLeft=Mathf.Max(0,npcGlobalGapLeft-dt);
+            playerLandingLeft=Mathf.Max(0,playerLandingLeft-dt);
             if(knockbackLeft>0)
             {
                 knockbackLeft=Mathf.Max(0,knockbackLeft-dt);
                 float strength=knockbackLeft/config.playerKnockbackDuration;
                 // Airborne is visual only. Ground velocity still uses wall and red-light constraints.
                 velocity=knockbackDirection*config.playerKnockbackSpeed*strength;
-                if(knockbackLeft==0)velocity=Vector2.zero;
+                if(knockbackLeft==0){velocity=Vector2.zero;playerLandingLeft=.18f;}
                 return;
             }
             if(dashLeft>0&&!braceHeld)
@@ -122,6 +125,15 @@ namespace EarlyRush.V9
             return Vector2.Distance(Resolve(person.position,direction*distance,person.radius),end)<.05f;
         }
 
+        bool PlayerBlocksPedestrianRoute(PersonV9 person,Vector2 direction)
+        {
+            if(person.profile!=PedestrianProfile.Hurried||person.impatience<.8f||direction.sqrMagnitude<.5f)return false;
+            if(person.aiState!=PedestrianState.Walking&&person.aiState!=PedestrianState.Yielding)return false;
+            Vector2 offset=player-person.position;
+            float forward=Vector2.Dot(offset,direction),lateral=Mathf.Abs(offset.x*direction.y-offset.y*direction.x);
+            return forward>person.radius+PlayerRadius+.05f&&offset.magnitude<=Mathf.Min(3.8f,config.npcChargeRange)&&lateral<.9f;
+        }
+
         void RecoverNpc(PersonV9 person,bool cancelled)
         {
             person.actionPhase=NpcActionPhase.Recovery;person.actionTime=0;person.chargeCancelled=cancelled;person.velocity=Vector2.zero;
@@ -152,6 +164,9 @@ namespace EarlyRush.V9
             {
                 if(IsCrowdProtected(person.position,person.radius+.35f)||IsCrowdProtected(player,PlayerRadius+.35f))
                 {RecoverNpc(person,true);return true;}
+                // A commuter resumes their own trip when the player yields; no target tracking.
+                if(person.hasPedestrianAI&&person.actionPhase==NpcActionPhase.Windup&&!PlayerBlocksPedestrianRoute(person,person.chargeDirection))
+                {RecoverNpc(person,true);return true;}
                 person.actionTime+=dt;
                 if(person.actionPhase==NpcActionPhase.Windup)
                 {
@@ -174,8 +189,15 @@ namespace EarlyRush.V9
             }
             if(person.actionCooldownLeft>0||npcGlobalGapLeft>0||AnyNpcAttackActive()||IsAirborne||hitProtectionLeft>0)return false;
             Vector2 toward=player-person.position;float range=toward.magnitude;
-            if(range<1.5f||range>config.npcChargeRange||IsCrowdProtected(player,PlayerRadius+.35f)||!ClearChargeLane(person,toward.normalized))return false;
-            person.chargeDirection=toward.normalized;person.actionPhase=NpcActionPhase.Windup;person.actionTime=0;
+            Vector2 direction=toward.normalized;
+            if(person.hasPedestrianAI)
+            {
+                direction=person.preferredDirection.normalized;
+                if(!PlayerBlocksPedestrianRoute(person,direction))return false;
+            }
+            else if(range<1.5f||range>config.npcChargeRange)return false;
+            if(IsCrowdProtected(player,PlayerRadius+.35f)||!ClearChargeLane(person,direction))return false;
+            person.chargeDirection=direction;person.actionPhase=NpcActionPhase.Windup;person.actionTime=0;
             person.chargeHitConsumed=false;person.chargeCancelled=false;person.velocity=Vector2.zero;
             Log("npc-windup",person.id);return true;
         }
@@ -183,6 +205,8 @@ namespace EarlyRush.V9
         public bool HandleNpcActionContact(PersonV9 person)
         {
             if(phase!=RunPhase.Playing||person.exited||!person.canRush||person.kind!=PersonKind.Ordinary||person.actionPhase!=NpcActionPhase.Charging||person.chargeHitConsumed||Vector2.Distance(person.position,player)>person.radius+PlayerRadius+.05f)return false;
+            // The same dash-priority rule applies whether the player or NPC moved into contact.
+            if(IsDashing&&HandlePlayerDashContact(person))return true;
             person.chargeHitConsumed=true;
             bool protectedArea=IsCrowdProtected(player,PlayerRadius+.35f)||IsCrowdProtected(person.position,person.radius+.35f);
             if(protectedArea){RecoverNpc(person,true);return false;}

@@ -81,7 +81,8 @@ namespace EarlyRush.V9
         PersonV9 AddPerson(Vector2 p,PersonKind kind)
         {
             if(!map.IsWalkable(p,.5f))return null;
-            var person=new PersonV9{id=3000+people.Count,kind=kind,position=p,home=p,target=p,art=kind==PersonKind.Coffee?"people/woman":"people/man"};
+            var person=new PersonV9{id=3000+people.Count,kind=kind,position=p,home=p,target=p,art=kind==PersonKind.Coffee?"people/woman":"people/man",
+                hasPedestrianAI=kind==PersonKind.Alighting,aiState=PedestrianState.Walking,profile=PedestrianProfile.Cautious};
             people.Add(person);return person;
         }
         void Log(string type,int id=-1){telemetry.Add(new TelemetryV9{time=elapsed,type=type,id=id,position=player});}
@@ -131,7 +132,7 @@ namespace EarlyRush.V9
         {
             float dt=(float)Math.Min(duration,Math.Max(0,limit-elapsed));
             if(dt<=0){EvaluateTasks(0);Finish(AtExit()&&elapsed<=limit);return;}
-            elapsed=Math.Min(limit,elapsed+dt);currentContacts.Clear();boost=0;energy=1;
+            elapsed=Math.Min(limit,elapsed+dt);currentContacts.Clear();boost=0;energy=1;Vector2 playerBeforeStep=player;
             UpdateCapsuleProximity();
             if(input.sqrMagnitude>.001f)facing=input.normalized;
             StepPlayerActions(dt,input);
@@ -166,7 +167,11 @@ namespace EarlyRush.V9
                 if(c.exited)continue;Vector2 d=c.position-next;float radius=c.radius+PlayerRadius;
                 if(d.sqrMagnitude<radius*radius)
                 {
-                    Contact(c.id);HandleNpcActionContact(c);Vector2 n=d.sqrMagnitude>.00001f?d.normalized:facing;
+                    Contact(c.id);if(!HandlePlayerDashContact(c))HandleNpcActionContact(c);
+                    // A launched actor has one ground-motion owner. Additional ordinary soft
+                    // pushes would bypass its travel cap and task-area safety checks.
+                    if(c.dashAirborne)continue;
+                    Vector2 n=d.sqrMagnitude>.00001f?d.normalized:facing;
                     c.position=c.kind==PersonKind.Alighting?Resolve(c.position,n*(radius-d.magnitude+.01f),c.radius):MoveCrowdPerson(c,n*(radius-d.magnitude+.01f));
                     if(Vector2.Distance(c.position,next)<radius-.02f)next=player;
                 }
@@ -186,6 +191,7 @@ namespace EarlyRush.V9
                 }
             }
             if(map.IsWalkable(next,PlayerRadius))player=next;
+            observedPlayerVelocity=(player-playerBeforeStep)/dt;
             UpdatePeople(dt);UpdateTrain(dt);EvaluateTasks(dt);UpdateEvents(dt);
             // Hysteresis: separation of at least .08 is needed to re-arm a fixed object.
             foreach(int id in contacts)if(!currentContacts.Contains(id)&&StillNear(id))currentContacts.Add(id);
@@ -321,7 +327,11 @@ namespace EarlyRush.V9
                     for(int i=0;i<6;i++)
                     {
                         var c=AddPerson(map.trainDoor+new Vector2((i%2-.5f)*1.1f,-i/2f),PersonKind.Alighting);
-                        if(c!=null)c.target=map.platform+new Vector2((i%2==0?-1:1)*4,-4);
+                        if(c!=null)
+                        {
+                            c.target=map.platform+new Vector2((i%2==0?-1:1)*4,-4);c.destination=c.target;
+                            c.pedestrianPath=new List<Vector2>{c.position,c.target};c.routePlans=1;c.destinationChanges=1;
+                        }
                         else Log("invalid-alighting-spawn",i);
                     }
                     Log("train-open");

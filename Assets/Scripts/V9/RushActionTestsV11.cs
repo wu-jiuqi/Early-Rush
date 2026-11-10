@@ -17,7 +17,12 @@ namespace EarlyRush.V9
         }
 
         static RunV9 EmptyRun()
-        {var run=new RunV9(0,91026);run.people.Clear();run.Begin();return run;}
+        {
+            // These local mechanism fixtures have always removed the natural population.
+            // Avoid planning hundreds of trips just to discard them before the first tick.
+            var run=new RunV9(0,91026,new ConfigV9{pedestrianStreetCount=0,pedestrianMetroCount=0,pedestrianOfficeCount=0});
+            run.Begin();return run;
+        }
 
         static void DashAndBrace()
         {
