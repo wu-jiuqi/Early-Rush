@@ -96,8 +96,13 @@ namespace EarlyRush.V9
             Check(cloth.dirt.FindAll(d=>d.cleaned).Count==cleaned&&!rag.touched&&rag.pushed==0&&rag.socket==-1,"rescue preserves dirt ledger and resets push evidence");
 
             var coffee=new RunV9(2,42,new ConfigV9{coffeeTolerance=0});coffee.Begin();var cups=coffee.people.FindAll(p=>p.kind==PersonKind.Coffee);
-            coffee.player=cups[0].position-Vector2.up*.95f;coffee.Tick(.2f,Vector2.up);int countAtFailure=coffee.tasks[0].count;
-            coffee.player=cups[1].position-Vector2.up*.95f;coffee.velocity=Vector2.zero;coffee.Tick(.2f,Vector2.up);
+            Check(cups.Count>=2,"frozen coffee ledger fixture has two generated coworkers");
+            Vector2 coffeeDirection=ArrangeCoffeeContactLane(coffee,cups[0],cups[1]);coffee.Tick(.2f,coffeeDirection);
+            Check(ContactCount(coffee,cups[0].id)==1&&cups[0].spilled&&coffee.tasks[0].state==TaskState.Failed,
+                "first real coffee contact fails the zero-tolerance task before ledger-freeze verification");
+            int countAtFailure=coffee.tasks[0].count;
+            for(int frame=0;frame<180&&ContactCount(coffee,cups[1].id)==0&&coffee.phase==RunPhase.Playing;frame++)coffee.Tick(1f/60,coffeeDirection);
+            Check(ContactCount(coffee,cups[1].id)==1,"player physically walks to the second coworker after coffee task failure");
             Check(coffee.tasks[0].state==TaskState.Failed&&coffee.tasks[0].count==countAtFailure,"failed coffee task freezes count for other cups");
 
             var capsule=new RunV9(1,42);capsule.Begin();var machine=capsule.fixtures.Find(f=>f.kind==FixtureKind.Capsule);
@@ -113,6 +118,30 @@ namespace EarlyRush.V9
             metro.player=last.target;metro.Tick(1f/60,Vector2.zero);
             Check(metro.tasks[0].state==TaskState.Failed,"last exiting passenger contact precedes window completion");
         }
+        static Vector2 ArrangeCoffeeContactLane(RunV9 coffee,params PersonV9[] cups)
+        {
+            // Generated coworkers keep their AI; only initial fixture placement is arranged.
+            // An arbitrary spawn's south neighbor may be a wall, so verify a complete clear lane.
+            coffee.people.Clear();coffee.people.AddRange(cups);Vector2 start=Vector2.zero,direction=Vector2.zero;
+            float length=6+(cups.Length-1)*3;
+            for(float along=18;along<coffee.map.PathLength-18;along+=2)
+            {
+                Vector2 point=coffee.map.PointAtDistance(along),axis=(coffee.map.PointAtDistance(along+1)-point).normalized;
+                bool clear=axis.sqrMagnitude>.9f;
+                for(float distance=0;distance<=length;distance+=.25f)
+                    if(!coffee.map.IsWalkable(point+axis*distance,.6f)||coffee.IsPedestrianReserved(point+axis*distance,.6f))clear=false;
+                if(clear){start=point;direction=axis;break;}
+            }
+            Check(direction.sqrMagnitude>.9f,"coffee contact fixture has a clear walking lane");
+            coffee.player=start;coffee.velocity=Vector2.zero;
+            for(int index=0;index<cups.Length;index++)
+            {
+                cups[index].position=start+direction*(.95f+index*3);
+                Check(coffee.AssignPedestrianDestination(cups[index],start+direction*(6+index*3)),"generated coffee coworker retains an independent walking trip");
+            }
+            return direction;
+        }
+
         // Local mechanism fixtures may arrange the player near an interaction. These are NOT
         // traversal/timing evidence; task state and completion are still driven only by Tick events.
         static void ContactFixtures()
@@ -135,10 +164,13 @@ namespace EarlyRush.V9
             Check(!wheel.bicycle&&!wheel.tasks[1].done,"single pushed wheel cannot grant bike");
             var coffee=new RunV9(2,42,new ConfigV9{coffeeTolerance=0});coffee.Begin();PersonV9 cup=null;
             foreach(var c in coffee.people)if(c.kind==PersonKind.Coffee){cup=c;break;}
-            Check(cup!=null,"coffee people exist");coffee.player=cup.position-Vector2.up*.95f;coffee.Tick(.2f,Vector2.up);
+            Check(cup!=null,"coffee people exist");
+            Vector2 coffeeDirection=ArrangeCoffeeContactLane(coffee,cup);
+            coffee.Tick(.2f,coffeeDirection);
+            Check(ContactCount(coffee,cup.id)==1,"coffee threshold fixture produces a real contact with the selected coworker");
             Check(cup.spilled&&coffee.tasks[0].state==TaskState.Failed,"coffee unique spill above threshold fails");
-            int spills=coffee.tasks[0].count;coffee.Tick(.2f,Vector2.up);
-            Check(coffee.tasks[0].count==spills,"same cup not counted twice");
+            int spills=coffee.tasks[0].count;coffee.Tick(.2f,coffeeDirection);
+            Check(coffee.tasks[0].count==spills&&ContactCount(coffee,cup.id)==1,"same cup not counted twice");
             var capsule=new RunV9(1,42);capsule.Begin();FixtureV9 machine=null;
             foreach(var f in capsule.fixtures)if(f.kind==FixtureKind.Capsule)machine=f;
             capsule.player=machine.position-Vector2.up*1.5f;capsule.Tick(.5f,Vector2.up);int countBefore=capsule.tasks[1].count;
