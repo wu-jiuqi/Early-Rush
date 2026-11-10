@@ -1,0 +1,3 @@
+# Keep the export configuration byte-stable for its recorded SHA256.
+*.json text eol=lf
+*.png binary
