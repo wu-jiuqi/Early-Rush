@@ -107,7 +107,7 @@ namespace EarlyRush.V9
             int count=Mathf.Max(2,Mathf.FloorToInt(perimeter/spacing));
             for(int i=0;i<count;i++)
             {
-                float distance=(i+.3f)*perimeter/count;int side=0;
+                float distance=(i+.3f+((float)random.NextDouble()-.5f)*.35f)*perimeter/count;int side=0;
                 while(side<loop.Length-1&&distance>Vector2.Distance(loop[side],loop[(side+1)%loop.Length]))
                 {distance-=Vector2.Distance(loop[side],loop[(side+1)%loop.Length]);side++;}
                 Vector2 direction=(loop[(side+1)%loop.Length]-loop[side]).normalized,p=loop[side]+direction*distance;
@@ -149,6 +149,14 @@ namespace EarlyRush.V9
                     target=c.crowdRoute[c.crowdWaypoint];
                     if(Vector2.Distance(c.position,target)<.25f){c.crowdWaypoint=(c.crowdWaypoint+1)%c.crowdRoute.Length;target=c.crowdRoute[c.crowdWaypoint];}
                     if(c.flow!=CrowdFlow.Crossing)c.flow=Vector2.Dot(target-c.position,c.roadDirection)>=0?CrowdFlow.Forward:CrowdFlow.Counter;
+                    // Track a short point ahead with a small personal lateral drift. The physical
+                    // footprint follows the same path as the sprite; endpoint taper keeps turns clear.
+                    Vector2 legStart=c.crowdRoute[(c.crowdWaypoint+c.crowdRoute.Length-1)%c.crowdRoute.Length];
+                    Vector2 leg=target-legStart,heading=leg.normalized;
+                    float along=Mathf.Clamp(Vector2.Dot(c.position-legStart,heading)+1.75f,0,leg.magnitude);
+                    float taper=Mathf.Clamp01(Mathf.Min(along,leg.magnitude-along)/1.5f);
+                    float drift=Mathf.Sin((float)elapsed*.65f+c.id*.63f)*.28f*taper;
+                    target=legStart+heading*along+new Vector2(heading.y,-heading.x)*drift;
                 }
                 Vector2 desired=Vector2.ClampMagnitude(target-c.position,c.crowdSpeed),separation=Vector2.zero;
                 var cell=CrowdCell(c.position);
