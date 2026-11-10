@@ -41,7 +41,8 @@ namespace EarlyRush.V9
         readonly List<Vector2> pedestrianDestinations=new List<Vector2>();
         readonly List<float> destinationAlong=new List<float>();
         readonly List<int> destinationModules=new List<int>();
-        readonly List<Vector2>[] rushHourGoals={new List<Vector2>(),new List<Vector2>(),new List<Vector2>(),new List<Vector2>()};
+        readonly List<int> destinationComponents=new List<int>();
+        readonly List<float> destinationOffsets=new List<float>();
         Vector2 observedPlayerVelocity;
         int crowdSimulationStep;
         public int PedestrianArrivals {get;private set;}
@@ -90,52 +91,69 @@ namespace EarlyRush.V9
             if(stage==1){ReserveCrowd(map.platform,12,true);ReserveCrowd(map.trainDoor,10,true);}
             BuildPedestrianReservationIndex();
             InitializePedestrianNavigation();
-            var spawnPoints=new List<Vector2>();
-            var peakPoints=new[]{new List<Vector2>(),new List<Vector2>(),new List<Vector2>(),new List<Vector2>()};
+            // Give every stretch of the commute its own spawn quota. Junction crowds are
+            // additional traffic, rather than four isolated populations walking in place.
+            const float routeBinLength=12;
+            int routeBinCount=Mathf.Max(1,Mathf.CeilToInt((map.PathLength-17)/routeBinLength));
+            var roadBins=new List<Vector2>[routeBinCount];
+            for(int i=0;i<roadBins.Length;i++)roadBins[i]=new List<Vector2>();
+            var junctionPoints=new List<Vector2>[map.modules.Count];
+            for(int i=0;i<junctionPoints.Length;i++)junctionPoints[i]=new List<Vector2>();
             foreach(var p in PedestrianPoints)
             {
                 if(!PublicPedestrianArea(p))continue;
-                int peak=RushHourPeakAt(p);
-                if(!IsCrowdProtected(p,.7f))
+                float along=map.NearestRouteDistance(p);
+                float offRoad=Vector2.Distance(p,map.PointAtDistance(along));
+                // Attack-safe road approaches may carry ordinary pedestrians. The distinct
+                // walking reservations still keep every task's working space clear.
+                if(!IsPedestrianReserved(p,.6f))
                 {
-                    if(peak>=0)peakPoints[peak].Add(p);
-                    else spawnPoints.Add(p);
+                    if(offRoad<=3.1f&&along>=8&&along<=map.PathLength-9)
+                        roadBins[Mathf.Clamp(Mathf.FloorToInt((along-8)/routeBinLength),0,roadBins.Length-1)].Add(p);
+                    int junction=PedestrianJunctionAt(p);
+                    if(junction>=0&&!IsCrowdProtected(p,.55f))junctionPoints[junction].Add(p);
                 }
                 var cell=MapData.Cell(p);
-                if(Math.Abs(cell.x*17+cell.y*29)%11==0)
-                {pedestrianDestinations.Add(p);destinationAlong.Add(map.NearestRouteDistance(p));destinationModules.Add(NearestCrowdModule(p));}
-                if(peak>=0)
+                // End trips beside the stream; each destination is still a distinct nav point.
+                bool terminal=along>=10&&along<=map.PathLength-10&&(along<=22||along>=map.PathLength-22)&&offRoad<=3.1f;
+                if(offRoad>=1.4f&&(terminal||Math.Abs(cell.x*17+cell.y*29)%11==0))
                 {
-                    var module=map.modules[peak*2+1];Vector2 axis=(module.exit-module.entrance).normalized;
-                    float along=Mathf.Abs(Vector2.Dot(p-(module.entrance+module.exit)*.5f,axis));
-                    // Independent destinations on both banks: nobody is sent to a shared centre.
-                    if(along>=12&&along<=18&&Math.Abs(cell.x*11+cell.y*7)%3==0)rushHourGoals[peak].Add(p);
+                    pedestrianDestinations.Add(p);destinationAlong.Add(along);destinationModules.Add(NearestCrowdModule(p));
+                    destinationComponents.Add(PedestrianComponent(p));destinationOffsets.Add(offRoad);
                 }
             }
-            if(spawnPoints.Count==0||pedestrianDestinations.Count<2)return;
+            var usableRoadBins=new List<List<Vector2>>();
+            foreach(var bin in roadBins)if(bin.Count>0)usableRoadBins.Add(bin);
+            var weightedJunctions=new List<int>();
+            for(int i=0;i<junctionPoints.Length;i++)if(junctionPoints[i].Count>0)
+            {weightedJunctions.Add(i);if(i%2==1)weightedJunctions.Add(i);}
+            if(usableRoadBins.Count==0||pedestrianDestinations.Count<2)return;
             var random=new System.Random(seed^0x712a);
             int count=stage==0?config.pedestrianStreetCount:stage==1?config.pedestrianMetroCount:config.pedestrianOfficeCount;
             int coffeeCount=stage==2?Mathf.Min(40,(count+2)/7):0;
-            int peakQuota=Mathf.FloorToInt(count*.8f/4)*4;
+            int roadQuota=Mathf.CeilToInt(count*.68f);
             for(int attempt=0;people.Count<count&&attempt<count*180;attempt++)
             {
-                bool atPeak=people.Count<peakQuota;
-                var choices=atPeak?peakPoints[people.Count%4]:spawnPoints;
-                if(choices.Count==0)choices=spawnPoints;
+                bool onRoad=people.Count<roadQuota||weightedJunctions.Count==0;
+                var choices=onRoad?usableRoadBins[people.Count%usableRoadBins.Count]:
+                    junctionPoints[weightedJunctions[(people.Count-roadQuota)%weightedJunctions.Count]];
                 Vector2 center=choices[random.Next(choices.Count)];
-                int module=NearestCrowdModule(center);
-                bool bypass=false;foreach(var z in map.zones)if(z.kind=="loop-lane"&&z.bounds.Contains(center)){bypass=true;break;}
-                if(!atPeak&&random.NextDouble()>(bypass?.16:module%2==1?.8:.65))continue;
+                int travelSign=random.NextDouble()<.6?1:-1;
+                float routeAlong=map.NearestRouteDistance(center);
+                Vector2 roadPoint=map.PointAtDistance(routeAlong);
+                Vector2 axis=(map.PointAtDistance(Mathf.Min(map.PathLength,routeAlong+.25f))-map.PointAtDistance(Mathf.Max(0,routeAlong-.25f))).normalized;
+                Vector2 right=new Vector2(axis.y,-axis.x);
+                if(onRoad&&Vector2.Dot(center-roadPoint,right)*travelSign<.65f)continue;
                 Vector2 p=center+new Vector2((float)random.NextDouble()-.5f,(float)random.NextDouble()-.5f)*.5f;
-                if(!map.IsWalkable(p,.52f)||IsPedestrianReserved(p,.6f)||IsCrowdProtected(p,.55f))continue;
-                float spacing=atPeak?1.04f:1.5f;
+                if(!map.IsWalkable(p,.52f)||IsPedestrianReserved(p,.6f))continue;
+                float spacing=onRoad?1.16f:1.05f;
                 bool overlap=false;foreach(var other in people)if((other.position-p).sqrMagnitude<spacing*spacing){overlap=true;break;}if(overlap)continue;
                 var c=new PersonV9{id=3000+people.Count,position=p,home=p,target=p,radius=.42f,appearance=random.Next(12),hasPedestrianAI=true,
-                    rushHourLocal=atPeak,kind=coffeeCount>0&&(people.Count+1)*coffeeCount/count>people.Count*coffeeCount/count?PersonKind.Coffee:PersonKind.Ordinary};
+                    rushHourLocal=random.NextDouble()<.25,kind=coffeeCount>0&&(people.Count+1)*coffeeCount/count>people.Count*coffeeCount/count?PersonKind.Coffee:PersonKind.Ordinary};
                 int roll=random.Next(100);c.profile=roll<55?PedestrianProfile.Commuter:roll<75?PedestrianProfile.Hurried:roll<88?PedestrianProfile.Leisure:PedestrianProfile.Cautious;
                 if(c.kind==PersonKind.Coffee)c.profile=PedestrianProfile.Cautious;
                 c.walkingSpeed=(c.profile==PedestrianProfile.Hurried?1.75f:c.profile==PedestrianProfile.Leisure?.95f:c.profile==PedestrianProfile.Cautious?1.15f:1.4f)*(.9f+(float)random.NextDouble()*.2f);
-                c.travelSign=random.NextDouble()<.72?1:-1;c.pedestrianRandom=unchecked((uint)(seed*397+c.id*7919))|1u;
+                c.travelSign=travelSign;c.pedestrianRandom=unchecked((uint)(seed*397+c.id*7919))|1u;
                 c.canRush=c.kind==PersonKind.Ordinary&&c.profile==PedestrianProfile.Hurried;
                 c.art=c.kind==PersonKind.Coffee?"people/woman":new[]{"people/man","people/woman","people/commuter"}[c.appearance%3];
                 if(!ChoosePedestrianDestination(c))continue;
@@ -145,37 +163,56 @@ namespace EarlyRush.V9
                 people.Add(c);
             }
         }
-        int RushHourPeakAt(Vector2 p)
+        int PedestrianJunctionAt(Vector2 p)
         {
-            for(int peak=0;peak<4;peak++)
+            for(int index=0;index<map.modules.Count;index++)
             {
-                var module=map.modules[peak*2+1];Vector2 axis=(module.exit-module.entrance).normalized,offset=p-(module.entrance+module.exit)*.5f;
+                var module=map.modules[index];Vector2 axis=(module.exit-module.entrance).normalized,offset=p-(module.entrance+module.exit)*.5f;
                 float along=Mathf.Abs(Vector2.Dot(offset,axis)),across=Mathf.Abs(offset.x*axis.y-offset.y*axis.x);
-                // Main-road streams plus plaza shoulders, with the parallel bypass outside.
-                if(along<=18&&across<=(along<7?6.5f:3.1f))return peak;
+                // Public workroom/plaza shoulders meet the through road here. Parallel
+                // bypasses remain outside this extra-density area and are usable detours.
+                if(along<=11&&across<=6.5f)return index;
             }
             return -1;
         }
-        bool ChooseRushHourDestination(PersonV9 c)
+        bool ChooseCommuteDestination(PersonV9 c)
         {
-            int peak=0;float nearest=float.MaxValue;
-            for(int n=0;n<4;n++)
-            {var m=map.modules[n*2+1];float d=(c.position-(m.entrance+m.exit)*.5f).sqrMagnitude;if(d<nearest){nearest=d;peak=n;}}
-            float trip=NextPedestrianRandom(c);
-            if(trip>.97f)return false;
-            if(trip>.82f)peak=(peak+(c.travelSign>0?1:3))%4;
-            var module=map.modules[peak*2+1];Vector2 center=(module.entrance+module.exit)*.5f,axis=(module.exit-module.entrance).normalized;
-            float side=Vector2.Dot(c.position-center,axis);int component=PedestrianComponent(c.position);
-            var goals=rushHourGoals[peak];int best=-1;float bestScore=float.MinValue;
-            for(int n=0;n<40&&goals.Count>0;n++)
+            float fromAlong=map.NearestRouteDistance(c.position);
+            int fromModule=NearestCrowdModule(c.position),component=PedestrianComponent(c.position);
+            float minimum=c.rushHourLocal?24:58,maximum=c.rushHourLocal?100:155;
+            float preferred=c.rushHourLocal?35+NextPedestrianRandom(c)*35:65+NextPedestrianRandom(c)*65;
+            bool sideErrand=c.rushHourLocal&&NextPedestrianRandom(c)<.35f;
+            // Try the intended stream first. A disconnected side room may need the other
+            // direction, but never falls back to repeatedly choosing the same node's bank.
+            for(int pass=0;pass<2;pass++)
             {
-                int index=Mathf.Min(goals.Count-1,(int)(NextPedestrianRandom(c)*goals.Count));Vector2 point=goals[index];
-                float distance=Vector2.Distance(c.position,point);if(distance<12||PedestrianComponent(point)!=component)continue;
-                float opposite=side*Vector2.Dot(point-center,axis)<0?18:0;
-                float score=opposite+NextPedestrianRandom(c)*15-Mathf.Abs(distance-29)*.15f;
-                if(score>bestScore){best=index;bestScore=score;}
+                int sign=pass==0?c.travelSign:-c.travelSign,best=-1;float bestScore=float.MinValue;
+                float available=sign>0?map.PathLength-10-fromAlong:fromAlong-10;
+                if(available<10)continue;
+                bool terminalTrip=available<minimum+24;
+                float minAdvance=terminalTrip?10:minimum;
+                float ideal=terminalTrip?Mathf.Max(10,available-2):preferred;
+                int offset=Mathf.Min(pedestrianDestinations.Count-1,(int)(NextPedestrianRandom(c)*pedestrianDestinations.Count));
+                for(int attempt=0;attempt<pedestrianDestinations.Count;attempt++)
+                {
+                    int index=(offset+attempt)%pedestrianDestinations.Count;
+                    float advance=(destinationAlong[index]-fromAlong)*sign;
+                    Vector2 point=pedestrianDestinations[index];
+                    bool endpoint=sign>0?destinationAlong[index]>=map.PathLength-18:destinationAlong[index]<=18;
+                    if(advance<minAdvance||advance>Mathf.Min(maximum,available)||destinationComponents[index]!=component||
+                        (!c.rushHourLocal&&destinationOffsets[index]>3.1f)||
+                        (terminalTrip&&!endpoint)||
+                        (destinationModules[index]==fromModule&&!(terminalTrip&&endpoint)))continue;
+                    // Through commuters use the full main road. Local errands still visit
+                    // public side areas/bypasses, without locking any actor to a fixed loop.
+                    float score=NextPedestrianRandom(c)*14-Mathf.Abs(advance-ideal)*.3f+
+                        (terminalTrip&&endpoint?12:PedestrianJunctionAt(point)>=0?5:0)+
+                        (sideErrand&&destinationOffsets[index]>6.5f?10:0);
+                    if(score>bestScore){bestScore=score;best=index;}
+                }
+                if(best>=0&&AssignPedestrianDestination(c,pedestrianDestinations[best])){c.travelSign=sign;return true;}
             }
-            return best>=0&&AssignPedestrianDestination(c,goals[best]);
+            return false;
         }
         bool PublicPedestrianArea(Vector2 p)
         {
@@ -191,24 +228,55 @@ namespace EarlyRush.V9
 
         internal bool AssignPedestrianDestination(PersonV9 c,Vector2 goal)
         {
-            var path=FindPedestrianPath(c.position,goal);if(path==null||path.Count<2)return false;
+            var path=FindPedestrianCommutePath(c,goal);if(path==null||path.Count<2)return false;
             if((goal-c.destination).sqrMagnitude>.1f)c.destinationChanges++;
             c.destination=goal;c.target=goal;c.pedestrianPath=path;c.pathIndex=1;c.routePlans++;
             c.aiState=PedestrianState.Walking;c.waitLeft=0;c.blockedTime=0;c.progressDistance=float.MaxValue;
             c.preferredDirection=(path[1]-c.position).normalized;c.decisionLeft=0;return true;
         }
+        List<Vector2> FindPedestrianCommutePath(PersonV9 c,Vector2 goal,Vector2? avoidPoint=null)
+        {
+            // Joined side rooms can form shortcuts around main-road bends. Through trips
+            // retain directional corner waypoints; local errands can still take those shortcuts.
+            if(c.kind!=PersonKind.Ordinary||c.rushHourLocal||!c.hasPedestrianAI)return FindPedestrianPath(c.position,goal,avoidPoint);
+            float fromAlong=map.NearestRouteDistance(c.position),goalAlong=map.NearestRouteDistance(goal);
+            int sign=goalAlong>=fromAlong?1:-1;
+            var turns=new List<Vector2>();float along=0;
+            for(int i=1;i<map.route.Count-1;i++)
+            {
+                along+=Vector2.Distance(map.route[i-1],map.route[i]);
+                if(along<=Mathf.Min(fromAlong,goalAlong)+3||along>=Mathf.Max(fromAlong,goalAlong)-3)continue;
+                Vector2 incoming=(map.route[i]-map.route[i-1]).normalized,outgoing=(map.route[i+1]-map.route[i]).normalized;
+                Vector2 rightIn=new Vector2(incoming.y,-incoming.x),rightOut=new Vector2(outgoing.y,-outgoing.x);
+                Vector2 turn=map.route[i]+(rightIn+rightOut)*(1.4f*sign);
+                if(!map.IsWalkable(turn,.5f)||IsPedestrianReserved(turn,.5f))turn=map.route[i];
+                turns.Add(turn);
+            }
+            if(turns.Count==0)return FindPedestrianPath(c.position,goal,avoidPoint);
+            if(sign<0)turns.Reverse();
+            turns.Add(goal);
+            var complete=new List<Vector2>{c.position};Vector2 from=c.position;
+            foreach(Vector2 waypoint in turns)
+            {
+                var segment=FindPedestrianPath(from,waypoint,avoidPoint);
+                if(segment==null)return null;
+                for(int i=1;i<segment.Count;i++)complete.Add(segment[i]);
+                from=waypoint;
+            }
+            return complete;
+        }
         bool ChoosePedestrianDestination(PersonV9 c)
         {
             if(c.kind==PersonKind.Coffee&&c.coffeeAIInitialized)return TryChooseCoffeeDestination(c);
-            if(c.rushHourLocal&&ChooseRushHourDestination(c))return true;
+            if(ChooseCommuteDestination(c))return true;
             int component=PedestrianComponent(c.position);float fromAlong=map.NearestRouteDistance(c.position);
             int best=-1;float bestScore=float.MinValue;
             for(int tries=0;tries<100;tries++)
             {
                 int index=Mathf.Min(pedestrianDestinations.Count-1,(int)(NextPedestrianRandom(c)*pedestrianDestinations.Count));
                 Vector2 point=pedestrianDestinations[index];float distance=Vector2.Distance(c.position,point),advance=(destinationAlong[index]-fromAlong)*c.travelSign;
-                if(distance<14||distance>145||PedestrianComponent(point)!=component)continue;
-                float score=NextPedestrianRandom(c)*25-Mathf.Abs(distance-(c.profile==PedestrianProfile.Leisure?30:65))*.4f+(advance>15?18:0)+(destinationModules[index]%2==1?6:0);
+                if(distance<20||distance>145||destinationModules[index]==NearestCrowdModule(c.position)||PedestrianComponent(point)!=component)continue;
+                float score=NextPedestrianRandom(c)*25-Mathf.Abs(distance-(c.profile==PedestrianProfile.Leisure?40:80))*.4f+(advance>20?18:0);
                 if(score>bestScore){bestScore=score;best=index;}
             }
             if(best>=0&&AssignPedestrianDestination(c,pedestrianDestinations[best]))return true;
@@ -365,7 +433,7 @@ namespace EarlyRush.V9
                 if(progress<c.progressDistance-.2f){c.progressDistance=progress;c.blockedTime=0;}else c.blockedTime+=actorDt;
                 if(c.blockedTime>config.pedestrianReplanDelay&&c.replanCooldown<=0)
                 {
-                    var path=FindPedestrianPath(c.position,c.destination,c.position+c.preferredDirection*2);
+                    var path=FindPedestrianCommutePath(c,c.destination,c.position+c.preferredDirection*2);
                     if(path!=null&&path.Count>1){c.pedestrianPath=path;c.pathIndex=1;c.routePlans++;PedestrianReplans++;c.aiState=PedestrianState.Replanning;}
                     c.blockedTime=0;c.replanCooldown=2.5f+NextPedestrianRandom(c);c.progressDistance=float.MaxValue;c.decisionLeft=0;
                 }
