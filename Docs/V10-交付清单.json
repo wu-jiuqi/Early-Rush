@@ -1,0 +1,27 @@
+{
+  "version": "0.10.0",
+  "date": "2026-11-11",
+  "unity": "6000.0.26f1",
+  "sourceCommit": "318d39932118190aed2509a460f1ef71494d32a9",
+  "baseBranch": "dev/v9-review",
+  "branch": "feat/v10-design-v3-optimization",
+  "executable": "Builds/EarlyRush-V10/EarlyRush.exe",
+  "executableSha256": "B1DBFE4B9344F998B5F44985D1E5B0C0502AC6E4D31403050D2A82DB1902AD51",
+  "assemblySha256": "CB5493129716D71F221B2F9B94EE012A160FDE8704F821FB02B821BCDA195EF1",
+  "modelAssertions": 956,
+  "cameraChecks": 6,
+  "mapSeedsPerStage": 100,
+  "runtimeErrors": 0,
+  "inputReplaySeed": 91026,
+  "stageDeadlineSeconds": 420,
+  "allTaskReplaySeconds": [
+    195.83,
+    224.9,
+    224.92
+  ],
+  "limitations": [
+    "机器输入回放不等于真人体验验收",
+    "预览截图为静态任务视图",
+    "正式美术、完整随机事件与路线时长仍待后续制作"
+  ]
+}

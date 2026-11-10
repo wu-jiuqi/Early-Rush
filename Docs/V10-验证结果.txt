@@ -1,0 +1,11 @@
+Design v3 / Unity model validation
+Model assertions: 956
+Camera regression checks: 6
+Map validation: 100 seeds x 3 stages. Default stage deadline: 420 seconds.
+mainline stage=0 success=True seconds=155.02 reason=Input replay finished; not human timing evidence
+all-tasks stage=0 success=True completed=3 seconds=195.83 reason=Street input route finished; not timing acceptance
+mainline stage=1 success=True seconds=164.98 reason=Input replay finished; not human timing evidence
+all-tasks stage=1 success=True completed=3 seconds=224.90 reason=All-task machine input route ended; inspect task states, not human timing acceptance
+mainline stage=2 success=True seconds=157.95 reason=Input replay finished; not human timing evidence
+all-tasks stage=2 success=True completed=3 seconds=224.92 reason=All-task machine input route ended; inspect task states, not human timing acceptance
+Machine input validates achievable routes at the default deadline. It is not human playtesting or a measured 5-7 minute experience.
