@@ -20,11 +20,13 @@ namespace EarlyRush.V8
             if (string.IsNullOrEmpty(key)) throw new ArgumentException("Art key cannot be empty", nameof(key));
             if (textures.TryGetValue(key, out var value) && value) return value;
             value = Resources.Load<Texture2D>("V8Art/" + key);
+            if (!value) value = RushLocalArtV14.Load(key);
             if (!value)
             {
-                // A clean source checkout includes a complete, deterministic greybox fallback.
+                // Explicit UI/effects may remain procedural; unmatched primary art stays visible in logs.
                 // Real Resources/V8Art textures always take precedence when artists add them.
-                if (missing.Add(key)) Debug.Log("EARLY_RUSH_PLACEHOLDER V8Art/" + key);
+                if (missing.Add(key)) Debug.Log((RushLocalArtV14.IsProcedural(key)
+                    ? "EARLY_RUSH_PROCEDURAL " : "EARLY_RUSH_PLACEHOLDER V8Art/") + key);
                 value = EarlyRush.V9.RushPlaceholderArt.Create(key);
             }
             textures[key] = value;
@@ -86,6 +88,10 @@ namespace EarlyRush.V8
             if (!sr || direction.sqrMagnitude < .0001f) return;
             string facing = Mathf.Abs(direction.x) > Mathf.Abs(direction.y)
                 ? (direction.x > 0 ? "right" : "left") : (direction.y > 0 ? "up" : "down");
+            // Only two bike views were supplied. Keep the last lateral facing for vertical travel.
+            if (prefix == "bike-feedback/bike-" && (facing == "up" || facing == "down")
+                && !Resources.Load<Texture2D>("V8Art/" + prefix + facing))
+                facing = sr.sprite && sr.sprite.name.EndsWith("bike-left") ? "left" : "right";
             var next = Sprite(prefix + facing);
             if (!next) return;
             if (sr.sprite != next) { sr.sprite = next; SetWidth(sr, width); }

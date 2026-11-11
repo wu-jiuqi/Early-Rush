@@ -1,0 +1,117 @@
+V14 local PNG mapping audit
+70 source PNGs copied unchanged; SHA256 equality verified for all 70.
+Original V8Art lookup wins. New V8ArtV4 aliases are optional fallback.
+Source and existing Resources/ArtV4 remain untouched.
+Player: four directional stills, no walking animation. Bike: two lateral stills; vertical travel retains last lateral facing.
+NPCs: stable front-facing identity stills; source back/side pictures are different outfits, not coherent animation frames.
+Train open uses the actual open-door module; closed train remains unresolved.
+Filing-cabinet is mapped to the real file-pickup counter for the file task, not a literal cabinet.
+No Unity build or scene QA performed by this mapping step.
+
+Observed runtime audit:
+floors-v3/carpet -> V8ArtV4/materials/office-carpet
+floors-v3/ceramic -> V8ArtV4/materials/cream-tile
+fx-decal/actor-shadow -> explicit procedural UI/effect
+fx-decal/arrows -> explicit procedural UI/effect
+fx-decal/rain -> explicit procedural UI/effect
+fx-decal/ripple -> explicit procedural UI/effect
+legacy-extras/breakfast -> V8ArtV4/icons/task-breakfast
+legacy-extras/coffee -> V8ArtV4/icons/task-coffee
+legacy-floors/floor-tile -> V8ArtV4/materials/cream-tile
+legacy-icons/bike -> V8ArtV4/street/reward-bicycle
+legacy-icons/clock -> explicit procedural UI/effect
+legacy-icons/exit -> V8ArtV4/icons/destination-exit
+legacy-icons/pause -> explicit procedural UI/effect
+legacy-icons/play -> explicit procedural UI/effect
+legacy-icons/retry -> explicit procedural UI/effect
+legacy-icons/train -> V8ArtV4/icons/destination-metro
+metro/escalator -> UNRESOLVED primary artwork
+metro/exit-marker -> V8ArtV4/icons/destination-exit
+metro/kiosk -> UNRESOLVED primary artwork
+metro/pillar -> V8ArtV4/metro/station-column
+metro/platform-bench -> V8ArtV4/metro/station-bench
+metro/tactile-strip -> V8ArtV4/metro/train-platform-strip
+metro/train-closed -> UNRESOLVED primary artwork
+metro/vending -> V8ArtV4/metro/capsule-machine
+office/clock-mat -> explicit procedural UI/effect
+office/desk-chair -> V8ArtV4/office/empty-workstation
+office/filing-cabinet -> V8ArtV4/office/file-pickup-counter
+office/meeting-table -> V8ArtV4/office/meeting-table
+office/plant -> V8ArtV4/environment/office-plant
+office/reception -> V8ArtV4/environment/reception-desk
+office/sofa -> UNRESOLVED primary artwork
+people/boy-down -> V8ArtV4/characters/player-front
+people/boy-left -> V8ArtV4/characters/player-left
+people/boy-right -> V8ArtV4/characters/player-right
+people/boy-up -> V8ArtV4/characters/player-back
+people/commuter-down -> V8ArtV4/npcs/commuter-male
+people/commuter-left -> V8ArtV4/npcs/commuter-male
+people/commuter-right -> V8ArtV4/npcs/commuter-male
+people/commuter-up -> V8ArtV4/npcs/commuter-male
+people/man-down -> V8ArtV4/npcs/commuter-male
+people/man-left -> V8ArtV4/npcs/commuter-male
+people/man-right -> V8ArtV4/npcs/commuter-male
+people/man-up -> V8ArtV4/npcs/commuter-male
+people/woman-down -> V8ArtV4/npcs/commuter-female
+people/woman-left -> V8ArtV4/npcs/commuter-female
+people/woman-right -> V8ArtV4/npcs/commuter-female
+people/woman-up -> V8ArtV4/npcs/commuter-female
+stalls/breakfast-stall -> V8ArtV4/street/breakfast-stall
+street/storefront -> V8ArtV4/environment/street-building
+tasks/chair -> V8ArtV4/office/office-chair
+tasks/cloth -> V8ArtV4/metro/folded-cloth
+tasks/wheel -> V8ArtV4/street/loose-wheel
+ui/selection -> explicit procedural UI/effect
+ui/speech -> explicit procedural UI/effect
+ui/thought -> explicit procedural UI/effect
+
+All aliases:
+bike-feedback/bike-down -> V8ArtV4/characters/player-bike-right
+bike-feedback/bike-left -> V8ArtV4/characters/player-bike-left
+bike-feedback/bike-right -> V8ArtV4/characters/player-bike-right
+bike-feedback/bike-up -> V8ArtV4/characters/player-bike-right
+floors-v3/asphalt -> V8ArtV4/materials/asphalt
+floors-v3/carpet -> V8ArtV4/materials/office-carpet
+floors-v3/ceramic -> V8ArtV4/materials/cream-tile
+legacy-extras/breakfast -> V8ArtV4/icons/task-breakfast
+legacy-extras/coffee -> V8ArtV4/icons/task-coffee
+legacy-floors/floor-tile -> V8ArtV4/materials/cream-tile
+legacy-icons/bike -> V8ArtV4/street/reward-bicycle
+legacy-icons/exit -> V8ArtV4/icons/destination-exit
+legacy-icons/train -> V8ArtV4/icons/destination-metro
+metro/exit-marker -> V8ArtV4/icons/destination-exit
+metro/pillar -> V8ArtV4/metro/station-column
+metro/platform-bench -> V8ArtV4/metro/station-bench
+metro/tactile-strip -> V8ArtV4/metro/train-platform-strip
+metro/train-open -> V8ArtV4/metro/train-door-module
+metro/vending -> V8ArtV4/metro/capsule-machine
+office/desk-chair -> V8ArtV4/office/empty-workstation
+office/filing-cabinet -> V8ArtV4/office/file-pickup-counter
+office/meeting-table -> V8ArtV4/office/meeting-table
+office/plant -> V8ArtV4/environment/office-plant
+office/reception -> V8ArtV4/environment/reception-desk
+people/boy-down -> V8ArtV4/characters/player-front
+people/boy-left -> V8ArtV4/characters/player-left
+people/boy-right -> V8ArtV4/characters/player-right
+people/boy-up -> V8ArtV4/characters/player-back
+people/commuter-down -> V8ArtV4/npcs/commuter-male
+people/commuter-left -> V8ArtV4/npcs/commuter-male
+people/commuter-right -> V8ArtV4/npcs/commuter-male
+people/commuter-up -> V8ArtV4/npcs/commuter-male
+people/man-down -> V8ArtV4/npcs/commuter-male
+people/man-left -> V8ArtV4/npcs/commuter-male
+people/man-right -> V8ArtV4/npcs/commuter-male
+people/man-up -> V8ArtV4/npcs/commuter-male
+people/woman-down -> V8ArtV4/npcs/commuter-female
+people/woman-left -> V8ArtV4/npcs/commuter-female
+people/woman-right -> V8ArtV4/npcs/commuter-female
+people/woman-up -> V8ArtV4/npcs/commuter-female
+stalls/breakfast-stall -> V8ArtV4/street/breakfast-stall
+street/bench -> V8ArtV4/environment/street-bench
+street/bush-planter -> V8ArtV4/environment/tree-planter
+street/long-planter -> V8ArtV4/environment/flower-planter
+street/station-doorway -> V8ArtV4/street/metro-entrance
+street/storefront -> V8ArtV4/environment/street-building
+tasks/chair -> V8ArtV4/office/office-chair
+tasks/cloth -> V8ArtV4/metro/folded-cloth
+tasks/wheel -> V8ArtV4/street/loose-wheel
