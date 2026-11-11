@@ -203,7 +203,7 @@ namespace EarlyRush.V9
         public static MapData Create(int stage, int seed)
         {
             if (stage < 0 || stage > 2) throw new ArgumentOutOfRangeException("stage");
-            MapData result = Generate(stage, seed);
+            MapData result = RushStreetArtV14.Applies(stage,seed) ? RushStreetArtV14.Create() : Generate(stage, seed);
             string reason;
             if (!result.Validate(out reason)) throw new InvalidOperationException("Map validation failed: " + reason);
             return result;

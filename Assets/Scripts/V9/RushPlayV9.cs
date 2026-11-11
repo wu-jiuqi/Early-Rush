@@ -30,7 +30,7 @@ namespace EarlyRush.V9
         Vector2 ViewHalf => new Vector2(cam.orthographicSize*cam.aspect,cam.orthographicSize);
         Font font;GUIStyle label,small,title;Texture2D mapTexture;
         Rect mapBounds;Color ink=new Color(.08f,.23f,.25f),cream=new Color(.99f,.97f,.9f),gold=new Color(1,.8f,.2f);
-        string[] names={"早高峰 · 街道","换乘 · 地铁","上班 · 公司"};
+        string[] names={"早高峰 · 街道","通勤 · 地铁","上班 · 公司"};
         string[] stageIcons={"people/boy-up","legacy-icons/train","legacy-icons/clock"};
         void Awake()
         {
@@ -114,6 +114,7 @@ namespace EarlyRush.V9
                 Load(stage,91026);yield return null;yield return null;RenderFrame();
                 System.IO.File.WriteAllText(System.IO.Path.Combine(output,"layout-stage-"+stage+".json"),run.map.ToPreviewJson());
                 var points=new List<Vector2>{run.player};foreach(var site in run.map.tasks)points.Add(site.center);points.Add(run.map.exit);
+                if(RushStreetArtV14.Applies(run.stage,run.seed))points.AddRange(run.map.route);
                 for(int i=0;i<points.Count;i++)
                 {
                     cam.transform.position=new Vector3(points[i].x,points[i].y,-30);
@@ -153,6 +154,10 @@ namespace EarlyRush.V9
         }
         void BuildWorld()
         {
+            bool authoredStreet=RushStreetArtV14.Applies(run.stage,seed);
+            if(authoredStreet)RushStreetArtV14.Build(world,owned,decor,run);
+            if(!authoredStreet)
+            {
             var grid=new GameObject("V9 World Grid").AddComponent<Grid>();grid.transform.SetParent(world,false);grid.cellSize=Vector3.one;
             string floor=run.stage==0?"floors-v3/asphalt":run.stage==1?"floors-v3/ceramic":"floors-v3/carpet";
             LayTiles(grid,"Walkable Tilemap",run.map.cells,floor,ArtV8.FloorOrder,Color.white);
@@ -182,6 +187,7 @@ namespace EarlyRush.V9
                 Vector2 p=run.map.PointAtDistance(s),dir=run.map.PointAtDistance(s+1)-p;
                 var sr=ArtV8.Create(world,"fx-decal/arrows",p,.55f,ArtV8.GroundMarkOrder);sr.transform.rotation=Quaternion.Euler(0,0,-Mathf.Atan2(dir.x,dir.y)*Mathf.Rad2Deg);sr.color=new Color(1,1,1,.38f);
             }
+            }
             if(run.stage==2)
             {
                 // Office terminus is the meeting room, not a time-clock/check-in machine.
@@ -194,7 +200,7 @@ namespace EarlyRush.V9
                 decor.Add(ArtV8.Create(world,"office/plant",tableAt+new Vector2(4,3),1.5f));
                 run.solids.Add(new Rect(tableAt.x-2.1f,tableAt.y,4.2f,1.5f));
             }
-            else decor.Add(ArtV8.Create(world,run.stage==0?"street/station-doorway":"metro/exit-marker",run.map.exit+Vector2.up*2,4));
+            else if(!authoredStreet)decor.Add(ArtV8.Create(world,run.stage==0?"street/station-doorway":"metro/exit-marker",run.map.exit+Vector2.up*2,4));
             ArtV8.Create(world,"ui/selection",run.map.exit,3.2f,ArtV8.GroundMarkOrder+1);
             if(run.stage==1){train=ArtV8.Create(world,"metro/train-closed",run.map.trainDoor+Vector2.up*1.5f,7);decor.Add(train);}
             else train=null;
@@ -263,7 +269,7 @@ namespace EarlyRush.V9
             while(fixtures.Count<run.fixtures.Count)
             {
                 var f=run.fixtures[fixtures.Count];bool mark=f.kind==FixtureKind.ChairSocket||f.kind==FixtureKind.FlipBoard;
-                var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);
+                var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);if(RushStreetArtV14.Applies(run.stage,seed)&&(f.kind==FixtureKind.Breakfast||f.kind==FixtureKind.Repair))sr.enabled=false;
             }
             while(dirt.Count<run.dirt.Count){var p=run.dirt[dirt.Count];var sr=ArtV8.Create(world,"fx-decal/ripple",p.position,.4f,ArtV8.GroundMarkOrder+1);sr.color=new Color(.45f,.68f,.75f,.65f);dirt.Add(sr);}
         }
@@ -355,6 +361,7 @@ namespace EarlyRush.V9
                 var f=run.fixtures[i];if(f.kind==FixtureKind.FlipBoard)fixtures[i].color=run.boards[f.index]?new Color(1,.72f,.15f):new Color(.22f,.78f,.76f);
                 else if(f.kind==FixtureKind.ChairSocket)fixtures[i].color=f.occupied?new Color(.4f,1,.5f,.4f):new Color(1,.8f,.2f,.85f);
             }
+            RushStreetArtV14.RefreshFixtures(run,fixtures,bodies);
             for(int i=0;i<run.dirt.Count;i++)dirt[i].enabled=!run.dirt[i].cleaned;
             if(train){bool open=run.trainPhase==TrainPhase.Alighting||run.trainPhase==TrainPhase.Boarding||run.trainPhase==TrainPhase.Arrived;train.sprite=ArtV8.Sprite(open?"metro/train-open":"metro/train-closed");ArtV8.SetWidth(train,7);}
             foreach(var p in decor)if(p){bool cover=p.sortingOrder>hero.sortingOrder&&p.bounds.Contains(new Vector3(run.player.x,run.player.y+.6f,0));p.color=new Color(1,1,1,cover?.48f:1);}
