@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 namespace EarlyRush.V9
@@ -201,7 +201,7 @@ namespace EarlyRush.V9
                 }
                 if(stage==1&&goal==run.map.trainDoor)for(int i=0;i<90&&run.phase==RunPhase.Playing;i++)run.Tick(1f/60,Vector2.zero);
             }
-            result.success=run.success;result.elapsed=run.elapsed;result.contacts=run.bumps;result.stoppedAt=run.player;
+            result.success=run.success;result.completed=run.Completed;result.taskStates=new[]{run.tasks[0].state.ToString(),run.tasks[1].state.ToString(),run.tasks[2].state.ToString()};result.elapsed=run.elapsed;result.contacts=run.bumps;result.stoppedAt=run.player;
             if(result.reason==null)result.reason=run.success?"Input replay finished; not human timing evidence":"Did not finish within timer";
             result.trace.AddRange(run.telemetry);return result;
         }
@@ -372,16 +372,50 @@ namespace EarlyRush.V9
                 for(int i=0;i<90;i++)run.Tick(1f/60,Vector2.zero);
                 if(!run.tasks[0].done)return EndReplay(run,result,"Waiting/boarding task failed on actual passenger contact or registration");
                 BodyV9 cloth=run.bodies[0];Vector2 center=run.map.tasks[2].center;
-                Vector2[] sweep={center+new Vector2(-4,-.3f),center+new Vector2(4,-.3f),center+new Vector2(4,.3f),center+new Vector2(-4,.3f)};
-                foreach(var target in sweep)if(!PushTo(run,cloth,target,.12f,90,out reason))return EndReplay(run,result,reason);
-                // Chase any unclean effective-area cells left by imperfect physical steering.
-                for(int pass=0;pass<12&&!run.tasks[2].done;pass++)
+                if(run.map.authoredLayout!=null)
                 {
-                    DirtV9 remaining=null;float nearest=float.MaxValue;
-                    foreach(var patch in run.dirt)if(!patch.cleaned&&Vector2.Distance(patch.position,cloth.position)<nearest){remaining=patch;nearest=Vector2.Distance(patch.position,cloth.position);}
-                    if(remaining!=null&&!PushTo(run,cloth,remaining.position,.12f,45,out reason))return EndReplay(run,result,reason);
+                    // Source-authored rectangles, not the legacy +/-4 lane. Rows are <=.5 apart;
+                    // .2 waypoint tolerance plus half-row gap stays below the .487 wipe radius.
+                    foreach(var patch in run.map.authoredLayout.TaskWorld("M3").patches)
+                    {
+                        Rect r=patch.bounds;float left=r.xMin+.2f,right=r.xMax-.2f;
+                        float bottom=r.yMin+.2f,top=r.yMax-.2f;
+                        int rows=Mathf.Max(1,Mathf.CeilToInt((top-bottom)/.5f));
+                        for(int row=0;row<=rows;row++)
+                        {
+                            float y=Mathf.Lerp(bottom,top,(float)row/rows);
+                            var entry=new Vector2(row%2==0?left:right,y);
+                            var exit=new Vector2(row%2==0?right:left,y);
+                            if(!PushTo(run,cloth,entry,.2f,90,out reason)||!PushTo(run,cloth,exit,.2f,90,out reason))
+                                return EndReplay(run,result,reason);
+                        }
+                    }
+                    // Physical steering may curve. Verify the actual ledger and mop up every residue,
+                    // with a finite bound and progress check; never assign cleaned or task states.
+                    for(int pass=0;pass<run.dirt.Count;pass++)
+                    {
+                        DirtV9 remaining=null;float nearest=float.MaxValue;int before=0;
+                        foreach(var cell in run.dirt)if(!cell.cleaned){before++;float d=Vector2.Distance(cell.position,cloth.position);if(d<nearest){nearest=d;remaining=cell;}}
+                        if(remaining==null)break;
+                        if(!PushTo(run,cloth,remaining.position,.2f,45,out reason))return EndReplay(run,result,reason);
+                        int after=run.dirt.FindAll(d=>!d.cleaned).Count;
+                        if(after>=before)return EndReplay(run,result,"Authored cloth cleanup made no ledger progress at "+remaining.position);
+                    }
+                    if(run.dirt.Exists(d=>!d.cleaned)||!run.tasks[2].done)
+                        return EndReplay(run,result,"Authored cloth sweep has unclean cells="+run.dirt.FindAll(d=>!d.cleaned).Count);
                 }
-                if(!run.tasks[2].done)return EndReplay(run,result,"Cloth sweep still has unclean cells="+(run.tasks[2].limit-run.tasks[2].count));
+                else
+                {
+                    Vector2[] sweep={center+new Vector2(-4,-.3f),center+new Vector2(4,-.3f),center+new Vector2(4,.3f),center+new Vector2(-4,.3f)};
+                    foreach(var target in sweep)if(!PushTo(run,cloth,target,.12f,90,out reason))return EndReplay(run,result,reason);
+                    for(int pass=0;pass<12&&!run.tasks[2].done;pass++)
+                    {
+                        DirtV9 remaining=null;float nearest=float.MaxValue;
+                        foreach(var patch in run.dirt)if(!patch.cleaned&&Vector2.Distance(patch.position,cloth.position)<nearest){remaining=patch;nearest=Vector2.Distance(patch.position,cloth.position);}
+                        if(remaining!=null&&!PushTo(run,cloth,remaining.position,.12f,45,out reason))return EndReplay(run,result,reason);
+                    }
+                    if(!run.tasks[2].done)return EndReplay(run,result,"Cloth sweep still has unclean cells="+(run.tasks[2].limit-run.tasks[2].count));
+                }
             }
             else
             {
@@ -390,6 +424,26 @@ namespace EarlyRush.V9
                 foreach(var desk in run.fixtures)if(desk.kind==FixtureKind.FileDesk)
                 {if(!MoveTo(run,desk.position,20,out reason))return EndReplay(run,result,reason);run.Tick(.5f,Vector2.zero);}
                 if(!run.tasks[1].done)return EndReplay(run,result,"File delivery failed/timed out using actual movement");
+                if(run.map.authoredLayout!=null)
+                {
+                    // Authored chairs have identity-bound targets. Never borrow another free socket.
+                    var pickups=run.map.authoredLayout.TaskWorld("O3").pickups;
+                    for(int i=0;i<pickups.Length;i++)
+                    {
+                        var pickup=pickups[i];BodyV9 chair=null;FixtureV9 socket=null;
+                        foreach(var body in run.bodies)if(body.kind==BodyKind.Chair&&(body.home-pickup.position).sqrMagnitude<.0001f){chair=body;break;}
+                        foreach(var fixture in run.fixtures)if(fixture.kind==FixtureKind.ChairSocket&&fixture.index==i){socket=fixture;break;}
+                        if(chair==null||socket==null||!pickup.target.HasValue||(socket.position-pickup.target.Value.center).sqrMagnitude>.0001f)
+                            return EndReplay(run,result,"Authored chair/source socket identity mismatch index="+i);
+                        if(socket.occupied&&!chair.done)return EndReplay(run,result,"Authored chair socket unexpectedly occupied index="+i);
+                        if(!PushTo(run,chair,socket.position,.3f,90,out reason))return EndReplay(run,result,reason);
+                        run.Tick(.6f,Vector2.zero);
+                        if(!chair.done||!socket.occupied||socket.occupant!=chair.id)
+                            return EndReplay(run,result,"Authored chair did not stabilize in its own socket id="+chair.id);
+                    }
+                }
+                else
+                {
                 // Clear front row first, matching the far sockets so later chairs retain access.
                 var order=new List<BodyV9>(run.bodies);order.Sort((a,b)=>b.position.y.CompareTo(a.position.y));
                 foreach(var chair in order)
@@ -405,6 +459,7 @@ namespace EarlyRush.V9
                     run.Tick(.6f,Vector2.zero);
                     if(!chair.done)return EndReplay(run,result,"Chair did not stabilize in free socket id="+chair.id);
                 }
+                }
                 if(!run.tasks[2].done)return EndReplay(run,result,"Chairs incomplete");
             }
             if(!MoveTo(run,run.map.exit,20,out reason))return EndReplay(run,result,reason);
@@ -412,12 +467,19 @@ namespace EarlyRush.V9
         }
         static bool PushTo(RunV9 run,BodyV9 body,Vector2 target,float tolerance,double seconds,out string reason)
         {
-            reason=null;double start=run.elapsed;Vector2 previous=body.position;double progressAt=run.elapsed;
+            reason=null;double start=run.elapsed;Vector2 previous=body.position;double progressAt=run.elapsed;bool approached=false;
             while(!body.done&&Vector2.Distance(body.position,target)>tolerance&&run.phase==RunPhase.Playing)
             {
                 Vector2 direction=(target-body.position).normalized;
                 Vector2 behind=body.position-direction*(body.radius+RunV9.PlayerRadius+.45f);
                 if(!MoveTo(run,behind,15,out reason))return false;
+                if(!approached&&run.map.authoredLayout!=null)
+                {
+                    // Cross-map travel is governed by MoveTo and the unchanged stage deadline,
+                    // not the local push budget. Start it only once, after the first real approach.
+                    start=progressAt=run.elapsed;previous=body.position;
+                }
+                approached=true;
                 for(int i=0;i<120&&!body.done&&Vector2.Distance(body.position,target)>tolerance&&run.phase==RunPhase.Playing;i++)
                 {
                     direction=(target-body.position).normalized;Vector2 fromBody=run.player-body.position;
@@ -426,8 +488,11 @@ namespace EarlyRush.V9
                     if(lateral.magnitude>.65f)break;
                     run.Tick(1f/60,Vector2.ClampMagnitude(direction*Mathf.Clamp(Vector2.Distance(body.position,target)*2,.15f,1)-lateral*1.5f,1));
                 }
+                // The last real Tick may satisfy the goal exactly as its push budget expires.
+                // Observe that success before diagnosing stalled motion; stage deadline still applies below.
+                if(body.done||Vector2.Distance(body.position,target)<=tolerance)break;
                 if(Vector2.Distance(previous,body.position)>.1f){previous=body.position;progressAt=run.elapsed;}
-                if(run.elapsed-start>seconds||run.elapsed-progressAt>15){reason="Push stalled id="+body.id+" at="+body.position+" target="+target;return false;}
+                if(run.elapsed-start>seconds||run.elapsed-progressAt>15){reason="Push stalled id="+body.id+" at="+body.position+" target="+target+" localSeconds="+(run.elapsed-start)+" noProgressSeconds="+(run.elapsed-progressAt)+" walkable="+run.map.IsWalkable(body.position,body.radius)+NavigationObstacles(run,target);return false;}
             }
             run.Tick(.15f,Vector2.zero);return run.phase==RunPhase.Playing||run.success;
         }

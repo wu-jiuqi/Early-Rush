@@ -210,4 +210,49 @@ public static class V4LayoutContractValidation
         }
         Check(!RushV4NpcSources.IsNpcObject("sprites/npcs/city-bus.png")&&!RushV4NpcSources.IsNpcObject("sprites/npcs/cream-car.png"),"vehicles excluded from human whitelist");
         Debug.Log("ART_V4_NPC_SOURCE_CONTRACT_PASS checks="+checks+" (read-only matching/geometry; no NPC spawning or navigation execution)");
+    }    [MenuItem("Early Rush/Art V4/Validate Dynamic NPC Ownership (Default Crowd)")]
+    public static void ValidateDynamicNpcOwnership()
+    {
+        checks=0;int[] expectedSources={93,65,81},expectedStructures={644,535,601};
+        for(int stage=0;stage<3;stage++)
+        {
+            var config=new ConfigV9();
+            int quota=stage==0?config.pedestrianStreetCount:stage==1?config.pedestrianMetroCount:config.pedestrianOfficeCount;
+            var run=new RunV9(stage,RushV4InteriorMap.Seed,config);
+            var layout=run.map.authoredLayout;var sources=run.map.authoredNpcSources;
+            Check(layout!=null&&sources!=null,"default-crowd authored source mapping exists stage "+stage);
+            Check(sources.Count==expectedSources[stage],"default-crowd source count stage "+stage);
+            int coffee=run.people.FindAll(p=>p.authoredCoffee).Count;
+            Check(coffee==(stage==2?3:0),"only office has three separate authored coffee actors");
+            Check(run.people.Count<=quota+coffee,"source people must not exceed configured population cap stage "+stage+" actual="+run.people.Count+" cap="+(quota+coffee));
+            int unfilled=Mathf.Max(0,quota-(run.people.Count-coffee));
+            if(unfilled>0)Debug.LogWarning("ART_V4_DYNAMIC_NPC_UNFILLED "+layout.id+" configuredAmbientCap="+quota+" actualAmbient="+(run.people.Count-coffee)+" separateCoffee="+coffee+" unfilled="+unfilled+" (spawner did not fill configured capacity; not a claim of full population)");
+            Check(run.map.structures.Count==expectedStructures[stage],"all nonhuman structures retained stage "+stage);
+            int structure=0;
+            for(int b=0;b<layout.blockers.Length;b++)if(!sources.IsExcluded(b))
+            {
+                var expected=layout.WorldRect(layout.blockers[b]);var actual=run.map.structures[structure++].bounds;
+                Check(Mathf.Abs(expected.x-actual.x)<.0001f&&Mathf.Abs(expected.y-actual.y)<.0001f&&Mathf.Abs(expected.width-actual.width)<.0001f&&Mathf.Abs(expected.height-actual.height)<.0001f,"retained building bounds unchanged stage "+stage+" blocker "+b);
+            }
+            int assigned=0,nearSource=0,relocated=0;float maxDistance=0;
+            foreach(var person in run.people)if(!string.IsNullOrEmpty(person.sourceArtId))
+            {
+                assigned++;Check(sources.Find(person.sourceArtId)!=null,"runtime source ID exists "+person.sourceArtId);
+                Check(!person.authoredCoffee,"coffee actors do not consume source commuter mapping");
+            }
+            Check(assigned==sources.Count,"every source owns exactly one population slot");
+            foreach(var source in sources.Sources)
+            {
+                var owners=run.people.FindAll(p=>p.sourceArtId==source.id);
+                Check(owners.Count==1,"one real person per source ID "+source.id);
+                var person=owners[0];Check(person.hasPedestrianAI&&!person.exited&&person.PlannedPath!=null&&person.PlannedPath.Count>=2,"source person has initialized navigation "+source.id);
+                Check(person.art=="people/source-"+System.IO.Path.GetFileNameWithoutExtension(source.src),"source PNG identity preserved "+source.id);
+                Check(run.map.IsWalkable(person.position,Mathf.Max(.48f,person.radius)),"source runtime spawn is physically walkable "+source.id);
+                float distance=Vector2.Distance(person.position,source.sourceFoot);maxDistance=Mathf.Max(maxDistance,distance);
+                if(distance>1.6f+.0001f)relocated++;else nearSource++;
+            }
+            Check(run.phase==RunPhase.Ready&&run.elapsed==0&&run.Completed==0,"ownership test only constructs the run");
+            Debug.Log("ART_V4_DYNAMIC_NPC_STAGE "+layout.id+" configuredAmbientCap="+quota+" unfilled="+unfilled+" people="+run.people.Count+" separateCoffee="+coffee+" sourcePeople="+assigned+" structures="+run.map.structures.Count+" within1_6u="+nearSource+" beyond1_6u="+relocated+" maxSourceDistance="+maxDistance+" (some source identities may use valid generic spawn positions; not all original positions retained)");
+        }
+        Debug.Log("ART_V4_DYNAMIC_NPC_OWNERSHIP_PASS checks="+checks+" (default-config population-cap/source-identity contract; unfilled capacity explicitly reported; movement and rendered deduplication require separate checks)");
     }}

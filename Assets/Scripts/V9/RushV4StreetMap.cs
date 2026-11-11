@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 namespace EarlyRush.V9 {
@@ -29,11 +29,11 @@ public static class RushV4StreetMap {
   }
  }
  static Rect Bounds(Vector2 a,Vector2 b,float h)=>Rect.MinMaxRect(Mathf.Min(a.x,b.x)-h,Mathf.Min(a.y,b.y)-h,Mathf.Max(a.x,b.x)+h,Mathf.Max(a.y,b.y)+h);
- public static MapData Create(){var asset=Resources.Load<TextAsset>("ArtV4/street");if(!asset)throw new Exception("Missing ArtV4/street JSON");var l=JsonUtility.FromJson<Layout>(asset.text);var g=new Geometry();var m=new MapData{stage=0,seed=Seed,corridorWidth=448/Ppu};m.geometryWalkable=g.Contains;
+ public static MapData Create(){var asset=Resources.Load<TextAsset>("ArtV4/street");if(!asset)throw new Exception("Missing ArtV4/street JSON");var l=JsonUtility.FromJson<Layout>(asset.text);var g=new Geometry();var m=new MapData{stage=0,seed=Seed,corridorWidth=448/Ppu};m.geometryWalkable=g.Contains;m.authoredLayout=RushV4Layout.Load(0);m.authoredNpcSources=RushV4NpcSources.BuildExclusions(m.authoredLayout);
   // JsonUtility cannot deserialize jagged arrays; main corridor supplies the same ordered route.
   foreach(var c in l.corridors){for(int i=1;i<c.points.Length;i++){var a=World(c.points[i-1]);var b=World(c.points[i]);var s=new Segment{a=a,b=b,half=c.width/Ppu/2,bounds=Bounds(a,b,c.width/Ppu/2)};g.segments.Add(s);if(c.kind=="main"){int n=m.modules.Count;m.modules.Add(new ModuleV9{index=n,kind="v4-street-leg-"+n,floorKey="floors-v3/asphalt",entrance=a,exit=b,bounds=s.bounds});m.zones.Add(new ZoneV9{moduleIndex=n,kind="through-lane",floorKey="floors-v3/asphalt",bounds=s.bounds});}else m.zones.Add(new ZoneV9{moduleIndex=0,kind="loop-lane",floorKey="floors-v3/asphalt",bounds=s.bounds});}if(c.kind=="main")foreach(var p in c.points)m.route.Add(World(p));}
   foreach(var r in l.rooms){var rect=Convert(r);g.rooms.Add(rect);m.zones.Add(new ZoneV9{moduleIndex=0,kind="task-court",floorKey="floors-v3/asphalt",bounds=rect});}
-  foreach(var b in l.blockers){var rect=Convert(b);g.Block(rect);m.structures.Add(new StructureV9{kind="v4-footprint",artKey="",bounds=rect,position=rect.center,width=rect.width});}
+  int blockerIndex=0;foreach(var b in l.blockers){if(m.authoredNpcSources.IsExcluded(blockerIndex++))continue;var rect=Convert(b);g.Block(rect);m.structures.Add(new StructureV9{kind="v4-footprint",artKey="",bounds=rect,position=rect.center,width=rect.width});}
   for(int y=0;y<=Mathf.CeilToInt(l.worldHeight/Ppu);y++)for(int x=0;x<=Mathf.CeilToInt(l.worldWidth/Ppu);x++)if(g.Contains(new Vector2(x,y),0))m.cells.Add(new Vector2Int(x,y));
   m.spawn=World(l.start);m.exit=World(l.end);
   for(int i=0;i<3;i++){var s=Array.Find(l.tasks,t=>t.id=="S"+(i+1));Vector2 center=World(s.position),start=center-Vector2.up*3.5f,target=center+Vector2.up*3.5f;if(i==0||i==2)target=Convert(s.zone).center;if(i==1){var p0=s.pickups[0].position;var p1=s.pickups[1].position;start=World(new Vector2((p0[0]+p1[0])/2,(p0[1]+p1[1])/2));target=Convert(s.zone).center;}var entry=Nearest(m,center);m.tasks.Add(new TaskSite{index=i,kind=i==1?"repair":s.kind,center=center,start=start,target=target,entrance=entry,rejoin=entry,routeDistance=m.NearestRouteDistance(entry)});}

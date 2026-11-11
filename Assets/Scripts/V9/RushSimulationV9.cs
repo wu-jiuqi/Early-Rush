@@ -35,7 +35,7 @@ namespace EarlyRush.V9
             this.stage=stage;this.seed=seed;this.config=config??new ConfigV9();
             // Explicit experimental authored-layout budget, not measured human completion time.
             // Supplied test/host configuration always wins; legacy seed remains 420 seconds.
-            if(config==null&&seed==RushV4StreetMap.Seed)this.config.stageLimit=600;
+            if(config==null&&seed==RushV4StreetMap.Seed){this.config.stageLimit=600;if(stage==0)this.config.walkSpeed=3.8f;}
             if(stage<0||stage>2||this.config.fileCount>5||this.config.chairCount>6||!Positive(this.config.breakfastGameMinutes)||!Positive(this.config.gameMinutesPerRealSecond)||!Positive(this.config.deliveryDuration)||!Positive(this.config.greenDuration)||!Positive(this.config.redDuration)||!Positive(this.config.stageLimit)||!Positive(this.config.walkSpeed)||!Positive(this.config.bikeSpeed)||this.config.bikeSpeed<=this.config.walkSpeed||!Positive(this.config.beatPeriod)||!Positive(this.config.beatWindow)||this.config.beatWindow>this.config.beatPeriod||!Positive(this.config.stableDuration)||!Positive(this.config.stableSpeed)||this.config.capsuleGoal<1||this.config.capsulePenalty<0||this.config.breakfastTolerance<0||this.config.coffeeTolerance<0||this.config.fileCount<1||this.config.chairCount<1)throw new ArgumentException("Invalid V9 configuration");
             ValidateActionConfiguration();map=RushMapV9.Create(stage,seed);player=map.spawn;Setup();
         }
@@ -230,7 +230,7 @@ namespace EarlyRush.V9
             foreach(var c in people)if(c.id==id)
             {
                 if(stage==1&&c.kind==PersonKind.Alighting&&trainPhase==TrainPhase.Alighting&&tasks[0].state==TaskState.Active)SetState(0,TaskState.Failed);
-                if(stage==2&&c.kind==PersonKind.Coffee&&!c.spilled&&tasks[0].state==TaskState.Active){c.spilled=true;tasks[0].count++;if(tasks[0].count>config.coffeeTolerance)SetState(0,TaskState.Failed);}
+                if(stage==2&&c.kind==PersonKind.Coffee&&!c.spilled&&tasks[0].state==TaskState.Active){c.spilled=true;tasks[0].count++;if(tasks[0].count>EffectiveCoffeeTolerance)SetState(0,TaskState.Failed);}
             }
             foreach(var f in fixtures)if(f.id==id)
             {

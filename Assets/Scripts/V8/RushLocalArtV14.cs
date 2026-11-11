@@ -60,6 +60,7 @@ namespace EarlyRush.V8
         public static bool TryPath(string key, out string path)
         {
             if (aliases.TryGetValue(key, out path)) return true;
+            if(key.StartsWith("people/source-")){string name=key.Substring(14);foreach(string suffix in new[]{"-up","-down","-left","-right"})if(name.EndsWith(suffix)){name=name.Substring(0,name.Length-suffix.Length);break;}path="npcs/"+name;return true;}
             // The supplied NPC views depict different outfits/identities. Keep a consistent
             // individual across movement, rather than claiming those are four-way frames.
             if (key.StartsWith("people/coffee-female-")) path = "office/coffee-colleague-female";

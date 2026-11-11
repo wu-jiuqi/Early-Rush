@@ -130,7 +130,7 @@ namespace EarlyRush.V9
             if(usableRoadBins.Count==0||pedestrianDestinations.Count<2)return;
             var random=new System.Random(seed^0x712a);
             int count=stage==0?config.pedestrianStreetCount:stage==1?config.pedestrianMetroCount:config.pedestrianOfficeCount;
-            int coffeeCount=stage==2?Mathf.Min(40,(count+2)/7):0;
+            int coffeeCount=stage==2&&map.authoredLayout==null?Mathf.Min(40,(count+2)/7):0;
             int roadQuota=Mathf.CeilToInt(count*.68f);
             for(int attempt=0;people.Count<count&&attempt<count*180;attempt++)
             {
@@ -145,6 +145,8 @@ namespace EarlyRush.V9
                 Vector2 right=new Vector2(axis.y,-axis.x);
                 if(onRoad&&Vector2.Dot(center-roadPoint,right)*travelSign<.65f)continue;
                 Vector2 p=center+new Vector2((float)random.NextDouble()-.5f,(float)random.NextDouble()-.5f)*.5f;
+                var source=map.authoredNpcSources!=null&&people.Count<map.authoredNpcSources.Sources.Count?map.authoredNpcSources.Sources[people.Count]:null;
+                if(source!=null&&attempt%3!=2&&PublicPedestrianArea(source.position)&&map.IsWalkable(source.position,.52f)&&!IsPedestrianReserved(source.position,.6f))p=source.position;
                 if(!map.IsWalkable(p,.52f)||IsPedestrianReserved(p,.6f))continue;
                 float spacing=onRoad?1.16f:1.05f;
                 bool overlap=false;foreach(var other in people)if((other.position-p).sqrMagnitude<spacing*spacing){overlap=true;break;}if(overlap)continue;
@@ -156,6 +158,7 @@ namespace EarlyRush.V9
                 c.travelSign=travelSign;c.pedestrianRandom=unchecked((uint)(seed*397+c.id*7919))|1u;
                 c.canRush=c.kind==PersonKind.Ordinary&&c.profile==PedestrianProfile.Hurried;
                 c.art=c.kind==PersonKind.Coffee?"people/woman":new[]{"people/man","people/woman","people/commuter"}[c.appearance%3];
+                if(source!=null){c.sourceArtId=source.id;c.art="people/source-"+System.IO.Path.GetFileNameWithoutExtension(source.src);}
                 if(!ChoosePedestrianDestination(c))continue;
                 InitializeCoffeeAI(c);
                 c.decisionLeft=NextPedestrianRandom(c)*config.pedestrianDecisionInterval;

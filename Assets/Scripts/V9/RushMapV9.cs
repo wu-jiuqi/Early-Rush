@@ -42,6 +42,7 @@ namespace EarlyRush.V9
         // Optional authored geometry. Old seeds retain their original cell collision.
         public Func<Vector2,float,bool> geometryWalkable;
         public RushV4Layout authoredLayout;
+        public RushV4NpcSources.Exclusions authoredNpcSources;
         public HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
         public List<Vector2> route = new List<Vector2>();
         // Indices starting a disconnected section. No synthetic walkable edge across a train journey.

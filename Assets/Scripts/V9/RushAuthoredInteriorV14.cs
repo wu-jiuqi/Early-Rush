@@ -5,6 +5,8 @@ namespace EarlyRush.V9 {
 public sealed partial class RunV9 {
  readonly Dictionary<int,Rect> authoredChairTargets=new Dictionary<int,Rect>();
  readonly Dictionary<int,int> authoredChairSockets=new Dictionary<int,int>();
+ // art-v4 browser contract allows at most two spills among its three coworkers.
+ int EffectiveCoffeeTolerance=>map.authoredLayout!=null&&stage==2?Math.Min(config.coffeeTolerance,2):config.coffeeTolerance;
  int RequiredChairs=>map.authoredLayout!=null&&stage==2?map.authoredLayout.TaskById("O3").pickups.Length:config.chairCount;
  int RequiredFiles=>map.authoredLayout!=null&&stage==2?map.authoredLayout.TaskById("O2").deliveries.Length:config.fileCount;
  bool SetupAuthoredInterior(){
@@ -15,7 +17,7 @@ public sealed partial class RunV9 {
    foreach(var patch in clean.patches)for(float x=patch.bounds.xMin+.2f;x<patch.bounds.xMax;x+=.4f)for(float y=patch.bounds.yMin+.2f;y<patch.bounds.yMax;y+=.4f){var p=new Vector2(x,y);if(map.IsWalkable(p,.05f))dirt.Add(new DirtV9{position=p});}
    if(dirt.Count==0)throw new Exception("Authored metro has no accessible dirt samples");tasks[2].limit=dirt.Count;
   }else{
-   tasks[0].state=TaskState.Active;tasks[0].limit=config.coffeeTolerance;
+   tasks[0].state=TaskState.Active;tasks[0].limit=EffectiveCoffeeTolerance;
    var files=layout.TaskWorld("O2");tasks[1].limit=RequiredFiles;AddFixture(FixtureKind.FilePickup,files.position,"office/filing-cabinet");
    for(int i=0;i<files.deliveries.Length;i++)AddFixture(FixtureKind.FileDesk,files.deliveries[i].position,"office/desk-chair",i);
    var chairs=layout.TaskWorld("O3");tasks[2].limit=RequiredChairs;
@@ -28,6 +30,7 @@ public sealed partial class RunV9 {
   }
   SetupCrowd();SetupAuthoredCoffee();return true;
  }
+ public bool TryGetAuthoredChairTarget(int fixtureId,out Rect target)=>authoredChairTargets.TryGetValue(fixtureId,out target);
  bool ChairFits(BodyV9 body,FixtureV9 socket){
   if(!authoredChairSockets.TryGetValue(body.id,out var expected))return Vector2.Distance(body.position,socket.position)<.9f;
   if(expected!=socket.id||!authoredChairTargets.TryGetValue(socket.id,out var r))return false;

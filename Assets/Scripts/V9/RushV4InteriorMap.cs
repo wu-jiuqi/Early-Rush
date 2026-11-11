@@ -50,7 +50,7 @@ namespace EarlyRush.V9
             var layout=RushV4Layout.Load(stage);var g=new Geometry();
             string floor=stage==1?"floors-v3/ceramic":"floors-v3/carpet";
             var m=new MapData{stage=stage,seed=seed,corridorWidth=layout.routeWidth/RushV4Layout.PixelsPerUnit};
-            m.authoredLayout=layout;m.geometryWalkable=g.Contains;m.spawn=layout.World(layout.start);m.exit=layout.World(layout.end);
+            m.authoredLayout=layout;m.authoredNpcSources=RushV4NpcSources.BuildExclusions(layout);m.geometryWalkable=g.Contains;m.spawn=layout.World(layout.start);m.exit=layout.World(layout.end);
             foreach(var corridor in layout.corridors)
             {
                 if(corridor.points==null||corridor.points.Length<2)throw new InvalidOperationException("Invalid authored corridor");
@@ -70,8 +70,8 @@ namespace EarlyRush.V9
             }
             foreach(var room in layout.rooms??new RushV4Layout.Box[0])
             {var bounds=layout.WorldRect(room);g.rooms.Add(bounds);m.zones.Add(new ZoneV9{moduleIndex=0,kind="task-court",floorKey=floor,bounds=bounds});}
-            foreach(var block in layout.blockers??new RushV4Layout.Box[0])
-            {var bounds=layout.WorldRect(block);g.Block(bounds);m.structures.Add(new StructureV9{kind="v4-footprint",artKey="",bounds=bounds,position=bounds.center,width=bounds.width});}
+            int blockerIndex=0;foreach(var block in layout.blockers??new RushV4Layout.Box[0])
+            {if(m.authoredNpcSources.IsExcluded(blockerIndex++))continue;var bounds=layout.WorldRect(block);g.Block(bounds);m.structures.Add(new StructureV9{kind="v4-footprint",artKey="",bounds=bounds,position=bounds.center,width=bounds.width});}
             for(int y=0;y<=Mathf.CeilToInt(layout.worldHeight/RushV4Layout.PixelsPerUnit);y++)
             for(int x=0;x<=Mathf.CeilToInt(layout.worldWidth/RushV4Layout.PixelsPerUnit);x++)
                 if(g.Contains(new Vector2(x,y),0))m.cells.Add(new Vector2Int(x,y));

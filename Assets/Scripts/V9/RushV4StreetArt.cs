@@ -26,6 +26,7 @@ public static class RushV4StreetArt {
   foreach(var b in data.zones)if(b.kind=="work-island"||b.kind=="track-bed")Quad(b,b.kind=="track-bed"?new Color(.4f,.43f,.43f):new Color(.82f,.91f,.83f),-29996,stage==2&&b.kind=="work-island"?Tex(data.groundSrc):null);
   foreach(var item in data.objects){
    // Runtime bodies are authoritative: never draw a second stationary copy of their source PNG.
+   if(RushV4NpcSources.IsNpcObject(item.src))continue;
    if(item.role=="pushable"||item.role=="puddle"||item.id=="M3-cloth")continue;
    // The rear flip-panels facade has a source physical footprint and stays as a target sign.
    // Five live contact boards are separately rendered in front by RunV9's presentation.

@@ -5,6 +5,7 @@ namespace EarlyRush.V9
 {
     public sealed partial class PersonV9
     {
+        public string sourceArtId;
         public bool authoredCoffee;
         public string authoredCoffeeId,authoredCoffeeSprite;
         public Vector2 authoredCoffeeA,authoredCoffeeB;

@@ -41,16 +41,17 @@ namespace EarlyRush.V9
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
-            v4StreetRequested=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-street"||a=="--v4-demo");
+            v4StreetRequested=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-street"||a=="--v4-demo"||a=="--v4-runtime-qa");
             if(v4StreetRequested){seed=RushV4StreetMap.Seed;cameraSize=12;cam.orthographicSize=cameraSize;}
             qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
+            bool v4Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-runtime-qa");
             bool v13Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v13-runtime-qa");
             bool v12Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v12-runtime-qa");
-            runtimeQa=v13Qa||v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
+            runtimeQa=v4Qa||v13Qa||v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
             if(runtimeQa)
             {
                 Application.runInBackground=true;
-                if(v13Qa)gameObject.AddComponent<RushRuntimeCheckV13>();else if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
+                if(v4Qa)gameObject.AddComponent<RushArtV4RuntimeSmoke>();else if(v13Qa)gameObject.AddComponent<RushRuntimeCheckV13>();else if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
             }
             if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
@@ -274,7 +275,7 @@ namespace EarlyRush.V9
             while(fixtures.Count<run.fixtures.Count)
             {
                 var f=run.fixtures[fixtures.Count];bool mark=f.kind==FixtureKind.ChairSocket||f.kind==FixtureKind.FlipBoard;
-                var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);if(seed==RushV4StreetMap.Seed&&(f.kind==FixtureKind.Capsule||f.kind==FixtureKind.FilePickup||f.kind==FixtureKind.FileDesk))sr.enabled=false;if((RushStreetArtV14.Applies(run.stage,seed)||RushV4StreetArt.Applies(run.stage,seed))&&(f.kind==FixtureKind.Breakfast||f.kind==FixtureKind.Repair))sr.enabled=false;
+                var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);if(run.TryGetAuthoredChairTarget(f.id,out var targetRect)){ArtV8.SetWidth(sr,targetRect.width);var targetScale=sr.transform.localScale;targetScale.y=targetRect.height/sr.sprite.bounds.size.y;sr.transform.localScale=targetScale;ArtV8.SetPosition(sr,targetRect.center-Vector2.up*targetRect.height*.4f,ArtV8.GroundMarkOrder+2);}if(seed==RushV4StreetMap.Seed&&(f.kind==FixtureKind.Capsule||f.kind==FixtureKind.FilePickup||f.kind==FixtureKind.FileDesk))sr.enabled=false;if((RushStreetArtV14.Applies(run.stage,seed)||RushV4StreetArt.Applies(run.stage,seed))&&(f.kind==FixtureKind.Breakfast||f.kind==FixtureKind.Repair))sr.enabled=false;
             }
             while(dirt.Count<run.dirt.Count){var p=run.dirt[dirt.Count];var sr=ArtV8.Create(world,"fx-decal/ripple",p.position,.4f,ArtV8.GroundMarkOrder+1);sr.color=new Color(.45f,.68f,.75f,.65f);dirt.Add(sr);}
         }
@@ -665,7 +666,7 @@ namespace EarlyRush.V9
                     GUI.enabled=true;
                 }
                 GUI.Label(new Rect(390,484,280,30),"地图种子 "+seed+" · 上限 "+(run.limit/60).ToString("0")+" 分钟",small);
-                if(Button(new Rect(700,482,190,36),"legacy-icons/retry","换种子"))Load(run.stage,seed+1);
+                if(!v4StreetRequested&&Button(new Rect(700,482,190,36),"legacy-icons/retry","换种子"))Load(run.stage,seed+1);
                 if(Button(new Rect(485,525,310,68),"legacy-icons/play","出发"))run.Begin();
             }
             else if(run.phase==RunPhase.Paused)
@@ -673,7 +674,7 @@ namespace EarlyRush.V9
                 GUI.Label(new Rect(400,200,480,55),"暂停",title);GUI.Label(new Rect(400,275,480,45),"计时已停止",label);
                 if(Button(new Rect(470,350,340,60),"legacy-icons/play","继续"))run.Resume();
                 if(Button(new Rect(470,430,340,60),"legacy-icons/retry","同种子重试"))Load(run.stage,seed);
-                if(Button(new Rect(470,510,340,60),"legacy-icons/retry","换种子挑战"))Load(run.stage,seed+1);
+                if(!v4StreetRequested&&Button(new Rect(470,510,340,60),"legacy-icons/retry","换种子挑战"))Load(run.stage,seed+1);
             }
             else
             {
