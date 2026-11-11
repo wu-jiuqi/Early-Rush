@@ -62,7 +62,9 @@ namespace EarlyRush.V8
             if (aliases.TryGetValue(key, out path)) return true;
             // The supplied NPC views depict different outfits/identities. Keep a consistent
             // individual across movement, rather than claiming those are four-way frames.
-            if (key.StartsWith("people/man-") || key.StartsWith("people/commuter-"))
+            if (key.StartsWith("people/coffee-female-")) path = "office/coffee-colleague-female";
+            else if (key.StartsWith("people/coffee-male-")) path = "office/coffee-colleague-male";
+            else if (key.StartsWith("people/man-") || key.StartsWith("people/commuter-"))
                 path = "npcs/commuter-male";
             else if (key.StartsWith("people/woman-")) path = "npcs/commuter-female";
             else return false;

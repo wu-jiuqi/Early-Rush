@@ -15,6 +15,7 @@ namespace EarlyRush.V9
         readonly Dictionary<string,Tile[]> tileSets=new Dictionary<string,Tile[]>();
         public RushCameraV10 cameraFollow = new RushCameraV10();
         [Range(5f, 12f)] public float cameraSize = 7.5f;
+        bool v4StreetRequested;
         int seed=91026;bool fullMap,help,qa,panorama,recorded,runtimeQa;int selected=-1;
         readonly bool[] failureShown=new bool[3];string notice="";double noticeUntil;
         int seenDashLaunches,seenPlayerLaunches;double impactAt=-10;Vector2 impactPoint,playerFlightFacing=Vector2.up;
@@ -40,6 +41,8 @@ namespace EarlyRush.V9
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
+            v4StreetRequested=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-street"||a=="--v4-demo");
+            if(v4StreetRequested){seed=RushV4StreetMap.Seed;cameraSize=12;cam.orthographicSize=cameraSize;}
             qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
             bool v13Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v13-runtime-qa");
             bool v12Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v12-runtime-qa");
@@ -106,15 +109,15 @@ namespace EarlyRush.V9
         System.Collections.IEnumerator CaptureReview()
         {
             // Static view sampling only. Camera teleportation is not gameplay or route evidence.
-            string output=System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath,"../QA/visual-samples"));
+            string output=System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath,v4StreetRequested?"../QA/v4-street-visual":"../QA/visual-samples"));
             System.IO.Directory.CreateDirectory(output);
-            System.IO.File.WriteAllText(System.IO.Path.Combine(output,"README.txt"),"Static camera samples, world only, no HUD. No simulated play or task-completion evidence. Seed 91026.");
+            System.IO.File.WriteAllText(System.IO.Path.Combine(output,"README.txt"),"Static camera samples, world only, no HUD. No simulated play or task-completion evidence. Seed recorded in layout JSON; v4 street is an optional geometry integration, not timing proof.");
             for(int stage=0;stage<3;stage++)
             {
-                Load(stage,91026);yield return null;yield return null;RenderFrame();
+                Load(stage,v4StreetRequested?RushV4StreetMap.Seed:91026);yield return null;yield return null;RenderFrame();
                 System.IO.File.WriteAllText(System.IO.Path.Combine(output,"layout-stage-"+stage+".json"),run.map.ToPreviewJson());
                 var points=new List<Vector2>{run.player};foreach(var site in run.map.tasks)points.Add(site.center);points.Add(run.map.exit);
-                if(RushStreetArtV14.Applies(run.stage,run.seed))points.AddRange(run.map.route);
+                if(v4StreetRequested||RushStreetArtV14.Applies(run.stage,run.seed))points.AddRange(run.map.route);
                 for(int i=0;i<points.Count;i++)
                 {
                     cam.transform.position=new Vector3(points[i].x,points[i].y,-30);
@@ -154,9 +157,11 @@ namespace EarlyRush.V9
         }
         void BuildWorld()
         {
+            bool authoredV4=seed==RushV4StreetMap.Seed;
             bool authoredStreet=RushStreetArtV14.Applies(run.stage,seed);
+            if(authoredV4)RushV4StreetArt.Build(world,owned,decor,run);
             if(authoredStreet)RushStreetArtV14.Build(world,owned,decor,run);
-            if(!authoredStreet)
+            if(!authoredStreet&&!authoredV4)
             {
             var grid=new GameObject("V9 World Grid").AddComponent<Grid>();grid.transform.SetParent(world,false);grid.cellSize=Vector3.one;
             string floor=run.stage==0?"floors-v3/asphalt":run.stage==1?"floors-v3/ceramic":"floors-v3/carpet";
@@ -188,7 +193,7 @@ namespace EarlyRush.V9
                 var sr=ArtV8.Create(world,"fx-decal/arrows",p,.55f,ArtV8.GroundMarkOrder);sr.transform.rotation=Quaternion.Euler(0,0,-Mathf.Atan2(dir.x,dir.y)*Mathf.Rad2Deg);sr.color=new Color(1,1,1,.38f);
             }
             }
-            if(run.stage==2)
+            if(run.stage==2&&!authoredV4)
             {
                 // Office terminus is the meeting room, not a time-clock/check-in machine.
                 // Dress beyond the receiving ring, keeping its entire southern approach free.
@@ -200,9 +205,9 @@ namespace EarlyRush.V9
                 decor.Add(ArtV8.Create(world,"office/plant",tableAt+new Vector2(4,3),1.5f));
                 run.solids.Add(new Rect(tableAt.x-2.1f,tableAt.y,4.2f,1.5f));
             }
-            else if(!authoredStreet)decor.Add(ArtV8.Create(world,run.stage==0?"street/station-doorway":"metro/exit-marker",run.map.exit+Vector2.up*2,4));
+            else if(!authoredStreet&&!authoredV4)decor.Add(ArtV8.Create(world,run.stage==0?"street/station-doorway":"metro/exit-marker",run.map.exit+Vector2.up*2,4));
             ArtV8.Create(world,"ui/selection",run.map.exit,3.2f,ArtV8.GroundMarkOrder+1);
-            if(run.stage==1){train=ArtV8.Create(world,"metro/train-closed",run.map.trainDoor+Vector2.up*1.5f,7);decor.Add(train);}
+            if(run.stage==1){train=ArtV8.Create(world,authoredV4?"metro/train-open":"metro/train-closed",run.map.trainDoor+Vector2.up*1.5f,7);train.enabled=!authoredV4;decor.Add(train);}
             else train=null;
             heroShadow=ArtV8.Create(world,"fx-decal/actor-shadow",run.player,.9f,ArtV8.GroundMarkOrder+3);
             hero=ArtV8.Create(world,"people/boy-up",run.player,1.05f);
@@ -269,7 +274,7 @@ namespace EarlyRush.V9
             while(fixtures.Count<run.fixtures.Count)
             {
                 var f=run.fixtures[fixtures.Count];bool mark=f.kind==FixtureKind.ChairSocket||f.kind==FixtureKind.FlipBoard;
-                var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);if(RushStreetArtV14.Applies(run.stage,seed)&&(f.kind==FixtureKind.Breakfast||f.kind==FixtureKind.Repair))sr.enabled=false;
+                var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);if(seed==RushV4StreetMap.Seed&&(f.kind==FixtureKind.Capsule||f.kind==FixtureKind.FilePickup||f.kind==FixtureKind.FileDesk))sr.enabled=false;if((RushStreetArtV14.Applies(run.stage,seed)||RushV4StreetArt.Applies(run.stage,seed))&&(f.kind==FixtureKind.Breakfast||f.kind==FixtureKind.Repair))sr.enabled=false;
             }
             while(dirt.Count<run.dirt.Count){var p=run.dirt[dirt.Count];var sr=ArtV8.Create(world,"fx-decal/ripple",p.position,.4f,ArtV8.GroundMarkOrder+1);sr.color=new Color(.45f,.68f,.75f,.65f);dirt.Add(sr);}
         }
@@ -314,7 +319,8 @@ namespace EarlyRush.V9
             SyncEntities();
             if(run.phase!=RunPhase.Paused)
             {
-                float width=run.bicycle?1.3f:1.05f;
+                float actorScale=run.seed==RushV4StreetMap.Seed?2.025f:1f;
+                float width=(run.bicycle?1.3f:1.05f)*actorScale;
                 // The player's simulation-facing may change with held input while in the air.
                 // Capture a view-only direction once and retain it until landing has settled.
                 if(run.PlayerLaunchCount!=seenPlayerLaunches)playerFlightFacing=run.velocity.sqrMagnitude>.001f?run.velocity.normalized:run.facing;
@@ -329,7 +335,7 @@ namespace EarlyRush.V9
                     bool attacking=p.actionPhase==NpcActionPhase.Windup||p.actionPhase==NpcActionPhase.Charging;
                     // The launch direction survives wall contact and the zero velocity at landing.
                     Vector2 direction=p.dashAirborne||p.dashLandingFeedback01>0?p.dashFlightDirection:attacking?p.chargeDirection:p.velocity;
-                    float personWidth=1.05f*(1+(p.appearance%3-1)*.035f);
+                    float personWidth=1.05f*actorScale*(1+(p.appearance%3-1)*.035f);
                     ArtV8.SetFacing(people[i],p.art+"-",direction,personWidth);
                     ActorPoseV11 personPose=p.actionPhase==NpcActionPhase.Windup?ActorPoseV11.Windup:
                         p.actionPhase==NpcActionPhase.Charging?ActorPoseV11.Dash:p.actionPhase==NpcActionPhase.Recovery?
@@ -363,7 +369,7 @@ namespace EarlyRush.V9
             }
             RushStreetArtV14.RefreshFixtures(run,fixtures,bodies);
             for(int i=0;i<run.dirt.Count;i++)dirt[i].enabled=!run.dirt[i].cleaned;
-            if(train){bool open=run.trainPhase==TrainPhase.Alighting||run.trainPhase==TrainPhase.Boarding||run.trainPhase==TrainPhase.Arrived;train.sprite=ArtV8.Sprite(open?"metro/train-open":"metro/train-closed");ArtV8.SetWidth(train,7);}
+            if(train){bool open=run.trainPhase==TrainPhase.Alighting||run.trainPhase==TrainPhase.Boarding||run.trainPhase==TrainPhase.Arrived;if(run.map.authoredLayout!=null){train.enabled=open;train.sprite=ArtV8.Sprite("metro/train-open");var portal=run.map.authoredLayout.PortalWorld("M1");ArtV8.SetPosition(train,(run.trainPhase==TrainPhase.Arrived?portal.to:run.map.trainDoor)+Vector2.up*1.5f);}else train.sprite=ArtV8.Sprite(open?"metro/train-open":"metro/train-closed");ArtV8.SetWidth(train,7);}
             foreach(var p in decor)if(p){bool cover=p.sortingOrder>hero.sortingOrder&&p.bounds.Contains(new Vector3(run.player.x,run.player.y+.6f,0));p.color=new Color(1,1,1,cover?.48f:1);}
             Vector2 cameraPoint=cameraFollow.Step(run.player,mapBounds,ViewHalf,Time.unscaledDeltaTime,run.phase==RunPhase.Playing&&!qa);
             if(!qa)cam.transform.position=new Vector3(cameraPoint.x,cameraPoint.y,-30);
@@ -402,6 +408,7 @@ namespace EarlyRush.V9
             if(run==null)return;GuiStyles();uiScale=RushMinimapProjectionV13.GuiScale(Screen.width,Screen.height);
             uiOffset=RushMinimapProjectionV13.GuiOffset(Screen.width,Screen.height);
             GUI.matrix=RushMinimapProjectionV13.GuiMatrix(Screen.width,Screen.height);
+            if(v4StreetRequested){Fill(new Rect(480,650,780,28),cream);GUI.Label(new Rect(490,652,760,25),"V4 integration TEST / 600s prototype budget / NOT acceptance-ready",small);}
             Fill(new Rect(18,16,420,76),cream);Icon(stageIcons[run.stage],new Rect(27,23,60,60));GUI.Label(new Rect(90,24,70,50),(run.stage+1)+"/3",title);
             Icon("legacy-icons/clock",new Rect(170,25,46,46));GUI.Label(new Rect(220,24,200,50),TimeSpan.FromSeconds(run.Remaining).ToString(@"mm\:ss"),title);
             for(int i=0;i<run.tasks.Count;i++)

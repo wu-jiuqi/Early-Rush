@@ -39,8 +39,13 @@ namespace EarlyRush.V9
     }
     public sealed class MapData
     {
+        // Optional authored geometry. Old seeds retain their original cell collision.
+        public Func<Vector2,float,bool> geometryWalkable;
+        public RushV4Layout authoredLayout;
         public HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
         public List<Vector2> route = new List<Vector2>();
+        // Indices starting a disconnected section. No synthetic walkable edge across a train journey.
+        public readonly HashSet<int> routeBreaks = new HashSet<int>();
         public Vector2 spawn, exit, signal, platform, trainDoor;
         public List<ModuleV9> modules=new List<ModuleV9>();
         public List<ZoneV9> zones=new List<ZoneV9>();
@@ -56,12 +61,13 @@ namespace EarlyRush.V9
         public float corridorWidth;
         public float PathLength
         {
-            get { float result = 0; for (int i = 1; i < route.Count; i++) result += Vector2.Distance(route[i - 1], route[i]); return result; }
+            get { float result = 0; for (int i = 1; i < route.Count; i++) if(!routeBreaks.Contains(i)) result += Vector2.Distance(route[i - 1], route[i]); return result; }
         }
 
         public bool IsWalkable(Vector2 p, float radius)
         {
             if (float.IsNaN(p.x) || float.IsNaN(p.y) || float.IsInfinity(p.x) || float.IsInfinity(p.y) || radius < 0 || float.IsNaN(radius) || float.IsInfinity(radius)) return false;
+            if (geometryWalkable != null) return geometryWalkable(p,radius);
             if (!cells.Contains(Cell(p))) return false;
             int minX = Mathf.FloorToInt(p.x - radius + .5f), maxX = Mathf.FloorToInt(p.x + radius + .5f);
             int minY = Mathf.FloorToInt(p.y - radius + .5f), maxY = Mathf.FloorToInt(p.y + radius + .5f);
@@ -104,6 +110,7 @@ namespace EarlyRush.V9
             distance = Mathf.Clamp(distance, 0, PathLength);
             for (int i = 1; i < route.Count; i++)
             {
+                if(routeBreaks.Contains(i))continue;
                 float length = Vector2.Distance(route[i - 1], route[i]);
                 if (distance <= length) return Vector2.Lerp(route[i - 1], route[i], length > 0 ? distance / length : 0);
                 distance -= length;
@@ -116,6 +123,7 @@ namespace EarlyRush.V9
             float bestSquared = float.MaxValue, bestDistance = 0, along = 0;
             for (int i = 1; i < route.Count; i++)
             {
+                if(routeBreaks.Contains(i))continue;
                 Vector2 a = route[i - 1], d = route[i] - a;
                 float t = Mathf.Clamp01(Vector2.Dot(p - a, d) / Mathf.Max(.00001f, d.sqrMagnitude));
                 float error = (p - a - d * t).sqrMagnitude;
@@ -127,6 +135,8 @@ namespace EarlyRush.V9
 
         public bool Validate(out string reason)
         {
+            if(stage==0&&seed==RushV4StreetMap.Seed)return RushV4StreetMap.Validate(this,out reason);
+            if(stage>0&&seed==RushV4StreetMap.Seed)return RushV4InteriorMap.Validate(this,out reason);
             reason = "";
             if (route.Count < 8 || tasks.Count != 3) { reason = "route/task cardinality"; return false; }
             if (PathLength < 500 || PathLength > 650) { reason = "route length outside budget"; return false; }
@@ -203,7 +213,7 @@ namespace EarlyRush.V9
         public static MapData Create(int stage, int seed)
         {
             if (stage < 0 || stage > 2) throw new ArgumentOutOfRangeException("stage");
-            MapData result = RushStreetArtV14.Applies(stage,seed) ? RushStreetArtV14.Create() : Generate(stage, seed);
+            MapData result = seed==RushV4StreetMap.Seed ? (stage==0?RushV4StreetMap.Create():RushV4InteriorMap.Create(stage,seed)) : RushStreetArtV14.Applies(stage,seed) ? RushStreetArtV14.Create() : Generate(stage, seed);
             string reason;
             if (!result.Validate(out reason)) throw new InvalidOperationException("Map validation failed: " + reason);
             return result;

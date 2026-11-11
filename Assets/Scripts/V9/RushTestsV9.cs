@@ -291,12 +291,14 @@ namespace EarlyRush.V9
             }
             run.SetBracing(brace);run.Tick(1f/60,input);
         }
+        static bool AuthoredBoardingReached(RunV9 run,Vector2 goal)=>run.stage==1&&run.map.authoredLayout!=null&&(goal-run.map.trainDoor).sqrMagnitude<.001f&&(run.trainPhase==TrainPhase.Riding||run.trainPhase==TrainPhase.Arrived);
         static bool MoveTo(RunV9 run,Vector2 goal,double waypointBudget,out string reason)
         {
             reason=null;List<Vector2> path=null;int pointIndex=0;
-            double replanAt=run.elapsed,progressAt=run.elapsed;Vector2 progressPosition=run.player;
+            double replanAt=run.elapsed,progressAt=run.elapsed,lastDashAttempt=-100;Vector2 progressPosition=run.player;
             while(Vector2.Distance(run.player,goal)>.35f&&run.phase==RunPhase.Playing)
             {
+                if(AuthoredBoardingReached(run,goal))return true;
                 if(path==null||pointIndex>=path.Count||run.elapsed>=replanAt)
                 {
                     path=NavigationPath(run,goal);pointIndex=0;replanAt=run.elapsed+1;
@@ -311,15 +313,20 @@ namespace EarlyRush.V9
                 }
                 while(pointIndex<path.Count&&Vector2.Distance(run.player,path[pointIndex])<=.25f)pointIndex++;
                 if(pointIndex>=path.Count){path=null;continue;}
-                Vector2 point=path[pointIndex];NavigationTick(run,(point-run.player).normalized);
+                Vector2 point=path[pointIndex];
+                // Authored narrow lanes can require the same explicit dash key available to players.
+                // Only after observed stagnation, towards a nearby ordinary blocker; never force position/state.
+                if(run.map.authoredLayout!=null&&run.elapsed-progressAt>2&&run.elapsed-lastDashAttempt>2){foreach(var person in run.people){var d=person.position-run.player;if(!person.exited&&person.kind==PersonKind.Ordinary&&d.magnitude<1.6f&&Vector2.Dot(d.normalized,(point-run.player).normalized)>.65f){run.SetBracing(false);run.PressDash((point-run.player).normalized);lastDashAttempt=run.elapsed;break;}}}
+                NavigationTick(run,(point-run.player).normalized);
                 if(Vector2.Distance(run.player,progressPosition)>.4f){progressPosition=run.player;progressAt=run.elapsed;}
-                if(run.elapsed-progressAt>waypointBudget){reason="Blocked at "+run.player+" waypoint="+point;return false;}
+                if(run.elapsed-progressAt>waypointBudget){reason="Blocked at "+run.player+" waypoint="+point+NavigationObstacles(run,point);return false;}
             }
             if(run.phase!=RunPhase.Playing)return run.success;
             // Fractional target and bicycle braking are handled by physical input, never assignment.
             double finalStart=run.elapsed;
             while((Vector2.Distance(run.player,goal)>.06f||run.velocity.magnitude>.12f)&&run.phase==RunPhase.Playing)
             {
+                if(AuthoredBoardingReached(run,goal))return true;
                 Vector2 delta=goal-run.player;float speed=run.bicycle?run.config.bikeSpeed:run.config.walkSpeed;
                 NavigationTick(run,Vector2.ClampMagnitude((delta*3-run.velocity*.8f)/speed,1));
                 if(run.elapsed-finalStart>10){reason="Precise approach blocked at "+run.player+" goal="+goal;return false;}
@@ -329,7 +336,7 @@ namespace EarlyRush.V9
         static ReplayResult EndReplay(RunV9 run,ReplayResult result,string reason)
         {
             result.completed=run.Completed;result.taskStates=new[]{run.tasks[0].state.ToString(),run.tasks[1].state.ToString(),run.tasks[2].state.ToString()};
-            result.success=run.success&&run.Completed==3;result.elapsed=run.elapsed;result.contacts=run.bumps;result.stoppedAt=run.player;result.reason=reason;result.trace.AddRange(run.telemetry);return result;
+            result.success=run.success&&run.Completed==3;result.elapsed=run.elapsed;result.contacts=run.bumps;result.stoppedAt=run.player;result.reason=string.IsNullOrEmpty(reason)?(run.phase==RunPhase.Results&&!run.success?"Stage deadline reached; incomplete route":"Replay ended without success reason"):reason;result.trace.AddRange(run.telemetry);return result;
         }
         static int ContactCount(RunV9 run,int id){int result=0;foreach(var entry in run.telemetry)if(entry.type=="contact"&&entry.id==id)result++;return result;}
         public static ReplayResult ReplayAllTasks(int stage,int seed,ConfigV9 config=null)
@@ -447,6 +454,7 @@ namespace EarlyRush.V9
                     var next=cell+delta;// Use the actual player footprint. A .55 clearance at integer centres removed
                     // the usable outer row of every 7-wide lane, falsely sealing crowd passages.
                     if(previous.ContainsKey(next)||!map.IsWalkable(next,RunV9.PlayerRadius+.01f))continue;
+                    if(map.geometryWalkable!=null&&!NavigationEdgeClear(map,cell==root?run.player:(Vector2)cell,next,RunV9.PlayerRadius+.01f))continue;
                     Vector2 p=next;bool blocked=false;
                     foreach(var f in run.fixtures)if((f.kind==FixtureKind.FlipBoard||f.kind==FixtureKind.Capsule)&&Vector2.Distance(p,f.position)<f.radius+RunV9.PlayerRadius+.1f)blocked=true;
                     foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(p,b.position)<b.radius+RunV9.PlayerRadius+.12f)blocked=true;
@@ -462,6 +470,29 @@ namespace EarlyRush.V9
             if(!previous.ContainsKey(end))return null;
             var result=new List<Vector2>();for(var at=end;at!=root;at=previous[at])result.Add(at);result.Reverse();return result;
         }
+        static MapData edgeCacheMap;
+        static readonly Dictionary<(Vector2Int,Vector2Int,float),bool> staticEdgeCache=new Dictionary<(Vector2Int,Vector2Int,float),bool>();
+        static bool NavigationEdgeClear(MapData map,Vector2 from,Vector2 to,float radius)
+        {
+            // A valid cell centre does not imply that the edge across a thin footprint is clear.
+            if(edgeCacheMap!=map){edgeCacheMap=map;staticEdgeCache.Clear();}
+            Vector2Int a=MapData.Cell(from),b=MapData.Cell(to);
+            bool cacheable=(from-(Vector2)a).sqrMagnitude<1e-8f&&(to-(Vector2)b).sqrMagnitude<1e-8f;
+            var key=(a,b,radius);
+            if(cacheable&&staticEdgeCache.TryGetValue(key,out bool cached))return cached;
+            int steps=Mathf.Max(1,Mathf.CeilToInt(Vector2.Distance(from,to)/.1f));bool clear=true;
+            for(int i=1;i<=steps;i++)if(!map.IsWalkable(Vector2.Lerp(from,to,i/(float)steps),radius)){clear=false;break;}
+            if(cacheable)staticEdgeCache[key]=clear;
+            return clear;
+        }
+        static string NavigationObstacles(RunV9 run,Vector2 waypoint)
+        {
+            string text=" edgeClear="+NavigationEdgeClear(run.map,run.player,waypoint,RunV9.PlayerRadius)+" velocity="+run.velocity+" brace="+run.IsBracing;
+            foreach(var p in run.people)if(!p.exited&&Vector2.Distance(p.position,run.player)<2)text+=" person="+p.id+"@"+p.position+"/"+p.aiState+"/"+p.actionPhase;
+            foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(b.position,run.player)<2)text+=" body="+b.id+"@"+b.position;
+            foreach(var f in run.fixtures)if(Vector2.Distance(f.position,run.player)<2)text+=" fixture="+f.id+"@"+f.position;
+            return text;
+        }
         public static List<Vector2> FindPath(MapData map,Vector2 start,Vector2 goal)
         {
             Vector2Int root=MapData.Cell(start),end=MapData.Cell(goal);var queue=new Queue<Vector2Int>();var previous=new Dictionary<Vector2Int,Vector2Int>();
@@ -469,7 +500,7 @@ namespace EarlyRush.V9
             while(queue.Count>0)
             {
                 var cell=queue.Dequeue();if(cell==end)break;
-                foreach(var d in dirs){var p=cell+d;if(previous.ContainsKey(p)||!map.IsWalkable(p,.55f))continue;previous[p]=cell;queue.Enqueue(p);}
+                foreach(var d in dirs){var p=cell+d;if(previous.ContainsKey(p)||!map.IsWalkable(p,.55f))continue;if(map.geometryWalkable!=null&&!NavigationEdgeClear(map,cell==root?start:(Vector2)cell,p,.55f))continue;previous[p]=cell;queue.Enqueue(p);}
             }
             if(!previous.ContainsKey(end))return null;
             var path=new List<Vector2>();for(var p=end;p!=root;p=previous[p])path.Add(p);path.Reverse();return path;

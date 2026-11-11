@@ -33,6 +33,9 @@ namespace EarlyRush.V9
         public RunV9(int stage,int seed,ConfigV9 config=null)
         {
             this.stage=stage;this.seed=seed;this.config=config??new ConfigV9();
+            // Explicit experimental authored-layout budget, not measured human completion time.
+            // Supplied test/host configuration always wins; legacy seed remains 420 seconds.
+            if(config==null&&seed==RushV4StreetMap.Seed)this.config.stageLimit=600;
             if(stage<0||stage>2||this.config.fileCount>5||this.config.chairCount>6||!Positive(this.config.breakfastGameMinutes)||!Positive(this.config.gameMinutesPerRealSecond)||!Positive(this.config.deliveryDuration)||!Positive(this.config.greenDuration)||!Positive(this.config.redDuration)||!Positive(this.config.stageLimit)||!Positive(this.config.walkSpeed)||!Positive(this.config.bikeSpeed)||this.config.bikeSpeed<=this.config.walkSpeed||!Positive(this.config.beatPeriod)||!Positive(this.config.beatWindow)||this.config.beatWindow>this.config.beatPeriod||!Positive(this.config.stableDuration)||!Positive(this.config.stableSpeed)||this.config.capsuleGoal<1||this.config.capsulePenalty<0||this.config.breakfastTolerance<0||this.config.coffeeTolerance<0||this.config.fileCount<1||this.config.chairCount<1)throw new ArgumentException("Invalid V9 configuration");
             ValidateActionConfiguration();map=RushMapV9.Create(stage,seed);player=map.spawn;Setup();
         }
@@ -42,6 +45,7 @@ namespace EarlyRush.V9
             string[][] titles={new[]{"早餐保卫战","自行车修理店","翻面挑战"},new[]{"先下后上","扭蛋机","拖水渍"},new[]{"小心同事的咖啡","文件精准派送","办公椅归位"}};
             string[][] icons={new[]{"stalls/breakfast-stall","legacy-icons/bike","ui/selection"},new[]{"legacy-icons/train","metro/vending","fx-decal/rain"},new[]{"legacy-extras/coffee","office/filing-cabinet","tasks/chair"}};
             for(int i=0;i<3;i++)tasks.Add(new TaskV9{id=(stage==0?"S":stage==1?"M":"O")+(i+1),title=titles[stage][i],icon=icons[stage][i],position=map.tasks[i].center});
+            if(SetupAuthoredInterior())return;
             if(stage==0)
             {
                 tasks[0].limit=config.breakfastTolerance;tasks[1].limit=2;tasks[2].limit=boards.Length;
@@ -282,24 +286,24 @@ namespace EarlyRush.V9
                 if(tasks[1].state==TaskState.NotStarted){pickupHold=Vector2.Distance(player,map.tasks[1].start)<1.3f?pickupHold+dt:0;if(pickupHold>=config.stableDuration)SetState(1,TaskState.Active);}
                 if(tasks[1].state==TaskState.Active)
                 {
-                    foreach(var f in fixtures)if(f.kind==FixtureKind.FileDesk&&f.index>=0&&f.index<config.fileCount&&!delivered.Contains(f.index))
+                    foreach(var f in fixtures)if(f.kind==FixtureKind.FileDesk&&f.index>=0&&f.index<RequiredFiles&&!delivered.Contains(f.index))
                     {
                         // Each held document is keyed by leader ID; a desk never consumes another leader's file.
                         if(Vector2.Distance(player,f.position)<1.2f)deskHold[f.index]=GetHold(f.index)+dt;else deskHold[f.index]=0;
                         if(GetHold(f.index)+1e-6f>=config.stableDuration&&elapsed-tasks[1].startedAt<=config.deliveryDuration+1e-8){delivered.Add(f.index);Log("delivered",f.index);}
                     }
                     tasks[1].count=delivered.Count;
-                    if(delivered.Count==config.fileCount)SetState(1,TaskState.Complete);else if(elapsed-tasks[1].startedAt>config.deliveryDuration)SetState(1,TaskState.Failed);
+                    if(delivered.Count==RequiredFiles)SetState(1,TaskState.Complete);else if(elapsed-tasks[1].startedAt>config.deliveryDuration)SetState(1,TaskState.Failed);
                 }
                 int parked=0;foreach(var b in bodies)if(b.kind==BodyKind.Chair)
                 {
                     if(b.done){parked++;continue;}if(b.touched)SetState(2,TaskState.Active);
-                    FixtureV9 socket=null;foreach(var f in fixtures)if(f.kind==FixtureKind.ChairSocket&&!f.occupied&&Vector2.Distance(b.position,f.position)<.9f){socket=f;break;}
+                    FixtureV9 socket=null;foreach(var f in fixtures)if(f.kind==FixtureKind.ChairSocket&&!f.occupied&&ChairFits(b,f)){socket=f;break;}
                     if(socket==null||!b.touched||b.pushed<.2f||b.velocity.magnitude>config.stableSpeed){b.stable=0;b.socket=-1;continue;}
                     if(b.socket!=socket.id){b.socket=socket.id;b.stable=0;}b.stable+=dt;
                     if(b.stable>=config.stableDuration){socket.occupied=true;socket.occupant=b.id;b.done=true;b.position=socket.position;parked++;Log("chair-parked",b.id);}
                 }
-                tasks[2].count=parked;if(parked==config.chairCount)SetState(2,TaskState.Complete);
+                tasks[2].count=parked;if(parked==RequiredChairs)SetState(2,TaskState.Complete);
             }
         }
         readonly Dictionary<int,float> deskHold=new Dictionary<int,float>();
@@ -352,7 +356,7 @@ namespace EarlyRush.V9
                 if(waitingRegistered&&tasks[0].state==TaskState.Active)SetState(0,TaskState.Complete);
                 trainPhase=TrainPhase.Riding;trainStarted=elapsed;Log("boarded");
             }
-            else if(trainPhase==TrainPhase.Riding&&elapsed-trainStarted>=1){trainPhase=TrainPhase.Arrived;Log("arrived");}
+            else if(trainPhase==TrainPhase.Riding&&elapsed-trainStarted>=1){trainPhase=TrainPhase.Arrived;ApplyAuthoredTrainArrival();Log("arrived");}
         }
         void UpdateEvents(float dt)
         {

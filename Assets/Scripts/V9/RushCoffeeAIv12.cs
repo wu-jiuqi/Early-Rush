@@ -82,6 +82,7 @@ namespace EarlyRush.V9
         /// <summary>The generic chooser should return this result for initialized coffee coworkers.</summary>
         internal bool TryChooseCoffeeDestination(PersonV9 person)
         {
+            if(person.authoredCoffee)return TryChooseAuthoredCoffeeDestination(person);
             if (!person.coffeeAIInitialized || person.kind != PersonKind.Coffee) return false;
             if (person.spilled)
             {

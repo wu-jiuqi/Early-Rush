@@ -101,7 +101,7 @@ namespace EarlyRush.V9
         }
         public static void RefreshFixtures(RunV9 run,List<SpriteRenderer> fixtures,List<SpriteRenderer> bodies)
         {
-            if(!Applies(run.stage,run.seed))return;
+            if(!Applies(run.stage,run.seed)&&!RushV4StreetArt.Applies(run.stage,run.seed))return;
             for(int i=0;i<fixtures.Count;i++)if(run.fixtures[i].kind==FixtureKind.FlipBoard)
             {fixtures[i].sprite=InteractiveSprite(run.boards[run.fixtures[i].index]?"flip-face-sun":"flip-face-moon");fixtures[i].color=Color.white;ArtV8.SetWidth(fixtures[i],1.7f);}
             for(int i=0;i<bodies.Count;i++)if(run.bodies[i].kind==BodyKind.Wheel)

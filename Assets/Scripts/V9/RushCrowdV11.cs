@@ -244,7 +244,9 @@ namespace EarlyRush.V9
             var turns=new List<Vector2>();float along=0;
             for(int i=1;i<map.route.Count-1;i++)
             {
+                if(map.routeBreaks.Contains(i))continue;
                 along+=Vector2.Distance(map.route[i-1],map.route[i]);
+                if(map.routeBreaks.Contains(i+1))continue;
                 if(along<=Mathf.Min(fromAlong,goalAlong)+3||along>=Mathf.Max(fromAlong,goalAlong)-3)continue;
                 Vector2 incoming=(map.route[i]-map.route[i-1]).normalized,outgoing=(map.route[i+1]-map.route[i]).normalized;
                 Vector2 rightIn=new Vector2(incoming.y,-incoming.x),rightOut=new Vector2(outgoing.y,-outgoing.x);
@@ -401,6 +403,7 @@ namespace EarlyRush.V9
                 if(!c.hasPedestrianAI){if(!StepNpcAction(c,actorDt))c.velocity=Vector2.zero;continue;}
                 SeparatePedestrianOverlap(c,actorDt);
                 if(StepCoffeeAI(c,actorDt))continue;
+                if(StepAuthoredCoffee(c,actorDt))continue;
                 c.replanCooldown=Mathf.Max(0,c.replanCooldown-actorDt);
                 if(c.aiState==PedestrianState.WaitingSignal)
                 {
