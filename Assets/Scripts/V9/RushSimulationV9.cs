@@ -35,7 +35,7 @@ namespace EarlyRush.V9
             this.stage=stage;this.seed=seed;this.config=config??new ConfigV9();
             // Explicit experimental authored-layout budget, not measured human completion time.
             // Supplied test/host configuration always wins; legacy seed remains 420 seconds.
-            if(config==null&&seed==RushV4StreetMap.Seed){this.config.stageLimit=600;if(stage==0)this.config.walkSpeed=3.8f;}
+            if(config==null&&seed==RushV4StreetMap.Seed){this.config.stageLimit=600;if(stage==0)this.config.walkSpeed=3.8f;else if(stage==1)this.config.walkSpeed=4f;}
             if(stage<0||stage>2||this.config.fileCount>5||this.config.chairCount>6||!Positive(this.config.breakfastGameMinutes)||!Positive(this.config.gameMinutesPerRealSecond)||!Positive(this.config.deliveryDuration)||!Positive(this.config.greenDuration)||!Positive(this.config.redDuration)||!Positive(this.config.stageLimit)||!Positive(this.config.walkSpeed)||!Positive(this.config.bikeSpeed)||this.config.bikeSpeed<=this.config.walkSpeed||!Positive(this.config.beatPeriod)||!Positive(this.config.beatWindow)||this.config.beatWindow>this.config.beatPeriod||!Positive(this.config.stableDuration)||!Positive(this.config.stableSpeed)||this.config.capsuleGoal<1||this.config.capsulePenalty<0||this.config.breakfastTolerance<0||this.config.coffeeTolerance<0||this.config.fileCount<1||this.config.chairCount<1)throw new ArgumentException("Invalid V9 configuration");
             ValidateActionConfiguration();map=RushMapV9.Create(stage,seed);player=map.spawn;Setup();
         }
@@ -254,8 +254,8 @@ namespace EarlyRush.V9
             foreach(var patch in dirt)if(!patch.cleaned)
             {
                 float t=Mathf.Clamp01(Vector2.Dot(patch.position-a,segment)/Mathf.Max(.000001f,segment.sqrMagnitude));
-                // Discrete effective-area cells (0.3 units). Full cell must fit inside the swept cloth.
-                if(Vector2.Distance(patch.position,a+segment*t)<=body.radius-.213f)patch.cleaned=true;
+                // Legacy effective-area cells retain their inset radius; authored metro uses source 65px mark coverage.
+                if(Vector2.Distance(patch.position,a+segment*t)<=ClothCleaningRadius(body))patch.cleaned=true;
             }
         }
         void EvaluateTasks(float dt)
@@ -377,3 +377,4 @@ namespace EarlyRush.V9
         }
     }
 }
+

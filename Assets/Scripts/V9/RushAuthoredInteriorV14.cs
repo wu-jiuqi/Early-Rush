@@ -1,8 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 namespace EarlyRush.V9 {
 public sealed partial class RunV9 {
+ readonly Dictionary<int,string> authoredDirtPatches=new Dictionary<int,string>();
+ public bool TryGetAuthoredDirtPatch(int dirtIndex,out string patchId)=>authoredDirtPatches.TryGetValue(dirtIndex,out patchId);
+ public float ClothCleaningRadius(BodyV9 cloth)=>map.authoredLayout!=null&&stage==1?65f/RushV4Layout.PixelsPerUnit:cloth.radius-.213f;
  readonly Dictionary<int,Rect> authoredChairTargets=new Dictionary<int,Rect>();
  readonly Dictionary<int,int> authoredChairSockets=new Dictionary<int,int>();
  // art-v4 browser contract allows at most two spills among its three coworkers.
@@ -14,7 +17,13 @@ public sealed partial class RunV9 {
   if(stage==1){
    tasks[1].limit=config.capsuleGoal;AddFixture(FixtureKind.Capsule,map.tasks[1].center,"metro/vending");
    var clean=layout.TaskWorld("M3");AddBody(BodyKind.Cloth,map.tasks[2].start,"tasks/cloth");
-   foreach(var patch in clean.patches)for(float x=patch.bounds.xMin+.2f;x<patch.bounds.xMax;x+=.4f)for(float y=patch.bounds.yMin+.2f;y<patch.bounds.yMax;y+=.4f){var p=new Vector2(x,y);if(map.IsWalkable(p,.05f))dirt.Add(new DirtV9{position=p});}
+   // Source game-core.js: three marks per patch at x=.23,.50,.77 and y=.50.
+   // Unity retains its real pushable cloth; only the source coverage contract is restored.
+   foreach(var patch in clean.patches)for(int mark=0;mark<3;mark++){
+    var p=new Vector2(patch.bounds.xMin+patch.bounds.width*(.23f+mark*.27f),patch.bounds.center.y);
+    if(!map.IsWalkable(p,.05f))throw new Exception("Authored cleaning mark outside playable geometry: "+patch.id);
+    authoredDirtPatches[dirt.Count]=patch.id;dirt.Add(new DirtV9{position=p});
+   }
    if(dirt.Count==0)throw new Exception("Authored metro has no accessible dirt samples");tasks[2].limit=dirt.Count;
   }else{
    tasks[0].state=TaskState.Active;tasks[0].limit=EffectiveCoffeeTolerance;

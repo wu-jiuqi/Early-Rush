@@ -36,6 +36,7 @@ namespace EarlyRush.V8
             {"metro/vending", "metro/capsule-machine"},
             {"metro/tactile-strip", "metro/train-platform-strip"},
             {"metro/train-open", "metro/train-door-module"},
+            {"metro/water-patch", "metro/water-patch"},
             {"metro/exit-marker", "icons/destination-exit"},
             {"office/desk-chair", "office/empty-workstation"},
             {"office/plant", "environment/office-plant"},

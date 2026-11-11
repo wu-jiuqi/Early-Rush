@@ -374,9 +374,8 @@ namespace EarlyRush.V9
                 BodyV9 cloth=run.bodies[0];Vector2 center=run.map.tasks[2].center;
                 if(run.map.authoredLayout!=null)
                 {
-                    // Pair actual .4-spaced dirt rows: centres .8 apart, each sample <=.2
-                    // from its sweep line. With .2 steering tolerance, .4 < .487 wipe radius.
-                    // This is discrete-cell coverage, not a claim that .8 covers a continuous rectangle.
+                    // Source M3 now has three collinear real marks per patch, so each patch
+                    // needs one through-sweep. Nearest patch/endpoint selection and real cloth orbit remain.
                     var pending=new List<Rect>();
                     foreach(var patch in run.map.authoredLayout.TaskWorld("M3").patches)pending.Add(patch.bounds);
                     while(pending.Count>0)

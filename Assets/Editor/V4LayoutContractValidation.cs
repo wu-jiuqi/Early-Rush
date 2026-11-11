@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 using EarlyRush.V9;
@@ -6,6 +6,24 @@ using EarlyRush.V9;
 /// <summary>Read-only source/DTO tests. Not a gameplay, navigation or timing certification.</summary>
 public static class V4LayoutContractValidation
 {
+    [MenuItem("Early Rush/Art V4/Validate Source Cleaning Contract")]
+    public static void ValidateCleaning()
+    {
+        checks=0;var run=new RunV9(1,91027);var patches=run.map.authoredLayout.TaskWorld("M3").patches;
+        Check(patches.Length==3&&run.dirt.Count==9&&run.tasks[2].limit==9,"source has nine marks across three patches");
+        for(int p=0;p<patches.Length;p++)for(int i=0;i<3;i++)
+        {
+            int index=p*3+i;var bounds=patches[p].bounds;
+            Equal(run.dirt[index].position,new Vector2(bounds.xMin+bounds.width*(.23f+i*.27f),bounds.center.y),"source mark coordinate");
+            Check(!run.dirt[index].cleaned,"marks initially dirty");
+            Check(run.TryGetAuthoredDirtPatch(index,out var id)&&id==patches[p].id,"read-only patch identity");
+        }
+        Check(Mathf.Abs(run.ClothCleaningRadius(run.bodies[0])-1.625f)<.0001f,"65px authored brush radius");
+        var legacy=new RunV9(1,42);
+        Check(Mathf.Abs(legacy.ClothCleaningRadius(legacy.bodies[0])-.487f)<.0001f,"legacy cloth radius unchanged");
+        Check(!legacy.TryGetAuthoredDirtPatch(0,out _),"legacy has no authored patch grouping");
+        Debug.Log("V4_SOURCE_CLEAN_CONTRACT checks="+checks+"; source/initialization contract only, not task replay evidence");
+    }
     static int checks;
     static void Check(bool value,string message) { checks++;if(!value)throw new Exception("ArtV4 contract: "+message); }
     static void Equal(Vector2 actual,Vector2 expected,string message) { Check(Vector2.Distance(actual,expected)<.001f,message); }

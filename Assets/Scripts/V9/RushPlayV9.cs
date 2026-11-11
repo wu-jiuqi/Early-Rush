@@ -41,7 +41,7 @@ namespace EarlyRush.V9
             cam.transform.rotation=Quaternion.identity;cam.transform.position=new Vector3(0,0,-30);cam.gameObject.AddComponent<AudioListener>();
             font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","SimHei","Arial"},22);
             panorama=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-panorama");
-            v4StreetRequested=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-street"||a=="--v4-demo"||a=="--v4-runtime-qa");
+            v4StreetRequested=!Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--legacy-v14"||a=="--v13-runtime-qa");
             if(v4StreetRequested){seed=RushV4StreetMap.Seed;cameraSize=12;cam.orthographicSize=cameraSize;}
             qa=panorama||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v9-qa");Load(0,seed);
             bool v4Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-runtime-qa");
@@ -277,7 +277,14 @@ namespace EarlyRush.V9
                 var f=run.fixtures[fixtures.Count];bool mark=f.kind==FixtureKind.ChairSocket||f.kind==FixtureKind.FlipBoard;
                 var sr=ArtV8.Create(world,f.art,f.position,mark?1.7f:2.6f,mark?(int?)ArtV8.GroundMarkOrder+2:null);fixtures.Add(sr);if(run.TryGetAuthoredChairTarget(f.id,out var targetRect)){ArtV8.SetWidth(sr,targetRect.width);var targetScale=sr.transform.localScale;targetScale.y=targetRect.height/sr.sprite.bounds.size.y;sr.transform.localScale=targetScale;ArtV8.SetPosition(sr,targetRect.center-Vector2.up*targetRect.height*.4f,ArtV8.GroundMarkOrder+2);}if(seed==RushV4StreetMap.Seed&&(f.kind==FixtureKind.Capsule||f.kind==FixtureKind.FilePickup||f.kind==FixtureKind.FileDesk))sr.enabled=false;if((RushStreetArtV14.Applies(run.stage,seed)||RushV4StreetArt.Applies(run.stage,seed))&&(f.kind==FixtureKind.Breakfast||f.kind==FixtureKind.Repair))sr.enabled=false;
             }
-            while(dirt.Count<run.dirt.Count){var p=run.dirt[dirt.Count];var sr=ArtV8.Create(world,"fx-decal/ripple",p.position,.4f,ArtV8.GroundMarkOrder+1);sr.color=new Color(.45f,.68f,.75f,.65f);dirt.Add(sr);}
+            while(dirt.Count<run.dirt.Count){
+                int index=dirt.Count;var p=run.dirt[index];bool sourceWater=run.stage==1&&run.map.authoredLayout!=null;
+                var sr=ArtV8.Create(world,sourceWater?"metro/water-patch":"fx-decal/ripple",p.position,.4f,ArtV8.GroundMarkOrder+1);
+                if(sourceWater){var bounds=run.map.authoredLayout.TaskWorld("M3").patches[index/3].bounds;
+                    ArtV8.SetWidth(sr,bounds.width);var scale=sr.transform.localScale;scale.y=bounds.height/sr.sprite.bounds.size.y;sr.transform.localScale=scale;
+                    ArtV8.SetPosition(sr,bounds.center-Vector2.up*bounds.height*.4f,ArtV8.GroundMarkOrder+1);sr.enabled=index%3==0;
+                }else sr.color=new Color(.45f,.68f,.75f,.65f);dirt.Add(sr);
+            }
         }
         void Update()
         {
@@ -369,7 +376,11 @@ namespace EarlyRush.V9
                 else if(f.kind==FixtureKind.ChairSocket)fixtures[i].color=f.occupied?new Color(.4f,1,.5f,.4f):new Color(1,.8f,.2f,.85f);
             }
             RushStreetArtV14.RefreshFixtures(run,fixtures,bodies);
-            for(int i=0;i<run.dirt.Count;i++)dirt[i].enabled=!run.dirt[i].cleaned;
+            for(int i=0;i<run.dirt.Count;i++){
+                if(run.stage==1&&run.map.authoredLayout!=null){int first=(i/3)*3,clean=0;for(int k=0;k<3;k++)if(run.dirt[first+k].cleaned)clean++;
+                    dirt[i].enabled=i%3==0&&clean<3;dirt[i].color=new Color(1,1,1,1-clean*.25f);
+                }else dirt[i].enabled=!run.dirt[i].cleaned;
+            }
             if(train){bool open=run.trainPhase==TrainPhase.Alighting||run.trainPhase==TrainPhase.Boarding||run.trainPhase==TrainPhase.Arrived;if(run.map.authoredLayout!=null){train.enabled=open;train.sprite=ArtV8.Sprite("metro/train-open");var portal=run.map.authoredLayout.PortalWorld("M1");ArtV8.SetPosition(train,(run.trainPhase==TrainPhase.Arrived?portal.to:run.map.trainDoor)+Vector2.up*1.5f);}else train.sprite=ArtV8.Sprite(open?"metro/train-open":"metro/train-closed");ArtV8.SetWidth(train,7);}
             foreach(var p in decor)if(p){bool cover=p.sortingOrder>hero.sortingOrder&&p.bounds.Contains(new Vector3(run.player.x,run.player.y+.6f,0));p.color=new Color(1,1,1,cover?.48f:1);}
             Vector2 cameraPoint=cameraFollow.Step(run.player,mapBounds,ViewHalf,Time.unscaledDeltaTime,run.phase==RunPhase.Playing&&!qa);
@@ -409,7 +420,7 @@ namespace EarlyRush.V9
             if(run==null)return;GuiStyles();uiScale=RushMinimapProjectionV13.GuiScale(Screen.width,Screen.height);
             uiOffset=RushMinimapProjectionV13.GuiOffset(Screen.width,Screen.height);
             GUI.matrix=RushMinimapProjectionV13.GuiMatrix(Screen.width,Screen.height);
-            if(v4StreetRequested){Fill(new Rect(480,650,780,28),cream);GUI.Label(new Rect(490,652,760,25),"V4 integration TEST / 600s prototype budget / NOT acceptance-ready",small);}
+            if(v4StreetRequested){Fill(new Rect(480,650,780,28),cream);GUI.Label(new Rect(490,652,760,25),"V4 Demo / 3 chapters / Playtest build",small);}
             Fill(new Rect(18,16,420,76),cream);Icon(stageIcons[run.stage],new Rect(27,23,60,60));GUI.Label(new Rect(90,24,70,50),(run.stage+1)+"/3",title);
             Icon("legacy-icons/clock",new Rect(170,25,46,46));GUI.Label(new Rect(220,24,200,50),TimeSpan.FromSeconds(run.Remaining).ToString(@"mm\:ss"),title);
             for(int i=0;i<run.tasks.Count;i++)
