@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -40,7 +40,7 @@ namespace EarlyRush.V9
         }
         [Serializable] public sealed class Report
         {
-            public string version = "v13-dash-map-route-runtime-2", utc, device, unity;
+            public string version = "v14-dash-map-route-runtime-3", utc, device, unity;
             public string scope = "Unmodified generated populations observed for 15 simulation seconds per stage (four 1/60-second ticks per rendered frame), plus isolated action/input-buffer fixtures and actual minimap pixels at three window sizes/eight directions. Only the observer is relocated for same-time main-route/task/bypass comparison views; NPCs are not moved or hidden in population observations. Counts cover every actor; individual snapshots sample IDs divisible by 23 plus all coffee coworkers. Actual camera/projection metadata are recorded. Accelerated simulation is NOT FPS, complete-route or human playtest evidence.";
             public bool passed;
             public float wallSeconds;
@@ -114,6 +114,10 @@ namespace EarlyRush.V9
 
         IEnumerator Suite()
         {
+            // A hidden/minimized Windows swapchain can report the requested dimensions while
+            // every captured pixel remains black. Do not run observations against that surface.
+            IEnumerator initialSurface=WaitForRenderedSurface(Screen.width,Screen.height,"startup");
+            while(initialSurface.MoveNext())yield return initialSurface.Current;
             for (int stage = 0; stage < 3; stage++)
             {
                 game.Load(stage, 91026);
@@ -217,7 +221,9 @@ namespace EarlyRush.V9
                     CapturePopulationView(sample.name+"-task-"+task.index+"-workspace-t15.png",run,task.kind+" task workspace",task.center,true);
                 }
                 ZoneV9 quietLoop=run.map.zones.Find(zone=>zone.moduleIndex==observationModule.index&&zone.kind=="loop-lane");
-                if(quietLoop==null)throw new InvalidOperationException("Module 1 has no comparison loop lane");
+                // Authored V14 street places courtyard loops at modules 0/4/6, not procedural module 1.
+                if(quietLoop==null&&RushStreetArtV14.Applies(run.stage,run.seed))quietLoop=run.map.zones.Find(zone=>zone.kind=="loop-lane");
+                if(quietLoop==null)throw new InvalidOperationException("Map has no comparison loop lane");
                 PlaceComparisonObserver(run,quietLoop.bounds.center);
                 yield return new WaitForEndOfFrame();
                 CapturePopulationView(sample.name+"-quiet-loop-t15.png",run,observationModule.kind+" parallel loop",quietLoop.bounds.center,true);
@@ -378,7 +384,9 @@ namespace EarlyRush.V9
             foreach(var size in sizes)
             {
                 Screen.SetResolution(size.x,size.y,FullScreenMode.Windowed);
-                yield return null;yield return null;game.FrameForReview();
+                IEnumerator surface=WaitForRenderedSurface(size.x,size.y,"resize");
+                while(surface.MoveNext())yield return surface.Current;
+                game.FrameForReview();
                 Check(Screen.width==size.x&&Screen.height==size.y,"Requested minimap viewport is active "+size,"actual="+Screen.width+"x"+Screen.height);
                 foreach(bool expanded in new[]{false,true})
                 {
@@ -414,6 +422,61 @@ namespace EarlyRush.V9
                 }
             }
             game.SetExpandedMapForReview(false);Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return null;
+        }
+
+        IEnumerator WaitForRenderedSurface(int width,int height,string reason)
+        {
+            float beganSurface=Time.realtimeSinceStartup;
+            float deadline=beganSurface+8f;
+            bool reinitialized=false;
+            int consecutive=0,attempts=0;
+            while(Time.realtimeSinceStartup<deadline)
+            {
+                // Allow OS resize/presentation and IMGUI Repaint to finish, not just simulation Update.
+                yield return null;
+                game.FrameForReview();game.RenderFrame();
+                yield return new WaitForEndOfFrame();
+                attempts++;
+                Texture2D frame=ScreenCapture.CaptureScreenshotAsTexture();
+                bool ready=false;
+                try
+                {
+                    ready=UnityEngine.Rendering.SplashScreen.isFinished&&Screen.width==width&&Screen.height==height
+                        &&frame&&frame.width==width&&frame.height==height&&HasRenderedPixels(frame);
+                }
+                finally{if(frame)Destroy(frame);}
+                consecutive=ready?consecutive+1:0;
+                if(consecutive>=2)
+                {
+                    Check(true,"Rendered capture surface ready "+reason+" "+width+"x"+height,
+                        "two consecutive non-black end-of-frame captures; attempts="+attempts+" swapchainReinitialized="+reinitialized);
+                    yield break;
+                }
+                if(reason=="startup"&&!reinitialized&&Time.realtimeSinceStartup-beganSurface>2f)
+                {
+                    // Explicit diagnostic recovery for a hidden Windows initial swapchain.
+                    // A resize is not a test pass: the exact requested size and pixel assertions
+                    // remain mandatory after returning to the requested viewport.
+                    reinitialized=true;
+                    Debug.Log("Runtime QA initial surface black; reinitializing viewport once before observations");
+                    Screen.SetResolution(width==1024?1280:1024,height==768?720:768,FullScreenMode.Windowed);
+                    yield return null;yield return new WaitForEndOfFrame();
+                    yield return null;yield return new WaitForEndOfFrame();
+                    Screen.SetResolution(width,height,FullScreenMode.Windowed);
+                    consecutive=0;
+                }
+            }
+            throw new InvalidOperationException("No rendered capture surface for "+reason+" "+width+"x"+height+
+                " after 8 seconds. Check window visibility/minimization and graphics availability; this is not a minimap pass.");
+        }
+
+        static bool HasRenderedPixels(Texture2D frame)
+        {
+            // A uniform black screen is never valid evidence for this game's colored world/HUD.
+            // This is only a readiness check; all original marker/landmark assertions still run.
+            var pixels=frame.GetPixels32();
+            foreach(var pixel in pixels)if(pixel.r>4||pixel.g>4||pixel.b>4)return true;
+            return false;
         }
 
         void RecordPedestrians(RunV9 run)
@@ -517,7 +580,8 @@ namespace EarlyRush.V9
         {
             Texture2D image = ScreenCapture.CaptureScreenshotAsTexture();
             if (!image) throw new InvalidOperationException("Screenshot capture failed: " + name);
-            try { File.WriteAllBytes(Path.Combine(output, name), image.EncodeToPNG()); report.screenshots.Add(name); }
+            try { File.WriteAllBytes(Path.Combine(output, name), image.EncodeToPNG()); report.screenshots.Add(name);
+                if(!HasRenderedPixels(image))throw new InvalidOperationException("Captured frame is entirely black: "+name); }
             finally { Destroy(image); }
         }
 
