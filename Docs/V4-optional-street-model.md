@@ -43,9 +43,21 @@ The renderer uses individual PNG objects and shared ground geometry, preserves a
 
 Under street walkSpeed 3.8 and 600 seconds, real Tick mainline passed in 466.13 seconds and all three tasks plus the exit passed in 583.18 seconds. Reports: Builds/EarlyRush-V14/QA/v4-street/candidate-3p8-mainline.txt and candidate-3p8-alltasks.txt.
 
-Earlier interior mainlines passed: metro 496.35 seconds, office 478.87 seconds. Those runs predate the final source-NPC version and require reruns. Latest completed all-task reports failed: metro at 464.90 seconds with two tasks and a stalled cloth push; office at 465.75 seconds with one task and a stalled chair push. Metro repair verification is pending. Neither interior chapter has current full-task acceptance.
+Office all-task replay 2 now passed with 3/3 tasks in 599.333 seconds. Only approximately 0.667 seconds remains under the 600-second budget. This is machine-input success, not human difficulty/balance acceptance. Evidence: Builds/EarlyRush-V14/QA/v4-interior/stage-2-tasks.txt.
 
-These are automated input/simulation results, not human-play timing, performance measurements or final-release approval. No completed-release claim is made.
+Metro all-task replay 4 still failed after 535.666 seconds with 2/3 tasks: precise approach blocked at (109.86,364.62), goal (110.37,365.32). This remains an open issue. Evidence: Builds/EarlyRush-V14/QA/v4-interior/stage-1-tasks.txt.
+
+Earlier interior mainlines passed: metro 496.35 seconds, office 478.87 seconds. Those runs predate the final source-NPC version and do not automatically certify current mainlines. Final-code regression is still required.
+
+## Playable candidate and Windows smoke evidence
+
+Latest build succeeded according to Logs/v14-v4-finalcandidate-build.log (V14_BUILD_RESULT Succeeded, exit 0). The playable candidate is Builds/EarlyRush-ArtV4-Integration-Candidate-Windows.zip, exactly 112,786,629 bytes. Extract it and launch **Play-Art-V4.cmd** for the new ArtV4 version. The separate ArtV4 Review package remains a static review tool.
+
+Builds/EarlyRush-V14/QA/runtime-art-v4/runtime-report.json reports passed=true for the actual Windows player. Each chapter performed 50 rendered movement frames, 20 paused frames and 50 resumed movement frames. All three passed movement, pause stability, resume and single-Tick clock checks; nine nonblack start/pause/resume screenshots were produced.
+
+Mean frame intervals were approximately 17.03/16.94/17.08ms across the three chapters. These short measurements include QA/render overhead and are not production performance benchmarks, full-route stability evidence or human 7–10 minute timing evidence. The report records alternate-resolution swapchain recovery from an initially black surface before returning to 1280x720. Nonblack images prove render readiness, not full visual-quality acceptance.
+
+This package may be tried as a candidate. It is **not a final Release**: metro full-task completion remains blocked, office timing margin needs human review, and final-build gameplay/visual regressions remain outstanding.
 
 ## Contract entry points
 

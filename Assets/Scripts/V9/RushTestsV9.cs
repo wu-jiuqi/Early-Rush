@@ -329,7 +329,7 @@ namespace EarlyRush.V9
                 if(AuthoredBoardingReached(run,goal))return true;
                 Vector2 delta=goal-run.player;float speed=run.bicycle?run.config.bikeSpeed:run.config.walkSpeed;
                 NavigationTick(run,Vector2.ClampMagnitude((delta*3-run.velocity*.8f)/speed,1));
-                if(run.elapsed-finalStart>10){reason="Precise approach blocked at "+run.player+" goal="+goal;return false;}
+                if(run.elapsed-finalStart>10){reason="Precise approach blocked at "+run.player+" goal="+goal+NavigationObstacles(run,goal);return false;}
             }
             run.SetBracing(false);run.Tick(.15f,Vector2.zero);return run.phase==RunPhase.Playing||run.success;
         }
@@ -374,21 +374,27 @@ namespace EarlyRush.V9
                 BodyV9 cloth=run.bodies[0];Vector2 center=run.map.tasks[2].center;
                 if(run.map.authoredLayout!=null)
                 {
-                    // Source-authored rectangles, not the legacy +/-4 lane. Rows are <=.5 apart;
-                    // .2 waypoint tolerance plus half-row gap stays below the .487 wipe radius.
-                    foreach(var patch in run.map.authoredLayout.TaskWorld("M3").patches)
+                    // Pair actual .4-spaced dirt rows: centres .8 apart, each sample <=.2
+                    // from its sweep line. With .2 steering tolerance, .4 < .487 wipe radius.
+                    // This is discrete-cell coverage, not a claim that .8 covers a continuous rectangle.
+                    var pending=new List<Rect>();
+                    foreach(var patch in run.map.authoredLayout.TaskWorld("M3").patches)pending.Add(patch.bounds);
+                    while(pending.Count>0)
                     {
-                        Rect r=patch.bounds;float left=r.xMin+.2f,right=r.xMax-.2f;
-                        float bottom=r.yMin+.2f,top=r.yMax-.2f;
-                        int rows=Mathf.Max(1,Mathf.CeilToInt((top-bottom)/.5f));
-                        for(int row=0;row<=rows;row++)
+                        int chosen=-1;List<Vector2> bestRoute=null;float bestCost=float.MaxValue;
+                        for(int i=0;i<pending.Count;i++)
+                        for(int reverse=0;reverse<2;reverse++)for(int side=0;side<2;side++)
                         {
-                            float y=Mathf.Lerp(bottom,top,(float)row/rows);
-                            var entry=new Vector2(row%2==0?left:right,y);
-                            var exit=new Vector2(row%2==0?right:left,y);
-                            if(!PushTo(run,cloth,entry,.2f,90,out reason)||!PushTo(run,cloth,exit,.2f,90,out reason))
-                                return EndReplay(run,result,reason);
+                            var route=ClothSweepRoute(run,pending[i],reverse!=0,side!=0);
+                            if(route.Count==0){chosen=i;bestRoute=route;bestCost=-1;break;}
+                            float cost=Vector2.Distance(cloth.position,route[0]);
+                            for(int j=1;j<route.Count;j++)cost+=Vector2.Distance(route[j-1],route[j]);
+                            if(cost<bestCost){bestCost=cost;chosen=i;bestRoute=route;}
                         }
+                        if(chosen<0)return EndReplay(run,result,"No authored cleaning route");
+                        pending.RemoveAt(chosen);
+                        foreach(var point in bestRoute)
+                            if(!PushTo(run,cloth,point,.2f,90,out reason,true))return EndReplay(run,result,reason);
                     }
                     // Physical steering may curve. Verify the actual ledger and mop up every residue,
                     // with a finite bound and progress check; never assign cleaned or task states.
@@ -397,7 +403,7 @@ namespace EarlyRush.V9
                         DirtV9 remaining=null;float nearest=float.MaxValue;int before=0;
                         foreach(var cell in run.dirt)if(!cell.cleaned){before++;float d=Vector2.Distance(cell.position,cloth.position);if(d<nearest){nearest=d;remaining=cell;}}
                         if(remaining==null)break;
-                        if(!PushTo(run,cloth,remaining.position,.2f,45,out reason))return EndReplay(run,result,reason);
+                        if(!PushTo(run,cloth,remaining.position,.2f,45,out reason,true))return EndReplay(run,result,reason);
                         int after=run.dirt.FindAll(d=>!d.cleaned).Count;
                         if(after>=before)return EndReplay(run,result,"Authored cloth cleanup made no ledger progress at "+remaining.position);
                     }
@@ -465,14 +471,81 @@ namespace EarlyRush.V9
             if(!MoveTo(run,run.map.exit,20,out reason))return EndReplay(run,result,reason);
             return EndReplay(run,result,"All-task machine input route ended; inspect task states, not human timing acceptance");
         }
-        static bool PushTo(RunV9 run,BodyV9 body,Vector2 target,float tolerance,double seconds,out string reason)
+        static List<Vector2> ClothSweepRoute(RunV9 run,Rect patch,bool reverseRows,bool rightFirst)
+        {
+            var cells=run.dirt.FindAll(d=>!d.cleaned&&patch.Contains(d.position));
+            var ys=new List<float>();
+            foreach(var cell in cells)if(!ys.Exists(y=>Mathf.Abs(y-cell.position.y)<.01f))ys.Add(cell.position.y);
+            ys.Sort();var rows=new List<Vector3>();
+            for(int i=0;i<ys.Count;i++)
+            {
+                float lo=ys[i],hi=lo;
+                if(i+1<ys.Count&&ys[i+1]-lo<.41f)hi=ys[++i];
+                float left=float.MaxValue,right=float.MinValue;
+                foreach(var cell in cells)if(cell.position.y>=lo-.01f&&cell.position.y<=hi+.01f){left=Mathf.Min(left,cell.position.x);right=Mathf.Max(right,cell.position.x);}
+                rows.Add(new Vector3(left,right,(lo+hi)*.5f));
+            }
+            if(reverseRows)rows.Reverse();var route=new List<Vector2>();
+            foreach(var row in rows)
+            {
+                route.Add(new Vector2(rightFirst?row.y:row.x,row.z));
+                route.Add(new Vector2(rightFirst?row.x:row.y,row.z));rightFirst=!rightFirst;
+            }
+            return route;
+        }
+        static bool ApproachCloth(RunV9 run,BodyV9 cloth,Vector2 pushDirection,out string reason)
+        {
+            reason=null;Vector2 center=cloth.position,offset=run.player-center;
+            float radius=cloth.radius+RunV9.PlayerRadius+.65f;
+            float startAngle=Mathf.Atan2(offset.y,offset.x)*Mathf.Rad2Deg;
+            float endAngle=Mathf.Atan2(-pushDirection.y,-pushDirection.x)*Mathf.Rad2Deg;
+            float shortest=Mathf.DeltaAngle(startAngle,endAngle);
+            // A local, footprint-checked orbit avoids the coarse BFS's permitted occupied end cell.
+            // Choose either side of the cloth from actual positions, without moving the cloth by assignment.
+            foreach(float arc in new[]{shortest,shortest>=0?shortest-360:shortest+360})
+            {
+                var points=new List<Vector2>();int segments=Mathf.Max(1,Mathf.CeilToInt(Mathf.Abs(arc)/15));
+                for(int i=0;i<=segments;i++){float a=(startAngle+arc*i/segments)*Mathf.Deg2Rad;points.Add(center+new Vector2(Mathf.Cos(a),Mathf.Sin(a))*radius);}
+                Vector2 previous=run.player;bool clear=true;
+                foreach(var point in points)
+                {
+                    if(!NavigationEdgeClear(run.map,previous,point,RunV9.PlayerRadius+.02f)){clear=false;break;}
+                    previous=point;
+                }
+                if(!clear)continue;
+                foreach(var point in points)
+                {
+                    double began=run.elapsed;
+                    while(Vector2.Distance(run.player,point)>.1f&&run.phase==RunPhase.Playing)
+                    {
+                        Vector2 delta=point-run.player;
+                        NavigationTick(run,Vector2.ClampMagnitude((delta*4-run.velocity*.7f)/run.config.walkSpeed,1));
+                        if(run.elapsed-began>4){reason="Cloth orbit blocked waypoint="+point+NavigationObstacles(run,point);return false;}
+                    }
+                    if(run.phase!=RunPhase.Playing){reason="Stage deadline during cloth orbit";return false;}
+                }
+                run.SetBracing(false);return true;
+            }
+            reason="No footprint-clear cloth orbit from="+run.player+" cloth="+cloth.position;return false;
+        }
+        static bool PushTo(RunV9 run,BodyV9 body,Vector2 target,float tolerance,double seconds,out string reason,bool maintainContact=false)
         {
             reason=null;double start=run.elapsed;Vector2 previous=body.position;double progressAt=run.elapsed;bool approached=false;
             while(!body.done&&Vector2.Distance(body.position,target)>tolerance&&run.phase==RunPhase.Playing)
             {
                 Vector2 direction=(target-body.position).normalized;
                 Vector2 behind=body.position-direction*(body.radius+RunV9.PlayerRadius+.45f);
-                if(!MoveTo(run,behind,15,out reason))return false;
+                Vector2 offset=run.player-body.position;
+                bool aligned=maintainContact&&Vector2.Dot(offset,direction)<0&&offset.magnitude<body.radius+RunV9.PlayerRadius+.7f
+                    &&(offset-direction*Vector2.Dot(offset,direction)).magnitude<.15f;
+                // Continue an already aligned push, rather than backing away every two seconds.
+                // Turns still require a real walk around the cloth; no actor/body assignments.
+                if(!aligned)
+                {
+                    bool reached=maintainContact&&Vector2.Distance(run.player,body.position)<3.5f
+                        ? ApproachCloth(run,body,direction,out reason) : MoveTo(run,behind,15,out reason);
+                    if(!reached){reason="Push approach body="+body.position+" target="+target+" "+reason;return false;}
+                }
                 if(!approached&&run.map.authoredLayout!=null)
                 {
                     // Cross-map travel is governed by MoveTo and the unchanged stage deadline,
@@ -572,3 +645,4 @@ namespace EarlyRush.V9
         }
     }
 }
+
