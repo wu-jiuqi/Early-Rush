@@ -4,7 +4,7 @@ Updated 2026-11-11. This filename retains the original street-adapter name; inte
 
 ## Selection and configuration
 
-Seed 91027 selects authored ArtV4 street, metro and office geometry through the game map factory. Legacy 91026 remains available separately. With no explicit ConfigV9, RunV9 applies a 600-second budget to 91027, street walkSpeed 3.8, and the existing 3.6 speed to metro/office. Explicit diagnostic configs are not silently overwritten.
+The executable now defaults to the three authored ArtV4 chapters, seed 91027, without arguments. --legacy-v14 selects the old comparison version; Play-Art-V4.cmd remains compatible. With no explicit ConfigV9, RunV9 uses a 600-second budget and walking speeds 3.8 for street, 4.0 for metro, and 3.6 for office. Explicit diagnostic configs are not silently overwritten.
 
 The old V4StreetValidation.ReplayDefault and ReplayDiagnostic methods still explicitly request their historical 420/600 budgets and default speed. They do not, by themselves, reproduce the current street 3.8 profile. Use the candidate profile reports or the integrated replay entry points when comparing current results.
 
@@ -17,7 +17,7 @@ Metro preserves two main sections of 11 and 13 points. routeBreaks contains inde
 ## Task integration
 
 - Street retains the actual breakfast, two-wheel transport and five-board mechanics. Source positions and task areas feed the adapter; a visible source rectangle is not automatically a replacement for an existing circular trigger. Street signal placement still adapts the north/south crossing rule to a real vertical segment.
-- Metro tasks are bound by ID, not source array order (which is M2/M1/M3). Boarding uses the train lifecycle and portal. Cloth spawn uses the M3-cloth source object foot point because M3 has no pickups array. Dirt samples derive from the three source patch rectangles.
+- Metro tasks are bound by ID, not source array order (which is M2/M1/M3). Boarding uses the train lifecycle and portal. Cloth spawn uses the M3-cloth source object foot point because M3 has no pickups array. M3 restores exactly three marks per source patch, nine marks total, at normalized x=.23/.50/.77 and y=.50. Cleaning brush radius is 65px/40=1.625u. The cloth remains a real physically transported body; completion is not assigned directly. The 31-check source/initialization contract passed (Logs/v14-v4-clean-source-contract.log).
 - Office uses the three source file deliveries, three source chair pickups with their own rectangular targets, and three source coffee actors. Completion counts derive from authored entities, rather than waiting for the legacy five-chair default. Coffee actors use source a/b routes within the existing guard/spill/desk-pause lifecycle.
 - Missing optional JSON zone/target objects and empty exit arrays are handled as absent. Required geometry remains validated.
 
@@ -41,23 +41,25 @@ The renderer uses individual PNG objects and shared ground geometry, preserves a
 
 ## Current replay evidence and limitations
 
-Under street walkSpeed 3.8 and 600 seconds, real Tick mainline passed in 466.13 seconds and all three tasks plus the exit passed in 583.18 seconds. Reports: Builds/EarlyRush-V14/QA/v4-street/candidate-3p8-mainline.txt and candidate-3p8-alltasks.txt.
+All runs below use machine input and a 600-second limit, not human balance acceptance:
 
-Office all-task replay 2 now passed with 3/3 tasks in 599.333 seconds. Only approximately 0.667 seconds remains under the 600-second budget. This is machine-input success, not human difficulty/balance acceptance. Evidence: Builds/EarlyRush-V14/QA/v4-interior/stage-2-tasks.txt.
+- Street speed 3.8: mainline passed at 466.133 seconds; all three tasks and exit passed at 583.183 seconds. Reports remain Builds/EarlyRush-V14/QA/v4-street/candidate-3p8-mainline.txt and candidate-3p8-alltasks.txt.
+- Metro speed 4.0: mainline passed at 446.483 seconds; all three tasks and exit passed at 594.383 seconds. This speed is now the default. Evidence: Logs/v14-v4-metro-mainline-candidate4.log and v14-v4-metro-tasks-candidate4.log. Older precise-approach/2-of-3 failures are superseded by these results.
+- Office speed 3.6: earlier mainline passed at 478.867 seconds; all three tasks and exit on the final source-NPC version passed at 599.333 seconds. Evidence: Builds/EarlyRush-V14/QA/v4-interior/stage-2-tasks.txt. The earlier mainline remains labelled as an earlier run, not a final-code rerun.
 
-Metro all-task replay 4 still failed after 535.666 seconds with 2/3 tasks: precise approach blocked at (109.86,364.62), goal (110.37,365.32). This remains an open issue. Evidence: Builds/EarlyRush-V14/QA/v4-interior/stage-1-tasks.txt.
+Office full-score margin is only approximately 0.667 seconds; human playtest feedback is required. Metro margin is approximately 5.617 seconds. Machine success does not establish forgiving controls, human difficulty or polished balance.
 
-Earlier interior mainlines passed: metro 496.35 seconds, office 478.87 seconds. Those runs predate the final source-NPC version and do not automatically certify current mainlines. Final-code regression is still required.
+## Final playable-demo build and actual Windows smoke
 
-## Playable candidate and Windows smoke evidence
+The final playable demo build succeeded: Logs/v14-v4-demo-final-build.log contains V14_BUILD_RESULT Succeeded. Game source was pushed as commit 847668c4c8ac0160b87c472c8793c3bc9bc8887f. Subsequent acceptance-document updates accompany the package separately; this does not claim those later edits are already in that commit.
 
-Latest build succeeded according to Logs/v14-v4-finalcandidate-build.log (V14_BUILD_RESULT Succeeded, exit 0). The playable candidate is Builds/EarlyRush-ArtV4-Integration-Candidate-Windows.zip, exactly 112,786,629 bytes. Extract it and launch **Play-Art-V4.cmd** for the new ArtV4 version. The separate ArtV4 Review package remains a static review tool.
+Builds/EarlyRush-V14/QA/runtime-art-v4/runtime-report.json, UTC 2026-11-11T04:02:25Z, reports passed=true with no errors and nine start/pause/resume screenshots. All three actual Windows chapters passed movement, pause stability, resume and single-Tick clock checks.
 
-Builds/EarlyRush-V14/QA/runtime-art-v4/runtime-report.json reports passed=true for the actual Windows player. Each chapter performed 50 rendered movement frames, 20 paused frames and 50 resumed movement frames. All three passed movement, pause stability, resume and single-Tick clock checks; nine nonblack start/pause/resume screenshots were produced.
+The latest measured mean frame intervals were approximately 18.95/16.94/17.08ms. Each chapter ran only 50 movement frames, 20 paused frames and 50 resumed movement frames, including QA/render overhead. This establishes a short actual-run pass, not long-duration stability, a production performance benchmark or human balance acceptance.
 
-Mean frame intervals were approximately 17.03/16.94/17.08ms across the three chapters. These short measurements include QA/render overhead and are not production performance benchmarks, full-route stability evidence or human 7–10 minute timing evidence. The report records alternate-resolution swapchain recovery from an initially black surface before returning to 1280x720. Nonblack images prove render readiness, not full visual-quality acceptance.
+The demo archive name is Builds/EarlyRush-ArtV4-Playable-Demo-Windows.zip, distinct from the old Integration-Candidate archive. Build and runtime completion are confirmed; archive assembly is handled separately by the integration process. Do not reuse the old candidate's size as evidence for the new package. The executable defaults to the new three-chapter 91027 game without arguments. --legacy-v14 selects the old comparison and Play-Art-V4.cmd remains compatible.
 
-This package may be tried as a candidate. It is **not a final Release**: metro full-task completion remains blocked, office timing margin needs human review, and final-build gameplay/visual regressions remain outstanding.
+This is a **playable demo, not a final Release**. Three-chapter machine all-task results, final build and short actual Windows execution have passed. Office's approximately 0.667-second machine margin still needs user playtest feedback. Human balance, longer stability, full-route visual checks and failure/retry coverage are not certified. Source-NPC relocation, the unfilled office population cap and directional-still asset limitations remain disclosed above.
 
 ## Contract entry points
 
