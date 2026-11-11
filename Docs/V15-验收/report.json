@@ -1,0 +1,3081 @@
+{
+    "version": "V15-UI-runtime-3",
+    "utc": "2026-11-11T04:21:59.0523155Z",
+    "unity": "6000.0.26f1",
+    "scope": "Actual GraphicRaycaster center-hit checks and uGUI button.onClick listeners, manually advanced existing RunV9.Tick, and explicitly arranged HUD/result/focus state fixtures. Three chapter HUDs at three resolutions; actual new uGUI marker coordinates and beat-window mesh sizes. Not OS mouse automation, complete level routes, human timing, FPS or a game-completion claim.",
+    "passed": true,
+    "preferencesRestored": true,
+    "checks": [
+        {
+            "name": "requested resolution",
+            "evidence": "requested=1280x720 actual=1280x720",
+            "passed": true
+        },
+        {
+            "name": "catalogue loads all sprites",
+            "evidence": "U15.LoadedCount=110",
+            "passed": true
+        },
+        {
+            "name": "Resources has exactly 110 sprites",
+            "evidence": "Actual Resources.LoadAll<Sprite>, not manifest-only count",
+            "passed": true
+        },
+        {
+            "name": "unknown asset fails explicitly",
+            "evidence": "Intentionally unknown catalogue key rejected; actual manifest assets all loaded",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot ready-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "ready does not consume time",
+            "evidence": "Existing Tick called with 0.5 seconds while Ready",
+            "passed": true
+        },
+        {
+            "name": "chapter 1 locked",
+            "evidence": "Fresh progress fixture",
+            "passed": true
+        },
+        {
+            "name": "locked chapter listener rejects",
+            "evidence": "Invoked disabled button.onClick directly to check its guard",
+            "passed": true
+        },
+        {
+            "name": "chapter 2 locked",
+            "evidence": "Fresh progress fixture",
+            "passed": true
+        },
+        {
+            "name": "locked chapter listener rejects",
+            "evidence": "Invoked disabled button.onClick directly to check its guard",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster StartButton reachable",
+            "evidence": "screen=(640.00, 87.00) top=StartButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "start button begins stage",
+            "evidence": "Actual StartButton listener",
+            "passed": true
+        },
+        {
+            "name": "playing consumes time",
+            "evidence": "Existing Tick, not direct elapsed assignment",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster PauseButton reachable",
+            "evidence": "screen=(321.00, 666.00) top=PauseButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "pause button freezes time",
+            "evidence": "PauseButton listener + existing Tick",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot paused-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster PauseResumeButton reachable",
+            "evidence": "screen=(640.00, 415.00) top=PauseResumeButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "resume button resumes time",
+            "evidence": "PauseResumeButton listener + existing Tick",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster PauseButton reachable",
+            "evidence": "screen=(321.00, 666.00) top=PauseButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster RetryButton reachable",
+            "evidence": "screen=(510.00, 303.00) top=RetryButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "retry retains seed",
+            "evidence": "Actual RetryButton listener",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster NewSeedButton reachable",
+            "evidence": "screen=(866.00, 85.00) top=NewSeedButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "dice changes seed",
+            "evidence": "Actual NewSeedButton listener",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster HelpButton reachable",
+            "evidence": "screen=(139.00, 49.00) top=HelpButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "help button opens overlay",
+            "evidence": "Actual HelpButton listener",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster StartButton blocked",
+            "evidence": "screen=(640.00, 87.00) top=OverlayBackdrop; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot help-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster RepairTutorialButton reachable",
+            "evidence": "screen=(370.00, 155.00) top=RepairTutorialButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot tutorial-repair.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster CloseOverlayButton reachable",
+            "evidence": "screen=(1180.00, 537.00) top=CloseOverlayButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster HelpButton reachable",
+            "evidence": "screen=(139.00, 49.00) top=HelpButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster FlipTutorialButton reachable",
+            "evidence": "screen=(640.00, 155.00) top=FlipTutorialButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot tutorial-flip.png",
+            "evidence": "actual PNG=1280x720 nonblack=0.9988636 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster CloseOverlayButton reachable",
+            "evidence": "screen=(1180.00, 537.00) top=CloseOverlayButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster HelpButton reachable",
+            "evidence": "screen=(139.00, 49.00) top=HelpButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster DeliveryTutorialButton reachable",
+            "evidence": "screen=(910.00, 155.00) top=DeliveryTutorialButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot tutorial-delivery.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster CloseOverlayButton reachable",
+            "evidence": "screen=(1180.00, 537.00) top=CloseOverlayButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "help close returns",
+            "evidence": "Actual CloseOverlayButton listener",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster SettingsButton reachable",
+            "evidence": "screen=(63.00, 49.00) top=SettingsButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "settings button opens overlay",
+            "evidence": "Actual SettingsButton listener",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot settings-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster CloseOverlayButton reachable",
+            "evidence": "screen=(895.50, 516.50) top=CloseOverlayButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "requested resolution",
+            "evidence": "requested=1280x720 actual=1280x720",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-0-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1240.00, 511.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1280x720 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot map-full-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1228.00, 48.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden NotStarted (1280, 720)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden Active (1280, 720)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden Complete (1280, 720)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "beat active timing window",
+            "evidence": "preserveAspect=False target=39.66667x9 actual CanvasRenderer mesh=39.66667x9 at 1280x720",
+            "passed": true
+        },
+        {
+            "name": "beat timing cursor",
+            "evidence": "preserveAspect=False target=3x17 actual CanvasRenderer mesh=3x17 at 1280x720",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-1-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1240.00, 511.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1280x720 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1228.00, 48.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1280x720 expanded=False projectionError=0 pixelError=7.629395E-06",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1280x720",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-2-1280x720.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1240.00, 511.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1280x720 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1228.00, 48.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "requested resolution",
+            "evidence": "requested=1920x1080 actual=1920x1080",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-0-1920x1080.png",
+            "evidence": "actual PNG=1920x1080 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1860.00, 766.50) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1920x1080 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot map-full-1920x1080.png",
+            "evidence": "actual PNG=1920x1080 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1842.00, 72.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden NotStarted (1920, 1080)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden Active (1920, 1080)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden Complete (1920, 1080)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "beat active timing window",
+            "evidence": "preserveAspect=False target=39.66667x9 actual CanvasRenderer mesh=39.66667x9 at 1920x1080",
+            "passed": true
+        },
+        {
+            "name": "beat timing cursor",
+            "evidence": "preserveAspect=False target=3x17 actual CanvasRenderer mesh=3x17 at 1920x1080",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-1-1920x1080.png",
+            "evidence": "actual PNG=1920x1080 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1860.00, 766.50) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1920x1080 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1842.00, 72.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1920x1080 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1920x1080",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-2-1920x1080.png",
+            "evidence": "actual PNG=1920x1080 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1860.00, 766.50) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1920x1080 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(1842.00, 72.00) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "requested resolution",
+            "evidence": "requested=1024x768 actual=1024x768",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-0-1024x768.png",
+            "evidence": "actual PNG=1024x768 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(992.00, 504.80) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=0 1024x768 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot map-full-1024x768.png",
+            "evidence": "actual PNG=1024x768 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(982.40, 134.40) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden NotStarted (1024, 768)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden Active (1024, 768)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "M1 hidden Complete (1024, 768)",
+            "evidence": "Explicit M1 state fixture: neutral HUD, no minimap marker",
+            "passed": true
+        },
+        {
+            "name": "beat active timing window",
+            "evidence": "preserveAspect=False target=39.66667x9 actual CanvasRenderer mesh=39.66667x9 at 1024x768",
+            "passed": true
+        },
+        {
+            "name": "beat timing cursor",
+            "evidence": "preserveAspect=False target=3x17 actual CanvasRenderer mesh=3x17 at 1024x768",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-1-1024x768.png",
+            "evidence": "actual PNG=1024x768 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(992.00, 504.80) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=1 1024x768 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(982.40, 134.40) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1024x768 expanded=False projectionError=0 pixelError=1.525879E-05",
+            "passed": true
+        },
+        {
+            "name": "button viewport PauseButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport HelpButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task0Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task1Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport Task2Button",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "button viewport MapToggleButton",
+            "evidence": "1024x768",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot hud-stage-2-1024x768.png",
+            "evidence": "actual PNG=1024x768 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(992.00, 504.80) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle expands",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "actual uGUI map marker",
+            "evidence": "stage=2 1024x768 expanded=True projectionError=0 pixelError=0",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster MapToggleButton reachable",
+            "evidence": "screen=(982.40, 134.40) top=Background; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "map toggle contracts",
+            "evidence": "Actual MapToggleButton listener",
+            "passed": true
+        },
+        {
+            "name": "requested resolution",
+            "evidence": "requested=1280x720 actual=1280x720",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle six frames",
+            "evidence": "Six distinct imported Sprites, no missing frame",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle integrated pool playback",
+            "evidence": "RushUIV15.PlayFx created or reused a playing UI Image sequence",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle first frame",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle pause",
+            "evidence": "Manual sequence clock paused",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle frame 2",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle frame 3",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle frame 4",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle frame 5",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "success_sparkle completion and pooling",
+            "evidence": "One completion callback; root pool hides finished FX",
+            "passed": true
+        },
+        {
+            "name": "impact_puff six frames",
+            "evidence": "Six distinct imported Sprites, no missing frame",
+            "passed": true
+        },
+        {
+            "name": "impact_puff integrated pool playback",
+            "evidence": "RushUIV15.PlayFx created or reused a playing UI Image sequence",
+            "passed": true
+        },
+        {
+            "name": "impact_puff first frame",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "impact_puff pause",
+            "evidence": "Manual sequence clock paused",
+            "passed": true
+        },
+        {
+            "name": "impact_puff frame 2",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "impact_puff frame 3",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "impact_puff frame 4",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "impact_puff frame 5",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "impact_puff completion and pooling",
+            "evidence": "One completion callback; root pool hides finished FX",
+            "passed": true
+        },
+        {
+            "name": "failure_spill six frames",
+            "evidence": "Six distinct imported Sprites, no missing frame",
+            "passed": true
+        },
+        {
+            "name": "failure_spill integrated pool playback",
+            "evidence": "RushUIV15.PlayFx created or reused a playing UI Image sequence",
+            "passed": true
+        },
+        {
+            "name": "failure_spill first frame",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "failure_spill pause",
+            "evidence": "Manual sequence clock paused",
+            "passed": true
+        },
+        {
+            "name": "failure_spill frame 2",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "failure_spill frame 3",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "failure_spill frame 4",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "failure_spill frame 5",
+            "evidence": "Actual pool Image.sprite",
+            "passed": true
+        },
+        {
+            "name": "failure_spill completion and pooling",
+            "evidence": "One completion callback; root pool hides finished FX",
+            "passed": true
+        },
+        {
+            "name": "gameplay FX active before results",
+            "evidence": "Actual PlayFx pool with Manual clock",
+            "passed": true
+        },
+        {
+            "name": "same-run results cancels gameplay FX",
+            "evidence": "Changed phase on same RunV9 instance; effect must be cancelled and hidden, not left paused above results",
+            "passed": true
+        },
+        {
+            "name": "results menu FX remains usable",
+            "evidence": "Explicit focused fixture; menu Unscaled effect remains active while RunV9 is Results",
+            "passed": true
+        },
+        {
+            "name": "menu FX advances without gameplay time",
+            "evidence": "Actual Unscaled Update playback; frameChanged=False completed=1; no manual Advance or RunV9.Tick",
+            "passed": true
+        },
+        {
+            "name": "menu FX completes in results",
+            "evidence": "Exactly one real completion event, then pooled; cancellation alone does not pass",
+            "passed": true
+        },
+        {
+            "name": "timeout blocks next",
+            "evidence": "Explicit timeout/all-optional-tasks-complete result fixture",
+            "passed": true
+        },
+        {
+            "name": "timeout does not unlock",
+            "evidence": "Task stars do not authorize progression",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot result-timeout.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster RetryButton reachable",
+            "evidence": "screen=(640.00, 95.00) top=RetryButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "timeout retry returns ready",
+            "evidence": "Actual result RetryButton listener",
+            "passed": true
+        },
+        {
+            "name": "success enables next",
+            "evidence": "Explicit successful result fixture",
+            "passed": true
+        },
+        {
+            "name": "rendered screenshot result-success.png",
+            "evidence": "actual PNG=1280x720 nonblack=1 attempts=1",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster NextButton reachable",
+            "evidence": "screen=(583.50, 95.00) top=NextButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "next advances one stage",
+            "evidence": "Actual NextButton listener",
+            "passed": true
+        },
+        {
+            "name": "GraphicRaycaster NextButton reachable",
+            "evidence": "screen=(583.50, 95.00) top=NextButton; synthetic pointer data, no OS mouse event",
+            "passed": true
+        },
+        {
+            "name": "final chapter loops to street",
+            "evidence": "Actual final result NextButton listener",
+            "passed": true
+        }
+    ],
+    "screenshots": [
+        {
+            "file": "ready-1280x720.png",
+            "phase": "Ready",
+            "scope": "Fresh locked-progress ready state; no route simulation",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "paused-1280x720.png",
+            "phase": "Paused",
+            "scope": "Button-driven pause menu",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "help-1280x720.png",
+            "phase": "Ready",
+            "scope": "Actual HelpButton opened the help overlay",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91028,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "tutorial-repair.png",
+            "phase": "Ready",
+            "scope": "Actual help/tutorial buttons; static tutorial illustrations, not played task completion",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91028,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "tutorial-flip.png",
+            "phase": "Ready",
+            "scope": "Actual help/tutorial buttons; static tutorial illustrations, not played task completion",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91028,
+            "captureAttempts": 1,
+            "nonBlackFraction": 0.9988636374473572
+        },
+        {
+            "file": "tutorial-delivery.png",
+            "phase": "Ready",
+            "scope": "Actual help/tutorial buttons; static tutorial illustrations, not played task completion",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91028,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "settings-1280x720.png",
+            "phase": "Ready",
+            "scope": "Button-driven settings overlay",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91028,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-0-1280x720.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "map-full-1280x720.png",
+            "phase": "Playing",
+            "scope": "Expanded actual uGUI map, no legacy OnGUI sampling",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-1-1280x720.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1280,
+            "height": 720,
+            "stage": 1,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-2-1280x720.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1280,
+            "height": 720,
+            "stage": 2,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-0-1920x1080.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "map-full-1920x1080.png",
+            "phase": "Playing",
+            "scope": "Expanded actual uGUI map, no legacy OnGUI sampling",
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-1-1920x1080.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1920,
+            "height": 1080,
+            "stage": 1,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-2-1920x1080.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1920,
+            "height": 1080,
+            "stage": 2,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-0-1024x768.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "map-full-1024x768.png",
+            "phase": "Playing",
+            "scope": "Expanded actual uGUI map, no legacy OnGUI sampling",
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-1-1024x768.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1024,
+            "height": 768,
+            "stage": 1,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "hud-stage-2-1024x768.png",
+            "phase": "Playing",
+            "scope": "Explicit stage HUD fixture; not travelled/unlocked through gameplay",
+            "width": 1024,
+            "height": 768,
+            "stage": 2,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "result-timeout.png",
+            "phase": "Results",
+            "scope": "Explicit result fixture, not actual elapsed route; all optional tasks complete but timeout",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        },
+        {
+            "file": "result-success.png",
+            "phase": "Results",
+            "scope": "Explicit three-star success fixture; no full-route claim",
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "seed": 91027,
+            "captureAttempts": 1,
+            "nonBlackFraction": 1.0
+        }
+    ],
+    "maps": [
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 0,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "expectedGui": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 1,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "expectedGui": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 117.0
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.00000762939453125
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "stage": 2,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "expectedGui": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 0,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "expectedGui": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1457.825439453125,
+                "y": 994.3240966796875
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1457.825439453125,
+                "y": 994.3240966796875
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 1,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "expectedGui": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1311.742919921875,
+                "y": 994.09521484375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1311.742919921875,
+                "y": 994.09521484375
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.5
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1702.5,
+                "y": 175.49998474121095
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "stage": 2,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "expectedGui": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 1320.1871337890625,
+                "y": 994.3240966796875
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 1320.1871337890625,
+                "y": 994.3240966796875
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 0,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 87.80000305175781,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "expectedGui": {
+                "x": 971.8836669921875,
+                "y": 662.8827514648438
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 777.5069580078125,
+                "y": 626.3062133789063
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 777.5069580078125,
+                "y": 626.3062133789063
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 1,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 1,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "expectedGui": {
+                "x": 874.4952392578125,
+                "y": 662.7301635742188
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 699.59619140625,
+                "y": 626.1841430664063
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 699.59619140625,
+                "y": 626.1841430664063
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 2,
+            "expanded": false,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 1008.0,
+                "y": 18.0,
+                "width": 254.0,
+                "height": 210.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "expectedGui": {
+                "x": 1135.0,
+                "y": 116.99999237060547
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.5999755859375
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 908.0,
+                "y": 189.59999084472657
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0000152587890625
+        },
+        {
+            "width": 1024,
+            "height": 768,
+            "stage": 2,
+            "expanded": true,
+            "actualPanel": {
+                "serializedVersion": "2",
+                "x": 660.0,
+                "y": 106.0,
+                "width": 590.0,
+                "height": 585.0
+            },
+            "worldPlayer": {
+                "x": 12.800000190734864,
+                "y": 4.5
+            },
+            "projectedGui": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "expectedGui": {
+                "x": 880.124755859375,
+                "y": 662.8827514648438
+            },
+            "actualMarkerScreenTopLeft": {
+                "x": 704.0997924804688,
+                "y": 626.3062133789063
+            },
+            "expectedMarkerScreenTopLeft": {
+                "x": 704.0997924804688,
+                "y": 626.3062133789063
+            },
+            "projectionError": 0.0,
+            "renderedMarkerError": 0.0
+        }
+    ],
+    "errors": []
+}

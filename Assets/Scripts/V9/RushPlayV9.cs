@@ -17,10 +17,35 @@ namespace EarlyRush.V9
         [Range(5f, 12f)] public float cameraSize = 7.5f;
         bool v4StreetRequested;
         int seed=91026;bool fullMap,help,qa,panorama,recorded,runtimeQa;int selected=-1;
+        int uiResumeFrame=-1;
         readonly bool[] failureShown=new bool[3];string notice="";double noticeUntil;
         int seenDashLaunches,seenPlayerLaunches;double impactAt=-10;Vector2 impactPoint,playerFlightFacing=Vector2.up;
         float uiScale=1;Vector2 uiOffset;Texture2D triangle;
         public Camera GameCamera => cam;
+        public EarlyRush.V15.RushUIV15 UI {get;private set;}
+        public Font UIFont=>font;
+        public Texture2D UIMapTexture=>mapTexture;
+        public bool FullMap=>fullMap;
+        public int UnlockedStageForUI=>UnlockedStage();
+        public void SetExpandedMap(bool value){fullMap=value;}
+        public void BeginFromUI(){if(run!=null&&run.phase==RunPhase.Ready){run.Begin();uiResumeFrame=Time.frameCount;}}
+        public void TogglePauseFromUI(){if(run==null)return;if(run.phase==RunPhase.Playing)run.Pause();else if(run.phase==RunPhase.Paused){run.Resume();uiResumeFrame=Time.frameCount;}}
+        public void RetryFromUI(bool newSeed){if(run==null)return;RecordCurrentResult();Load(run.stage,run.seed+(newSeed?1:0));fullMap=false;}
+        public void SelectStageFromUI(int stage)
+        {
+            if(run==null||stage<0||stage>2)return;
+            if(run.phase==RunPhase.Results){if(!run.success||stage!=(run.stage+1)%3)return;RecordCurrentResult();}
+            else if(run.phase!=RunPhase.Ready||stage>UnlockedStage())return;
+            Load(stage,run.seed);fullMap=false;
+        }
+        public void ReturnToReadyFromUI(){if(run==null)return;RecordCurrentResult();Load(run.stage,run.seed);fullMap=false;}
+        public void RescueNearestFromUI()
+        {
+            if(run==null||run.phase!=RunPhase.Playing)return;
+            BodyV9 closest=null;float distance=8;
+            foreach(var body in run.bodies)if(!body.done&&Vector2.Distance(run.player,body.position)<distance){closest=body;distance=Vector2.Distance(run.player,body.position);}
+            if(closest!=null)run.Rescue(closest.id);
+        }
         // Read-only production projection for runtime screenshot checks. Pixels have a top-left origin.
         public Rect GetMapPanelForReview(bool expanded)=>expanded?new Rect(660,106,590,585):new Rect(1008,18,254,184);
         public RushMinimapProjectionV13 CreateMinimapProjection(Rect panel,bool expanded)=>new RushMinimapProjectionV13(mapBounds,panel,run.player,expanded);
@@ -47,12 +72,16 @@ namespace EarlyRush.V9
             bool v4Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v4-runtime-qa");
             bool v13Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v13-runtime-qa");
             bool v12Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v12-runtime-qa");
-            runtimeQa=v4Qa||v13Qa||v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
+            bool v15Qa=Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v15-ui-qa");
+            runtimeQa=v15Qa||v4Qa||v13Qa||v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--v11-runtime-qa");
             if(runtimeQa)
             {
                 Application.runInBackground=true;
-                if(v4Qa)gameObject.AddComponent<RushArtV4RuntimeSmoke>();else if(v13Qa)gameObject.AddComponent<RushRuntimeCheckV13>();else if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
+                if(v15Qa)gameObject.AddComponent<EarlyRush.V15.RushUIRuntimeCheckV15>();else if(v4Qa)gameObject.AddComponent<RushArtV4RuntimeSmoke>();else if(v13Qa)gameObject.AddComponent<RushRuntimeCheckV13>();else if(v12Qa)gameObject.AddComponent<RushRuntimeCheckV12>();else gameObject.AddComponent<RushRuntimeCheckV11>();
             }
+            // Legacy screenshot diagnostics retain their original layout contract; shipped play uses the new UI.
+            bool legacyUi=qa||v13Qa||v12Qa||Array.Exists(Environment.GetCommandLineArgs(),a=>a=="--legacy-ui"||a=="--v11-runtime-qa");
+            if(!legacyUi){UI=gameObject.AddComponent<EarlyRush.V15.RushUIV15>();UI.Initialize(this);}
             if(qa){Application.runInBackground=true;StartCoroutine(panorama?CapturePanoramas():CaptureReview());}
         }
         public void Load(int stage,int nextSeed){LoadModelForReview(new RunV9(stage,nextSeed));}
@@ -289,11 +318,12 @@ namespace EarlyRush.V9
         void Update()
         {
             if(run==null)return;
-            if(Input.GetKeyDown(KeyCode.Escape)){if(run.phase==RunPhase.Playing)run.Pause();else if(run.phase==RunPhase.Paused)run.Resume();}
-            if(Input.GetKeyDown(KeyCode.Tab))fullMap=!fullMap;if(Input.GetKeyDown(KeyCode.F1))help=!help;
+            if(Input.GetKeyDown(KeyCode.Escape)){if(!UI||!UI.HandleEscape())TogglePauseFromUI();}
+            if(Input.GetKeyDown(KeyCode.Tab)&&run.phase!=RunPhase.Ready)fullMap=!fullMap;
+            if(Input.GetKeyDown(KeyCode.F1)){if(UI)UI.ToggleHelp();else help=!help;}
             if(Input.GetKeyDown(KeyCode.R)&&run.phase==RunPhase.Playing)
             {
-                BodyV9 closest=null;float distance=8;foreach(var b in run.bodies)if(!b.done&&Vector2.Distance(run.player,b.position)<distance){closest=b;distance=Vector2.Distance(run.player,b.position);}if(closest!=null)run.Rescue(closest.id);
+                RescueNearestFromUI();
             }
             if(!qa&&!runtimeQa)
             {
@@ -305,11 +335,16 @@ namespace EarlyRush.V9
                         (Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0));
                     // Bracing wins when Shift and Space arrive in the same frame.
                     run.SetBracing(Input.GetKey(KeyCode.LeftShift)||Input.GetKey(KeyCode.RightShift));
-                    if(Input.GetKeyDown(KeyCode.Space))run.PressDash(movement);
+                    // Submit also uses Space. Its menu press must not become a dash in the same frame.
+                    if(Input.GetKeyDown(KeyCode.Space)&&Time.frameCount!=uiResumeFrame)run.PressDash(movement);
                     run.Tick(Time.unscaledDeltaTime,movement);
                 }
             }
             RenderFrame();
+            RecordCurrentResult();
+        }
+        void RecordCurrentResult()
+        {
             if(run.phase==RunPhase.Results&&!recorded)
             {
                 recorded=true;if(run.success)
@@ -417,7 +452,7 @@ namespace EarlyRush.V9
         bool HiddenTask(TaskV9 t)=>run.stage==1&&t.id=="M1"&&t.state!=TaskState.Failed;
         void OnGUI()
         {
-            if(run==null)return;GuiStyles();uiScale=RushMinimapProjectionV13.GuiScale(Screen.width,Screen.height);
+            if(UI||run==null)return;GuiStyles();uiScale=RushMinimapProjectionV13.GuiScale(Screen.width,Screen.height);
             uiOffset=RushMinimapProjectionV13.GuiOffset(Screen.width,Screen.height);
             GUI.matrix=RushMinimapProjectionV13.GuiMatrix(Screen.width,Screen.height);
             if(v4StreetRequested){Fill(new Rect(480,650,780,28),cream);GUI.Label(new Rect(490,652,760,25),"V4 Demo / 3 chapters / Playtest build",small);}

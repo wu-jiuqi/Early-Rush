@@ -1,0 +1,2 @@
+Actual GraphicRaycaster center-hit checks and uGUI button.onClick listeners, manually advanced existing RunV9.Tick, and explicitly arranged HUD/result/focus state fixtures. Three chapter HUDs at three resolutions; actual new uGUI marker coordinates and beat-window mesh sizes. Not OS mouse automation, complete level routes, human timing, FPS or a game-completion claim.
+Preferences are restored in normal/error/watchdog shutdown paths. Screenshots explicitly identify fixtures.

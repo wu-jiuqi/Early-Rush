@@ -1,0 +1,671 @@
+{
+    "unity": "6000.0.26f1",
+    "utc": "2026-11-11T04:21:37.3370771Z",
+    "scope": "UI sprite import and exact source-hash validation; not gameplay or visual acceptance.",
+    "passed": true,
+    "expected": 110,
+    "actual": 110,
+    "checkedCount": 110,
+    "assets": [
+        {
+            "id": "menu_town_background",
+            "path": "Assets/Resources/UIV15/Backgrounds/menu_town_background.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.badge_cream",
+            "path": "Assets/Resources/UIV15/Components/badge_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.badge_teal",
+            "path": "Assets/Resources/UIV15/Components/badge_teal.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.button_cream",
+            "path": "Assets/Resources/UIV15/Components/button_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.button_teal",
+            "path": "Assets/Resources/UIV15/Components/button_teal.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.card_frame_active",
+            "path": "Assets/Resources/UIV15/Components/card_frame_active.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.divider",
+            "path": "Assets/Resources/UIV15/Components/divider.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.flip_tile_cream",
+            "path": "Assets/Resources/UIV15/Components/flip_tile_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.flip_tile_teal",
+            "path": "Assets/Resources/UIV15/Components/flip_tile_teal.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.focus_outline",
+            "path": "Assets/Resources/UIV15/Components/focus_outline.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.glyph_close_cream",
+            "path": "Assets/Resources/UIV15/Components/glyph_close_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.glyph_next_cream",
+            "path": "Assets/Resources/UIV15/Components/glyph_next_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.glyph_pause_cream",
+            "path": "Assets/Resources/UIV15/Components/glyph_pause_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.glyph_play_cream",
+            "path": "Assets/Resources/UIV15/Components/glyph_play_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.glyph_retry_cream",
+            "path": "Assets/Resources/UIV15/Components/glyph_retry_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.minimap_frame",
+            "path": "Assets/Resources/UIV15/Components/minimap_frame.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.panel_cream",
+            "path": "Assets/Resources/UIV15/Components/panel_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.panel_teal",
+            "path": "Assets/Resources/UIV15/Components/panel_teal.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.pin_cream",
+            "path": "Assets/Resources/UIV15/Components/pin_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.progress_fill",
+            "path": "Assets/Resources/UIV15/Components/progress_fill.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.progress_track",
+            "path": "Assets/Resources/UIV15/Components/progress_track.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.ring_fill",
+            "path": "Assets/Resources/UIV15/Components/ring_fill.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.ring_track",
+            "path": "Assets/Resources/UIV15/Components/ring_track.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.shadow_soft",
+            "path": "Assets/Resources/UIV15/Components/shadow_soft.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.slot_empty",
+            "path": "Assets/Resources/UIV15/Components/slot_empty.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.slot_filled",
+            "path": "Assets/Resources/UIV15/Components/slot_filled.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.tile_cream",
+            "path": "Assets/Resources/UIV15/Components/tile_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.tooltip_cream",
+            "path": "Assets/Resources/UIV15/Components/tooltip_cream.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "component.white_pixel",
+            "path": "Assets/Resources/UIV15/Components/white_pixel.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "failure_spill.frame_00",
+            "path": "Assets/Resources/UIV15/FX/failure_spill/frame_00.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "failure_spill.frame_01",
+            "path": "Assets/Resources/UIV15/FX/failure_spill/frame_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "failure_spill.frame_02",
+            "path": "Assets/Resources/UIV15/FX/failure_spill/frame_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "failure_spill.frame_03",
+            "path": "Assets/Resources/UIV15/FX/failure_spill/frame_03.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "failure_spill.frame_04",
+            "path": "Assets/Resources/UIV15/FX/failure_spill/frame_04.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "failure_spill.frame_05",
+            "path": "Assets/Resources/UIV15/FX/failure_spill/frame_05.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "impact_puff.frame_00",
+            "path": "Assets/Resources/UIV15/FX/impact_puff/frame_00.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "impact_puff.frame_01",
+            "path": "Assets/Resources/UIV15/FX/impact_puff/frame_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "impact_puff.frame_02",
+            "path": "Assets/Resources/UIV15/FX/impact_puff/frame_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "impact_puff.frame_03",
+            "path": "Assets/Resources/UIV15/FX/impact_puff/frame_03.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "impact_puff.frame_04",
+            "path": "Assets/Resources/UIV15/FX/impact_puff/frame_04.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "impact_puff.frame_05",
+            "path": "Assets/Resources/UIV15/FX/impact_puff/frame_05.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "success_sparkle.frame_00",
+            "path": "Assets/Resources/UIV15/FX/success_sparkle/frame_00.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "success_sparkle.frame_01",
+            "path": "Assets/Resources/UIV15/FX/success_sparkle/frame_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "success_sparkle.frame_02",
+            "path": "Assets/Resources/UIV15/FX/success_sparkle/frame_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "success_sparkle.frame_03",
+            "path": "Assets/Resources/UIV15/FX/success_sparkle/frame_03.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "success_sparkle.frame_04",
+            "path": "Assets/Resources/UIV15/FX/success_sparkle/frame_04.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "success_sparkle.frame_05",
+            "path": "Assets/Resources/UIV15/FX/success_sparkle/frame_05.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "action_airborne",
+            "path": "Assets/Resources/UIV15/Icons/action_airborne.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "action_bike",
+            "path": "Assets/Resources/UIV15/Icons/action_bike.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "action_brace",
+            "path": "Assets/Resources/UIV15/Icons/action_brace.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "action_dash",
+            "path": "Assets/Resources/UIV15/Icons/action_dash.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "check",
+            "path": "Assets/Resources/UIV15/Icons/check.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "cross",
+            "path": "Assets/Resources/UIV15/Icons/cross.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "destination_exit",
+            "path": "Assets/Resources/UIV15/Icons/destination_exit.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "dice",
+            "path": "Assets/Resources/UIV15/Icons/dice.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "help",
+            "path": "Assets/Resources/UIV15/Icons/help.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "home",
+            "path": "Assets/Resources/UIV15/Icons/home.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "lock",
+            "path": "Assets/Resources/UIV15/Icons/lock.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "map_collapse",
+            "path": "Assets/Resources/UIV15/Icons/map_collapse.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "map_expand",
+            "path": "Assets/Resources/UIV15/Icons/map_expand.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "moon",
+            "path": "Assets/Resources/UIV15/Icons/moon.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "next",
+            "path": "Assets/Resources/UIV15/Icons/next.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "offscreen_arrow",
+            "path": "Assets/Resources/UIV15/Icons/offscreen_arrow.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "pause",
+            "path": "Assets/Resources/UIV15/Icons/pause.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "play",
+            "path": "Assets/Resources/UIV15/Icons/play.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "player_arrow",
+            "path": "Assets/Resources/UIV15/Icons/player_arrow.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "rescue",
+            "path": "Assets/Resources/UIV15/Icons/rescue.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "retry",
+            "path": "Assets/Resources/UIV15/Icons/retry.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "settings",
+            "path": "Assets/Resources/UIV15/Icons/settings.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "speaker_off",
+            "path": "Assets/Resources/UIV15/Icons/speaker_off.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "speaker_on",
+            "path": "Assets/Resources/UIV15/Icons/speaker_on.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "stage_metro",
+            "path": "Assets/Resources/UIV15/Icons/stage_metro.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "stage_office",
+            "path": "Assets/Resources/UIV15/Icons/stage_office.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "stage_street",
+            "path": "Assets/Resources/UIV15/Icons/stage_street.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "star_filled",
+            "path": "Assets/Resources/UIV15/Icons/star_filled.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "star_outline",
+            "path": "Assets/Resources/UIV15/Icons/star_outline.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "stopwatch",
+            "path": "Assets/Resources/UIV15/Icons/stopwatch.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "sun",
+            "path": "Assets/Resources/UIV15/Icons/sun.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_m1_alighting",
+            "path": "Assets/Resources/UIV15/Icons/task_m1_alighting.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_m1_neutral",
+            "path": "Assets/Resources/UIV15/Icons/task_m1_neutral.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_m2_capsule",
+            "path": "Assets/Resources/UIV15/Icons/task_m2_capsule.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_m3_clean",
+            "path": "Assets/Resources/UIV15/Icons/task_m3_clean.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_o1_coffee",
+            "path": "Assets/Resources/UIV15/Icons/task_o1_coffee.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_o2_document",
+            "path": "Assets/Resources/UIV15/Icons/task_o2_document.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_o3_chair",
+            "path": "Assets/Resources/UIV15/Icons/task_o3_chair.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_s1_breakfast",
+            "path": "Assets/Resources/UIV15/Icons/task_s1_breakfast.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_s2_wheel_repair",
+            "path": "Assets/Resources/UIV15/Icons/task_s2_wheel_repair.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "task_s3_flip",
+            "path": "Assets/Resources/UIV15/Icons/task_s3_flip.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "unlock",
+            "path": "Assets/Resources/UIV15/Icons/unlock.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "wheel",
+            "path": "Assets/Resources/UIV15/Icons/wheel.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "chapter_metro",
+            "path": "Assets/Resources/UIV15/Illustrations/chapter_metro.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "chapter_office",
+            "path": "Assets/Resources/UIV15/Illustrations/chapter_office.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "chapter_street",
+            "path": "Assets/Resources/UIV15/Illustrations/chapter_street.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "commuter_happy",
+            "path": "Assets/Resources/UIV15/Illustrations/commuter_happy.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "commuter_tired",
+            "path": "Assets/Resources/UIV15/Illustrations/commuter_tired.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "metro_entrance",
+            "path": "Assets/Resources/UIV15/Illustrations/metro_entrance.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "portrait_00",
+            "path": "Assets/Resources/UIV15/Portraits/portrait_00.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "portrait_01",
+            "path": "Assets/Resources/UIV15/Portraits/portrait_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "portrait_02",
+            "path": "Assets/Resources/UIV15/Portraits/portrait_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "portrait_03",
+            "path": "Assets/Resources/UIV15/Portraits/portrait_03.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "portrait_04",
+            "path": "Assets/Resources/UIV15/Portraits/portrait_04.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_delivery_01",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_delivery_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_delivery_02",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_delivery_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_delivery_03",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_delivery_03.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_flip_01",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_flip_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_flip_02",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_flip_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_flip_03",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_flip_03.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_repair_01",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_repair_01.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_repair_02",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_repair_02.png",
+            "passed": true,
+            "errors": []
+        },
+        {
+            "id": "tutorial_repair_03",
+            "path": "Assets/Resources/UIV15/Tutorials/tutorial_repair_03.png",
+            "passed": true,
+            "errors": []
+        }
+    ]
+}

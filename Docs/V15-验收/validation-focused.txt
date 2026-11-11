@@ -1,0 +1,9 @@
+V15 UI integration focused validation
+UTC: 2026-11-11T04:21:37.2862786Z
+Scope: exact UI assets, existing dash/minimap/coffee/action mechanisms. No full routes, full seed sweep or human playtest claim.
+UI sprites: 110 assertions passed
+Basic actions: 43 assertions passed
+Dash cadence and input buffer: 80 assertions passed
+Minimap projection: 321 assertions passed
+Coffee mechanisms: 312 assertions passed
+Passed: True

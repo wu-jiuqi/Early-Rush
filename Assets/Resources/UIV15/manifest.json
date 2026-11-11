@@ -1,0 +1,3402 @@
+{
+  "schemaVersion": 1,
+  "name": "EarlyRush_UI_Kit_v1",
+  "scope": "Four UI references plus nine-task HUD and pause controls. Not world character animation or a completed game integration.",
+  "borderOrder": "left,bottom,right,top",
+  "pixelPerUnit": 100,
+  "referenceResolution": [
+    1280,
+    720
+  ],
+  "assets": [
+    {
+      "id": "menu_town_background",
+      "path": "Sprites/Backgrounds/menu_town_background.png",
+      "width": 1672,
+      "height": 941,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Backgrounds",
+      "kind": "sprite",
+      "source": "Sources/Generated/menu_town_background.png",
+      "usage": "菜单氛围底图；不作为玩法地图；用保持比例的遮罩覆盖屏幕",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "e03d5b210ab69ef1a056d4770d89e7520b7bcf30172b7a629e63d710302145c2"
+    },
+    {
+      "id": "component.badge_cream",
+      "path": "Sprites/Components/badge_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/badge_cream.svg",
+      "usage": "奶油圆形徽章底板；用于动作、工具和目的地图标",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "29c8ee319f90b0826e84d7f41c02f98a5bd8ae844c07286d6ff70546fc19fa24"
+    },
+    {
+      "id": "component.badge_teal",
+      "path": "Sprites/Components/badge_teal.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/badge_teal.svg",
+      "usage": "青绿圆形徽章底板；用于主动状态与按钮",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c68bb2294581a6963a4c3b94376cd8ab3bd61492f823509e3180cea00f047719"
+    },
+    {
+      "id": "component.button_cream",
+      "path": "Sprites/Components/button_cream.png",
+      "width": 256,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/button_cream.svg",
+      "usage": "奶油白次按钮底板；图标与输入热区独立",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "36afd6ccab623d70d271c77e00d185211307fa85691e1927a6b58a97a8f0e88c"
+    },
+    {
+      "id": "component.button_teal",
+      "path": "Sprites/Components/button_teal.png",
+      "width": 256,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/button_teal.svg",
+      "usage": "青绿主按钮底板；播放、下一关、重试图标另叠",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "29d5110ff51b987b76d375c359a013111c5a0f9d1af08f81483d1683fef343b4"
+    },
+    {
+      "id": "component.card_frame_active",
+      "path": "Sprites/Components/card_frame_active.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/card_frame_active.svg",
+      "usage": "选中章节高亮边框，中心完全透明，可叠于章节插画上",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "fa02a699d23c91f9f2cab9268620996f4d0fab85b2e12c93b7ffc50f0dd700a9"
+    },
+    {
+      "id": "component.divider",
+      "path": "Sprites/Components/divider.png",
+      "width": 4,
+      "height": 64,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/divider.svg",
+      "usage": "可tint的垂直分隔线；可拉高或旋转90度作横线",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cb7cf621803d6248569a691ac30e86052b2c552ab8b636e64621ed8bdb9615f9"
+    },
+    {
+      "id": "component.flip_tile_cream",
+      "path": "Sprites/Components/flip_tile_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/flip_tile_cream.svg",
+      "usage": "翻板浅色底面；日图案独立叠加，用补间压扁后换面",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "989c7ca9277fa5474e61e661c8cb15eae680bee58baed8d08fb948ea1f0f78c6"
+    },
+    {
+      "id": "component.flip_tile_teal",
+      "path": "Sprites/Components/flip_tile_teal.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/flip_tile_teal.svg",
+      "usage": "翻板青绿底面；月图案独立叠加，用补间压扁后换面",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d0e465c8ff97573110414513f30d9963ad6385de1a605d124888a79d1ffc8e49"
+    },
+    {
+      "id": "component.focus_outline",
+      "path": "Sprites/Components/focus_outline.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/focus_outline.svg",
+      "usage": "鼠标悬停或键盘焦点高亮环；中心透明，与点击热区分离",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "0f8b29d8a36b174b45638fe407b20fd146d2d92cb7fdfc4f619c155a60a0cb7a"
+    },
+    {
+      "id": "component.glyph_close_cream",
+      "path": "Sprites/Components/glyph_close_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/glyph_close_cream.svg",
+      "usage": "浅色关闭叉；关闭或返回按钮glyph，不作为红色任务失败标识",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cff66d20469c563f15069bf0411fda813186588ffa359aeff32bcca50926d204"
+    },
+    {
+      "id": "component.glyph_next_cream",
+      "path": "Sprites/Components/glyph_next_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/glyph_next_cream.svg",
+      "usage": "浅色向右箭头；下一步/下一关主按钮glyph",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d0922e828d0e96267e2b8cb34e868d95fad88f98825fa6b7068e6526772d9a06"
+    },
+    {
+      "id": "component.glyph_pause_cream",
+      "path": "Sprites/Components/glyph_pause_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/glyph_pause_cream.svg",
+      "usage": "浅色双竖杠；暂停按钮glyph",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "ba2c7950eae8e6c5d5c24b9556a62ad4ef96ea9beb23232f4b27ea960f60bae6"
+    },
+    {
+      "id": "component.glyph_play_cream",
+      "path": "Sprites/Components/glyph_play_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/glyph_play_cream.svg",
+      "usage": "浅色播放三角；叠在青绿主按钮上，透明底无阴影",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e03e6a09f100954f73cf2f54815dc46e0e88a7edea63c50b8127f3bb772a096f"
+    },
+    {
+      "id": "component.glyph_retry_cream",
+      "path": "Sprites/Components/glyph_retry_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/glyph_retry_cream.svg",
+      "usage": "浅色顺时针回转箭头；同种子重试主按钮glyph",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "0608a65654101f1be6a6b83fe9b16b6722b6f3cb256d3f1ad6ea809fd43d339d"
+    },
+    {
+      "id": "component.minimap_frame",
+      "path": "Sprites/Components/minimap_frame.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/minimap_frame.svg",
+      "usage": "小地图外框，中心透明；地图内容由真实投影与Mask显示",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "a4c9e228b0d3b78eae9ea5277d2a7313e3b9985f13a5634fcf76437a12b1de46"
+    },
+    {
+      "id": "component.panel_cream",
+      "path": "Sprites/Components/panel_cream.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/panel_cream.svg",
+      "usage": "奶油白通用面板；任务组、弹窗及结果卡底板",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "db718015fbb201d27681da228d36095a73076e1444b747215a325dd1f34caa14"
+    },
+    {
+      "id": "component.panel_teal",
+      "path": "Sprites/Components/panel_teal.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/panel_teal.svg",
+      "usage": "青绿强调面板；主入口或状态底板",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "83afd9e242f2b52e48d033c3ffaee3572941e4a7b855369f1ff2cedc5b6244b0"
+    },
+    {
+      "id": "component.pin_cream",
+      "path": "Sprites/Components/pin_cream.png",
+      "width": 128,
+      "height": 160,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/pin_cream.svg",
+      "usage": "任务/目的地定位外壳，圆心(64,58)透明以叠图标，下尖指向位置",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "418b3a9b0e4b2ffc12dedf95390d2367bfb6f80dd855c807ff23321a22146a04",
+      "note": "叠加图标中心对应原图像素(64,58)，不是整图中心；标记地面坐标推荐另用Tip子节点。"
+    },
+    {
+      "id": "component.progress_fill",
+      "path": "Sprites/Components/progress_fill.png",
+      "width": 256,
+      "height": 32,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        16,
+        15,
+        16,
+        15
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/progress_fill.svg",
+      "usage": "横向进度填充白遮罩；按真实进度改变裁剪宽度或容器宽度",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e5c9a8db5889c79be29eabec2433f9b9a9acb17bf5e00e22107dd476369a9162",
+      "note": "上下border不能各设16，否则32像素图片没有可拉伸中心。0进度隐藏；很小宽度可用RectMask2D避免挤压圆帽。"
+    },
+    {
+      "id": "component.progress_track",
+      "path": "Sprites/Components/progress_track.png",
+      "width": 256,
+      "height": 32,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        16,
+        15,
+        16,
+        15
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/progress_track.svg",
+      "usage": "横向进度底轨白遮罩；用Image.color设置底色",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e5c9a8db5889c79be29eabec2433f9b9a9acb17bf5e00e22107dd476369a9162",
+      "note": "横向两端border为16；上下15保留2像素有效拉伸区，32高显示时圆帽不变。"
+    },
+    {
+      "id": "component.ring_fill",
+      "path": "Sprites/Components/ring_fill.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/ring_fill.svg",
+      "usage": "环形进度白遮罩；Image Filled/Radial360显示真实fillAmount",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "a0dba49871b266d70afaa1ab35f88fd12dff0b040a49fdf8be7ffb8e5a6a212b",
+      "note": "以正方形原比例显示；Fill Origin=Top、Clockwise按设计统一；不作nine-slice。"
+    },
+    {
+      "id": "component.ring_track",
+      "path": "Sprites/Components/ring_track.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/ring_track.svg",
+      "usage": "环形进度底轨白遮罩；用Image.color设置低对比色",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "056e4ea51e78aecc99be88523b6530a451301f4926bcde87d5550419a0d66be0"
+    },
+    {
+      "id": "component.shadow_soft",
+      "path": "Sprites/Components/shadow_soft.png",
+      "width": 256,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/shadow_soft.svg",
+      "usage": "独立柔和椭圆投影；用于悬浮图标或插画下方，不带实体图形",
+      "alphaMin": 0,
+      "alphaMax": 59,
+      "sha256": "c31297e32f57db0752113fdb59e3779cd9b175d920cd797faac67be5cc76ddcb"
+    },
+    {
+      "id": "component.slot_empty",
+      "path": "Sprites/Components/slot_empty.png",
+      "width": 64,
+      "height": 64,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/slot_empty.svg",
+      "usage": "未填充计数槽；未完成轮槽、椅子槽等，叠加对应任务轮廓",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "3e1894db54b70cd5f754385692aa164362e7bdb06ebcc6a3ecfe216725a32834"
+    },
+    {
+      "id": "component.slot_filled",
+      "path": "Sprites/Components/slot_filled.png",
+      "width": 64,
+      "height": 64,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/slot_filled.svg",
+      "usage": "已填充计数槽；叠加任务图标或白色勾，不能独靠颜色表达完成",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "20e318668e22ae6f74a370ebebe7759cbf590c323062814a3b2e62ac0df5d0b4"
+    },
+    {
+      "id": "component.tile_cream",
+      "path": "Sprites/Components/tile_cream.png",
+      "width": 128,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/tile_cream.svg",
+      "usage": "紧凑任务图标底板或小按钮",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "989c7ca9277fa5474e61e661c8cb15eae680bee58baed8d08fb948ea1f0f78c6"
+    },
+    {
+      "id": "component.tooltip_cream",
+      "path": "Sprites/Components/tooltip_cream.png",
+      "width": 256,
+      "height": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "category": "Components",
+      "kind": "nine-slice",
+      "source": "Sources/Vector/tooltip_cream.svg",
+      "usage": "提示浮层底板；可叠图标或程序绘制的辅助说明，中心可拉伸",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c873d0a2e5c2758ff4b6f4783d472aa3ea2dd9657dcbefb401b0f937254cb4cd"
+    },
+    {
+      "id": "component.white_pixel",
+      "path": "Sprites/Components/white_pixel.png",
+      "width": 4,
+      "height": 4,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Components",
+      "kind": "sprite",
+      "source": "Sources/Vector/white_pixel.svg",
+      "usage": "全不透明白色基础纹理；运行时tint绘制遮罩、底色和线段",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "cc318ce7582791659ee92fc01aba2e6a10ab4cce4a5f1a7dd93f1d7e3aa58460",
+      "note": "有意完全不透明；其余透明背景组件不使用此例外。"
+    },
+    {
+      "id": "failure_spill.frame_00",
+      "path": "Sprites/FX/failure_spill/frame_00.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/failure_spill.png",
+      "usage": "failure_spill 第 1/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "b4bb043f0cb3f18f0a90f84da64f0b9dd60d2b5a654d13f85fb02a964ea7038e",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "failure_spill",
+      "frame": 0,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "failure_spill.frame_01",
+      "path": "Sprites/FX/failure_spill/frame_01.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/failure_spill.png",
+      "usage": "failure_spill 第 2/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cb3cf86a50bfd6576548a267d66939d8e17cc0356ac745d488257514abcd4850",
+      "sourceRectTopLeft": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "failure_spill",
+      "frame": 1,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "failure_spill.frame_02",
+      "path": "Sprites/FX/failure_spill/frame_02.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/failure_spill.png",
+      "usage": "failure_spill 第 3/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "b39ceccb8951c49a169e916793bf33ae2c83a8f56b22c33147bcb2fe10e25ae5",
+      "sourceRectTopLeft": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "failure_spill",
+      "frame": 2,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "failure_spill.frame_03",
+      "path": "Sprites/FX/failure_spill/frame_03.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/failure_spill.png",
+      "usage": "failure_spill 第 4/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "17539273bd7df46f654f901a4c0ff05047ffc2eaae513d6b34ba59ec7f66f0b3",
+      "sourceRectTopLeft": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "failure_spill",
+      "frame": 3,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "failure_spill.frame_04",
+      "path": "Sprites/FX/failure_spill/frame_04.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/failure_spill.png",
+      "usage": "failure_spill 第 5/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 221,
+      "sha256": "a16d920ad811458c4b62269ab7abbbadf6b8262e1e9a4964e5084e51f7b3cb06",
+      "sourceRectTopLeft": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "failure_spill",
+      "frame": 4,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "failure_spill.frame_05",
+      "path": "Sprites/FX/failure_spill/frame_05.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/failure_spill.png",
+      "usage": "failure_spill 第 6/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 108,
+      "sha256": "e60c7307ce29c31e7f6733bea2e0c0e204fd128f7facc731c7eda9ed7862ea3d",
+      "sourceRectTopLeft": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "failure_spill",
+      "frame": 5,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "impact_puff.frame_00",
+      "path": "Sprites/FX/impact_puff/frame_00.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/impact_puff.png",
+      "usage": "impact_puff 第 1/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "f579a2c66cac68ffee6d08faf5031a8b49c5c8d99706362ccb90a7146dfb1431",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "impact_puff",
+      "frame": 0,
+      "fps": 18,
+      "loop": false
+    },
+    {
+      "id": "impact_puff.frame_01",
+      "path": "Sprites/FX/impact_puff/frame_01.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/impact_puff.png",
+      "usage": "impact_puff 第 2/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "4320ce5b2f3205802333f42fd031619c7545f67144e42aeb8803bd7e4ba39fe6",
+      "sourceRectTopLeft": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "impact_puff",
+      "frame": 1,
+      "fps": 18,
+      "loop": false
+    },
+    {
+      "id": "impact_puff.frame_02",
+      "path": "Sprites/FX/impact_puff/frame_02.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/impact_puff.png",
+      "usage": "impact_puff 第 3/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "7e1c03430e48b074d77be9e6e725b3b8e5eb2c185b46d7aa4837ba93c21bc115",
+      "sourceRectTopLeft": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "impact_puff",
+      "frame": 2,
+      "fps": 18,
+      "loop": false
+    },
+    {
+      "id": "impact_puff.frame_03",
+      "path": "Sprites/FX/impact_puff/frame_03.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/impact_puff.png",
+      "usage": "impact_puff 第 4/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "7335bfb9e5044a133cbc8c4872b625de1b663f09e533c10d035175cf6154bcdd",
+      "sourceRectTopLeft": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "impact_puff",
+      "frame": 3,
+      "fps": 18,
+      "loop": false
+    },
+    {
+      "id": "impact_puff.frame_04",
+      "path": "Sprites/FX/impact_puff/frame_04.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/impact_puff.png",
+      "usage": "impact_puff 第 5/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 166,
+      "sha256": "ccf2900f90241c25efa401bb42e9b71607b8d042acd1f3780e1962bc0dc6150c",
+      "sourceRectTopLeft": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "impact_puff",
+      "frame": 4,
+      "fps": 18,
+      "loop": false
+    },
+    {
+      "id": "impact_puff.frame_05",
+      "path": "Sprites/FX/impact_puff/frame_05.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/impact_puff.png",
+      "usage": "impact_puff 第 6/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 129,
+      "sha256": "6722fd24d9c2c2acd4268d11e1c92d883f2cbdc007862a3a963f4d2855365811",
+      "sourceRectTopLeft": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "impact_puff",
+      "frame": 5,
+      "fps": 18,
+      "loop": false
+    },
+    {
+      "id": "success_sparkle.frame_00",
+      "path": "Sprites/FX/success_sparkle/frame_00.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/success_sparkle.png",
+      "usage": "success_sparkle 第 1/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "a410f4795c9c6aa4bbf4604407b146f939fedd82d50c2b7b8bfca91caa15a9d5",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "success_sparkle",
+      "frame": 0,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "success_sparkle.frame_01",
+      "path": "Sprites/FX/success_sparkle/frame_01.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/success_sparkle.png",
+      "usage": "success_sparkle 第 2/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "76f63b506b42a6e62e68ebc314ae2a5f5af7d07fb10770583b4a663204568485",
+      "sourceRectTopLeft": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "success_sparkle",
+      "frame": 1,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "success_sparkle.frame_02",
+      "path": "Sprites/FX/success_sparkle/frame_02.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/success_sparkle.png",
+      "usage": "success_sparkle 第 3/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c16b238fcbcdacaa2f7d8f62bcdd26985adea65b977d63ec0055ebc240c4a6c0",
+      "sourceRectTopLeft": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "success_sparkle",
+      "frame": 2,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "success_sparkle.frame_03",
+      "path": "Sprites/FX/success_sparkle/frame_03.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/success_sparkle.png",
+      "usage": "success_sparkle 第 4/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "7c0b586099e3e95136aa1ce90b00a3c3a5f5466cfc5856010fc45bb8b8595297",
+      "sourceRectTopLeft": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "success_sparkle",
+      "frame": 3,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "success_sparkle.frame_04",
+      "path": "Sprites/FX/success_sparkle/frame_04.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/success_sparkle.png",
+      "usage": "success_sparkle 第 5/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "5543a8802809d9a0a281e461eeb66878e9de2e0baee4bdd7d291bff9be9bc17e",
+      "sourceRectTopLeft": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "success_sparkle",
+      "frame": 4,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "success_sparkle.frame_05",
+      "path": "Sprites/FX/success_sparkle/frame_05.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "FX",
+      "kind": "sprite",
+      "source": "Sources/Generated/success_sparkle.png",
+      "usage": "success_sparkle 第 6/6 帧；保持统一画布，禁止逐帧紧裁；仅UI反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c86943967473b77d83d7fd44dd04f726525f1e24bcb3c830a4185ef67dccb903",
+      "sourceRectTopLeft": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ],
+      "animation": "success_sparkle",
+      "frame": 5,
+      "fps": 12,
+      "loop": false
+    },
+    {
+      "id": "action_airborne",
+      "path": "Sprites/Icons/action_airborne.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "8f462448dccdafa58450f209af295f4eedf0bd91bfbfaa1db50b5fee5645cb29",
+      "sourceRectTopLeft": [
+        627,
+        314,
+        940,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "action_bike",
+      "path": "Sprites/Icons/action_bike.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d682618ac1cc0943dfcdd986af192ddaa7561d1b4d002db2edcf2d367d299487",
+      "sourceRectTopLeft": [
+        940,
+        0,
+        1254,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "action_brace",
+      "path": "Sprites/Icons/action_brace.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d501ac1d6d75a9cf773fb3b1977e1137e7a3131812ac65cb715c74c3e83c148b",
+      "sourceRectTopLeft": [
+        314,
+        314,
+        627,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "action_dash",
+      "path": "Sprites/Icons/action_dash.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "8e41f6fb96301181def44509500029be3a0ec21202fcfca9bae57f8afb914c7e",
+      "sourceRectTopLeft": [
+        0,
+        314,
+        314,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "check",
+      "path": "Sprites/Icons/check.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "fc1ef69ad57e101d7b610a421a41f0dd9754bbcef218575f3a033b183a169428",
+      "sourceRectTopLeft": [
+        0,
+        940,
+        314,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "cross",
+      "path": "Sprites/Icons/cross.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "2569e329cb7f079b3ac7190e63e2d9a6550f9aa26bdda3b658730ae1a462ed8c",
+      "sourceRectTopLeft": [
+        314,
+        940,
+        627,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "destination_exit",
+      "path": "Sprites/Icons/destination_exit.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "42480c0febbf3c1a5af444310c60c3dd5659601f1ce2af37dd20312ecd1c99e2",
+      "sourceRectTopLeft": [
+        940,
+        940,
+        1254,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "dice",
+      "path": "Sprites/Icons/dice.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "91e1bfbd512d0c5eb8e361a6f89c3a1494d49c142aa69b8e95bd67942a208b10",
+      "sourceRectTopLeft": [
+        0,
+        627,
+        314,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "help",
+      "path": "Sprites/Icons/help.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "0f820a98a1859118339f6181419de0ad49b381e83f8e4158dfcaaaa4ba06dc58",
+      "sourceRectTopLeft": [
+        940,
+        627,
+        1254,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "home",
+      "path": "Sprites/Icons/home.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "2823b869628faf41a56410849fb1d4f131de52e73c10392fc891f85ae8a32b84",
+      "sourceRectTopLeft": [
+        0,
+        314,
+        314,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "lock",
+      "path": "Sprites/Icons/lock.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cd5fbf291613fb1f773b142827a5d66a7aafd7efc15fa303a5082b29e305d0c9",
+      "sourceRectTopLeft": [
+        627,
+        940,
+        940,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "map_collapse",
+      "path": "Sprites/Icons/map_collapse.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "814861c67db634656471a9fe51ce593ea52ea86a3f485b525d02e164f0888c56",
+      "sourceRectTopLeft": [
+        627,
+        627,
+        940,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "map_expand",
+      "path": "Sprites/Icons/map_expand.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "aa336f158160b4f5d53928fd2344b13249929143a535116a61f9746dd02cb359",
+      "sourceRectTopLeft": [
+        314,
+        627,
+        627,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "moon",
+      "path": "Sprites/Icons/moon.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e67eb56ce5fe82af0a169e43719d5d82a1fff65d0461124926268bee7a47abd5",
+      "sourceRectTopLeft": [
+        314,
+        0,
+        627,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "next",
+      "path": "Sprites/Icons/next.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "1f41c0036ea7f56b3b89b349a6133ca86d38241a941ea239fee0be224ca7f850",
+      "sourceRectTopLeft": [
+        940,
+        0,
+        1254,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "offscreen_arrow",
+      "path": "Sprites/Icons/offscreen_arrow.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "b4dd499b0294bb159b2badd5ab773df06b83a1fb5b48059d0a5fc32d25da72eb",
+      "sourceRectTopLeft": [
+        627,
+        940,
+        940,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "pause",
+      "path": "Sprites/Icons/pause.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "4779c8bdf40a1bdf6ec4146976a7466fee8953635d17fd41e2d0eeeaa8baec3d",
+      "sourceRectTopLeft": [
+        314,
+        0,
+        627,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "play",
+      "path": "Sprites/Icons/play.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cdf692f13723e6fe97072bffd70bf1cb7c6c56748939a2edb49ee7b0941e55ef",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "player_arrow",
+      "path": "Sprites/Icons/player_arrow.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d79cbbf58c4048e0da0d3cf8c2dfbae61c5d05c1b07510e301c67afcad3ec90f",
+      "sourceRectTopLeft": [
+        314,
+        940,
+        627,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "rescue",
+      "path": "Sprites/Icons/rescue.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "81ac8006cc36cbc80479468c17d95502921247b8091233e8d8c6c3b5b73033b0",
+      "sourceRectTopLeft": [
+        940,
+        314,
+        1254,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "retry",
+      "path": "Sprites/Icons/retry.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "0612471f26a3f76367094a81f5f098f14fdb403b5c768e2071dacf0133514fe4",
+      "sourceRectTopLeft": [
+        627,
+        0,
+        940,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "settings",
+      "path": "Sprites/Icons/settings.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d6e1cb0d09bf1f6436f888807bcfce01cd62235df23c2f4224caf4fc92cb4127",
+      "sourceRectTopLeft": [
+        314,
+        314,
+        627,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "speaker_off",
+      "path": "Sprites/Icons/speaker_off.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "db6eb4968687c82d18b72eb795b9dda6503bbe0d8e34e0a56841b352a639fdab",
+      "sourceRectTopLeft": [
+        940,
+        314,
+        1254,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "speaker_on",
+      "path": "Sprites/Icons/speaker_on.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cc4602b194a4b2fc0da093a0dd8ae69b7be6a1e6a660ab11b29ff8254d906fa7",
+      "sourceRectTopLeft": [
+        627,
+        314,
+        940,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "stage_metro",
+      "path": "Sprites/Icons/stage_metro.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "63399e6c56b569163fd358b017970c95ddaf23d9343566ffdbe975793cce02ac",
+      "sourceRectTopLeft": [
+        627,
+        627,
+        940,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "stage_office",
+      "path": "Sprites/Icons/stage_office.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "de000abeda142e43cf75e9b8c99ff951580ccb0e68542c72154756e9a4d5103c",
+      "sourceRectTopLeft": [
+        940,
+        627,
+        1254,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "stage_street",
+      "path": "Sprites/Icons/stage_street.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "939abde2e37e861bdca9fafa59b9d95e784e0a6dbdea8e7bbc8f3d3aa146633c",
+      "sourceRectTopLeft": [
+        314,
+        627,
+        627,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "star_filled",
+      "path": "Sprites/Icons/star_filled.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d78c868f45a956268dc5e671befa51452f70094cf93760f6f5b2b7afb8f1a233",
+      "sourceRectTopLeft": [
+        314,
+        940,
+        627,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "star_outline",
+      "path": "Sprites/Icons/star_outline.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "b43f6fa96545ebb4fa35f2c84d7790fcc0da8bd89445ff9f4cccdb27298d8501",
+      "sourceRectTopLeft": [
+        627,
+        940,
+        940,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "stopwatch",
+      "path": "Sprites/Icons/stopwatch.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "ffe584382b930d379e1714a7643578f93f5733e90ec364c4f52defc75d38926f",
+      "sourceRectTopLeft": [
+        0,
+        940,
+        314,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "sun",
+      "path": "Sprites/Icons/sun.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "cc84dda1eee225715a47b8fe4664395e31a06ca9a684a61f243cfc0e8deae49c",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_m1_alighting",
+      "path": "Sprites/Icons/task_m1_alighting.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "只允许结算揭示；游玩HUD/地图/提示禁用",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "82484826aaa7e12eff26e2c77d1262d214f01f9051215d402e79db7b162eb288",
+      "sourceRectTopLeft": [
+        940,
+        0,
+        1254,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_m1_neutral",
+      "path": "Sprites/Icons/task_m1_neutral.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "M1游玩中性槽；不能显示进度、目标或成功反馈",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "87067dcece4a487505a52f3a9b6ab064a1e062da035898890d96194ed95794f3",
+      "sourceRectTopLeft": [
+        940,
+        940,
+        1254,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_m2_capsule",
+      "path": "Sprites/Icons/task_m2_capsule.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "d38a865a9c2f2f011e6226fbd6ef83afa99e9e94206f55cbc26468b56a53c273",
+      "sourceRectTopLeft": [
+        0,
+        314,
+        314,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_m3_clean",
+      "path": "Sprites/Icons/task_m3_clean.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "05d8dc4e7342e50f30eaa54e68597367c8e8fefa340c15d4651ae28c6fafbe1a",
+      "sourceRectTopLeft": [
+        314,
+        314,
+        627,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_o1_coffee",
+      "path": "Sprites/Icons/task_o1_coffee.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "6b980e4d9aa7293544032e6898b6ebe15c668fb35fe4914f0e2afcdb0e2c13c2",
+      "sourceRectTopLeft": [
+        627,
+        314,
+        940,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_o2_document",
+      "path": "Sprites/Icons/task_o2_document.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e54773d76d07ae1d0153e27d5bf24348cedba9044020f07e32e71533086c8736",
+      "sourceRectTopLeft": [
+        940,
+        314,
+        1254,
+        627
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_o3_chair",
+      "path": "Sprites/Icons/task_o3_chair.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "ac373bebc806b447e0490c16fa004f6d1cbecc0d458a2507231357089162986d",
+      "sourceRectTopLeft": [
+        0,
+        627,
+        314,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_s1_breakfast",
+      "path": "Sprites/Icons/task_s1_breakfast.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e7b38b2bb3b3f368c987926908c44b80dd7c5ee5e490684be606316bb688ec24",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        314,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_s2_wheel_repair",
+      "path": "Sprites/Icons/task_s2_wheel_repair.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "609fce54185489cab37f96445911927db69a77dacde9df9a693a52a1d596198b",
+      "sourceRectTopLeft": [
+        314,
+        0,
+        627,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "task_s3_flip",
+      "path": "Sprites/Icons/task_s3_flip.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_tasks.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "3d46fe74eeb98e55a94e2f2057d6885df7a169b777c2e13fd0ebbb2aa644f56a",
+      "sourceRectTopLeft": [
+        627,
+        0,
+        940,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "unlock",
+      "path": "Sprites/Icons/unlock.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_controls.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "0095ff77519d1cafc33dbd88093a80e3077f4f7005c57fc5ecf179deca42b824",
+      "sourceRectTopLeft": [
+        940,
+        940,
+        1254,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "wheel",
+      "path": "Sprites/Icons/wheel.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Icons",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "图标身份与玩法映射见Unity接入指南",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "0fca59bd22a85f560ed5ba13f0af77489e0bfff8934eb4fd556f2bb2ca1009ee",
+      "sourceRectTopLeft": [
+        627,
+        0,
+        940,
+        314
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "chapter_metro",
+      "path": "Sprites/Illustrations/chapter_metro.png",
+      "width": 512,
+      "height": 512,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Illustrations",
+      "kind": "sprite",
+      "source": "Sources/Generated/illustrations.png",
+      "usage": "选关/结算插画独立图层；不是可游玩地图或角色世界动作",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "79490dace14806237c450cad7b3a5ce6452e9f5c3228155636cf4c02de1af202",
+      "sourceRectTopLeft": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "chapter_office",
+      "path": "Sprites/Illustrations/chapter_office.png",
+      "width": 512,
+      "height": 512,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Illustrations",
+      "kind": "sprite",
+      "source": "Sources/Generated/illustrations.png",
+      "usage": "选关/结算插画独立图层；不是可游玩地图或角色世界动作",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "7e62eb947069d1fca2b639d36f3fd6d57f0e08f9ac434ca7d4979eb63dbd5c64",
+      "sourceRectTopLeft": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "chapter_street",
+      "path": "Sprites/Illustrations/chapter_street.png",
+      "width": 512,
+      "height": 512,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Illustrations",
+      "kind": "sprite",
+      "source": "Sources/Generated/illustrations.png",
+      "usage": "选关/结算插画独立图层；不是可游玩地图或角色世界动作",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "2cfae37a93381019524f75e22373605607e54094c9cf8b0db583426761be77fb",
+      "sourceRectTopLeft": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "commuter_happy",
+      "path": "Sprites/Illustrations/commuter_happy.png",
+      "width": 512,
+      "height": 512,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Illustrations",
+      "kind": "sprite",
+      "source": "Sources/Generated/illustrations.png",
+      "usage": "选关/结算插画独立图层；不是可游玩地图或角色世界动作",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "fff714b6c4f28acebc520c78c0830d48cd85feb49c0d6b0c3dc1d7103ca876e5",
+      "sourceRectTopLeft": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "commuter_tired",
+      "path": "Sprites/Illustrations/commuter_tired.png",
+      "width": 512,
+      "height": 512,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Illustrations",
+      "kind": "sprite",
+      "source": "Sources/Generated/illustrations.png",
+      "usage": "选关/结算插画独立图层；不是可游玩地图或角色世界动作",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "83e97a3a6ddf6fb2f6b32a1399df2eaa3fd8f34dc2054c56de5c9c14aa764982",
+      "sourceRectTopLeft": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "metro_entrance",
+      "path": "Sprites/Illustrations/metro_entrance.png",
+      "width": 512,
+      "height": 512,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Illustrations",
+      "kind": "sprite",
+      "source": "Sources/Generated/illustrations.png",
+      "usage": "选关/结算插画独立图层；不是可游玩地图或角色世界动作",
+      "alphaMin": 0,
+      "alphaMax": 254,
+      "sha256": "da6342ceab856d70cd78a08c0fc8e912179e949f96b874b106209176d1eac9f3",
+      "sourceRectTopLeft": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "sourceSheetSize": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "id": "portrait_00",
+      "path": "Sprites/Portraits/portrait_00.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Portraits",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "文件与对应工位共用同一Sprite；leaderId映射，不可分别重绘",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "9e152fc9a61187b2c67677cffc95a449a7332aab65935a010432622467da8b27",
+      "sourceRectTopLeft": [
+        0,
+        627,
+        314,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "portrait_01",
+      "path": "Sprites/Portraits/portrait_01.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Portraits",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "文件与对应工位共用同一Sprite；leaderId映射，不可分别重绘",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "fac29cb9a11bab880ef1ef6114cdae45bae8f89cc20d4d99b460eb6668fd189b",
+      "sourceRectTopLeft": [
+        314,
+        627,
+        627,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "portrait_02",
+      "path": "Sprites/Portraits/portrait_02.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Portraits",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "文件与对应工位共用同一Sprite；leaderId映射，不可分别重绘",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "e900ec0622e8329ac65a0cd438117fd16fcc8339c824508549e6247b5df2b3e1",
+      "sourceRectTopLeft": [
+        627,
+        627,
+        940,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "portrait_03",
+      "path": "Sprites/Portraits/portrait_03.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Portraits",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "文件与对应工位共用同一Sprite；leaderId映射，不可分别重绘",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "c8b9abefe76db0d9e9e6b67fb593dc0976ae649496a22bb293fc66eedaacf3c2",
+      "sourceRectTopLeft": [
+        940,
+        627,
+        1254,
+        940
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "portrait_04",
+      "path": "Sprites/Portraits/portrait_04.png",
+      "width": 256,
+      "height": 256,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Portraits",
+      "kind": "sprite",
+      "source": "Sources/Generated/icons_actions.png",
+      "usage": "文件与对应工位共用同一Sprite；leaderId映射，不可分别重绘",
+      "alphaMin": 0,
+      "alphaMax": 255,
+      "sha256": "85194bc1464e25aa898cf579df4fe1ab84414380bdf04de1cb2e235d1df3ec13",
+      "sourceRectTopLeft": [
+        0,
+        940,
+        314,
+        1254
+      ],
+      "sourceSheetSize": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "id": "tutorial_delivery_01",
+      "path": "Sprites/Tutorials/tutorial_delivery_01.png",
+      "width": 503,
+      "height": 252,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "5089e160414525ef0b4dc5a539bef35ddeb9aad8df257fa2c53eec88e2923361",
+      "sourceRectTopLeft": [
+        34,
+        666,
+        537,
+        918
+      ]
+    },
+    {
+      "id": "tutorial_delivery_02",
+      "path": "Sprites/Tutorials/tutorial_delivery_02.png",
+      "width": 500,
+      "height": 252,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "f57e990464d0a8542485ab7fc2ce8c6d9bec447b80b656299aef7ea8a9648dab",
+      "sourceRectTopLeft": [
+        590,
+        666,
+        1090,
+        918
+      ]
+    },
+    {
+      "id": "tutorial_delivery_03",
+      "path": "Sprites/Tutorials/tutorial_delivery_03.png",
+      "width": 502,
+      "height": 252,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "f0b69f7524a713d7575209cefa47b244bc6c7085d48d21f255e8c699f0826578",
+      "sourceRectTopLeft": [
+        1136,
+        666,
+        1638,
+        918
+      ]
+    },
+    {
+      "id": "tutorial_flip_01",
+      "path": "Sprites/Tutorials/tutorial_flip_01.png",
+      "width": 497,
+      "height": 262,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "7b6486b3f9280b6332158705e2fa0bcaf840912f50c0322f787ea85e9b206f8f",
+      "sourceRectTopLeft": [
+        38,
+        358,
+        535,
+        620
+      ]
+    },
+    {
+      "id": "tutorial_flip_02",
+      "path": "Sprites/Tutorials/tutorial_flip_02.png",
+      "width": 490,
+      "height": 262,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "77b1466128b5a4944c1791000facb163ffb39d2f8e9d357bc6ecc3c9c148b809",
+      "sourceRectTopLeft": [
+        596,
+        358,
+        1086,
+        620
+      ]
+    },
+    {
+      "id": "tutorial_flip_03",
+      "path": "Sprites/Tutorials/tutorial_flip_03.png",
+      "width": 494,
+      "height": 262,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "6c8c604df79d3141b66c328766b9284ef07e3c543e6c4c251627c27bfd149fb0",
+      "sourceRectTopLeft": [
+        1145,
+        358,
+        1639,
+        620
+      ]
+    },
+    {
+      "id": "tutorial_repair_01",
+      "path": "Sprites/Tutorials/tutorial_repair_01.png",
+      "width": 495,
+      "height": 277,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "683f728e0e46add4531a73f5852c77881f7abda1dc646e93f306ff74cd5c2653",
+      "sourceRectTopLeft": [
+        36,
+        31,
+        531,
+        308
+      ]
+    },
+    {
+      "id": "tutorial_repair_02",
+      "path": "Sprites/Tutorials/tutorial_repair_02.png",
+      "width": 494,
+      "height": 277,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "438fc22103bb94b42e52e638ec6770bcaf129705d9827a62d0a604fec8fb0031",
+      "sourceRectTopLeft": [
+        592,
+        31,
+        1086,
+        308
+      ]
+    },
+    {
+      "id": "tutorial_repair_03",
+      "path": "Sprites/Tutorials/tutorial_repair_03.png",
+      "width": 493,
+      "height": 277,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "border": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "category": "Tutorials",
+      "kind": "sprite",
+      "source": "References/03_task_interactions.png",
+      "usage": "静态教学步骤插画；背景与人物已合成，不作世界动画帧；步骤之间用next箭头",
+      "alphaMin": 255,
+      "alphaMax": 255,
+      "sha256": "5a9847e9d02e4383744489103fda8ebe45e661a17d4bfc87410c1f17f6d422d0",
+      "sourceRectTopLeft": [
+        1146,
+        31,
+        1639,
+        308
+      ]
+    }
+  ],
+  "semanticAliases": {
+    "action_walk": "stage_street"
+  },
+  "notes": [
+    "图标、插画及FX为内置image_gen参考重绘后按网格切分，保留源alpha；底板为SVG原生绘制。",
+    "FX保留固定256画布，终帧结束后由播放器回调隐藏，不逐帧trim。",
+    "M1隐藏，计时/动态地图/进度/数字由运行时渲染。"
+  ]
+}
